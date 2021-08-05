@@ -13,7 +13,7 @@ class _ReportsPageState extends State<ReportsPage> {
   var birthdate = TextEditingController();
   bool isSwitched = false;
 
-  Future<Null> _selectDate(BuildContext context) async {
+  /*Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -25,11 +25,11 @@ class _ReportsPageState extends State<ReportsPage> {
         selectedDate = picked;
         birthdate.text = selectedDate.toIso8601String().split('T')[0];
       });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    //double width = MediaQuery.of(context).size.width;
 
     return AppScaffold(
         pageTitle: "Reportes",

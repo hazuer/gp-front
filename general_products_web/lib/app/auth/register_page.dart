@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
@@ -15,7 +14,7 @@ class _RegisterPageState extends State<RegisterPage> {
   
   @override
   Widget build(BuildContext context) {
-    final bool displayMobileLayout = MediaQuery.of(context).size.width < 600;
+    //inal bool displayMobileLayout = MediaQuery.of(context).size.width < 600;
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
