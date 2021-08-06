@@ -15,6 +15,7 @@ class CustomInput extends StatelessWidget {
         color: Colors.grey[100]
       ),
       child: TextField(
+        controller: controller,
         style: TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17),
         decoration: InputDecoration.collapsed(hintText: hint, hintStyle: TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17),),
       ),

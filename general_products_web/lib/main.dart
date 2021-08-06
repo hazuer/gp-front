@@ -11,9 +11,9 @@ import 'pages/settings_page.dart';
 import 'pages/slideshow_page.dart';
 import 'widgets/app_route_observer.dart';
 
-void main() => runApp(DemoApp());
+void main() => runApp(GeneralProductsApp());
 
-class DemoApp extends StatelessWidget {
+class GeneralProductsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

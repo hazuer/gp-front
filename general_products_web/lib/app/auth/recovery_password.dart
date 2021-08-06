@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/provider/signup_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
+import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 
@@ -11,11 +13,15 @@ class RecoveryPasswordPage extends StatefulWidget {
 }
 
 class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isLoading = false;
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         width: width,
         height: height,
@@ -84,16 +90,38 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               SizedBox(
                                 height: 24,
                               ),
-                              CustomInput(hint: "* Correo",),
+                              CustomInput(
+                                controller: emailController,
+                                hint: "* Correo",
+                              ),
 
                               SizedBox(
                                 height: 50,
                               ),
 
                               CustomButton(
+                                isLoading: isLoading,
                                 title: "Recuperar Contraseña", 
-                                onPressed: (){
-                                  print("onpressed");
+                                onPressed: ()async{
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  await SignupProvider().recoverPassword(emailController.text).then((value){
+                                    if(value == null){
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      showSnackBar(RxVariables.errorMessage, Colors.redAccent);
+
+                                    }else{
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      showSnackBar(RxVariables.errorMessage, GPColors.PrimaryColor);
+                                    }
+
+                                  });
+
                                  // Navigator.pushReplacementNamed(context, '/');
                                 }
                               ),
@@ -102,9 +130,11 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               ),
 
                               CustomButton(
+                                isLoading: false,
                                 title: "Salir", 
                                 onPressed: (){
                                   print("onpressed");
+                                  
                                  Navigator.pop(context);
                                 }
                               )
@@ -120,4 +150,10 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
       ),
     );
   }
+
+   showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: color,));
+
+  }
+
 }

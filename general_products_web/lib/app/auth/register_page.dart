@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/models/customer_model.dart';
+import 'package:general_products_web/models/plant_model.dart';
+import 'package:general_products_web/provider/signup_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
+import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
+import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -11,11 +16,27 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final GlobalKey<AppExpansionTileState> customerKey = new GlobalKey();
+  final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
+
+  TextEditingController nameController = TextEditingController();
+  late Future futureData;
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController secondLastnameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  bool isLoading = false;
+  Plant plantSelected = Plant();
+  Customer customerSelected = Customer();
+
+  @override
+  void initState() {
+    futureData = SignupProvider().dataUser();
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {
-    //inal bool displayMobileLayout = MediaQuery.of(context).size.width < 600;
-
+    final bool displayMobileLayout = MediaQuery.of(context).size.width < 600;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -43,8 +64,77 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: [
                         Text("Registrar Usuario", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 22, fontWeight: FontWeight.bold),),
                         
-                        Container(
-                          width: width < 850
+                        displayMobileLayout?
+                        Column(
+                          children: [
+                            SizedBox(height: 50,),
+                            CustomInput(
+                              controller: nameController,
+                              hint: "* Nombre",
+                            ),
+                            SizedBox(height: 35,),
+                            CustomInput(
+                              controller: lastnameController,
+                              hint: "* Apellido Paterno",
+                            ),
+                             SizedBox(height: 35,),
+                            CustomInput(
+                              controller: secondLastnameController,
+                              hint: "* Apellido Materno",
+                            ),
+                            SizedBox(height: 35,),
+                            CustomInput(
+                              controller: emailController,
+                              hint: "* correo",
+                            ),
+                            listPlants(),
+                            listCustomers(),
+                            SizedBox(height:35),
+                            CustomButton(
+                              isLoading: isLoading,
+                              title: "Enviar Registro", 
+                              onPressed: ()async{
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                await SignupProvider().registerUser(nameController.text, "${lastnameController.text} ${secondLastnameController.text}", emailController.text, plantSelected.idCatPlanta.toString(), customerSelected.idCatCliente.toString()).then((value){
+                                  if(value == null){
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      duration: Duration(seconds: 3),
+                                      content: Text(RxVariables.errorMessage), backgroundColor: Colors.redAccent,));
+
+                                  }else{
+
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      duration: Duration(seconds: 3),
+                                      content: Text(RxVariables.errorMessage), backgroundColor: GPColors.PrimaryColor,));
+
+                                    print("Correcto");
+                                  }
+                                });
+                                //Navigator.pushReplacementNamed(context, '/');
+                              }
+                            ),
+                            SizedBox(height: 35,),
+                            CustomButton(
+                              isLoading: false,
+                              title: "Salir", 
+                              onPressed: (){
+                                Navigator.pop(context);
+                                //Navigator.pushReplacementNamed(context, '/');
+                              }
+                            )
+
+                          ],
+                        )
+                        : Container(
+                          width: !displayMobileLayout
                               ? MediaQuery.of(context).size.width
                               : MediaQuery.of(context).size.width / 2,
                           padding: EdgeInsets.symmetric(
@@ -57,27 +147,34 @@ class _RegisterPageState extends State<RegisterPage> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Flexible(child: CustomInput(hint: "* Nombre",)),
+                                  Flexible(child: CustomInput(
+                                    controller: nameController,
+                                    hint: "* Nombre",)
+                                  ),
                                   SizedBox(width: 35,),
-                                  Flexible(child: CustomInput(hint: "* Apellido Paterno",)),
+                                  Flexible(child: CustomInput(
+                                    controller: lastnameController,
+                                    hint: "* Apellido Paterno",)),
                                 ],
                               ),
                               SizedBox( height: 35,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Flexible(child: CustomInput(hint: "* Apellido Materno",)),
+                                  Flexible(child: CustomInput(
+                                    controller: secondLastnameController,
+                                    hint: "* Apellido Materno",)),
                                   SizedBox(width: 35,),
-                                  Flexible(child: CustomInput(hint: "* Correo",)),
+                                  Flexible(child: CustomInput(
+                                    controller: emailController,
+                                    hint: "* Correo",)),
                                 ],
                               ),
-                              SizedBox( height: 35,),
                                Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Flexible(child: CustomInput(hint: "* Selecciona planta",)),
+                                  Flexible(child: listCustomers()),
                                   SizedBox(width: 35,),
-                                  Flexible(child: CustomInput(hint: "* Selecciona Cliente",)),
+                                  Flexible(child: listPlants())
                                 ],
                               ),
                               SizedBox(
@@ -88,9 +185,34 @@ class _RegisterPageState extends State<RegisterPage> {
                                 children: [
                                   Flexible(
                                     child: CustomButton(
+                                      isLoading: isLoading,
                                       title: "Enviar Registro", 
-                                      onPressed: (){
-                                        print("onpressed");
+                                      onPressed: ()async{
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        await SignupProvider().registerUser(nameController.text, "${lastnameController.text} ${secondLastnameController.text}", emailController.text, plantSelected.idCatPlanta.toString(), customerSelected.idCatCliente.toString()).then((value){
+                                          if(value == null){
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                              duration: Duration(seconds: 3),
+                                              content: Text(RxVariables.errorMessage), backgroundColor: Colors.redAccent,));
+
+                                          }else{
+
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                              duration: Duration(seconds: 3),
+                                              content: Text(RxVariables.errorMessage), backgroundColor: GPColors.PrimaryColor,));
+
+                                            print("Correcto");
+                                          }
+
+                                        });
                                         //Navigator.pushReplacementNamed(context, '/');
                                       }
                                     ),
@@ -98,9 +220,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                   SizedBox(width: 40,),
                                   Flexible(
                                     child: CustomButton(
+                                      isLoading: false,
                                       title: "Salir", 
                                       onPressed: (){
-                                        print("onpressed");
+                                        Navigator.pop(context);
                                         //Navigator.pushReplacementNamed(context, '/');
                                       }
                                     ),
@@ -111,6 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               SizedBox(
                                 height: 30,
                               ),
+                              
 
                               
                             ],
@@ -122,6 +246,119 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             )),
+      ),
+    );
+  }
+
+  Widget listCustomers(){
+    return Container(
+      margin: EdgeInsets.only(top:35),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Colors.grey[100]
+      ),
+      child: AppExpansionTile(
+        key: customerKey,
+        initiallyExpanded: false,
+        title: Text( customerSelected.nombreCliente?? "*Selecciona Cliente",
+        style:  TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17),),
+        children: [
+          Container(
+            child: FutureBuilder(
+              future: futureData,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if(snapshot.hasData){
+                  return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: RxVariables.customerAvailables.length,
+                  itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap:(){
+                      setState(() {
+                        customerSelected = RxVariables.customerAvailables[index];
+                        customerKey.currentState!.collapse();
+                      });
+                    },
+                    child: Container(
+                      color: Colors.grey[100],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Text(RxVariables.customerAvailables[index].nombreCliente!, style: TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17),),
+                          ),
+                          Container(width: double.infinity, height: .5, color: Colors.grey[300],)
+                        ],
+                      ),
+                    ),
+                  );
+                 },
+                );
+                }else{
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget listPlants(){
+    return Container(
+      margin: EdgeInsets.only(top:35),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: Colors.grey[100]
+      ),
+      child: AppExpansionTile(
+        key: plantsKey,
+        initiallyExpanded: false,
+        title: Text( plantSelected.nombrePlanta?? "* Selecciona Planta",//SkillUser.jobSelected.name??"Seleccionar", 
+        style:  TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17),),
+        children: [
+          Container(
+            child: FutureBuilder(
+              future: futureData,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if(snapshot.hasData){
+                  return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: RxVariables.plantsAvailables.length,
+                  itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap:(){
+                      setState(() {
+                        plantSelected = RxVariables.plantsAvailables[index];
+                        plantsKey.currentState!.collapse();
+                      });
+                    },
+                    child: Container(
+                      color: Colors.grey[100],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Text(RxVariables.plantsAvailables[index].nombrePlanta!, style:  TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17)),
+                          ),
+                          Container(width: double.infinity, height: .5, color: Colors.grey[300],)
+                        ],
+                      ),
+                    ),
+                  );
+                 },
+                );
+                }else{
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

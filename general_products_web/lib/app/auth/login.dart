@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/provider/signup_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
+import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 
@@ -12,6 +14,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     //final bool displayMobileLayout = MediaQuery.of(context).size.width < 900;
@@ -88,11 +93,17 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(
                                 height: 24,
                               ),
-                              CustomInput(hint: "* Usuario",),
+                              CustomInput(
+                                controller: userController,
+                                hint: "* Usuario",
+                              ),
                               SizedBox(
                                 height: 30,
                               ),
-                              CustomInput(hint: "* Contraseña"),
+                              CustomInput(
+                                controller: passwordController,
+                                hint: "* Contraseña"
+                              ),
                               SizedBox(
                                 height: 80,
                               ),
@@ -125,11 +136,33 @@ class _LoginPageState extends State<LoginPage> {
                               ),
 
                               CustomButton(
+                                isLoading: isLoading,
                                 title: "Ingresar", 
-                                onPressed: (){
-                                  print("onpressed");
+                                onPressed: ()async{
                                   
-                                  Navigator.pushReplacementNamed(context, '/');
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  await SignupProvider().login(userController.text, passwordController.text).then((value) {
+                                    if(value == null){
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(RxVariables.errorMessage), backgroundColor: Colors.red,));
+
+                                      setState(() {
+                                       isLoading = false;
+                                      });
+                                      
+
+
+                                    }else{
+                                      setState(() {
+                                       isLoading = false;
+                                      });
+                                      Navigator.pushReplacementNamed(context, '/');
+
+                                    }
+                                  });
+                                  
+                                  //
                                 }
                               )
                             ],

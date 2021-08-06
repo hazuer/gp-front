@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../constants/page_titles.dart';
 import '../constants/route_names.dart';
 import 'app_route_observer.dart';
@@ -101,7 +100,8 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                             height: 48,
                                           ),
                                           Text(
-                                            'Administrador',
+                                            "Administrador",
+                                            //"${RxVariables.loginResponse.data!.user!.name} ${RxVariables.loginResponse.data!.user!.lastName}",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Color(0xffECF0F1)),
