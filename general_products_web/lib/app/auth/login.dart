@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/bloc/login_bloc.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/provider/signup_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
+import 'package:general_products_web/widgets/general_dialog.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,6 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginBloc loginBloc = LoginBloc();
+  GeneralDialog dialogs = GeneralDialog();
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
@@ -43,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     width: double.infinity,
                     margin:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -93,16 +97,30 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(
                                 height: 24,
                               ),
-                              CustomInput(
-                                controller: userController,
-                                hint: "* Usuario",
+                              StreamBuilder(
+                                stream: loginBloc.emailStream,
+                                builder: (context, snapshot) {
+                                  return CustomInput(
+                                    controller: userController,
+                                    hint: "* Usuario",
+                                    errorText: snapshot.error?.toString(),
+                                    onChanged: loginBloc.changeEmail,
+                                  );
+                                }
                               ),
                               SizedBox(
                                 height: 30,
                               ),
-                              CustomInput(
-                                controller: passwordController,
-                                hint: "* Contraseña"
+                              StreamBuilder(
+                                stream: loginBloc.passwordStream,
+                                builder: (context, snapshot) {
+                                  return CustomInput(
+                                    controller: passwordController,
+                                    hint: "* Contraseña",
+                                    errorText: snapshot.error?.toString(),
+                                    onChanged: loginBloc.changePassword,
+                                  );
+                                }
                               ),
                               SizedBox(
                                 height: 80,
@@ -135,34 +153,57 @@ class _LoginPageState extends State<LoginPage> {
                                 height: 30,
                               ),
 
-                              CustomButton(
-                                isLoading: isLoading,
-                                title: "Ingresar", 
-                                onPressed: ()async{
-                                  
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  await SignupProvider().login(userController.text, passwordController.text).then((value) {
-                                    if(value == null){
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(RxVariables.errorMessage), backgroundColor: Colors.red,));
-
+                              StreamBuilder(
+                                stream: loginBloc.formLoginStream,
+                                builder: (context, snapshot) {
+                                  return CustomButton(
+                                    isLoading: isLoading,
+                                    title: "Ingresar", 
+                                    onPressed:snapshot.hasData? ()async{
+                                      
                                       setState(() {
-                                       isLoading = false;
+                                        isLoading = true;
+                                      });
+                                      await SignupProvider().login(userController.text, passwordController.text).then((value) {
+                                        if(value == null){
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          dialogs.showInfoDialog(context, "Ha ocurrido un error al iniciar sesión.", "Error: ${RxVariables.errorMessage}");
+                                          
+                                        }else{
+                                          setState(() {
+                                           isLoading = false;
+                                          });
+                                          Navigator.pushReplacementNamed(context, '/');
+                                        }
                                       });
                                       
-
-
-                                    }else{
-                                      setState(() {
-                                       isLoading = false;
-                                      });
-                                      Navigator.pushReplacementNamed(context, '/');
-
                                     }
-                                  });
-                                  
-                                  //
+                                    :
+                                    (){
+                                       dialogs.showInfoDialog(context, "Favor de llenar correctamente los campos", "");
+
+                                    },
+                                   /* onPressed: ()async{
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      await SignupProvider().login(userController.text, passwordController.text).then((value) {
+                                        if(value == null){
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(RxVariables.errorMessage), backgroundColor: Colors.red,));
+                                          setState(() {
+                                           isLoading = false;
+                                          });
+                                        }else{
+                                          setState(() {
+                                           isLoading = false;
+                                          });
+                                          Navigator.pushReplacementNamed(context, '/');
+                                        }
+                                      });
+                                    }*/
+                                  );
                                 }
                               )
                             ],
@@ -177,4 +218,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  
 }

@@ -3,6 +3,7 @@ import 'package:general_products_web/provider/signup_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
+import 'package:general_products_web/widgets/general_dialog.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 
 class RecoveryPasswordPage extends StatefulWidget {
@@ -103,24 +104,31 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 isLoading: isLoading,
                                 title: "Recuperar Contraseña", 
                                 onPressed: ()async{
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  await SignupProvider().recoverPassword(emailController.text).then((value){
-                                    if(value == null){
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                      showSnackBar(RxVariables.errorMessage, Colors.redAccent);
+                                  if(emailController.text.contains("@")){
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    await SignupProvider().recoverPassword(emailController.text).then((value){
+                                      if(value == null){
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        GeneralDialog().showInfoDialog(context, "Ocurrió un error." , "Detalle: ${RxVariables.errorMessage}");
+  
+                                      }else{
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        GeneralDialog().showInfoDialog(context, RxVariables.errorMessage, "");
+                                      }
 
-                                    }else{
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                      showSnackBar(RxVariables.errorMessage, GPColors.PrimaryColor);
-                                    }
+                                    });
 
-                                  });
+                                  }else{
+                                    GeneralDialog().showInfoDialog(context, "Ingrese un correo valido.", "");
+
+                                  }
+                                  
 
                                  // Navigator.pushReplacementNamed(context, '/');
                                 }

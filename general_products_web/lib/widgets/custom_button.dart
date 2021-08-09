@@ -5,7 +5,8 @@ class CustomButton extends StatefulWidget {
   final String title;
   final bool isLoading;
   final VoidCallback? onPressed;
-  CustomButton({ Key? key, required this.title, this.onPressed, required this.isLoading }) : super(key: key);
+  final double? width;
+  CustomButton({ Key? key, required this.title, this.onPressed, required this.isLoading, this.width }) : super(key: key);
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -18,10 +19,12 @@ class _CustomButtonState extends State<CustomButton> {
 
     return Container(
       //padding: EdgeInsets.symmetric(vertical:12),
-      width: MediaQuery.of(context).size.width < 600?
+      width: widget.width == null? MediaQuery.of(context).size.width < 600?
        MediaQuery.of(context).size.width*.93
-       : MediaQuery.of(context).size.width*.44,
+       : MediaQuery.of(context).size.width*.44
+       : widget.width,
       child: ElevatedButton(
+        
         child: widget.isLoading? 
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -40,7 +43,7 @@ class _CustomButtonState extends State<CustomButton> {
         ),
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
-          elevation: 2,
+          elevation: 4,
           primary: GPColors.PrimaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
         )

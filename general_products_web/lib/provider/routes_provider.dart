@@ -12,14 +12,15 @@ class RoutesProvider{
     }
   );
 
-  //final Options headerWithToken = new Options(
-  //  headers: {
-  //    'Content-Type':'application/json',
-  //    'Accept':'application/json',
-  //    'X-Requested-With': "XMLHttpRequest",
-  //    "Authorization": "Bearer ${RxVariables.loginResponse.data!.token}"
-  //  }
-  //);
+
+  /*final Options headerWithToken = new Options(
+    headers: {
+      'Content-Type':'application/json',
+      'Accept':'application/json',
+      'X-Requested-With': "XMLHttpRequest",
+      "Authorization": "Bearer ${RxVariables.loginResponse.data!.token??""}"
+    }
+  );*/
   
   String login = "login";
   String register = "registrar-usuario";

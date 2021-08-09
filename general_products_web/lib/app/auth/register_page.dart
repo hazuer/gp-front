@@ -6,6 +6,7 @@ import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
+import 'package:general_products_web/widgets/general_dialog.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -27,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool isLoading = false;
   Plant plantSelected = Plant();
   Customer customerSelected = Customer();
+  GeneralDialog dialogs = GeneralDialog();
 
   @override
   void initState() {
@@ -94,7 +96,11 @@ class _RegisterPageState extends State<RegisterPage> {
                               isLoading: isLoading,
                               title: "Enviar Registro", 
                               onPressed: ()async{
-                                setState(() {
+                                if(nameController.text.isEmpty || lastnameController.text.isEmpty || emailController.text.isEmpty || plantSelected.idCatPlanta == null || customerSelected.idCatCliente == null){
+                                  dialogs.showInfoDialog(context, "Favor de llenar correctamente todos los campos.", "");
+
+                                }else{
+                                  setState(() {
                                   isLoading = true;
                                 });
                                 await SignupProvider().registerUser(nameController.text, "${lastnameController.text} ${secondLastnameController.text}", emailController.text, plantSelected.idCatPlanta.toString(), customerSelected.idCatCliente.toString()).then((value){
@@ -102,23 +108,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      duration: Duration(seconds: 3),
-                                      content: Text(RxVariables.errorMessage), backgroundColor: Colors.redAccent,));
+                                    dialogs.showInfoDialog(context, "Ocurrió un error al realizar el registro", "Error: ${RxVariables.errorMessage}");
 
                                   }else{
 
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      duration: Duration(seconds: 3),
-                                      content: Text(RxVariables.errorMessage), backgroundColor: GPColors.PrimaryColor,));
+                                    dialogs.showInfoDialog(context, "¡Registro Exitoso!", RxVariables.errorMessage);
 
                                     print("Correcto");
                                   }
                                 });
-                                //Navigator.pushReplacementNamed(context, '/');
+                                  
+                                }
                               }
                             ),
                             SizedBox(height: 35,),
@@ -188,7 +191,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                       isLoading: isLoading,
                                       title: "Enviar Registro", 
                                       onPressed: ()async{
-                                        setState(() {
+                                        if(nameController.text.isEmpty || lastnameController.text.isEmpty || emailController.text.isEmpty || plantSelected.idCatPlanta == null || customerSelected.idCatCliente == null){
+                                          dialogs.showInfoDialog(context, "Favor de llenar correctamente todos los campos.", "");
+                                        }else{
+                                          setState(() {
                                           isLoading = true;
                                         });
                                         await SignupProvider().registerUser(nameController.text, "${lastnameController.text} ${secondLastnameController.text}", emailController.text, plantSelected.idCatPlanta.toString(), customerSelected.idCatCliente.toString()).then((value){
@@ -196,24 +202,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                             setState(() {
                                               isLoading = false;
                                             });
-                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                              duration: Duration(seconds: 3),
-                                              content: Text(RxVariables.errorMessage), backgroundColor: Colors.redAccent,));
-
+                                            dialogs.showInfoDialog(context, "Ocurrió un error al realizar el registro", "Error: ${RxVariables.errorMessage}");
                                           }else{
-
                                             setState(() {
                                               isLoading = false;
                                             });
-                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                              duration: Duration(seconds: 3),
-                                              content: Text(RxVariables.errorMessage), backgroundColor: GPColors.PrimaryColor,));
-
-                                            print("Correcto");
+                                            dialogs.showInfoDialog(context, "¡Registro Exitoso!", RxVariables.errorMessage);
                                           }
-
                                         });
-                                        //Navigator.pushReplacementNamed(context, '/');
+                                        }
                                       }
                                     ),
                                   ),
@@ -261,7 +258,7 @@ class _RegisterPageState extends State<RegisterPage> {
         key: customerKey,
         initiallyExpanded: false,
         title: Text( customerSelected.nombreCliente?? "*Selecciona Cliente",
-        style:  TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 17),),
         children: [
           Container(
             child: FutureBuilder(
@@ -286,7 +283,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text(RxVariables.customerAvailables[index].nombreCliente!, style: TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17),),
+                            child: Text(RxVariables.customerAvailables[index].nombreCliente!, style: TextStyle(color: Colors.black54, fontSize: 17),),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -317,7 +314,7 @@ class _RegisterPageState extends State<RegisterPage> {
         key: plantsKey,
         initiallyExpanded: false,
         title: Text( plantSelected.nombrePlanta?? "* Selecciona Planta",//SkillUser.jobSelected.name??"Seleccionar", 
-        style:  TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 17),),
         children: [
           Container(
             child: FutureBuilder(
@@ -343,7 +340,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text(RxVariables.plantsAvailables[index].nombrePlanta!, style:  TextStyle(color: GPColors.hexToColor("#B3B2B3"), fontSize: 17)),
+                            child: Text(RxVariables.plantsAvailables[index].nombrePlanta!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],

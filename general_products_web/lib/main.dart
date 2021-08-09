@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/forms_page.dart';
-
+import 'package:general_products_web/resources/colors.dart';
 import 'app/auth/login.dart';
 import 'constants/route_names.dart';
 import 'pages/order_work_page.dart';
@@ -11,12 +11,20 @@ import 'pages/settings_page.dart';
 import 'pages/slideshow_page.dart';
 import 'widgets/app_route_observer.dart';
 
-void main() => runApp(GeneralProductsApp());
+void main()async{
+  WidgetsFlutterBinding.ensureInitialized();
+  //final prefs = new UserPreferences();
+  //await prefs.initPrefs();
+
+  runApp(GeneralProductsApp());
+
+} 
 
 class GeneralProductsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'General Products',
       theme: ThemeData(
         textTheme: TextTheme(
@@ -28,7 +36,7 @@ class GeneralProductsApp extends StatelessWidget {
             new IconThemeData(color: Colors.black, opacity: 1.0, size: 30.0),
         fontFamily: 'Quicksand',
         appBarTheme: AppBarTheme(
-          color: Color(0xffEDEDED),
+          color: GPColors.PrimaryColor,
         ),
         primaryTextTheme: TextTheme(
           headline1: TextStyle(
