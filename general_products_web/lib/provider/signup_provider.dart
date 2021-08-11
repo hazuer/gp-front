@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:general_products_web/models/customer_model.dart';
+import 'package:general_products_web/models/login_response.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -27,9 +28,10 @@ class SignupProvider{
         options: RoutesProvider().headerOptions
       );
       print(resp.data);
-      //LoginResponse? loginReponse = LoginResponse.fromJson(resp.data);
-      ////RxVariables.loginResponse = loginReponse;
-      //print(loginReponse.data.user.name);
+      LoginResponse? loginReponse = LoginResponse.fromJson(resp.data);
+      RxVariables.loginResponse = loginReponse;
+      print(loginReponse.data!.user!.name);
+      RxVariables.token = loginReponse.data!.token!;
      
       return resp.data;
 

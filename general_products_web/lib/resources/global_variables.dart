@@ -8,6 +8,7 @@ class RxVariables{
   static List<Plant> plantsAvailables = [];
   static List<Customer> customerAvailables = [];
   static String errorMessage="";
+  static String token = "";
   
         
   
