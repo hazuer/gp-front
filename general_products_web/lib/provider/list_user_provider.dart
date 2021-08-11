@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:general_products_web/models/data_list_user_model.dart';
+import 'package:general_products_web/models/list_users_model.dart';
+import 'package:general_products_web/models/search_user_response.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 
@@ -14,8 +17,8 @@ class ListUsersProvider{
     }
   );
 
-
-  Future login(String email,  String password)async {
+  //POST EXAMPLE
+  /*Future dataListUser(String email,  String password)async {
    
     String url = routes.urlBase+routes.login;
   
@@ -30,12 +33,59 @@ class ListUsersProvider{
       final resp = await dio.post(
         url,
         data: data,
-        options: RoutesProvider().headerOptions
+        options: headerWithToken
       );
       print(resp.data);
-      //LoginResponse? loginReponse = LoginResponse.fromJson(resp.data);
-      ////RxVariables.loginResponse = loginReponse;
-      //print(loginReponse.data.user.name);
+     
+      return resp.data;
+
+    }on DioError catch (e) {      
+      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      return  null;
+    }
+
+  }*/
+
+  Future dataListUser()async {
+    RxVariables.errorMessage = "";
+    DataListUserModel dataListUserModel = DataListUserModel();
+   
+    String url = routes.urlBase+routes.dataListUser;
+  
+    try {
+      final dio = Dio();
+      final resp = await dio.get(
+        url,
+        options: headerWithToken
+      );
+      print("statusCode: ${resp.statusCode}");
+      dataListUserModel = DataListUserModel.fromJson(resp.data);
+      print(dataListUserModel.listProfiles!.length);
+     
+      return resp.data;
+
+    }on DioError catch (e) {      
+      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      return  null;
+    }
+  }
+  
+  Future listUsers()async {
+    RxVariables.errorMessage = "";
+    ListUsersModel listUserModel = ListUsersModel(userList: []);
+   
+    String url = routes.urlBase+routes.listUsers;
+  
+    try {
+      final dio = Dio();
+
+      final resp = await dio.get(
+        url,
+        options: headerWithToken
+      );
+      print("statusCode: ${resp.statusCode}");
+      listUserModel = ListUsersModel.fromJson(resp.data);
+      print(listUserModel.userList.length);
      
       return resp.data;
 
@@ -46,6 +96,30 @@ class ListUsersProvider{
 
   }
 
+  Future searchUserId(String id)async {
+    RxVariables.errorMessage = "";
+    SearchUserResponse searchUser =SearchUserResponse ();
+    String url = routes.urlBase+routes.searchUser+id;
+  
+    try {
+      final dio = Dio();
+
+      final resp = await dio.get(
+        url,
+        options: headerWithToken
+      );
+      print("statusCode: ${resp.statusCode}");
+      searchUser = SearchUserResponse.fromJson(resp.data);
+      print(searchUser.user!.nombre);
+     
+      return resp.data;
+
+    }on DioError catch (e) {      
+      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      return  null;
+    }
+
+  }
   
   
 }

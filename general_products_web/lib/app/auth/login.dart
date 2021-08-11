@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/bloc/login_bloc.dart';
 import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/provider/signup_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -16,6 +17,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  ListUsersProvider provider = ListUsersProvider();
   LoginBloc loginBloc = LoginBloc();
   GeneralDialog dialogs = GeneralDialog();
   TextEditingController userController = TextEditingController();
@@ -129,8 +131,10 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                    onPressed: () { 
-                                      Navigator.pushNamed(context, RouteNames.register);
+                                    onPressed: () async{ 
+                                      await provider.searchUserId("20");
+                                      await provider.listUsers();
+                                      //TODO descomentar Navigator.pushNamed(context, RouteNames.register);
                                     },
                                     child: Text("Registro", style: TextStyle(
                                       color: GPColors.hexToColor("#B3B2B3"),
