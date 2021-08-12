@@ -61,6 +61,8 @@ class ListUsersProvider{
       print("statusCode: ${resp.statusCode}");
       dataListUserModel = DataListUserModel.fromJson(resp.data);
       print(dataListUserModel.listProfiles!.length);
+      RxVariables.dataFromUsers = dataListUserModel;
+      
      
       return resp.data;
 
@@ -86,6 +88,8 @@ class ListUsersProvider{
       print("statusCode: ${resp.statusCode}");
       listUserModel = ListUsersModel.fromJson(resp.data);
       print(listUserModel.userList.length);
+      RxVariables.listUsers = listUserModel;
+      print(RxVariables.listUsers.userList.length);
      
       return resp.data;
 
