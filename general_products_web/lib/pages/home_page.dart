@@ -6,8 +6,10 @@ import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
+import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/widgets/table_user.dart';
 
 import '../constants/page_titles.dart';
 import '../widgets/app_scaffold.dart';
@@ -22,10 +24,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future futureUsers;
   late Future futurefields;
+  bool isLoading = false;
+  String path = "?porPagina=20";
   Plant plant = Plant();
   ProfileModel profile = ProfileModel();
   StatusModel status = StatusModel();
   Customer customer = Customer();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController secondLastNameController = TextEditingController();
   ListUsersProvider listProvider = ListUsersProvider();
   final GlobalKey<AppExpansionTileState> customerKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
@@ -79,13 +87,23 @@ class _HomePageState extends State<HomePage> {
                           displayMobileLayout? ListView(
                             shrinkWrap: true,
                             children: [
-                              CustomInput(hint: "* Nombre"),
+                              CustomInput(
+                                controller: nameController,
+                                hint: "* Nombre"
+                              ),
                               SizedBox(height: 25,),
-                              CustomInput(hint: "* Apellido Paterno"),
+                              CustomInput(
+                                controller: lastNameController,
+                                hint: "* Apellido Paterno"),
                               SizedBox(height: 25,),
-                              CustomInput(hint: "* Apellido Materno"),
+                              CustomInput(
+                                hint: "* Apellido Materno",
+                                controller: secondLastNameController,
+                              ),
                               SizedBox(height: 25,),
-                              CustomInput(hint: "* Correo"),
+                              CustomInput(
+                                controller: emailController,
+                                hint: "* Correo"),
                               SizedBox(height: 25,),
                               listProfile(),
                               SizedBox(height: 25,),
@@ -95,6 +113,20 @@ class _HomePageState extends State<HomePage> {
                               SizedBox(height: 25,),
                               listStatus(),
                               SizedBox(height: 40,),
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width*.2,
+                                title: "Buscar", 
+                                isLoading: false,
+                                onPressed: ()async{await applyFilter();}, 
+                              ),
+                              SizedBox(height: 40,),
+                              isLoading? Container(
+                                margin: EdgeInsets.only(top:50),
+                                width: 44, height: 44,
+                                child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),),
+                              )
+                              : TableUserList()
+                              
                               /*CustomButton(
                                 width: MediaQuery.of(context).size.width*.2,
                                 title: "Autorizar", 
@@ -113,41 +145,49 @@ class _HomePageState extends State<HomePage> {
                           )
                           :Container( //WEB view
                             height: MediaQuery.of(context).size.height*.7,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Flexible(child: CustomInput(hint: "* Nombre")),
-                                    SizedBox(width: 25,),
-                                    Flexible(child: CustomInput(hint: "* Apellido Paterno")),
-                                    SizedBox(width: 25,),
-                                    Flexible(child: CustomInput(hint: "* Apellido Materno")),
-                                    SizedBox(width: 25,),
-                                    Flexible(child: listStatus()),
-                                  ],
-                                ),
-                                SizedBox(height: 25,),
-                                Row(
-                                  children: [
-                                    Flexible(child: listProfile()),
-                                    SizedBox(width: 25,),
-                                    Flexible(child: listPlants()),
-                                    SizedBox(width: 25,),
-                                    Flexible(child: listCustomer()),
-                                    SizedBox(width: 25,),
-                                    IconButton(onPressed: (){print('Aply filter');}, icon: Icon(Icons.filter_alt),),
-                                    Flexible(child: Container(),)
-                                    
-                                  ],
-                                ),
-                              
-                                SizedBox(height: 70,),
-                                tableUser()
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Flexible(child: CustomInput(controller: nameController,hint: "* Nombre")),
+                                      SizedBox(width: 25,),
+                                      Flexible(child: CustomInput(controller: lastNameController, hint: "* Apellido Paterno")),
+                                      SizedBox(width: 25,),
+                                      Flexible(child: CustomInput(controller: secondLastNameController, hint: "* Apellido Materno")),
+                                      SizedBox(width: 25,),
+                                      Flexible(child: listStatus()),
+                                    ],
+                                  ),
+                                  SizedBox(height: 25,),
+                                  Row(
+                                    children: [
+                                      Flexible(child: listProfile()),
+                                      SizedBox(width: 25,),
+                                      Flexible(child: listPlants()),
+                                      SizedBox(width: 25,),
+                                      Flexible(child: listCustomer()),
+                                      SizedBox(width: 25,),
+                                      IconButton(
+                                        onPressed: ()async{await applyFilter();}, 
+                                        icon: Icon(Icons.filter_alt),
+                                      ),
+                                      Flexible(child: Container(),)
+                                      
+                                    ],
+                                  ),
                                 
-                                
-                                
-                              ],
+                                  SizedBox(height: 70,),
+                                  isLoading? Container(
+                                    margin: EdgeInsets.only(top:50),
+                                    width: 44, height: 44,
+                                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),),
+                                  )
+                                  : TableUserList()
+                                  
+                                ],
+                              ),
                             ),
                           ),
                           
@@ -164,173 +204,7 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  Widget tableUser(){
-    return Container(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height*.47,
-      child: FutureBuilder(
-        future: futureUsers,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if(snapshot.hasData){
-            return ListView(
-              children: [
-                SingleChildScrollView(
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.vertical,
-                  child: DataTable(
-                    sortAscending: true,
-                    //columnSpacing: 70,
-                    horizontalMargin: 0,
-                    headingRowColor: MaterialStateColor.resolveWith((states) {
-                      return  GPColors.PrimaryColor; //make tha magic!
-                    }),
-                    columns: const <DataColumn>[
-                      DataColumn(
-                        label: Text(
-                          'Nombre',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14), textAlign: TextAlign.center,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Ap. Paterno',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Ap. Materno',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Estatus',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Perfil',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Planta',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Cliente',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Opciones',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                    rows: List.generate(
-                      RxVariables.listUsers.userList.length, 
-                      (index) {
-                      return DataRow(
-                        color: MaterialStateColor.resolveWith((states) {
-                          return index % 2 == 0 ? GPColors.PrimaryColor.withOpacity(0.06) : Colors.white; //make tha magic!
-                        }),
-                        cells: <DataCell>[
-                        DataCell(
-                          Center(
-                            child: Text(
-                              RxVariables.listUsers.userList[index].nombre??"",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Center(
-                            child: Text(
-                             RxVariables.listUsers.userList[index].apellidoPaterno??"",
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Center(
-                            child: Text(
-                              RxVariables.listUsers.userList[index].apellidoMaterno??"",
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Center(
-                            child: Text(
-                             "${RxVariables.listUsers.userList[index].estatus??""}",
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Center(
-                            child: Text(
-                              RxVariables.listUsers.userList[index].perfil??"",
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Center(
-                            child: Text(
-                             RxVariables.listUsers.userList[index].nombrePlanta??"",
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Center(
-                            child: Text(
-                              RxVariables.listUsers.userList[index].nombreCliente??"",
-                            ),
-                          ),
-                        ),
-                        DataCell(
-                          Center(
-                            child: Row(
-                              children: [
-                                IconButton(onPressed: (){
-                                  setState(() {
-                                    
-                                  });
-                                  print("permission");
-                                }, 
-                                  icon: Icon(Icons.check_box)
-                                ),
-                                IconButton(onPressed: (){
-                                  print("Edit");
-                                }, 
-                                  icon: Icon(Icons.edit)
-                                ),
-                                IconButton(onPressed: (){
-                                  print("Block");
-                                }, 
-                                  icon: Icon(Icons.not_interested_outlined)
-                                )
-                              ]
-                            ),
-                          ),
-                        ),
-                      ]);
-                    }),
-                  ),
-                ),
-              ],
-            );
-          }else{
-            return Center(child: Container(width: 50, height: 50, child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),)));
-          }
-        },
-      ),
-    );
-  }
+  
 
   Widget listPlants(){
     return Container(
@@ -345,7 +219,7 @@ class _HomePageState extends State<HomePage> {
         style:  TextStyle(color: Colors.black54, fontSize: 17),),
         children: [
           Container(
-            height: MediaQuery.of(context).size.height*.2,
+            //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
               future: futurefields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -402,7 +276,7 @@ class _HomePageState extends State<HomePage> {
         style:  TextStyle(color: Colors.black54, fontSize: 17),),
         children: [
           Container(
-            height: MediaQuery.of(context).size.height*.2,
+            //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
               future: futurefields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -459,7 +333,7 @@ class _HomePageState extends State<HomePage> {
         style:  TextStyle(color: Colors.black54, fontSize: 17),),
         children: [
           Container(
-            height: MediaQuery.of(context).size.height*.2,
+            //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
               future: futurefields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -516,7 +390,6 @@ class _HomePageState extends State<HomePage> {
         style:  TextStyle(color: Colors.black54, fontSize: 17),),
         children: [
           Container(
-            height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
               future: futurefields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -558,5 +431,42 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  applyFilter()async{
+    path = "?porPagina=20";
+    if(nameController.text.isNotEmpty){
+      path = path+"&nombre=${nameController.text.trim()}";
+    }if(lastNameController.text.isNotEmpty){
+      path = path+"&apellido_paterno=${lastNameController.text.trim()}";
+    }if(secondLastNameController.text.isNotEmpty){
+      path = path+"&apellido_materno${secondLastNameController.text.trim()}";
+    }if(profile.idCatPerfil != null){
+      path = path+"&id_cat_perfil=${profile.idCatPerfil}";
+    }if(plant.idCatPlanta != null){
+      path = path+"&id_cat_planta=${plant.idCatPlanta}";
+    }if(customer.idCatCliente != null){
+      path = path+"&id_cat_cliente=${customer.idCatCliente}";
+    }
+
+    print(path);
+    setState(() {
+      isLoading = true;
+    });
+    await listProvider.listUsersWithFilters(path).then((value){
+      setState(() {
+        isLoading = false;
+      });
+    });
+
+
+    //List<UserList> listFilter =[];
+    //rxVariables.listUsersFilter.sink.add([]);
+    //RxVariables.listUsers.userList.forEach((item){
+    //    if(item.estatus!.toLowerCase() == status.estatus!.toLowerCase() || item.perfil!.toLowerCase() == profile.perfil!.toLowerCase()){
+    //      listFilter.add( item );
+    //    }
+    //});
+    //rxVariables.listUsersFilter.sink.add(listFilter);
   }
 }

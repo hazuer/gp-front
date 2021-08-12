@@ -3,25 +3,27 @@ import 'package:general_products_web/models/data_list_user_model.dart';
 import 'package:general_products_web/models/list_users_model.dart';
 import 'package:general_products_web/models/login_response.dart';
 import 'package:general_products_web/models/plant_model.dart';
+import 'package:general_products_web/models/search_user_response.dart';
+import 'package:rxdart/rxdart.dart';
 
 class RxVariables{
   
   static LoginResponse loginResponse = LoginResponse();
   static List<Plant> plantsAvailables = [];
   static List<Customer> customerAvailables = [];
-
+  static List<UserList> listFilter = []; 
   static ListUsersModel listUsers = ListUsersModel(userList: []);
   static DataListUserModel dataFromUsers = DataListUserModel();
   static String errorMessage="";
-  static String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZDFiMzIxYTA1ZWVkZTg0ZGU5MTg1OTgyMTA0ZmY5MGI3ZmZlODlkYTM2MDQxNWMxOTkxMzM1ZDNhY2FmNjAwZDVjMjA5OGJlMTk2ZjljNjYiLCJpYXQiOjE2Mjg3MDcxOTIsIm5iZiI6MTYyODcwNzE5MiwiZXhwIjoxNjI4NzkzNTkyLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.sSsX9G_nIg8uG35qQlXfM2V4Kh5n0-E2irtH7PmFEj7jVjeXz__WALXCBivBZyK9oIHfEEi8bQrOlvAtS0a4yNkE1EXm4IGfTEA_NCPlaYBI-pRzGL2wvMP4LkTmo62rDvGRWQhcGwZQTGeCgvr4wG-gtpf-pf6YY64Wqvr8llUmfOnFPYJhDU0TK6G9_QvVZImKhNZfiZukjbgq-07NZQMY4_5bb6qDxdkIUz1hEBPeHzdI3-fdRS39leeBwIR8XVYYfQ4LKwzUCYsrgMrNJTuOtueDgpPUUjTtUJJltR9cnhVTaHLgsvC60u79C4QAg9-Pes_2J8NJ_5k4Ev_GdKbYJ8bRRRzGWYAtkW_dclGk7MICA9M9eI3atyZlIpyR6zpdMV81zBtFJ_HYLcCBLoQr6O4hwqwKKM74PBPK-VbHbJdbjJTsvKc0ymBQruNRikWghyaeLIb-D4VAKAtYc4F_giyoNH1TUt69uMHx1tdr_Pbw8O66Nl-mjIpXFoetAjJoog4lA9009dmLOV46JcWMajBxC7PAnREMxCH067o-VXnTeFSxf1O8FPiGhlJylqej6KENoFgNBLWkSAtXD-79dRx7yeqZGMn0UPkfSZLbcULmG5yOvrezh6TsYQnFE8cPHGbuUBiF0ql9YZ7t0TnnfJpyAH6eQCjBv4DA-P0";
-  
+  static SearchUserResponse userById = SearchUserResponse();
+  static String token = "";//"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiYzFiY2YyYjVmOWZlMzcxM2UzMTdjMjZkYmRmMmQ5Y2VhYmUzMmVhNTcxMGUyNmU1MzliYzYwYmE2ZWY0OTY4MDE1MDQ2ZTQ2YjIyMzU4NmMiLCJpYXQiOjE2Mjg3OTM3MjcsIm5iZiI6MTYyODc5MzcyNywiZXhwIjoxNjI4ODgwMTI3LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.iiK3Kx_3NCHc0gOvDFi7n7CtL_CGNftdrnItErZn4cgGj_HRBuFrt_NkJMtce-_v6OvxYwhaAqpEHNMD4Hw-L_Bw75M57TYQ0VrypDcDqub3t3fb_Z0C__QTbgNNfSvFPT8QEQjkRAtWNvoF67vcGcjr5H7uKiQtRl-o0yZ7D-9CDEb0cAIIQmyMNUvFfD8jaCjJRjVGzLjac3HLS1T5NoFfehlcdLIDlkNto-bBSEeI9U8z_pCxHm4oe-7p6hQ1UzuwwwLuAiCvMglrpiZpahESEM5XZRk0KQL-BPl8ekSkKaNhloYasY_7oMlU4bes9ZSQHLcElK5Lc7NiPBuZLNcUKDwsYYR7hj2n-79tXuH0fjSZ0NaI-nO4Gr9TmMJsAynRMMyhIcbYdzdgIDzfxbhA7k_qmv1m5dYtEZB2qYB7D7tk1d1TGkNNbH18bFidW5klh9lnmfWhQBBUq6MDe-jArxPAa-TWJr1k_ykkTbriQw2N-j16N6cgtGYJPADuE7egFj65eaRRcqtShGKSAcg1D79DznHf8dIFGvK1r1lIky-0U5ZvCigGXPAebTXioY5LigavzllEg0-KkQukuvVrl7uU4Yu-mC_VFsAMhC_BqEdOoJwqmD3TrhyoTvfZqrj1WvIH9GKTQtCXVtVPtwkNyvYBWEB7YtvmHgD9rEQ";
         
   
 
   //STREAMS
 
-  //final listWorkZonesSelected = BehaviorSubject<List<WorkZone>>();
-  //Stream<List<WorkZone>> get listWorkZonesSelectedStream => listWorkZonesSelected.stream;
+  final listUsersFilter = BehaviorSubject<List<UserList>>();
+  Stream<List<UserList>> get listWorkZonesSelectedStream => listUsersFilter.stream;
 
  
 
@@ -35,7 +37,7 @@ class RxVariables{
   RxVariables._internal();
 
   void dispose(){
-    //listWorkZonesSelected?.close();
+    listUsersFilter.close();
   }
 }
 final rxVariables = RxVariables();

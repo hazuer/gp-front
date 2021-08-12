@@ -132,9 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   TextButton(
                                     onPressed: () async{ 
-                                      await provider.searchUserId("20");
-                                      await provider.listUsers();
-                                      //TODO descomentar Navigator.pushNamed(context, RouteNames.register);
+                                      Navigator.pushNamed(context, RouteNames.register);
                                     },
                                     child: Text("Registro", style: TextStyle(
                                       color: GPColors.hexToColor("#B3B2B3"),

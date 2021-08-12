@@ -18,16 +18,16 @@ class ListUsersProvider{
   );
 
   //POST EXAMPLE
-  /*Future dataListUser(String email,  String password)async {
+  Future disabledUser(int idUser,  int idStatus)async {
    
-    String url = routes.urlBase+routes.login;
+    String url = routes.urlBase+routes.deactivateUsers;
   
     try {
       final dio = Dio();
 
       final data ={
-       "correo": email,
-       "password": password,
+        "id_dato_usuario": idUser,
+        "id_cat_estatus": 2
       };
 
       final resp = await dio.post(
@@ -36,7 +36,7 @@ class ListUsersProvider{
         options: headerWithToken
       );
       print(resp.data);
-     
+      await listUsers();
       return resp.data;
 
     }on DioError catch (e) {      
@@ -44,7 +44,7 @@ class ListUsersProvider{
       return  null;
     }
 
-  }*/
+  }
 
   Future dataListUser()async {
     RxVariables.errorMessage = "";
@@ -73,6 +73,7 @@ class ListUsersProvider{
   }
   
   Future listUsers()async {
+    List<UserList> listActives = [];
     RxVariables.errorMessage = "";
     ListUsersModel listUserModel = ListUsersModel(userList: []);
    
@@ -90,6 +91,13 @@ class ListUsersProvider{
       print(listUserModel.userList.length);
       RxVariables.listUsers = listUserModel;
       print(RxVariables.listUsers.userList.length);
+      listUserModel.userList.forEach((item){
+        if(item.estatus!.toLowerCase() == "activo"){
+          listActives.add( item );
+        }
+      });
+      print(listActives.length);
+      rxVariables.listUsersFilter.sink.add(listActives);
      
       return resp.data;
 
@@ -97,7 +105,38 @@ class ListUsersProvider{
       RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
       return  null;
     }
+  }
 
+  Future listUsersWithFilters(String path)async {
+    List<UserList> listFilters = [];
+    RxVariables.errorMessage = "";
+    ListUsersModel listUserModel = ListUsersModel(userList: []);
+   
+    String url = routes.urlBase+routes.listUsers+path;
+  
+    try {
+      final dio = Dio();
+
+      final resp = await dio.get(
+        url,
+        options: headerWithToken
+      );
+      print("statusCode: ${resp.statusCode}");
+      listUserModel = ListUsersModel.fromJson(resp.data);
+      RxVariables.listUsers = listUserModel;
+      print(RxVariables.listUsers.userList.length);
+      listUserModel.userList.forEach((item){
+        listFilters.add( item );
+      });
+      print(listFilters.length);
+      rxVariables.listUsersFilter.sink.add(listFilters);
+     
+      return resp.data;
+
+    }on DioError catch (e) {      
+      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      return  null;
+    }
   }
 
   Future searchUserId(String id)async {
@@ -115,6 +154,7 @@ class ListUsersProvider{
       print("statusCode: ${resp.statusCode}");
       searchUser = SearchUserResponse.fromJson(resp.data);
       print(searchUser.user!.nombre);
+      RxVariables.userById = searchUser;
      
       return resp.data;
 
