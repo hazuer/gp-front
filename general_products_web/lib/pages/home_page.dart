@@ -120,6 +120,13 @@ class _HomePageState extends State<HomePage> {
                                 onPressed: ()async{await applyFilter();}, 
                               ),
                               SizedBox(height: 25,),
+                              CustomButton(
+                                width: MediaQuery.of(context).size.width*.2,
+                                title: "Limpiar", 
+                                isLoading: false,
+                                onPressed: ()async{await clearFilters()();},
+                              ),
+                              SizedBox(height: 25,),
                               isLoading? Container(
                                 margin: EdgeInsets.only(top:50),
                                 width: 44, height: 44,
@@ -206,7 +213,7 @@ class _HomePageState extends State<HomePage> {
         key: plantsKey,
         initiallyExpanded: false,
         title: Text( plant.nombrePlanta?? "* Planta",
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 14),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -233,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.dataFromUsers.listPlants![index].nombrePlanta!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text( RxVariables.dataFromUsers.listPlants![index].nombrePlanta!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -263,7 +270,7 @@ class _HomePageState extends State<HomePage> {
         key: profileKey,
         initiallyExpanded: false,
         title: Text( profile.perfil?? "* Perfil",
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 14),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -290,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.dataFromUsers.listProfiles![index].perfil!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text( RxVariables.dataFromUsers.listProfiles![index].perfil!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -320,7 +327,7 @@ class _HomePageState extends State<HomePage> {
         key: statusKey,
         initiallyExpanded: false,
         title: Text( status.estatus?? "* Estatus",
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 14),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -347,7 +354,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.dataFromUsers.listStatus![index].estatus!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text( RxVariables.dataFromUsers.listStatus![index].estatus!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -377,7 +384,7 @@ class _HomePageState extends State<HomePage> {
         key: customerKey,
         initiallyExpanded: false,
         title: Text( customer.nombreCliente?? "* Cliente",
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 14),),
         children: [
           Container(
             child: FutureBuilder(
@@ -403,7 +410,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text(RxVariables.dataFromUsers.listCustomers![index].nombreCliente!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text(RxVariables.dataFromUsers.listCustomers![index].nombreCliente!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -437,6 +444,8 @@ class _HomePageState extends State<HomePage> {
       path = path+"&id_cat_planta=${plant.idCatPlanta}";
     }if(customer.idCatCliente != null){
       path = path+"&id_cat_cliente=${customer.idCatCliente}";
+    }if(status.idCatEstatus != null){
+      path = path+"&id_cat_estatus=${status.idCatEstatus}";
     }
 
     print(path);
