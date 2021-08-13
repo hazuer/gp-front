@@ -13,6 +13,8 @@ class GPColors{
    static const Color Stripe             = Color(0xFF6772E5);
    static const Color BreadcrumBackgroud = Color(0xFFEDEDED);
    static const Color BreadcrumTitle     = Color(0xFF73879C);
+   static const Color Input              = Color(0xFF73879C);
+   //static const Color InputBorder     = Color(0xFFCECECE);
 
    static const LinearGradient GradientBackground = LinearGradient(
        begin: FractionalOffset.topLeft,

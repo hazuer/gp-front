@@ -27,7 +27,7 @@ class GeneralDialog{
                   padding: const EdgeInsets.symmetric(vertical:8.0),
                   child: Text(
                    "Aceptar",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ),
                 onPressed: (){Navigator.pop(context);},
