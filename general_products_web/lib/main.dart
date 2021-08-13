@@ -38,7 +38,7 @@ class GeneralProductsApp extends StatelessWidget {
             new IconThemeData(color: Colors.black, opacity: 1.0, size: 30.0),
         fontFamily: 'Quicksand',
         appBarTheme: AppBarTheme(
-          color: GPColors.PrimaryColor,
+          color: GPColors.BreadcrumBackgroud,
         ),
         primaryTextTheme: TextTheme(
           headline1: TextStyle(

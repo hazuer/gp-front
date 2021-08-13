@@ -72,9 +72,9 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                 ),
                                 
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderRadius: BorderRadius.circular(50.0),
                                   child: Image(
-                                    image: AssetImage("assets/images/logo_login.png"), 
+                                    image: AssetImage("assets/images/gp_dash.png"), 
                                     height: 100,
                                     fit: BoxFit.cover,
                                   )

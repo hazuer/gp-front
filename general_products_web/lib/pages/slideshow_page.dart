@@ -8,7 +8,7 @@ class CatalogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-        pageTitle: "Catalogos",
+        pageTitle: "Catálogos",
         body: SingleChildScrollView(
           child: Container(
             color: Color(0xffF5F6F5),

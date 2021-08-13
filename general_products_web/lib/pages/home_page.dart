@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-        pageTitle: PageTitles.admin,
+        pageTitle: "Administrador / Listado de Usuarios",
         body: SingleChildScrollView(
           child: Container(
             color: Color(0xffF5F6F5),
