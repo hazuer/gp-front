@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                                 isLoading: false,
                                 onPressed: ()async{await applyFilter();}, 
                               ),
-                              SizedBox(height: 40,),
+                              SizedBox(height: 25,),
                               isLoading? Container(
                                 margin: EdgeInsets.only(top:50),
                                 width: 44, height: 44,

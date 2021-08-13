@@ -195,7 +195,8 @@ class ListUsersProvider{
       return resp.data;
 
     }on DioError catch (e) {      
-      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      RxVariables.errorMessage =  e.response!.data["message"].toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      rxVariables.listUsersFilter.sink.addError(RxVariables.errorMessage+" Por favor contacta con el administrador");
       return  null;
     }
   }
