@@ -7,5 +7,6 @@ class RouteNames {
   static const String catalogs = '/catalogs';
   static const String settings = '/settings';
   static const String reports = '/reports';
+  static const String authorizeUser = "/authorize";
 
 }

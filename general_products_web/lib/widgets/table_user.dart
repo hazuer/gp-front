@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/list_users_model.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -42,50 +43,50 @@ class _TableUserListState extends State<TableUserList> {
                   columns: const <DataColumn>[
                     DataColumn(
                       label: Text(
-                        'Nombre',
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14), textAlign: TextAlign.center,
+                        '   Nombre',
+                        style: TextStyle( color: Colors.white, fontSize: 14), textAlign: TextAlign.center,
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Ap. Paterno',
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
+                        style: TextStyle( color: Colors.white, fontSize: 14),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Ap. Materno',
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
+                        style: TextStyle( color: Colors.white, fontSize: 14),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Estatus',
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
+                        style: TextStyle( color: Colors.white, fontSize: 14),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Perfil',
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
+                        style: TextStyle( color: Colors.white, fontSize: 14),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Planta',
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
+                        style: TextStyle( color: Colors.white, fontSize: 14),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Cliente',
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Opciones',
-                        style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white, fontSize: 14),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ),
                   ],
@@ -101,7 +102,7 @@ class _TableUserListState extends State<TableUserList> {
                       DataCell(
                         Center(
                           child: Text(
-                            snapshot.data![index].nombre??"",
+                            "   ${snapshot.data![index].nombre??""}",
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
@@ -149,14 +150,16 @@ class _TableUserListState extends State<TableUserList> {
                           child: Row(
                             children: [
                               IconButton(onPressed: (){
-                                dialogs.showInfoDialog(context, "Aceptar", "Aceptar Usuario");
-                                
-                                print("permission");
+                                //RxVariables.isEdition = false;
+                                RxVariables.userSelected = snapshot.data![index];
+                               Navigator.pushNamed(context, RouteNames.authorizeUser);
                               }, 
                                 icon: Icon(Icons.check_box_rounded)
                               ),
                               IconButton(onPressed: (){
-                                print("Edit");
+                                RxVariables.userSelected = snapshot.data![index];
+                               //RxVariables.isEdition = true;
+                               // Navigator.pushNamed(context, RouteNames.authorizeUser);
                               }, 
                                 icon: Icon(Icons.edit)
                               ),

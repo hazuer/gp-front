@@ -11,9 +11,9 @@ class GeneralDialog{
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title:  Text(title),
+        title:  Center(child: Text(title, textAlign: TextAlign.center,)),
         content: SingleChildScrollView(
-          child:  Text(detail, style: TextStyle(color: Colors.black, fontSize: 17),),
+          child:  Center(child: Text(detail, style: TextStyle(color: Colors.black, fontSize: 17), textAlign: TextAlign.center,)),
         ),
         actions: <Widget>[
           Padding(
@@ -69,7 +69,7 @@ class GeneralDialog{
                 )) : Container(height: 30,),
               actions: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal:20.0),
+                  padding: const EdgeInsets.only(left:20.0),
                   child: Container(
                     width: MediaQuery.of(context).size.width < 600?
                     MediaQuery.of(context).size.width*.4

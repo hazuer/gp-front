@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/resources/colors.dart';
-
 import 'app_drawer.dart';
 
 /// A responsive scaffold for our application.
@@ -28,7 +26,7 @@ class AppScaffold extends StatelessWidget {
             appBar: AppBar(
               // when the app isn't displaying the mobile version of app, hide the menu button that is used to open the navigation drawer
               automaticallyImplyLeading: displayMobileLayout,
-              title: Text(pageTitle, style: TextStyle(color: GPColors.PrimaryColor),),
+              title: Text(pageTitle, style: TextStyle(color: Colors.white),),
               iconTheme: IconThemeData(color: Color(0xff313945)),
             ),
             drawer: displayMobileLayout

@@ -19,7 +19,7 @@ class ListUsersProvider{
 
   //POST EXAMPLE
   Future disabledUser(int idUser,  int idStatus)async {
-   
+   RxVariables.errorMessage = "";
     String url = routes.urlBase+routes.deactivateUsers;
   
     try {
@@ -29,6 +29,77 @@ class ListUsersProvider{
         "id_dato_usuario": idUser,
         "id_cat_estatus": 2
       };
+
+      final resp = await dio.post(
+        url,
+        data: data,
+        options: headerWithToken
+      );
+      print(resp.data);
+      await listUsers();
+      return resp.data;
+
+    }on DioError catch (e) {      
+      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      return  null;
+    }
+
+  }
+
+  Future authorizeUser(int idUser, int idPerfil, int idCliente, int idPlanta, int idStatus)async {
+    RxVariables.errorMessage = "";
+    String url = routes.urlBase+routes.authorizeUser;
+  
+    try {
+      final dio = Dio();
+
+      final data ={
+        "id_dato_usuario": idUser,
+        "correo": RxVariables.userById.user!.correo??"",
+        "nombre": RxVariables.userById.user!.nombre??"",
+        "apellido_paterno": RxVariables.userById.user!.apellidoPaterno??"",
+        "apellido_materno": RxVariables.userById.user!.apellidoMaterno??"",
+        "id_cat_perfil": idPerfil,
+        "id_cat_cliente": idCliente,
+        "id_cat_planta": idPlanta,
+        "id_cat_estatus": idStatus
+      };
+
+      print(data.toString());
+
+      final resp = await dio.post(
+        url,
+        data: data,
+        options: headerWithToken
+      );
+      print(resp.data);
+      await listUsers();
+      return resp.data;
+
+    }on DioError catch (e) {      
+      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      return  null;
+    }
+
+  }
+
+  Future editUser(int idUser, int idPerfil, int idCliente, int idPlanta, int idStatus)async {
+    RxVariables.errorMessage = "";
+    String url = routes.urlBase+routes.editUser;
+  
+    try {
+      final dio = Dio();
+
+      final data ={
+        "id_dato_usuario": idUser,
+        "correo": RxVariables.userById.user!.correo??"",
+        "id_cat_perfil": idPerfil,
+        "id_cat_cliente": idCliente,
+        "id_cat_planta": idPlanta,
+        "id_cat_estatus": idStatus
+      };
+
+      print(data.toString());
 
       final resp = await dio.post(
         url,
