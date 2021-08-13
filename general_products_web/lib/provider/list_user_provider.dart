@@ -46,6 +46,29 @@ class ListUsersProvider{
 
   }
 
+  Future logOut()async {
+   RxVariables.errorMessage = "";
+    String url = routes.urlBase+routes.logOut;
+  
+    try {
+      final dio = Dio();
+
+      final resp = await dio.post(
+        url,
+        //data: data,
+        options: headerWithToken
+      );
+      print(resp.data);
+      
+      return resp.data;
+
+    }on DioError catch (e) {      
+      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      return  null;
+    }
+
+  }
+
   Future authorizeUser(int idUser, int idPerfil, int idCliente, int idPlanta, int idStatus)async {
     RxVariables.errorMessage = "";
     String url = routes.urlBase+routes.authorizeUser;

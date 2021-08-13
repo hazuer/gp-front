@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/widgets/general_dialog.dart';
 import '../constants/page_titles.dart';
 import '../constants/route_names.dart';
 import 'app_route_observer.dart';
@@ -191,8 +193,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             title: const Text(
                               "Cerrar sesión",
                             ),
-                            onTap: () async {
-                              Navigator.pushReplacementNamed(context, '/login');
+                            onTap: () {
+                              
+                              GeneralDialog().logoutDialog(context);
+                              ListUsersProvider().logOut();
                             },
                             //selected: _selectedRoute == RouteNames.settings,
                           )),
