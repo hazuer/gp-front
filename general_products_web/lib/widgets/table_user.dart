@@ -49,7 +49,7 @@ class _TableUserListState extends State<TableUserList> {
                     DataColumn(
                       label: Expanded(
                         child: Text(
-                          '   Nombre',
+                          'Nombre',
                           style: TextStyle( color: Colors.white, fontSize: 14), textAlign: TextAlign.center,
                           
                         ),
