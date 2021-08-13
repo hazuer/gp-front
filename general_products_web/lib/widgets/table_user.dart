@@ -159,7 +159,7 @@ class _TableUserListState extends State<TableUserList> {
                               IconButton(onPressed: (){
                                 RxVariables.userSelected = snapshot.data![index];
                                //RxVariables.isEdition = true;
-                               // Navigator.pushNamed(context, RouteNames.authorizeUser);
+                               Navigator.pushNamed(context, RouteNames.editUser);
                               }, 
                                 icon: Icon(Icons.edit)
                               ),

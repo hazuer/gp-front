@@ -99,7 +99,6 @@ class ListUsersProvider{
         "id_cat_estatus": idStatus
       };
 
-      print(data.toString());
 
       final resp = await dio.post(
         url,
