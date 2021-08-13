@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                                 isLoading: false,
                                 onPressed: ()async{await applyFilter();}, 
                               ),
-                              SizedBox(height: 40,),
+                              SizedBox(height: 25,),
                               isLoading? Container(
                                 margin: EdgeInsets.only(top:50),
                                 width: 44, height: 44,
@@ -127,19 +127,6 @@ class _HomePageState extends State<HomePage> {
                               )
                               : TableUserList()
                               
-                              /*CustomButton(
-                                width: MediaQuery.of(context).size.width*.2,
-                                title: "Autorizar", 
-                                isLoading: false,
-                                onPressed: (){},
-                              ),
-                              SizedBox(height: 25,),
-                              CustomButton(
-                                width: MediaQuery.of(context).size.width*.2,
-                                title: "Cancelar", 
-                                isLoading: false,
-                                onPressed: (){},
-                              )*/
                               
                             ],
                           )
@@ -173,7 +160,10 @@ class _HomePageState extends State<HomePage> {
                                         onPressed: ()async{await applyFilter();}, 
                                         icon: Icon(Icons.filter_alt),
                                       ),
-                                      Flexible(child: Container(),)
+                                      IconButton(
+                                        onPressed: ()async{await clearFilters();}, 
+                                        icon: Icon(Icons.clear),
+                                      ),
                                       
                                     ],
                                   ),
@@ -458,15 +448,27 @@ class _HomePageState extends State<HomePage> {
         isLoading = false;
       });
     });
+  }
+
+  clearFilters()async{
+    setState(() {
+      isLoading = true;
+    });
+    path = "?porPagina=30";
+    plant = Plant();
+    profile = ProfileModel();
+    status = StatusModel();
+    customer = Customer();
+    nameController.clear();
+    lastNameController.clear();
+    secondLastNameController.clear();
 
 
-    //List<UserList> listFilter =[];
-    //rxVariables.listUsersFilter.sink.add([]);
-    //RxVariables.listUsers.userList.forEach((item){
-    //    if(item.estatus!.toLowerCase() == status.estatus!.toLowerCase() || item.perfil!.toLowerCase() == profile.perfil!.toLowerCase()){
-    //      listFilter.add( item );
-    //    }
-    //});
-    //rxVariables.listUsersFilter.sink.add(listFilter);
+    await listProvider.listUsersWithFilters(path).then((value){
+      setState(() {
+        isLoading = false;
+      });
+    });
+
   }
 }

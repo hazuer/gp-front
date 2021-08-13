@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/list_users_model.dart';
@@ -23,13 +25,16 @@ class _TableUserListState extends State<TableUserList> {
       child: StreamBuilder(
         stream: rxVariables.listWorkZonesSelectedStream,
         builder: (BuildContext context, AsyncSnapshot<List<UserList>> snapshot) {
+          if(snapshot.hasError){
+            return Text(RxVariables.errorMessage);
+          }
           if(snapshot.hasData){
             if(snapshot.data!.isEmpty){
               return Text("No hay usuarios por mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,);
             }else{
             return SingleChildScrollView(
               padding: EdgeInsets.zero,
-              scrollDirection: Axis.horizontal,
+              scrollDirection:  MediaQuery.of(context).size.width< 1100? Axis.horizontal : Axis.vertical,
               child: SingleChildScrollView(
                 padding: EdgeInsets.zero,
                 scrollDirection: Axis.vertical,
@@ -42,51 +47,75 @@ class _TableUserListState extends State<TableUserList> {
                   }),
                   columns: const <DataColumn>[
                     DataColumn(
-                      label: Text(
-                        '   Nombre',
-                        style: TextStyle( color: Colors.white, fontSize: 14), textAlign: TextAlign.center,
+                      label: Expanded(
+                        child: Text(
+                          'Nombre',
+                          style: TextStyle( color: Colors.white, fontSize: 14), textAlign: TextAlign.center,
+                          
+                        ),
                       ),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Ap. Paterno',
-                        style: TextStyle( color: Colors.white, fontSize: 14),
+                      label: Expanded(
+                        child: Text(
+                          'Ap. Paterno',
+                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Ap. Materno',
-                        style: TextStyle( color: Colors.white, fontSize: 14),
+                      label: Expanded(
+                        child: Text(
+                          'Ap. Materno',
+                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Estatus',
-                        style: TextStyle( color: Colors.white, fontSize: 14),
+                      label: Expanded(
+                        child: Text(
+                          'Estatus',
+                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Perfil',
-                        style: TextStyle( color: Colors.white, fontSize: 14),
+                      label: Expanded(
+                        child: Text(
+                          'Perfil',
+                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Planta',
-                        style: TextStyle( color: Colors.white, fontSize: 14),
+                      label: Expanded(
+                        child: Text(
+                          'Planta',
+                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Cliente',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      label: Expanded(
+                        child: Text(
+                          'Cliente',
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Opciones',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      label: Expanded(
+                        child: Text(
+                          'Opciones',
+                          style: TextStyle(color: Colors.white, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ],
@@ -100,77 +129,105 @@ class _TableUserListState extends State<TableUserList> {
                       }),
                       cells: <DataCell>[
                       DataCell(
-                        Center(
+                        Align(
+                          alignment: Alignment.center,
                           child: Text(
-                            "   ${snapshot.data![index].nombre??""}",
-                            style: TextStyle(color: Colors.black),
+                            "${snapshot.data![index].nombre??""}",
+                            style: TextStyle(fontSize: 14),
                           ),
                         ),
                       ),
                       DataCell(
-                        Center(
+                        Align(
+                          alignment: Alignment.center,
                           child: Text(
                             snapshot.data![index].apellidoPaterno??"",
+                            style: TextStyle(fontSize: 14),
                           ),
                         ),
                       ),
                       DataCell(
-                        Center(
+                        Align(
+                          alignment: Alignment.center,
                           child: Text(
                             snapshot.data![index].apellidoMaterno??"",
+                            style: TextStyle(fontSize: 14),
                           ),
                         ),
                       ),
                       DataCell(
-                        Text(
-                         snapshot.data![index].estatus??"",
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                           snapshot.data![index].estatus??"",
+                           style: TextStyle(fontSize: 14),
+                          ),
                         ),
                       ),
                       DataCell(
-                        Text(
-                          snapshot.data![index].perfil??"",
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            snapshot.data![index].perfil??"",
+                            style: TextStyle(fontSize: 14),
+                          ),
                         ),
                       ),
                       DataCell(
-                        Center(
+                        Align(
+                          alignment: Alignment.center,
                           child: Text(
                            snapshot.data![index].nombrePlanta??"",
+                           style: TextStyle(fontSize: 14),
                           ),
                         ),
                       ),
                       DataCell(
-                        Center(
+                        Align(
+                          alignment: Alignment.center,
                           child: Text(
                             snapshot.data![index].nombreCliente??"",
+                            style: TextStyle(fontSize: 14),
                           ),
                         ),
                       ),
                       DataCell(
-                        Center(
+                        Align(
+                          alignment: Alignment.center,
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              IconButton(onPressed: (){
+                              IconButton(
+                                tooltip: "Autorizar usuario",
+                                //padding: EdgeInsets.zero,
+                                onPressed: (){
                                 //RxVariables.isEdition = false;
                                 RxVariables.userSelected = snapshot.data![index];
                                Navigator.pushNamed(context, RouteNames.authorizeUser);
                               }, 
-                                icon: Icon(Icons.check_box_rounded)
+                                icon: Icon(Icons.check_box_rounded, size: 18, color: GPColors.PrimaryColor)
                               ),
-                              IconButton(onPressed: (){
+                              IconButton(
+                                tooltip: "Editar usuario",
+                                //padding: EdgeInsets.zero,
+                                onPressed: (){
                                 RxVariables.userSelected = snapshot.data![index];
                                //RxVariables.isEdition = true;
                                Navigator.pushNamed(context, RouteNames.editUser);
                               }, 
-                                icon: Icon(Icons.edit)
+                                icon: Icon(Icons.edit, size: 18, color: GPColors.PrimaryColor)
                               ),
-                              IconButton(onPressed: (){
+                              IconButton(
+                                tooltip: "Deshabilitar usuario",
+                                //padding: EdgeInsets.zero,
+                                onPressed: (){
                                 dialogs.showDisabledUserDialog(
                                   context, 
                                   snapshot.data![index], 
 
                                 );
                               }, 
-                                icon: Icon(Icons.not_interested_outlined)
+                                icon: Icon(Icons.not_interested_outlined, size: 18, color: GPColors.PrimaryColor,)
                               )
                             ]
                           ),
