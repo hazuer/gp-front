@@ -38,7 +38,7 @@ class _CustomButtonState extends State<CustomButton> {
           padding: const EdgeInsets.symmetric(vertical:8.0),
           child: Text(
            widget.title,
-            style: TextStyle(color: Colors.white, fontSize: 17),
+            style: TextStyle(color: Colors.white, fontSize: 13),
           ),
         ),
         onPressed: widget.onPressed,

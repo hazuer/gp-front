@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/resources/colors.dart';
 
 class CustomInput extends StatelessWidget {
   final String hint;
@@ -18,7 +19,7 @@ class CustomInput extends StatelessWidget {
       child: TextField(
         onChanged: onChanged,
         controller: controller,
-        style: TextStyle(color: Colors.black, fontSize: 17),
+        style: TextStyle(color: GPColors.Input, fontSize: 13),
         decoration: InputDecoration(
           border: OutlineInputBorder(borderSide: BorderSide(width: 10, color: Colors.transparent)),
           enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.transparent)),

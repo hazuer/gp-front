@@ -36,7 +36,7 @@ class SignupProvider{
       return resp.data;
 
     }on DioError catch (e) {      
-      RxVariables.errorMessage =  e.response!.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      RxVariables.errorMessage =  e.response!.data["message"].toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
       return  null;
     }
 
@@ -59,7 +59,7 @@ class SignupProvider{
         options: RoutesProvider().headerOptions
       );
       print(resp.data);
-      RxVariables.errorMessage = resp.data.toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      RxVariables.errorMessage = resp.data["message"].toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
      
       return resp.data;
 

@@ -36,12 +36,12 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 30,
+                    height: 60,
                   ),
                   Container(
                     width: double.infinity,
                     margin:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -66,7 +66,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                       top: 0,
                                       right: 0,
                                       left: 0,
-                                      bottom: 0,
+                                      bottom: 15,
                                       child: Container(
                                         child: Image.asset(
                                           'assets/images/logo_login.png',
@@ -83,13 +83,13 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                         Container(
                           width: width < 850
                               ? MediaQuery.of(context).size.width
-                              : MediaQuery.of(context).size.width / 2.65,
+                              : MediaQuery.of(context).size.width / 3.3,
                           padding: EdgeInsets.symmetric(
                                horizontal: 35.0),
                           child: Column(
                             children: [
                               SizedBox(
-                                height: 24,
+                                height: 15,
                               ),
                               CustomInput(
                                 controller: emailController,
@@ -97,7 +97,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               ),
 
                               SizedBox(
-                                height: 50,
+                                height: 15,
                               ),
 
                               CustomButton(
@@ -113,19 +113,19 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                         setState(() {
                                           isLoading = false;
                                         });
-                                        GeneralDialog().showInfoDialog(context, "Ocurrió un error." , "Detalle: ${RxVariables.errorMessage}");
+                                        GeneralDialog().showInfoDialog(context, "¡Atención!" , "${RxVariables.errorMessage}");
   
                                       }else{
                                         setState(() {
                                           isLoading = false;
                                         });
-                                        GeneralDialog().showInfoDialog(context, RxVariables.errorMessage, "");
+                                        GeneralDialog().showInfoDialog(context, "¡Éxito!", RxVariables.errorMessage);
                                       }
 
                                     });
 
                                   }else{
-                                    GeneralDialog().showInfoDialog(context, "Ingrese un correo valido.", "");
+                                    GeneralDialog().showInfoDialog(context, "¡Atención!", "Ingrese un correo válido");
 
                                   }
                                   
@@ -137,15 +137,25 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                 height: 30,
                               ),
 
-                              CustomButton(
-                                isLoading: false,
-                                title: "Salir", 
-                                onPressed: (){
-                                  print("onpressed");
-                                  
-                                 Navigator.pop(context);
-                                }
-                              )
+                              //CustomButton(
+                                //isLoading: false,
+                                //title: "Salir", 
+                                //onPressed: (){
+                                  //print("onpressed");
+//                                  
+                                 //Navigator.pop(context);
+                                //}
+                              //),
+                              TextButton(
+                                     onPressed: (){
+                                      print("onpressed");
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Regresar", style: TextStyle(
+                                      color: GPColors.hexToColor("#B3B2B3"),
+                                      fontSize:   13
+                                    ),),
+                                  )
                             ],
                           ),
                         )

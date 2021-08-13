@@ -4,10 +4,10 @@ import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/provider/signup_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
-//import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/widgets/login_button.dart';
+import 'package:general_products_web/resources/global_variables.dart';
+import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/general_dialog.dart';
-import 'package:general_products_web/widgets/login_input.dart';
+import 'package:general_products_web/widgets/input_custom.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -61,8 +61,8 @@ class _LoginPageState extends State<LoginPage> {
                               fontWeight: FontWeight.bold),
                         ),
                         Container(
-                          height: MediaQuery.of(context).size.height / 5,
-                          width: MediaQuery.of(context).size.height / 5,
+                          height: MediaQuery.of(context).size.height / 4,
+                          width: MediaQuery.of(context).size.height / 4,
                           margin: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 16.0),
                           child: Column(
@@ -143,9 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                                           setState(() {
                                             isLoading = false;
                                           });
-                                          //dialogs.showInfoDialog(context, "¡Error de Inicio de Sesión!", " ${RxVariables.errorMessage}");
-                                          dialogs.showInfoDialog(context, "¡Error de Inicio de Sesión!", "Favor de revisar el nombre de usuario y/o contraseña");
-                                          
+                                          dialogs.showInfoDialog(context, "¡Error de Inicio de Sesión!", " ${RxVariables.errorMessage}");
                                         }else{
                                           setState(() {
                                            isLoading = false;
@@ -193,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                                     },
                                     child: Text("Registro", style: TextStyle(
                                       color: GPColors.hexToColor("#B3B2B3"),
-                                      fontSize:  14
+                                      fontSize:  13
                                     ),),
                                   ),
                                   TextButton(
@@ -202,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                                     },
                                     child: Text("Recuperar Contraseña", style: TextStyle(
                                       color: GPColors.hexToColor("#B3B2B3"),
-                                      fontSize:   14
+                                      fontSize:   13
                                     ),),
                                   )
 
