@@ -60,20 +60,14 @@ class _ReportsPageState extends State<ReportsPage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
                               Text(
-                                'Reportes',
+                                'Consulta de Reportes',
                                 style: TextStyle(
                                     color: Color(0xff313945),
                                     fontSize: 14.08,
                                     fontWeight: FontWeight.w200),
                               ),
                               Divider(),
-                              Text(
-                                'Different form elements sample',
-                                style: TextStyle(
-                                    color: Color(0xff313945),
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w100),
-                              ),
+
                               SizedBox(
                                 height: 28.0,
                               ),

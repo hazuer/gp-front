@@ -32,7 +32,7 @@ class OrdersWorkPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Ordenes de trabajo',
+                            'Listado de Ordenes de trabajo',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 14.08,

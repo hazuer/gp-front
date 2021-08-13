@@ -32,20 +32,13 @@ class SettingsPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Settings',
+                            'Configuraciones del Sistema',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 14.08,
                                 fontWeight: FontWeight.w200),
                           ),
                           Divider(),
-                          Text(
-                            'Use this page to show app settings',
-                            style: TextStyle(
-                                color: Color(0xff313945),
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w100),
-                          ),
                           SizedBox(
                             height: 28.0,
                           ),

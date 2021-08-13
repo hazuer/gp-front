@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Autorizar Usuario',
+                            'Listado de Usuarios',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 14.08,

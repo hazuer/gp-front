@@ -31,20 +31,13 @@ class CatalogPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Slideshow',
+                            'Listado de Catálogos',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 14.08,
                                 fontWeight: FontWeight.w200),
                           ),
                           Divider(),
-                          Text(
-                            'Use this page to add custom content',
-                            style: TextStyle(
-                                color: Color(0xff313945),
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w100),
-                          ),
                           SizedBox(
                             height: 28.0,
                           ),
