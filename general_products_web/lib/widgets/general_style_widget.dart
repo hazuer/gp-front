@@ -12,7 +12,7 @@ class GeneralStyleContainer extends StatelessWidget {
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: Colors.grey[100]
+          color: Colors.grey[300]
         ),
         child: child?? Container()
       ),

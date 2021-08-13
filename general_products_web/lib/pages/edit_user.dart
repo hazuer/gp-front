@@ -84,13 +84,13 @@ class _EditUserPageState extends State<EditUserPage> {
                                 children: [
                                   
                                   SizedBox(height: 25,),
-                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.nombre!, style: TextStyle(color: Colors.black54, fontSize: 17),),),
+                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.nombre!, style: TextStyle(color: Colors.black54, fontSize: 14),),),
                                   SizedBox(height: 25,),
-                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoPaterno??"", style: TextStyle(color: Colors.black54, fontSize: 17),),),
+                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoPaterno??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
                                   SizedBox(height: 25,),
-                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoMaterno??"", style: TextStyle(color: Colors.black54, fontSize: 17),),),
+                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoMaterno??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
                                   SizedBox(height: 25,),
-                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.correo??"", style: TextStyle(color: Colors.black54, fontSize: 17),),),
+                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.correo??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
                                   SizedBox(height: 25,),
                                   listProfile(),
                                   SizedBox(height: 25,),
@@ -127,13 +127,13 @@ class _EditUserPageState extends State<EditUserPage> {
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.nombre!, style: TextStyle(color: Colors.black54, fontSize: 17),),),
+                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.nombre!, style: TextStyle(color: Colors.black54, fontSize: 14),),),
                                           SizedBox(width: 25,),
-                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoPaterno??"", style: TextStyle(color: Colors.black54, fontSize: 17),),),
+                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoPaterno??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
                                           SizedBox(width: 25,),
-                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoMaterno??"", style: TextStyle(color: Colors.black54, fontSize: 17),),),
+                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoMaterno??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
                                           SizedBox(width: 25,),
-                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.correo??"", style: TextStyle(color: Colors.black54, fontSize: 17),),),
+                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.correo??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
                                         ],
                                       ),
                                       SizedBox(height: 25,),
@@ -216,7 +216,7 @@ class _EditUserPageState extends State<EditUserPage> {
         key: plantsKey,
         initiallyExpanded: false,
         title: Text( plant.nombrePlanta ?? RxVariables.userSelected.nombrePlanta!,
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 14),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -244,7 +244,7 @@ class _EditUserPageState extends State<EditUserPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.userById.listPlants![index].nombrePlanta!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text( RxVariables.userById.listPlants![index].nombrePlanta!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -274,7 +274,7 @@ class _EditUserPageState extends State<EditUserPage> {
         key: profileKey,
         initiallyExpanded: false,
         title: Text( RxVariables.userSelected.perfil!.isEmpty?  "* Perfil" :  RxVariables.userSelected.perfil!,
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 14),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -302,7 +302,7 @@ class _EditUserPageState extends State<EditUserPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.userById.listProfiles![index].perfil!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text( RxVariables.userById.listProfiles![index].perfil!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -332,7 +332,7 @@ class _EditUserPageState extends State<EditUserPage> {
         key: statusKey,
         initiallyExpanded: false,
         title: Text( status.estatus ?? RxVariables.userSelected.estatus!,
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 14),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -361,7 +361,7 @@ class _EditUserPageState extends State<EditUserPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.userById.listStatus![index].estatus!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text( RxVariables.userById.listStatus![index].estatus!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -391,7 +391,7 @@ class _EditUserPageState extends State<EditUserPage> {
         key: customerKey,
         initiallyExpanded: false,
         title: Text( customer.nombreCliente ?? RxVariables.userSelected.nombreCliente!,
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 14),),
         children: [
           Container(
             child: FutureBuilder(
@@ -419,7 +419,7 @@ class _EditUserPageState extends State<EditUserPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text(RxVariables.userById.listCustomers![index].nombreCliente!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text(RxVariables.userById.listCustomers![index].nombreCliente!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
