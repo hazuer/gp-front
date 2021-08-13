@@ -42,6 +42,15 @@ class _RegisterPageState extends State<RegisterPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      //appBar: AppBar(backgroundColor: GPColors.BreadcrumBackgroud, automaticallyImplyLeading: false,),
+      appBar: AppBar(
+              // when the app isn't displaying the mobile version of app, hide the menu button that is used to open the navigation drawer
+              automaticallyImplyLeading: false,
+              title: Text("Registro de Usuario", style: TextStyle(color: GPColors.BreadcrumTitle, fontSize: 16.08, fontWeight: FontWeight.w100,)),
+              iconTheme: IconThemeData(color: Color(0xff313945)),
+              centerTitle: true,
+              
+            ),
       body: Container(
         width: width,
         height: height,
@@ -55,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 30,
+                    height: 15,
                   ),
                   Container(
                     width: double.infinity,
@@ -64,40 +73,40 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Registrar Usuario", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 22, fontWeight: FontWeight.bold),),
+                        //Text("Registrar Usuario", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 22, fontWeight: FontWeight.bold),),
                         
                         displayMobileLayout?
                         Column(
                           children: [
-                            SizedBox(height: 50,),
+                            SizedBox(height: 15,),
                             CustomInput(
                               controller: nameController,
                               hint: "* Nombre",
                             ),
-                            SizedBox(height: 35,),
+                            SizedBox(height: 15,),
                             CustomInput(
                               controller: lastnameController,
                               hint: "* Apellido Paterno",
                             ),
-                             SizedBox(height: 35,),
+                             SizedBox(height: 15,),
                             CustomInput(
                               controller: secondLastnameController,
                               hint: "* Apellido Materno",
                             ),
-                            SizedBox(height: 35,),
+                            SizedBox(height: 15,),
                             CustomInput(
                               controller: emailController,
                               hint: "* correo",
                             ),
                             listPlants(),
                             listCustomers(),
-                            SizedBox(height:35),
+                            SizedBox(height:15),
                             CustomButton(
                               isLoading: isLoading,
                               title: "Enviar Registro", 
                               onPressed: ()async{
                                 if(nameController.text.isEmpty || lastnameController.text.isEmpty || emailController.text.isEmpty || plantSelected.idCatPlanta == null || customerSelected.idCatCliente == null){
-                                  dialogs.showInfoDialog(context, "Favor de llenar correctamente todos los campos.", "");
+                                  dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
 
                                 }else{
                                   setState(() {
@@ -108,14 +117,16 @@ class _RegisterPageState extends State<RegisterPage> {
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    dialogs.showInfoDialog(context, "Ocurrió un error al realizar el registro", "Error: ${RxVariables.errorMessage}");
+                                    //dialogs.showInfoDialog(context, "Ocurrió un error al realizar el registro", "Error: ${RxVariables.errorMessage}");
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al realizar el registro, intenta más tarde");
 
                                   }else{
 
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    dialogs.showInfoDialog(context, "¡Registro Exitoso!", RxVariables.errorMessage);
+                                    //dialogs.showInfoDialog(context, "¡Registro Exitoso!", RxVariables.errorMessage);
+                                    dialogs.showInfoDialog(context, "¡Éxito!", RxVariables.errorMessage);
 
                                     print("Correcto");
                                   }
@@ -124,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                               }
                             ),
-                            SizedBox(height: 35,),
+                            SizedBox(height: 15,),
                             CustomButton(
                               isLoading: false,
                               title: "Salir", 
@@ -154,20 +165,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                     controller: nameController,
                                     hint: "* Nombre",)
                                   ),
-                                  SizedBox(width: 35,),
+                                  SizedBox(width: 15,),
                                   Flexible(child: CustomInput(
                                     controller: lastnameController,
                                     hint: "* Apellido Paterno",)),
                                 ],
                               ),
-                              SizedBox( height: 35,),
+                              SizedBox( height: 15,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Flexible(child: CustomInput(
                                     controller: secondLastnameController,
                                     hint: "* Apellido Materno",)),
-                                  SizedBox(width: 35,),
+                                  SizedBox(width: 15,),
                                   Flexible(child: CustomInput(
                                     controller: emailController,
                                     hint: "* Correo",)),
@@ -181,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ],
                               ),
                               SizedBox(
-                                height: 60,
+                                height: 15,
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,7 +203,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       title: "Enviar Registro", 
                                       onPressed: ()async{
                                         if(nameController.text.isEmpty || lastnameController.text.isEmpty || emailController.text.isEmpty || plantSelected.idCatPlanta == null || customerSelected.idCatCliente == null){
-                                          dialogs.showInfoDialog(context, "Favor de llenar correctamente todos los campos.", "");
+                                          dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                         }else{
                                           setState(() {
                                           isLoading = true;
@@ -202,19 +213,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                             setState(() {
                                               isLoading = false;
                                             });
-                                            dialogs.showInfoDialog(context, "Ocurrió un error al realizar el registro", "Error: ${RxVariables.errorMessage}");
+                                            //dialogs.showInfoDialog(context, "¡Ocurrió un error al realizar el registro!", "Error: ${RxVariables.errorMessage}");
+                                            dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al realizar el registro, intenta más tarde");
                                           }else{
                                             setState(() {
                                               isLoading = false;
                                             });
-                                            dialogs.showInfoDialog(context, "¡Registro Exitoso!", RxVariables.errorMessage);
+                                            dialogs.showInfoDialog(context, "¡Éxito!", RxVariables.errorMessage);
                                           }
                                         });
                                         }
                                       }
                                     ),
                                   ),
-                                  SizedBox(width: 40,),
+                                  SizedBox(width: 15,),
                                   Flexible(
                                     child: CustomButton(
                                       isLoading: false,
@@ -229,7 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ],
                               ),
                               SizedBox(
-                                height: 30,
+                                height: 15,
                               ),
                               
 
@@ -249,7 +261,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget listCustomers(){
     return Container(
-      margin: EdgeInsets.only(top:35),
+      margin: EdgeInsets.only(top:15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         color: Colors.grey[100]
@@ -258,7 +270,7 @@ class _RegisterPageState extends State<RegisterPage> {
         key: customerKey,
         initiallyExpanded: false,
         title: Text( customerSelected.nombreCliente?? "*Selecciona Cliente",
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 13),),
         children: [
           Container(
             child: FutureBuilder(
@@ -305,7 +317,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget listPlants(){
     return Container(
-      margin: EdgeInsets.only(top:35),
+      margin: EdgeInsets.only(top:15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         color: Colors.grey[100]
@@ -314,7 +326,7 @@ class _RegisterPageState extends State<RegisterPage> {
         key: plantsKey,
         initiallyExpanded: false,
         title: Text( plantSelected.nombrePlanta?? "* Selecciona Planta",//SkillUser.jobSelected.name??"Seleccionar", 
-        style:  TextStyle(color: Colors.black54, fontSize: 17),),
+        style:  TextStyle(color: Colors.black54, fontSize: 13),),
         children: [
           Container(
             child: FutureBuilder(
