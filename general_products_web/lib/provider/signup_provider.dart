@@ -70,32 +70,9 @@ class SignupProvider{
 
   }
 
-  Future logout(String email)async {
-   
-    String url = routes.urlBase+routes.logOut;
   
-    try {
-      final dio = Dio();
 
-      
-
-      final resp = await dio.post(
-        url,
-       // data: data,
-        options: RoutesProvider().headerOptions
-      );
-      print(resp.data);
-     
-      return resp.data;
-
-    } on DioError catch (e) {      
-      RxVariables.errorMessage =  e.response!.data["errors"].toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
-      return  null;
-    }
-
-  }
-
-  Future registerUser(String name, String lastname, String email, String idPlanta, String idCustomer)async {
+  Future registerUser(String name, String lastname, String secondLastname, String email, String idPlanta, String idCustomer)async {
    
     String url = routes.urlBase+routes.register;
   
@@ -106,6 +83,7 @@ class SignupProvider{
         "nombre": name,
         "correo": email,
         "apellido_paterno": lastname,
+        "apellido_materno":secondLastname,
         "id_cat_planta": idPlanta,
         "id_cat_cliente": idCustomer
       };

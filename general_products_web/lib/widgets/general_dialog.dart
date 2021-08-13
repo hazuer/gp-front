@@ -141,4 +141,51 @@ class GeneralDialog{
       },
     );
 }
+
+   Future logoutDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title:  Center(child: Text("¡Se ha cerrado su sesión!", textAlign: TextAlign.center,)),
+        content: SingleChildScrollView(
+          child:  Center(child: Text("Hasta pronto", style: TextStyle(color: Colors.black, fontSize: 17), textAlign: TextAlign.center,)),
+        ),
+        actions: <Widget>[
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal:20.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width < 600?
+                 MediaQuery.of(context).size.width*.3
+                 : MediaQuery.of(context).size.width*.1,
+                child: ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical:8.0),
+                    child: Text(
+                     "Aceptar",
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                  ),
+                  onPressed: (){
+                    Navigator.pushReplacementNamed(context, '/login');
+                    
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 2,
+                    primary: GPColors.PrimaryColor,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                  )
+                ),
+              )
+            ),
+          ),
+        ],
+      );
+    },
+  );
+  }
+
+
 }

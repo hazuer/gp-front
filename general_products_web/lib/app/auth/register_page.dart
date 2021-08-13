@@ -103,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   setState(() {
                                   isLoading = true;
                                 });
-                                await SignupProvider().registerUser(nameController.text, "${lastnameController.text} ${secondLastnameController.text}", emailController.text, plantSelected.idCatPlanta.toString(), customerSelected.idCatCliente.toString()).then((value){
+                                await SignupProvider().registerUser(nameController.text, lastnameController.text, secondLastnameController.text, emailController.text, plantSelected.idCatPlanta.toString(), customerSelected.idCatCliente.toString()).then((value){
                                   if(value == null){
                                     setState(() {
                                       isLoading = false;
@@ -197,7 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           setState(() {
                                           isLoading = true;
                                         });
-                                        await SignupProvider().registerUser(nameController.text, "${lastnameController.text} ${secondLastnameController.text}", emailController.text, plantSelected.idCatPlanta.toString(), customerSelected.idCatCliente.toString()).then((value){
+                                        await SignupProvider().registerUser(nameController.text, lastnameController.text, secondLastnameController.text, emailController.text, plantSelected.idCatPlanta.toString(), customerSelected.idCatCliente.toString()).then((value){
                                           if(value == null){
                                             setState(() {
                                               isLoading = false;
