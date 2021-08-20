@@ -59,16 +59,16 @@ class GeneralProductsApp extends StatelessWidget {
       initialRoute: RouteNames.login,
       navigatorObservers: [AppRouteObserver()],
       routes: {
-        RouteNames.login: (_) => LoginPage(),
-        RouteNames.home: (_) =>  HomePage(),
-        RouteNames.ordersWork: (_) => const OrdersWorkPage(),
-        RouteNames.catalogs: (_) => const CatalogPage(),
-        RouteNames.settings: (_) => const SettingsPage(),
-        RouteNames.reports: (_) => ReportsPage(),
-        RouteNames.recoveryPwd: (_) => RecoveryPasswordPage(),
-        RouteNames.register: (_) => RegisterPage(),
+        RouteNames.login        : (_) => LoginPage(),
+        RouteNames.home         : (_) => HomePage(),
+        RouteNames.ordersWork   : (_) => const OrdersWorkPage(),
+        RouteNames.catalogs     : (_) => const CatalogPage(),
+        RouteNames.settings     : (_) => const SettingsPage(),
+        RouteNames.reports      : (_) => ReportsPage(),
+        RouteNames.recoveryPwd  : (_) => RecoveryPasswordPage(),
+        RouteNames.register     : (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
-        RouteNames.editUser: (_) => EditUserPage()
+        RouteNames.editUser     : (_) => EditUserPage()
 
       },
     );

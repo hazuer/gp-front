@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                                                   child: CustomInput(
                                                       controller:
                                                           nameController,
-                                                      hint: "* Nombre_")),
+                                                      hint: "* Nombre")),
                                               SizedBox(
                                                 width: 15,
                                               ),
