@@ -53,6 +53,7 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
   Widget build(BuildContext context) {
     return Container(
         color: Color(0xff2A3F54),
+        width: 220.0,
         child: Drawer(
           child: Row(
             children: [
@@ -71,18 +72,18 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             Row(
                               children: <Widget>[
                                 SizedBox(
-                                  height: 130,
+                                  height: 100,
                                 ),
                                 ClipRRect(
                                     borderRadius: BorderRadius.circular(50.0),
                                     child: Image(
                                       image: AssetImage(
                                           "assets/images/gp_dash.png"),
-                                      height: 100,
+                                      height: 70,
                                       fit: BoxFit.cover,
                                     )),
                                 SizedBox(
-                                  width: 20,
+                                  width: 15,
                                 ),
                                 Flexible(
                                   child: Stack(
@@ -98,13 +99,14 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                       Row(
                                         children: <Widget>[
                                           SizedBox(
-                                            height: 48,
+                                            height: 50,
                                           ),
                                           Text(
                                             "Administrador",
                                             //"${RxVariables.loginResponse.data!.user!.name} ${RxVariables.loginResponse.data!.user!.lastName}",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
+                                                fontSize: 13,
                                                 color: Color(0xffECF0F1)),
                                           ),
                                         ],
@@ -123,9 +125,13 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                       ListTileTheme(
                         iconColor: Color(0xffE7E7E7),
                         child: ListTile(
-                          leading: const Icon(Icons.admin_panel_settings),
+                          leading:
+                              const Icon(Icons.admin_panel_settings, size: 27),
                           title: const Text(
                             PageTitles.admin,
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
                           ),
                           onTap: () async {
                             await _navigateTo(context, RouteNames.home);
@@ -136,9 +142,12 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                       ListTileTheme(
                           iconColor: Color(0xffE7E7E7),
                           child: ListTile(
-                            leading: const Icon(Icons.settings),
+                            leading: const Icon(Icons.settings, size: 27),
                             title: const Text(
                               PageTitles.settings,
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
                             ),
                             onTap: () async {
                               await _navigateTo(context, RouteNames.settings);
@@ -148,9 +157,12 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                       ListTileTheme(
                           iconColor: Color(0xffE7E7E7),
                           child: ListTile(
-                            leading: const Icon(Icons.assignment),
+                            leading: const Icon(Icons.assignment, size: 27),
                             title: const Text(
                               PageTitles.formWorks,
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
                             ),
                             onTap: () async {
                               await _navigateTo(context, RouteNames.ordersWork);
@@ -166,6 +178,9 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             leading: const Icon(Icons.menu_book),
                             title: const Text(
                               PageTitles.catalogs,
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
                             ),
                             onTap: () async {
                               await _navigateTo(context, RouteNames.catalogs);
@@ -258,9 +273,12 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                       ListTileTheme(
                           iconColor: Color(0xffE7E7E7),
                           child: ListTile(
-                            leading: const Icon(Icons.bar_chart),
+                            leading: const Icon(Icons.bar_chart, size: 27),
                             title: const Text(
                               PageTitles.reports,
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
                             ),
                             onTap: () async {
                               await _navigateTo(context, RouteNames.reports);
@@ -270,9 +288,12 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                       ListTileTheme(
                           iconColor: Color(0xffE7E7E7),
                           child: ListTile(
-                            leading: const Icon(Icons.logout),
+                            leading: const Icon(Icons.logout, size: 27),
                             title: const Text(
-                              "Cerrar sesión",
+                              "Cerrar Sesión",
+                              style: TextStyle(
+                                fontSize: 13,
+                              ),
                             ),
                             onTap: () {
                               GeneralDialog().logoutDialog(context);

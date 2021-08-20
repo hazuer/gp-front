@@ -11,6 +11,7 @@ import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/widgets/table_user.dart';
 
+
 //import '../constants/page_titles.dart';
 import '../widgets/app_scaffold.dart';
 
@@ -58,14 +59,13 @@ class _HomePageState extends State<HomePage> {
             color: Color(0xffF5F6F5),
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
+                //SizedBox(
+                  //height: 10,
+                //),
                 Container(
                     width: double.infinity,
                     //height: MediaQuery.of(context).size.width*.8,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 20.0, horizontal: 26.0),
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                     child: Column(children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
@@ -79,10 +79,11 @@ class _HomePageState extends State<HomePage> {
                               'Listado de Usuarios',
                               style: TextStyle(
                                   color: Color(0xff313945),
-                                  fontSize: 14.08,
+                                  fontSize: 13.00,
                                   fontWeight: FontWeight.w200),
                             ),
                             Divider(),
+                            SizedBox(height: 10,),
                             displayMobileLayout
                                 ? ListView(
                                     shrinkWrap: true,
@@ -91,42 +92,42 @@ class _HomePageState extends State<HomePage> {
                                           controller: nameController,
                                           hint: "* Nombre"),
                                       SizedBox(
-                                        height: 25,
+                                        height: 15,
                                       ),
                                       CustomInput(
                                           controller: lastNameController,
                                           hint: "* Apellido Paterno"),
                                       SizedBox(
-                                        height: 25,
+                                        height: 15,
                                       ),
                                       CustomInput(
                                         hint: "* Apellido Materno",
                                         controller: secondLastNameController,
                                       ),
                                       SizedBox(
-                                        height: 25,
+                                        height: 15,
                                       ),
                                       CustomInput(
                                           controller: emailController,
                                           hint: "* Correo"),
                                       SizedBox(
-                                        height: 25,
+                                        height: 15,
                                       ),
                                       listProfile(),
                                       SizedBox(
-                                        height: 25,
+                                        height: 15,
                                       ),
                                       listPlants(),
                                       SizedBox(
-                                        height: 25,
+                                        height: 15,
                                       ),
                                       listCustomer(),
                                       SizedBox(
-                                        height: 25,
+                                        height: 15,
                                       ),
                                       listStatus(),
                                       SizedBox(
-                                        height: 40,
+                                        height: 30,
                                       ),
                                       CustomButton(
                                         width:
@@ -139,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                                         },
                                       ),
                                       SizedBox(
-                                        height: 25,
+                                        height: 15,
                                       ),
                                       CustomButton(
                                         width:
@@ -152,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                                         },
                                       ),
                                       SizedBox(
-                                        height: 25,
+                                        height: 30,
                                       ),
                                       isLoading
                                           ? Container(
@@ -185,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                                                           nameController,
                                                       hint: "* Nombre")),
                                               SizedBox(
-                                                width: 25,
+                                                width: 15,
                                               ),
                                               Flexible(
                                                   child: CustomInput(
@@ -194,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                                                       hint:
                                                           "* Apellido Paterno")),
                                               SizedBox(
-                                                width: 25,
+                                                width: 15,
                                               ),
                                               Flexible(
                                                   child: CustomInput(
@@ -203,27 +204,27 @@ class _HomePageState extends State<HomePage> {
                                                       hint:
                                                           "* Apellido Materno")),
                                               SizedBox(
-                                                width: 25,
+                                                width: 15,
                                               ),
                                               Flexible(child: listStatus()),
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 25,
+                                            height: 15,
                                           ),
                                           Row(
                                             children: [
                                               Flexible(child: listProfile()),
                                               SizedBox(
-                                                width: 25,
+                                                width: 15,
                                               ),
                                               Flexible(child: listPlants()),
                                               SizedBox(
-                                                width: 25,
+                                                width: 15,
                                               ),
                                               Flexible(child: listCustomer()),
                                               SizedBox(
-                                                width: 25,
+                                                width: 15,
                                               ),
                                               IconButton(
                                                 onPressed: () async {
@@ -240,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 70,
+                                            height: 30,
                                           ),
                                           isLoading
                                               ? Container(
@@ -281,7 +282,7 @@ class _HomePageState extends State<HomePage> {
         initiallyExpanded: false,
         title: Text(
           plant.nombrePlanta ?? "* Planta",
-          style: TextStyle(color: Colors.black54, fontSize: 14),
+          style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
@@ -314,7 +315,7 @@ class _HomePageState extends State<HomePage> {
                                     RxVariables.dataFromUsers.listPlants![index]
                                         .nombrePlanta!,
                                     style: TextStyle(
-                                        color: Colors.black54, fontSize: 14)),
+                                        color: Colors.black54, fontSize: 13)),
                               ),
                               Container(
                                 width: double.infinity,
@@ -347,7 +348,7 @@ class _HomePageState extends State<HomePage> {
         initiallyExpanded: false,
         title: Text(
           profile.perfil ?? "* Perfil",
-          style: TextStyle(color: Colors.black54, fontSize: 14),
+          style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
@@ -380,7 +381,7 @@ class _HomePageState extends State<HomePage> {
                                     RxVariables.dataFromUsers
                                         .listProfiles![index].perfil!,
                                     style: TextStyle(
-                                        color: Colors.black54, fontSize: 14)),
+                                        color: Colors.black54, fontSize: 13)),
                               ),
                               Container(
                                 width: double.infinity,
@@ -413,7 +414,7 @@ class _HomePageState extends State<HomePage> {
         initiallyExpanded: false,
         title: Text(
           status.estatus ?? "* Estatus",
-          style: TextStyle(color: Colors.black54, fontSize: 14),
+          style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
@@ -446,7 +447,7 @@ class _HomePageState extends State<HomePage> {
                                     RxVariables.dataFromUsers.listStatus![index]
                                         .estatus!,
                                     style: TextStyle(
-                                        color: Colors.black54, fontSize: 14)),
+                                        color: Colors.black54, fontSize: 13)),
                               ),
                               Container(
                                 width: double.infinity,
@@ -479,7 +480,7 @@ class _HomePageState extends State<HomePage> {
         initiallyExpanded: false,
         title: Text(
           customer.nombreCliente ?? "* Cliente",
-          style: TextStyle(color: Colors.black54, fontSize: 14),
+          style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
@@ -511,7 +512,7 @@ class _HomePageState extends State<HomePage> {
                                     RxVariables.dataFromUsers
                                         .listCustomers![index].nombreCliente!,
                                     style: TextStyle(
-                                        color: Colors.black54, fontSize: 14)),
+                                        color: Colors.black54, fontSize: 13)),
                               ),
                               Container(
                                 width: double.infinity,
