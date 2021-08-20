@@ -92,73 +92,79 @@ class _LoginPageState extends State<LoginPage> {
                           width: width < 880
                               ? MediaQuery.of(context).size.width
                               : MediaQuery.of(context).size.width / 3.3,
-                          padding: EdgeInsets.symmetric(
-                               horizontal: 35.0),
+                          padding: EdgeInsets.symmetric(horizontal: 35.0),
                           child: Column(
                             children: [
                               SizedBox(
                                 height: 15,
                               ),
                               StreamBuilder(
-                                stream: loginBloc.emailStream,
-                                builder: (context, snapshot) {
-                                  return CustomInput(
-                                    controller: userController,
-                                    hint: "* Usuario",
-                                    errorText: snapshot.error?.toString(),
-                                    onChanged: loginBloc.changeEmail,
-                                  );
-                                }
-                              ),
+                                  stream: loginBloc.emailStream,
+                                  builder: (context, snapshot) {
+                                    return CustomInput(
+                                      controller: userController,
+                                      hint: "* Usuario",
+                                      errorText: snapshot.error?.toString(),
+                                      onChanged: loginBloc.changeEmail,
+                                    );
+                                  }),
                               SizedBox(
                                 height: 15,
                               ),
                               StreamBuilder(
-                                stream: loginBloc.passwordStream,
-                                builder: (context, snapshot) {
-                                  return CustomInput(
-                                    controller: passwordController,
-                                    hint: "* Contraseña",
-                                    errorText: snapshot.error?.toString(),
-                                    onChanged: loginBloc.changePassword,
-                                  );
-                                }
-                              ),
+                                  stream: loginBloc.passwordStream,
+                                  builder: (context, snapshot) {
+                                    return CustomInput(
+                                      isPassword: true,
+                                      controller: passwordController,
+                                      hint: "* Contraseña",
+                                      errorText: snapshot.error?.toString(),
+                                      onChanged: loginBloc.changePassword,
+                                    );
+                                  }),
                               SizedBox(
                                 height: 15,
                               ),
                               StreamBuilder(
-                                stream: loginBloc.formLoginStream,
-                                builder: (context, snapshot) {
-                                  return CustomButton(
-                                    isLoading: isLoading,
-                                    title: "Ingresar", 
-                                    onPressed:snapshot.hasData? ()async{
-                                      
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      await SignupProvider().login(userController.text, passwordController.text).then((value) {
-                                        if(value == null){
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                          dialogs.showInfoDialog(context, "¡Error de Inicio de Sesión!", " ${RxVariables.errorMessage}");
-                                        }else{
-                                          setState(() {
-                                           isLoading = false;
-                                          });
-                                          Navigator.pushReplacementNamed(context, '/');
-                                        }
-                                      });
-                                      
-                                    }
-                                    :
-                                    (){
-                                       dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
-
-                                    },
-                                   /* onPressed: ()async{
+                                  stream: loginBloc.formLoginStream,
+                                  builder: (context, snapshot) {
+                                    return CustomButton(
+                                      isLoading: isLoading,
+                                      title: "Ingresar",
+                                      onPressed: snapshot.hasData
+                                          ? () async {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
+                                              await SignupProvider()
+                                                  .login(userController.text,
+                                                      passwordController.text)
+                                                  .then((value) {
+                                                if (value == null) {
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Error de Inicio de Sesión!",
+                                                      " ${RxVariables.errorMessage}");
+                                                } else {
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                          context, '/');
+                                                }
+                                              });
+                                            }
+                                          : () {
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Atención!",
+                                                  "Favor de validar los campos marcados con asterisco (*)");
+                                            },
+                                      /* onPressed: ()async{
                                       setState(() {
                                         isLoading = true;
                                       });
@@ -176,37 +182,41 @@ class _LoginPageState extends State<LoginPage> {
                                         }
                                       });
                                     }*/
-                                  );
-                                }
-                              ),
+                                    );
+                                  }),
                               SizedBox(
                                 height: 30,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                    onPressed: () async{ 
-                                      Navigator.pushNamed(context, RouteNames.register);
+                                    onPressed: () async {
+                                      Navigator.pushNamed(
+                                          context, RouteNames.register);
                                     },
-                                    child: Text("Registro", style: TextStyle(
-                                      color: GPColors.hexToColor("#B3B2B3"),
-                                      fontSize:  13
-                                    ),),
+                                    child: Text(
+                                      "Registro",
+                                      style: TextStyle(
+                                          color: GPColors.hexToColor("#B3B2B3"),
+                                          fontSize: 13),
+                                    ),
                                   ),
                                   TextButton(
-                                    onPressed: () { 
-                                      Navigator.pushNamed(context, RouteNames.recoveryPwd);
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, RouteNames.recoveryPwd);
                                     },
-                                    child: Text("Recuperar Contraseña", style: TextStyle(
-                                      color: GPColors.hexToColor("#B3B2B3"),
-                                      fontSize:   13
-                                    ),),
+                                    child: Text(
+                                      "Recuperar Contraseña",
+                                      style: TextStyle(
+                                          color: GPColors.hexToColor("#B3B2B3"),
+                                          fontSize: 13),
+                                    ),
                                   )
-
                                 ],
                               ),
-                              
                             ],
                           ),
                         )
@@ -219,6 +229,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/general_dialog.dart';
 import '../constants/page_titles.dart';
 import '../constants/route_names.dart';
@@ -72,16 +73,14 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                 SizedBox(
                                   height: 130,
                                 ),
-                                
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  child: Image(
-                                    image: AssetImage("assets/images/gp_dash.png"), 
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                  )
-                                  
-                                ),
+                                    borderRadius: BorderRadius.circular(50.0),
+                                    child: Image(
+                                      image: AssetImage(
+                                          "assets/images/gp_dash.png"),
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )),
                                 SizedBox(
                                   width: 20,
                                 ),
@@ -142,8 +141,7 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                               PageTitles.settings,
                             ),
                             onTap: () async {
-                              await _navigateTo(
-                                  context, RouteNames.settings);
+                              await _navigateTo(context, RouteNames.settings);
                             },
                             selected: _selectedRoute == RouteNames.settings,
                           )),
@@ -160,8 +158,11 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             selected: _selectedRoute == RouteNames.ordersWork,
                           )),
                       ListTileTheme(
-                          iconColor: Color(0xffE7E7E7),
-                          child: ListTile(
+                        iconColor: Color(0xffE7E7E7),
+                        child: AppExpansionTile(
+                          backgroundColor: Colors.white10,
+                          title: ListTile(
+                            contentPadding: EdgeInsets.zero,
                             leading: const Icon(Icons.menu_book),
                             title: const Text(
                               PageTitles.catalogs,
@@ -170,7 +171,87 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                               await _navigateTo(context, RouteNames.catalogs);
                             },
                             selected: _selectedRoute == RouteNames.catalogs,
-                          )),
+                          ),
+                          children: [
+                            ListTile(
+                              // contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.public),
+                              title: const Text(
+                                PageTitles.paises,
+                              ),
+                              onTap: () async {
+                                await _navigateTo(context, RouteNames.paises);
+                              },
+                              selected: _selectedRoute == RouteNames.paises,
+                            ),
+                            // TODO: Crear cada pagina y ponerlas con el estandar
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.brush),
+                              title: const Text('Diseños'),
+                              onTap: () async {
+                                // await _navigateTo(context, RouteNames.paises);
+                              },
+                              // selected: _selectedRoute == RouteNames.paises,
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.color_lens),
+                              title: const Text('Tintas'),
+                              onTap: () async {
+                                // await _navigateTo(context, RouteNames.paises);
+                              },
+                              // selected: _selectedRoute == RouteNames.paises,
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.corporate_fare),
+                              title: const Text('Plantas'),
+                              onTap: () async {
+                                // await _navigateTo(context, RouteNames.paises);
+                              },
+                              // selected: _selectedRoute == RouteNames.paises,
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.topic),
+                              title: const Text('Razones'),
+                              onTap: () async {
+                                // await _navigateTo(context, RouteNames.paises);
+                              },
+                              // selected: _selectedRoute == RouteNames.paises,
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.groups),
+                              title: const Text('Clientes'),
+                              onTap: () async {
+                                // await _navigateTo(context, RouteNames.paises);
+                              },
+                              // selected: _selectedRoute == RouteNames.paises,
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading:
+                                  const Icon(Icons.precision_manufacturing),
+                              title: const Text('Maquinas'),
+                              onTap: () async {
+                                // await _navigateTo(context, RouteNames.paises);
+                              },
+                              // selected: _selectedRoute == RouteNames.paises,
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.format_color_fill),
+                              title: const Text('Taras'),
+                              onTap: () async {
+                                // await _navigateTo(context, RouteNames.paises);
+                              },
+                              // selected: _selectedRoute == RouteNames.paises,
+                            ),
+                          ],
+                        ),
+                      ),
                       /*const Divider(
                     color: Color(0xffF5F6F5),
                   ),*/
@@ -194,7 +275,6 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                               "Cerrar sesión",
                             ),
                             onTap: () {
-                              
                               GeneralDialog().logoutDialog(context);
                               ListUsersProvider().logOut();
                             },
