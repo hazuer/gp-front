@@ -21,7 +21,7 @@ class _TableUserListState extends State<TableUserList> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height*.4,
+      height: MediaQuery.of(context).size.height*.5,
       child: StreamBuilder(
         stream: rxVariables.listWorkZonesSelectedStream,
         builder: (BuildContext context, AsyncSnapshot<List<UserList>> snapshot) {
@@ -50,7 +50,7 @@ class _TableUserListState extends State<TableUserList> {
                       label: Expanded(
                         child: Text(
                           'Nombre',
-                          style: TextStyle( color: Colors.white, fontSize: 14), textAlign: TextAlign.center,
+                          style: TextStyle( color: Colors.white, fontSize: 13), textAlign: TextAlign.center,
                           
                         ),
                       ),
@@ -59,7 +59,7 @@ class _TableUserListState extends State<TableUserList> {
                       label: Expanded(
                         child: Text(
                           'Ap. Paterno',
-                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          style: TextStyle( color: Colors.white, fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -68,7 +68,7 @@ class _TableUserListState extends State<TableUserList> {
                       label: Expanded(
                         child: Text(
                           'Ap. Materno',
-                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          style: TextStyle( color: Colors.white, fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -77,7 +77,7 @@ class _TableUserListState extends State<TableUserList> {
                       label: Expanded(
                         child: Text(
                           'Estatus',
-                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          style: TextStyle( color: Colors.white, fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -86,7 +86,7 @@ class _TableUserListState extends State<TableUserList> {
                       label: Expanded(
                         child: Text(
                           'Perfil',
-                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          style: TextStyle( color: Colors.white, fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -95,7 +95,7 @@ class _TableUserListState extends State<TableUserList> {
                       label: Expanded(
                         child: Text(
                           'Planta',
-                          style: TextStyle( color: Colors.white, fontSize: 14),
+                          style: TextStyle( color: Colors.white, fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -104,7 +104,7 @@ class _TableUserListState extends State<TableUserList> {
                       label: Expanded(
                         child: Text(
                           'Cliente',
-                          style: TextStyle(color: Colors.white, fontSize: 14),
+                          style: TextStyle(color: Colors.white, fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -113,7 +113,7 @@ class _TableUserListState extends State<TableUserList> {
                       label: Expanded(
                         child: Text(
                           'Opciones',
-                          style: TextStyle(color: Colors.white, fontSize: 14),
+                          style: TextStyle(color: Colors.white, fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -133,7 +133,7 @@ class _TableUserListState extends State<TableUserList> {
                           alignment: Alignment.center,
                           child: Text(
                             "${snapshot.data![index].nombre??""}",
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),
@@ -142,7 +142,7 @@ class _TableUserListState extends State<TableUserList> {
                           alignment: Alignment.center,
                           child: Text(
                             snapshot.data![index].apellidoPaterno??"",
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),
@@ -151,7 +151,7 @@ class _TableUserListState extends State<TableUserList> {
                           alignment: Alignment.center,
                           child: Text(
                             snapshot.data![index].apellidoMaterno??"",
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),
@@ -160,7 +160,7 @@ class _TableUserListState extends State<TableUserList> {
                           alignment: Alignment.center,
                           child: Text(
                            snapshot.data![index].estatus??"",
-                           style: TextStyle(fontSize: 14),
+                           style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),
@@ -169,7 +169,7 @@ class _TableUserListState extends State<TableUserList> {
                           alignment: Alignment.center,
                           child: Text(
                             snapshot.data![index].perfil??"",
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),
@@ -178,7 +178,7 @@ class _TableUserListState extends State<TableUserList> {
                           alignment: Alignment.center,
                           child: Text(
                            snapshot.data![index].nombrePlanta??"",
-                           style: TextStyle(fontSize: 14),
+                           style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),
@@ -187,7 +187,7 @@ class _TableUserListState extends State<TableUserList> {
                           alignment: Alignment.center,
                           child: Text(
                             snapshot.data![index].nombreCliente??"",
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 13),
                           ),
                         ),
                       ),

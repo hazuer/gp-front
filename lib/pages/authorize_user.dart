@@ -74,7 +74,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                                 'Autorizar Usuario',
                                 style: TextStyle(
                                     color: Color(0xff313945),
-                                    fontSize: 14.08,
+                                    fontSize: 13.00,
                                     fontWeight: FontWeight.w200),
                               ),
                               Divider(),
@@ -82,21 +82,21 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                                 shrinkWrap: true,
                                 children: [
                                   
-                                  SizedBox(height: 25,),
-                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.nombre!, style: TextStyle(color: Colors.black54, fontSize: 14),),),
-                                  SizedBox(height: 25,),
-                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoPaterno??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
-                                  SizedBox(height: 25,),
-                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoMaterno??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
-                                  SizedBox(height: 25,),
-                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.correo??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
-                                  SizedBox(height: 25,),
+                                  SizedBox(height: 15,),
+                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.nombre!, style: TextStyle(color: Colors.black54, fontSize: 13),),),
+                                  SizedBox(height: 15,),
+                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoPaterno??"", style: TextStyle(color: Colors.black54, fontSize: 13),),),
+                                  SizedBox(height: 15,),
+                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoMaterno??"", style: TextStyle(color: Colors.black54, fontSize: 13),),),
+                                  SizedBox(height: 15,),
+                                  GeneralStyleContainer(child: Text(RxVariables.userById.user!.correo??"", style: TextStyle(color: Colors.black54, fontSize: 13),),),
+                                  SizedBox(height: 15,),
                                   listProfile(),
-                                  SizedBox(height: 25,),
+                                  SizedBox(height: 15,),
                                   listPlants(),
-                                  SizedBox(height: 25,),
+                                  SizedBox(height: 15,),
                                   listCustomer(),
-                                  SizedBox(height: 25,),
+                                  SizedBox(height: 15,),
                                   listStatus(),
                                   SizedBox(height: 40,),
                                   
@@ -107,12 +107,12 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                                     isLoading: isLoading,
                                     onPressed: authorize
                                   ),
-                                  SizedBox(height: 25,),
+                                  SizedBox(height: 15,),
                                   CustomButton(
                                     width: MediaQuery.of(context).size.width*.2,
                                     title: "Cancelar", 
                                     isLoading: false,
-                                    onPressed: (){},
+                                    onPressed: (){Navigator.pop(context);},
                                   )
                                 ],
                               )
@@ -126,16 +126,16 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.nombre!, style: TextStyle(color: Colors.black54, fontSize: 14),),),
+                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.nombre!, style: TextStyle(color: Colors.black54, fontSize: 13),),),
                                           SizedBox(width: 25,),
-                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoPaterno??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
+                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoPaterno??"", style: TextStyle(color: Colors.black54, fontSize: 13),),),
                                           SizedBox(width: 25,),
-                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoMaterno??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
+                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.apellidoMaterno??"", style: TextStyle(color: Colors.black54, fontSize: 13),),),
                                           SizedBox(width: 25,),
-                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.correo??"", style: TextStyle(color: Colors.black54, fontSize: 14),),),
+                                          GeneralStyleContainer(child: Text(RxVariables.userById.user!.correo??"", style: TextStyle(color: Colors.black54, fontSize: 13),),),
                                         ],
                                       ),
-                                      SizedBox(height: 25,),
+                                      SizedBox(height: 15,),
                                       Row(
                                         children: [
                                           Flexible(child: listProfile()),
@@ -215,7 +215,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
         key: plantsKey,
         initiallyExpanded: false,
         title: Text( plant.nombrePlanta ?? RxVariables.userSelected.nombrePlanta!,
-        style:  TextStyle(color: Colors.black54, fontSize: 14),),
+        style:  TextStyle(color: Colors.black54, fontSize: 13),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -242,7 +242,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.userById.listPlants![index].nombrePlanta!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
+                            child: Text( RxVariables.userById.listPlants![index].nombrePlanta!, style:  TextStyle(color: Colors.black54, fontSize: 13)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -272,7 +272,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
         key: profileKey,
         initiallyExpanded: false,
         title: Text( profile.perfil?? "* Perfil",
-        style:  TextStyle(color: Colors.black54, fontSize: 14),),
+        style:  TextStyle(color: Colors.black54, fontSize: 13),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -299,7 +299,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.userById.listProfiles![index].perfil!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
+                            child: Text( RxVariables.userById.listProfiles![index].perfil!, style:  TextStyle(color: Colors.black54, fontSize: 13)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -329,7 +329,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
         key: statusKey,
         initiallyExpanded: false,
         title: Text( status.estatus ?? RxVariables.userSelected.estatus!,
-        style:  TextStyle(color: Colors.black54, fontSize: 14),),
+        style:  TextStyle(color: Colors.black54, fontSize: 13),),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
@@ -356,7 +356,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text( RxVariables.userById.listStatus![index].estatus!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
+                            child: Text( RxVariables.userById.listStatus![index].estatus!, style:  TextStyle(color: Colors.black54, fontSize: 13)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -386,7 +386,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
         key: customerKey,
         initiallyExpanded: false,
         title: Text( customer.nombreCliente ?? RxVariables.userSelected.nombreCliente!,
-        style:  TextStyle(color: Colors.black54, fontSize: 14),),
+        style:  TextStyle(color: Colors.black54, fontSize: 13),),
         children: [
           Container(
             child: FutureBuilder(
@@ -412,7 +412,7 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text(RxVariables.userById.listCustomers![index].nombreCliente!, style:  TextStyle(color: Colors.black54, fontSize: 14)),
+                            child: Text(RxVariables.userById.listCustomers![index].nombreCliente!, style:  TextStyle(color: Colors.black54, fontSize: 13)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
