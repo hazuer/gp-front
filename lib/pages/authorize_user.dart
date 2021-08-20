@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/constants/page_titles.dart';
+//import 'package:general_products_web/constants/page_titles.dart';
 import 'package:general_products_web/models/customer_model.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/profile_model.dart';
@@ -53,13 +53,13 @@ class _AuthorizeUserPageState extends State<AuthorizeUserPage> {
                 if(snapshot.hasData){
                   return Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: 10,
-                    ),
+                    //SizedBox(
+                      //height: 10,
+                    //),
                     Container(
                       width: double.infinity,
                       //height: MediaQuery.of(context).size.width*.8,
-                      margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 26.0),
+                      margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                       child:  Column( 
                         children: <Widget>[
                         Container(

@@ -14,13 +14,12 @@ class CatalogPage extends StatelessWidget {
             color: Color(0xffF5F6F5),
             child: Column(
               children: <Widget>[
-                SizedBox(
-                  height: 10,
-                ),
+                //SizedBox(
+                  //height: 10,
+                //),
                 Container(
                   width: double.infinity,
-                  margin:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 26.0),
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                   child: Column(children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width,

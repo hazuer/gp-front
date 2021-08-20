@@ -24,11 +24,14 @@ class AppScaffold extends StatelessWidget {
         Expanded(
           child: Scaffold(
             //backgroundColor: Color(0xffF5F6F5),
-            appBar: AppBar(
-              // when the app isn't displaying the mobile version of app, hide the menu button that is used to open the navigation drawer
-              automaticallyImplyLeading: displayMobileLayout,
-              title: Text(pageTitle, style: TextStyle(color: GPColors.BreadcrumTitle, fontSize: 16.08, fontWeight: FontWeight.w100)),
-              iconTheme: IconThemeData(color: Color(0xff313945)),
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(40.0),
+              child: AppBar(
+                // when the app isn't displaying the mobile version of app, hide the menu button that is used to open the navigation drawer
+                automaticallyImplyLeading: displayMobileLayout,
+                title: Text(pageTitle, style: TextStyle(color: GPColors.BreadcrumTitle, fontSize: 16.00, fontWeight: FontWeight.w100)),
+                iconTheme: IconThemeData(color: Color(0xff313945)),
+              ),
             ),
             drawer: displayMobileLayout
                 ? const AppDrawer(
