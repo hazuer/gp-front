@@ -304,7 +304,9 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
                               leading: const Icon(Icons.format_color_fill, size: 27),
-                              title: const Text('Taras',),
+                              title: const Text('Taras',style: TextStyle(
+                                fontSize: 13,
+                              )),
                               onTap: () async {
                                 await _navigateTo(context, RouteNames.taraIndex);
                               },
