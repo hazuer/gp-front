@@ -9,5 +9,6 @@ class RouteNames {
   static const String reports = '/reports';
   static const String authorizeUser = "/authorize";
   static const String editUser = "/edit";
+  static const String taraIndex = "/catalogo/taras";
 
 }

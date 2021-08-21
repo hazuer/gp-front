@@ -12,6 +12,7 @@ import 'pages/home_page.dart';
 import 'pages/settings_page.dart';
 import 'pages/slideshow_page.dart';
 import 'widgets/app_route_observer.dart';
+import 'pages/tara/index.dart';
 
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +57,7 @@ class GeneralProductsApp extends StatelessWidget {
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
         ),
       ),
-      initialRoute: RouteNames.login,
+      initialRoute: RouteNames.taraIndex,
       navigatorObservers: [AppRouteObserver()],
       routes: {
         RouteNames.login        : (_) => LoginPage(),
@@ -68,7 +69,8 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.recoveryPwd  : (_) => RecoveryPasswordPage(),
         RouteNames.register     : (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
-        RouteNames.editUser     : (_) => EditUserPage()
+        RouteNames.editUser     : (_) => EditUserPage(),
+        RouteNames.taraIndex    : (_) => TaraIndex(),
 
       },
     );
