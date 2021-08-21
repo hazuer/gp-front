@@ -154,9 +154,12 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             },
                             selected: _selectedRoute == RouteNames.settings,
                           )),
-                      ListTileTheme(
-                          iconColor: Color(0xffE7E7E7),
-                          child: ListTile(
+                    ListTileTheme(
+                        iconColor: Color(0xffE7E7E7),
+                        child: AppExpansionTile(
+                          backgroundColor: Colors.white10,
+                          title: ListTile(
+                            contentPadding: EdgeInsets.zero,
                             leading: const Icon(Icons.assignment, size: 27),
                             title: const Text(
                               PageTitles.formWorks,
@@ -168,14 +171,43 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                               await _navigateTo(context, RouteNames.ordersWork);
                             },
                             selected: _selectedRoute == RouteNames.ordersWork,
-                          )),
+                          ),
+                          children: [
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.delivery_dining, size: 27),
+                              title: const Text("Entregas",
+                                style: TextStyle(
+                                fontSize: 13,
+                              )
+                              ),
+                              onTap: () async {
+                                //await _navigateTo(context, RouteNames.paises);
+                              },
+                              //selected: _selectedRoute == RouteNames.paises,
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: const Icon(Icons.assignment_return, size: 27),
+                              title: const Text('Devoluciones',style: TextStyle(
+                                fontSize: 13,
+                              )),
+                              onTap: () async {
+                                //await _navigateTo(context, RouteNames.taraIndex);
+                              },
+                              //selected: _selectedRoute == RouteNames.taraIndex,
+                            ),
+                          ],
+                        ),
+                      ),
+
                       ListTileTheme(
                         iconColor: Color(0xffE7E7E7),
                         child: AppExpansionTile(
                           backgroundColor: Colors.white10,
                           title: ListTile(
                             contentPadding: EdgeInsets.zero,
-                            leading: const Icon(Icons.menu_book),
+                            leading: const Icon(Icons.menu_book, size: 27),
                             title: const Text(
                               PageTitles.catalogs,
                               style: TextStyle(
@@ -190,9 +222,11 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                           children: [
                             ListTile(
                               // contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.public),
+                              leading: const Icon(Icons.public, size: 27),
                               title: const Text(
-                                PageTitles.paises,
+                                PageTitles.paises,style: TextStyle(
+                                fontSize: 13,
+                              )
                               ),
                               onTap: () async {
                                 await _navigateTo(context, RouteNames.paises);
@@ -202,8 +236,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             // TODO: Crear cada pagina y ponerlas con el estandar
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.brush),
-                              title: const Text('Diseños'),
+                              leading: const Icon(Icons.brush, size: 27),
+                              title: const Text('Diseños',style: TextStyle(
+                                fontSize: 13,
+                              )),
                               onTap: () async {
                                 // await _navigateTo(context, RouteNames.paises);
                               },
@@ -211,8 +247,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.color_lens),
-                              title: const Text('Tintas'),
+                              leading: const Icon(Icons.color_lens, size: 27),
+                              title: const Text('Tintas',style: TextStyle(
+                                fontSize: 13,
+                              )),
                               onTap: () async {
                                 // await _navigateTo(context, RouteNames.paises);
                               },
@@ -220,8 +258,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.corporate_fare),
-                              title: const Text('Plantas'),
+                              leading: const Icon(Icons.corporate_fare, size: 27),
+                              title: const Text('Plantas',style: TextStyle(
+                                fontSize: 13,
+                              )),
                               onTap: () async {
                                 // await _navigateTo(context, RouteNames.paises);
                               },
@@ -229,8 +269,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.topic),
-                              title: const Text('Razones'),
+                              leading: const Icon(Icons.topic, size: 27),
+                              title: const Text('Razones',style: TextStyle(
+                                fontSize: 13,
+                              )),
                               onTap: () async {
                                 // await _navigateTo(context, RouteNames.paises);
                               },
@@ -238,8 +280,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.groups),
-                              title: const Text('Clientes'),
+                              leading: const Icon(Icons.groups, size: 27),
+                              title: const Text('Clientes',style: TextStyle(
+                                fontSize: 13,
+                              )),
                               onTap: () async {
                                 // await _navigateTo(context, RouteNames.paises);
                               },
@@ -248,8 +292,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
                               leading:
-                                  const Icon(Icons.precision_manufacturing),
-                              title: const Text('Maquinas'),
+                                  const Icon(Icons.precision_manufacturing, size: 27),
+                              title: const Text('Maquinas',style: TextStyle(
+                                fontSize: 13,
+                              )),
                               onTap: () async {
                                 // await _navigateTo(context, RouteNames.paises);
                               },
@@ -257,8 +303,8 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.format_color_fill),
-                              title: const Text('Taras'),
+                              leading: const Icon(Icons.format_color_fill, size: 27),
+                              title: const Text('Taras',),
                               onTap: () async {
                                 await _navigateTo(context, RouteNames.taraIndex);
                               },
