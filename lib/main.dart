@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/authorize_user.dart';
+import 'package:general_products_web/pages/edit_country_page.dart';
 import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
+import 'package:general_products_web/pages/paises_page.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'app/auth/login.dart';
 import 'constants/route_names.dart';
@@ -14,14 +16,13 @@ import 'pages/slideshow_page.dart';
 import 'widgets/app_route_observer.dart';
 import 'pages/tara/index.dart';
 
-void main()async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //final prefs = new UserPreferences();
   //await prefs.initPrefs();
 
   runApp(GeneralProductsApp());
-
-} 
+}
 
 class GeneralProductsApp extends StatelessWidget {
   @override
@@ -60,18 +61,19 @@ class GeneralProductsApp extends StatelessWidget {
       initialRoute: RouteNames.taraIndex,
       navigatorObservers: [AppRouteObserver()],
       routes: {
-        RouteNames.login        : (_) => LoginPage(),
-        RouteNames.home         : (_) => HomePage(),
-        RouteNames.ordersWork   : (_) => const OrdersWorkPage(),
-        RouteNames.catalogs     : (_) => const CatalogPage(),
-        RouteNames.settings     : (_) => const SettingsPage(),
-        RouteNames.reports      : (_) => ReportsPage(),
-        RouteNames.recoveryPwd  : (_) => RecoveryPasswordPage(),
-        RouteNames.register     : (_) => RegisterPage(),
+        RouteNames.login: (_) => LoginPage(),
+        RouteNames.home: (_) => HomePage(),
+        RouteNames.ordersWork: (_) => const OrdersWorkPage(),
+        RouteNames.catalogs: (_) => const CatalogPage(),
+        RouteNames.settings: (_) => const SettingsPage(),
+        RouteNames.reports: (_) => ReportsPage(),
+        RouteNames.recoveryPwd: (_) => RecoveryPasswordPage(),
+        RouteNames.register: (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
         RouteNames.editUser     : (_) => EditUserPage(),
+        RouteNames.paises: (_) => PaisesPage(),
+        RouteNames.editCountry: (_) => EditCountryPage(),
         RouteNames.taraIndex    : (_) => TaraIndex(),
-
       },
     );
   }
