@@ -25,4 +25,7 @@ class RoutesProvider {
   String editUserPermissions = "editar-usuarios-permisos";
 
   String listPaises = "catalogo/listar-paises";
+  String editarPais = "catalogo/editar-paises";
+  String crearPais = "catalogo/crear-paises";
+  String desactivarPais = "catalogo/editar-estatus-paises";
 }

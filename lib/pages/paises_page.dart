@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/list_paises_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
@@ -15,7 +16,10 @@ class _PaisesPageState extends State<PaisesPage> {
   late Future futurePaises;
   late Future futureFields;
   bool isLoading = false;
+  String path = "?porPagina=10";
+  StatusModel status = StatusModel();
   final paisController = TextEditingController();
+  final paisNuevoController = TextEditingController();
   ListPaisesProvider listPaisesProvider = ListPaisesProvider();
 
   @override
@@ -26,7 +30,7 @@ class _PaisesPageState extends State<PaisesPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
+    final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
       pageTitle: 'Paises / Listado de paises',
@@ -37,10 +41,7 @@ class _PaisesPageState extends State<PaisesPage> {
             children: [
               SizedBox(height: 10.0),
               Container(
-                // color: Color(0xffffffff),
                 width: double.infinity,
-                // height: 500.0,
-                // height: MediaQuery.of(context).size.width * .8,
                 margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 26.0),
                 child: Column(
                   children: [
@@ -60,63 +61,140 @@ class _PaisesPageState extends State<PaisesPage> {
                                 fontWeight: FontWeight.w200),
                           ),
                           Divider(),
-                          // displayMobileLayout
-                          Container(
-                            // height: MediaQuery.of(context).size.height * .7,
-                            height: MediaQuery.of(context).size.height * .2,
-                            child: Row(
-                              children: [
-                                Flexible(
-                                  child: CustomInput(
-                                    controller: paisController,
-                                    hint: '* Pais',
+                          displayMobileLayout
+                              ? Column(children: [
+                                  Container(
+                                      child: Column(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .8,
+                                        child: CustomInput(
+                                          controller: paisNuevoController,
+                                          hint: '* Pais',
+                                        ),
+                                      ),
+                                      SizedBox(height: 25),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .8,
+                                        title: 'Nuevo',
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          await listPaisesProvider.crearPais(
+                                            paisNuevoController.text.trim(),
+                                          );
+                                          paisNuevoController.clear();
+                                          FocusScope.of(context).unfocus();
+                                        },
+                                      ),
+                                    ],
+                                  )),
+                                  Container(
+                                    // height: MediaQuery.of(context).size.height * .7,
+                                    height:
+                                        MediaQuery.of(context).size.height * .2,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .5,
+                                          child: CustomInput(
+                                            controller: paisController,
+                                            hint: '* Pais',
+                                          ),
+                                        ),
+                                        SizedBox(width: 25),
+                                        IconButton(
+                                          onPressed: () async {
+                                            await _applyFilter();
+                                            paisController.clear();
+                                            FocusScope.of(context).unfocus();
+                                          },
+                                          icon: Icon(Icons.filter_alt),
+                                        ),
+                                        SizedBox(width: 25),
+                                        IconButton(
+                                          onPressed: () {
+                                            // await clearFilters();
+                                          },
+                                          icon: Icon(Icons.clear),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 25),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.filter_alt),
-                                ),
-                                SizedBox(width: 25),
-                                IconButton(
-                                  onPressed: () {
-                                    // await clearFilters();
-                                  },
-                                  icon: Icon(Icons.clear),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 70.0),
-                          // Table(
-                          //   border: TableBorder.all(),
-                          //   children: [
-                          //     TableRow(
-                          //       decoration:
-                          //           BoxDecoration(color: Color(0xff2b3f55)),
-                          //       children: [
-                          //         Container(
-                          //           alignment: AlignmentDirectional.center,
-                          //           child: Text('Pais',
-                          //               style: TextStyle(color: Colors.white)),
-                          //         ),
-                          //         Container(
-                          //           alignment: AlignmentDirectional.center,
-                          //           child: Text('Estatus',
-                          //               style: TextStyle(color: Colors.white)),
-                          //         ),
-                          //         Container(
-                          //           alignment: AlignmentDirectional.center,
-                          //           child: Text('Opciones',
-                          //               style: TextStyle(color: Colors.white)),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //     _tableRow(Colors.white),
-                          //     _tableRow(Colors.black12),
-                          //     _tableRow(Colors.white),
-                          //   ],
-                          // ),
+                                ])
+                              : Column(children: [
+                                  Container(
+                                      child: Row(
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        child: CustomInput(
+                                          controller: paisNuevoController,
+                                          hint: '* Pais',
+                                        ),
+                                      ),
+                                      SizedBox(width: 25),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: 'Nuevo',
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          await listPaisesProvider.crearPais(
+                                            paisNuevoController.text.trim(),
+                                          );
+                                          paisNuevoController.clear();
+                                          FocusScope.of(context).unfocus();
+                                        },
+                                      ),
+                                    ],
+                                  )),
+                                  Container(
+                                    // height: MediaQuery.of(context).size.height * .7,
+                                    height:
+                                        MediaQuery.of(context).size.height * .1,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .2,
+                                          child: CustomInput(
+                                            controller: paisController,
+                                            hint: '* Pais',
+                                          ),
+                                        ),
+                                        SizedBox(width: 25),
+                                        IconButton(
+                                          onPressed: () async {
+                                            await _applyFilter();
+                                            paisController.clear();
+                                            FocusScope.of(context).unfocus();
+                                          },
+                                          icon: Icon(Icons.filter_alt),
+                                        ),
+                                        SizedBox(width: 25),
+                                        IconButton(
+                                          onPressed: () {
+                                            // await clearFilters();
+                                          },
+                                          icon: Icon(Icons.clear),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ]),
+                          SizedBox(height: 20.0),
                           isLoading
                               ? Container(
                                   margin: EdgeInsets.only(top: 50),
@@ -141,24 +219,24 @@ class _PaisesPageState extends State<PaisesPage> {
     );
   }
 
-  TableRow _tableRow(Color color) {
-    return TableRow(
-      decoration: BoxDecoration(color: color),
-      children: [
-        Text(''),
-        Text(''),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 50.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Icon(Icons.check_box),
-              Icon(Icons.edit),
-              Icon(Icons.block),
-            ],
-          ),
-        ),
-      ],
-    );
+  _applyFilter() async {
+    path = "?porPagina=10";
+    if (paisController.text.isNotEmpty) {
+      path = path + "&nombre_pais=${paisController.text.trim()}";
+    }
+    // if (status.idCatEstatus != null) {
+    //   path = path + "&id_cat_estatus=${status.idCatEstatus}";
+    // }
+
+    print(path);
+    setState(() {
+      isLoading = true;
+    });
+
+    await listPaisesProvider.listPaisesWithFilters(path).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 }

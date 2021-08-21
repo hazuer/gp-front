@@ -24,8 +24,8 @@ class _TablePaisesListState extends State<TablePaisesList> {
       height: MediaQuery.of(context).size.height * 0.4,
       child: StreamBuilder(
         stream: rxVariables.listPaisesStream,
-        builder:
-            (BuildContext context, AsyncSnapshot<List<PaisesList>> snapshot) {
+        builder: (BuildContext context,
+            AsyncSnapshot<List<CountriesList>> snapshot) {
           if (snapshot.hasError) {
             return Text(RxVariables.errorMessage);
           }
@@ -91,7 +91,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                             Align(
                               alignment: Alignment.center,
                               child: Text(
-                                snapshot.data![index].nombrePais,
+                                snapshot.data![index].nombrePais ?? '',
                                 style: TextStyle(fontSize: 14),
                               ),
                             ),
@@ -100,7 +100,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                             Align(
                               alignment: Alignment.center,
                               child: Text(
-                                snapshot.data![index].estatus,
+                                snapshot.data![index].estatus ?? '',
                                 style: TextStyle(fontSize: 14),
                               ),
                             ),
@@ -116,32 +116,39 @@ class _TablePaisesListState extends State<TablePaisesList> {
                                     icon: Icon(Icons.check_box_rounded,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      // RxVariables.userSelected =
-                                      //     snapshot.data![index];
-                                      // Navigator.pushNamed(
-                                      //     context, RouteNames.authorizeUser);
+                                      dialogs.showEnalbledCountryDialog(
+                                          context, snapshot.data![index]);
                                     },
                                   ),
                                   IconButton(
                                     tooltip: 'Editar pais',
-                                    icon: Icon(Icons.check_box_rounded,
+                                    icon: Icon(Icons.edit,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      // RxVariables.userSelected =
-                                      //     snapshot.data![index];
-                                      // Navigator.pushNamed(
-                                      //     context, RouteNames.authorizeUser);
+                                      RxVariables.countrySelected =
+                                          snapshot.data![index];
+                                      Navigator.pushNamed(
+                                          context, RouteNames.editCountry,
+                                          arguments:
+                                              snapshot.data![index].idCatPais);
                                     },
                                   ),
                                   IconButton(
                                     tooltip: 'Desactivar pais',
-                                    icon: Icon(Icons.check_box_rounded,
+                                    icon: Icon(Icons.not_interested_outlined,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      // RxVariables.userSelected =
-                                      //     snapshot.data![index];
-                                      // Navigator.pushNamed(
-                                      //     context, RouteNames.authorizeUser);
+                                      dialogs.showDisabledCountryDialog(
+                                          context, snapshot.data![index]);
+                                    },
+                                  ),
+                                  IconButton(
+                                    tooltip: 'Eliminar pais',
+                                    icon: Icon(Icons.delete,
+                                        size: 18, color: GPColors.PrimaryColor),
+                                    onPressed: () {
+                                      dialogs.showDeleteCountryDialog(
+                                          context, snapshot.data![index]);
                                     },
                                   ),
                                 ],
