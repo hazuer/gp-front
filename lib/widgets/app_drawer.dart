@@ -260,9 +260,9 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                               leading: const Icon(Icons.format_color_fill),
                               title: const Text('Taras'),
                               onTap: () async {
-                                // await _navigateTo(context, RouteNames.paises);
+                                await _navigateTo(context, RouteNames.taraIndex);
                               },
-                              // selected: _selectedRoute == RouteNames.paises,
+                              selected: _selectedRoute == RouteNames.taraIndex,
                             ),
                           ],
                         ),
