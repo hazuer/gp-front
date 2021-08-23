@@ -9,7 +9,12 @@ class RouteNames {
   static const String reports = '/reports';
   static const String authorizeUser = "/authorize";
   static const String editUser = "/edit";
-  static const String taraIndex = "/catalogo/taras";
+
+  //CRUD Taras
+  static const String taraIndex   = "/catalogo/taras";
+  static const String taraStore   = "/catalogo/taras/create";
+  static const String taraUpdate  = "/catalogo/taras/update";
+  //static const String taraDestroy = "/catalogo/taras/destroy";
 
   static const String paises = '/paises';
   static const String editCountry = '/edit-country';
