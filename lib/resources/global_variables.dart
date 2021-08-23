@@ -13,11 +13,12 @@ class RxVariables {
   static List<Plant> plantsAvailables = [];
   static List<Customer> customerAvailables = [];
   static List<UserList> listFilter = [];
-  static List<CountriesList> cpuntriesList = [];
+  static List<CountriesList> countriesList = [];
   static UserList userSelected = UserList();
   static CountriesList countrySelected = CountriesList();
   static ListUsersModel listUsers = ListUsersModel(userList: []);
   static ListPaisesModel listPaises = ListPaisesModel(countriesList: []);
+  static ListClientesModel listClientes = ListClientesModel(customersList: []);
   static DataListUserModel dataFromUsers = DataListUserModel();
   static String errorMessage = "";
   static SearchUserResponse userById = SearchUserResponse();

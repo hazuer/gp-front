@@ -43,7 +43,7 @@ class _TaraIndexState extends State<TaraIndex> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Listados de Taras",
+      pageTitle: "Catálogos / Taras",
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

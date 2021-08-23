@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/authorize_user.dart';
-import 'package:general_products_web/pages/clientes/index.dart';
+import 'package:general_products_web/pages/cliente/edit.dart';
+import 'package:general_products_web/pages/cliente/index.dart';
+import 'package:general_products_web/pages/cliente/store.dart';
 import 'package:general_products_web/pages/edit_country_page.dart';
 import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
@@ -76,6 +78,8 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.editCountry: (_) => EditCountryPage(),
         RouteNames.taraIndex: (_) => TaraIndex(),
         RouteNames.clienteIndex: (_) => ClientesIndex(),
+        RouteNames.clienteUpdate: (_) => ClienteEdit(),
+        RouteNames.clienteStore: (_) => ClienteStore(),
       },
     );
   }
