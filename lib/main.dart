@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/authorize_user.dart';
+import 'package:general_products_web/pages/clientes/index.dart';
 import 'package:general_products_web/pages/edit_country_page.dart';
 import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
@@ -58,7 +59,7 @@ class GeneralProductsApp extends StatelessWidget {
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
         ),
       ),
-      initialRoute: RouteNames.login,
+      initialRoute: RouteNames.home,
       navigatorObservers: [AppRouteObserver()],
       routes: {
         RouteNames.login: (_) => LoginPage(),
@@ -70,10 +71,11 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.recoveryPwd: (_) => RecoveryPasswordPage(),
         RouteNames.register: (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
-        RouteNames.editUser     : (_) => EditUserPage(),
+        RouteNames.editUser: (_) => EditUserPage(),
         RouteNames.paises: (_) => PaisesPage(),
         RouteNames.editCountry: (_) => EditCountryPage(),
-        RouteNames.taraIndex    : (_) => TaraIndex(),
+        RouteNames.taraIndex: (_) => TaraIndex(),
+        RouteNames.clienteIndex: (_) => ClientesIndex(),
       },
     );
   }

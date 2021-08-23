@@ -13,4 +13,5 @@ class RouteNames {
 
   static const String paises = '/paises';
   static const String editCountry = '/edit-country';
+  static const String clienteIndex = 'catalogo/clientes';
 }
