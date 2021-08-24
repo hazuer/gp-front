@@ -84,8 +84,6 @@ class _ClienteEditState extends State<ClienteEdit> {
                                         controller: clienteCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),
-                                    // CustomInput(
-                                    //     hint: 'Planta', controller: plantaCtrl),
                                     SizedBox(height: 15),
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
@@ -93,12 +91,15 @@ class _ClienteEditState extends State<ClienteEdit> {
                                       title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
+                                        print(
+                                            'Solo ${clienteInfo['nombreCliente']}');
                                         final int idCliente =
                                             clienteInfo['idCliente'];
                                         await clientesProvider.editCliente(
                                             idCliente,
                                             clienteCtrl.text.trim(),
                                             plant.idCatPlanta!);
+
                                         Navigator.pushReplacementNamed(
                                             context, RouteNames.clienteIndex);
                                       },

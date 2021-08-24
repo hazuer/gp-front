@@ -83,8 +83,6 @@ class _ClienteStoreState extends State<ClienteStore> {
                                         controller: clienteCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),
-                                    // CustomInput(
-                                    //     hint: 'Planta', controller: plantaCtrl),
                                     SizedBox(height: 15),
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
@@ -121,11 +119,6 @@ class _ClienteStoreState extends State<ClienteStore> {
                                             )),
                                             SizedBox(width: 15),
                                             Flexible(child: listPlants()),
-                                            // Flexible(
-                                            //     child: CustomInput(
-                                            //   controller: clienteCtrl,
-                                            //   hint: 'Planta',
-                                            // )),
                                             SizedBox(width: 15),
                                             CustomButton(
                                               width: MediaQuery.of(context)
