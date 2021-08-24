@@ -3,6 +3,7 @@ import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/cliente/clientes_provider.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
@@ -26,12 +27,15 @@ class _ClienteEditState extends State<ClienteEdit> {
   Plant plant = Plant();
   StatusModel status = StatusModel();
   ClientesProvider clientesProvider = ClientesProvider();
-  final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
+  ListUsersProvider listProvider = ListUsersProvider();
+
+  final GlobalKey<AppExpansionTileState> plantKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureFields = clientesProvider.listClientes();
+    futureClients = clientesProvider.listClientes();
+    futureFields = listProvider.listUsers();
     super.initState();
   }
 
@@ -89,7 +93,12 @@ class _ClienteEditState extends State<ClienteEdit> {
                                       title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
-                                        // await applyFilter();
+                                        final int idCliente =
+                                            clienteInfo['idCliente'];
+                                        await clientesProvider.editCliente(
+                                            idCliente,
+                                            clienteCtrl.text.trim(),
+                                            plant.idCatPlanta!);
                                         Navigator.pushReplacementNamed(
                                             context, RouteNames.clienteIndex);
                                       },
@@ -116,11 +125,6 @@ class _ClienteEditState extends State<ClienteEdit> {
                                             )),
                                             SizedBox(width: 15),
                                             Flexible(child: listPlants()),
-                                            // Flexible(
-                                            //     child: CustomInput(
-                                            //   controller: clienteCtrl,
-                                            //   hint: 'Planta',
-                                            // )),
                                             SizedBox(width: 15),
                                             CustomButton(
                                               width: MediaQuery.of(context)
@@ -130,7 +134,13 @@ class _ClienteEditState extends State<ClienteEdit> {
                                               title: 'Guardar',
                                               isLoading: false,
                                               onPressed: () async {
-                                                // await applyFilter();
+                                                final int idCliente =
+                                                    clienteInfo['idCliente'];
+                                                await clientesProvider
+                                                    .editCliente(
+                                                        idCliente,
+                                                        clienteCtrl.text.trim(),
+                                                        plant.idCatPlanta!);
                                                 Navigator.pushReplacementNamed(
                                                     context,
                                                     RouteNames.clienteIndex);
@@ -160,7 +170,7 @@ class _ClienteEditState extends State<ClienteEdit> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: plantsKey,
+        key: plantKey,
         initiallyExpanded: false,
         title: Text(
           plant.nombrePlanta ?? 'Planta',
@@ -183,7 +193,7 @@ class _ClienteEditState extends State<ClienteEdit> {
                           setState(() {
                             plant =
                                 RxVariables.dataFromUsers.listPlants![index];
-                            plantsKey.currentState!.collapse();
+                            plantKey.currentState!.collapse();
                           });
                         },
                         child: Container(
