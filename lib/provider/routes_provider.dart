@@ -35,4 +35,7 @@ class RoutesProvider {
   String desactivarClientes = "catalogo/editar-estatus-clientes";
   String eliminarClientes = "catalogo/editar-estatus-clientes";
   String plantasClientes = "datos-plantas-clientes";
+
+  //Taras
+  String listarTaras = "catalogo/listar-taras";
 }
