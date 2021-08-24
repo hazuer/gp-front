@@ -7,8 +7,9 @@ import 'package:general_products_web/models/login_response.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/search_user_response.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:general_products_web/models/tara/list_taras_model.dart';
-
+//Taras
+import 'package:general_products_web/models/tara/dtTaraModel.dart';
+import 'package:general_products_web/models/tara/taraModel.dart';
 
 class RxVariables {
   static LoginResponse loginResponse = LoginResponse();
@@ -21,9 +22,6 @@ class RxVariables {
   static ListUsersModel listUsers = ListUsersModel(userList: []);
   static ListPaisesModel listPaises = ListPaisesModel(countriesList: []);
   static ListClientesModel listClientes = ListClientesModel(customersList: []);
-
-  static TaraList taraSelected = TaraList();
-  static ListTarasModel listTaras = ListTarasModel(tarassList: []);
 
   static DataListUserModel dataFromUsers = DataListUserModel();
   static String errorMessage = "";
@@ -45,9 +43,11 @@ class RxVariables {
   Stream<List<CustomersList>> get listClientesStream =>
       listClientesFilter.stream;
 
-
-  final lsTarasFiltros = BehaviorSubject<List<TaraList>>();
-  Stream<List<TaraList>> get lsTarasFiltrosStream => lsTarasFiltros.stream;
+  //Taras
+  static TaraModel gvTaraSelected = TaraModel();
+  static DtTaraModel gvListTaras  = DtTaraModel(tarassList: []);
+  final gvBeSubListTaras          = BehaviorSubject<List<TaraModel>>();
+  Stream<List<TaraModel>> get lsTarasFiltrosStream => gvBeSubListTaras.stream;
 
   static final RxVariables _bloc = new RxVariables._internal();
 
@@ -61,7 +61,7 @@ class RxVariables {
     listUsersFilter.close();
     listPaisesFilter.close();
     listClientesFilter.close();
-    lsTarasFiltros.close();
+    gvBeSubListTaras.close();
   }
 }
 

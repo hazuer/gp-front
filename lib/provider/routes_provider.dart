@@ -36,5 +36,6 @@ class RoutesProvider {
   String eliminarClientes = "catalogo/eliminar-clientes";
   String plantasClientes = "datos-plantas-clientes";
 
-   String listarTaras = "catalogo/listar-taras";
+  //Taras
+  String listarTaras = "catalogo/listar-taras";
 }

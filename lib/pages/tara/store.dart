@@ -7,7 +7,7 @@ import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
-import 'package:general_products_web/widgets/tara/table_tara.dart';
+import 'package:general_products_web/widgets/tara/tblTara.dart';
 
 import '../../widgets/app_scaffold.dart';
 
