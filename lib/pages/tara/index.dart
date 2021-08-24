@@ -6,7 +6,7 @@ import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/provider/tara/list_tara_provider.dart';
 import 'package:general_products_web/widgets/tara/table_tara.dart';
 
 import '../../widgets/app_scaffold.dart';
@@ -27,14 +27,14 @@ class _TaraIndexState extends State<TaraIndex> {
   TextEditingController capacidadCtrl              = TextEditingController();
   Plant plant                                      = Plant();
   StatusModel status                               = StatusModel();
-  ListUsersProvider usersProvider                        = ListUsersProvider();
+  ListTarasProvider tarasProvider                        = ListTarasProvider();
   final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
   @override
   void initState() {
     //fUser = taraProvider.getListTara();
-    fField = usersProvider.listUsers();
+    fField = tarasProvider.listTaras();
     super.initState();
   }
 
@@ -340,11 +340,11 @@ class _TaraIndexState extends State<TaraIndex> {
     setState(() {
       isLoading = true;
     });
-    await usersProvider.listUsersWithFilters(pathFilter).then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
+    //await tarasProvider.listUsersWithFilters(pathFilter).then((value) {
+      //setState(() {
+        //isLoading = false;
+      //});
+    //});
   }
 
   clearFilters() async {
@@ -357,10 +357,10 @@ class _TaraIndexState extends State<TaraIndex> {
     taraCtrl.clear();
     capacidadCtrl.clear();
 
-    await usersProvider.listUsersWithFilters(pathFilter).then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
+    //await tarasProvider.listUsersWithFilters(pathFilter).then((value) {
+      //setState(() {
+        //isLoading = false;
+      //});
+    //});
   }
 }

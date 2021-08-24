@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/widgets/general_dialog.dart';
-import 'package:general_products_web/models/list_users_model.dart';
+//import 'package:general_products_web/widgets/general_dialog.dart';
+import 'package:general_products_web/models/tara/list_taras_model.dart';
 
 class TableTaraList extends StatefulWidget {
   const TableTaraList({ Key? key }) : super(key: key);
@@ -15,7 +15,7 @@ class TableTaraList extends StatefulWidget {
 }
 
 class _TableTaraListState extends State<TableTaraList> {
-  GeneralDialog dialogs = GeneralDialog();
+  //GeneralDialog dialogs = GeneralDialog();
   bool isLoading        = false;
   @override
   Widget build(BuildContext context) {
@@ -23,8 +23,8 @@ class _TableTaraListState extends State<TableTaraList> {
       width: double.infinity,
       height: MediaQuery.of(context).size.height*.5,
       child: StreamBuilder(
-        stream: rxVariables.listWorkZonesSelectedStream,
-        builder: (BuildContext context, AsyncSnapshot<List<UserList>> snapshot) {
+        stream: rxVariables.lsTarasFiltrosStream,
+        builder: (BuildContext context, AsyncSnapshot<List<TaraList>> snapshot) {
           if(snapshot.hasError){
             return Text(RxVariables.errorMessage);
           }
@@ -103,7 +103,7 @@ class _TableTaraListState extends State<TableTaraList> {
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "${snapshot.data![index].nombre??""}",
+                            "${snapshot.data![index].nombreTara??""}",
                             style: TextStyle(fontSize: 13),
                           ),
                         ),
@@ -112,7 +112,7 @@ class _TableTaraListState extends State<TableTaraList> {
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            snapshot.data![index].apellidoPaterno??"",
+                            snapshot.data![index].capacidad??"",
                             style: TextStyle(fontSize: 13),
                           ),
                         ),
@@ -145,7 +145,7 @@ class _TableTaraListState extends State<TableTaraList> {
                                 tooltip: "Editar",
                                 //padding: EdgeInsets.zero,
                                 onPressed: (){
-                                RxVariables.userSelected = snapshot.data![index];
+                                RxVariables.taraSelected = snapshot.data![index];
                                //RxVariables.isEdition = true;
                                Navigator.pushNamed(context, RouteNames.editUser);
                               }, 
@@ -155,10 +155,10 @@ class _TableTaraListState extends State<TableTaraList> {
                                 tooltip: "Eliminar",
                                 //padding: EdgeInsets.zero,
                                 onPressed: (){
-                                dialogs.showDisabledUserDialog(
-                                  context,
-                                  snapshot.data![index],
-                                );
+                                //dialogs.showDisabledUserDialog(
+                                  //context,
+                                  //snapshot.data![index],
+                               // );
                               },
                                 icon: Icon(Icons.not_interested_outlined, size: 18, color: GPColors.PrimaryColor,)
                               )
