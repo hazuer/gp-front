@@ -9,16 +9,16 @@ import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/widgets/tara/tblTara.dart';
 
-import '../../widgets/app_scaffold.dart';
+import '../../../widgets/app_scaffold.dart';
 
-class TaraStore extends StatefulWidget {
-  TaraStore({Key? key}) : super(key: key);
+class TaraEdit extends StatefulWidget {
+  TaraEdit({Key? key}) : super(key: key);
 
   @override
-  _TaraStoreState createState() => _TaraStoreState();
+  _TaraEditState createState() => _TaraEditState();
 }
 
-class _TaraStoreState extends State<TaraStore> {
+class _TaraEditState extends State<TaraEdit> {
   late Future fUser;
   late Future fField;
   bool isLoading                                   = false;
@@ -43,7 +43,7 @@ class _TaraStoreState extends State<TaraStore> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Taras / Crear",
+      pageTitle: "Catálogos / Taras / Editar",
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
@@ -61,7 +61,7 @@ class _TaraStoreState extends State<TaraStore> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Text('Crear', style:
+                        Text('Editar', style:
                           TextStyle(
                             color: Color(0xff313945),
                             fontSize: 13.00,

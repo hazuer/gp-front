@@ -11,9 +11,9 @@ class RouteNames {
   static const String editUser = "/edit";
 
   //CRUD Taras
-  static const String taraIndex = "/catalogo/taras";
-  static const String taraStore = "/catalogo/taras/create";
-  static const String taraUpdate = "/catalogo/taras/update";
+  static const String taraIndex  = "/catalogo/taras";
+  static const String taraCreate = "/catalogo/taras/create";
+  static const String taraEdit   = "/catalogo/taras/edit";
   //static const String taraDestroy = "/catalogo/taras/destroy";
 
   static const String paises = '/paises';

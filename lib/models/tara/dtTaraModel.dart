@@ -1,6 +1,6 @@
- import 'package:general_products_web/models/tara/taraModel.dart';
+ import 'package:general_products_web/models/tara/catTaraModel.dart';
  /*
- * Clase que define el objeto del Datatable del listado de taras
+ * Clase que define los atributos de la tabla cat_tara
  */
 class DtTaraModel {
   DtTaraModel({
@@ -15,14 +15,14 @@ class DtTaraModel {
   int? tarasTotal;
   int? actualPage;
   int? lastPage;
-  List<TaraModel> tarassList;
+  List<CatTaraModel> tarassList;
 
   factory DtTaraModel.fromJson(Map<String, dynamic> json) => DtTaraModel(
     result    : json["result"],
     tarasTotal: json["tarasTotal"],
     actualPage: json["actualPage"],
     lastPage  : json["lastPage"],
-    tarassList: List<TaraModel>.from(json["tarassList"].map((x) => TaraModel.fromJson(x))),
+    tarassList: List<CatTaraModel>.from(json["tarassList"].map((x) => CatTaraModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

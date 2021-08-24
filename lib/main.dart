@@ -17,7 +17,8 @@ import 'pages/home_page.dart';
 import 'pages/settings_page.dart';
 import 'pages/slideshow_page.dart';
 import 'widgets/app_route_observer.dart';
-import 'pages/tara/index.dart';
+import 'pages/catalogs/tara/index.dart';
+import 'pages/catalogs/tara/edit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,6 +78,7 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.paises       : (_) => PaisesPage(),
         RouteNames.editCountry  : (_) => EditCountryPage(),
         RouteNames.taraIndex    : (_) => TaraIndex(),
+        RouteNames.taraEdit     : (_) => TaraEdit(),
         RouteNames.clienteIndex : (_) => ClientesIndex(),
         RouteNames.clienteUpdate: (_) => ClienteEdit(),
         RouteNames.clienteStore : (_) => ClienteStore(),
