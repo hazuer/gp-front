@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/models/customer_model.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/cliente/clientes_provider.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
@@ -23,16 +25,20 @@ class _ClientesIndexState extends State<ClientesIndex> {
   String pathFilter = "?porPagina=20";
   TextEditingController clienteCtrl = TextEditingController();
   TextEditingController plantaCtrl = TextEditingController();
+  Customer customer = Customer();
   Plant plant = Plant();
   StatusModel status = StatusModel();
   ClientesProvider clientesProvider = ClientesProvider();
+  ListUsersProvider listProvider = ListUsersProvider();
+
+  final GlobalKey<AppExpansionTileState> customerKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
   @override
   void initState() {
     futureClientes = clientesProvider.listClientes();
-    // futureFields = clientesProvider.dataListClientes();
+    futureFields = listProvider.dataListUser();
     super.initState();
   }
 
@@ -88,11 +94,12 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                     CustomInput(
                                         hint: 'Cliente',
                                         controller: clienteCtrl),
+                                    // _listClientes(),
                                     SizedBox(height: 15),
-                                    // listPlants(),
-                                    CustomInput(
-                                        hint: 'Planta', controller: plantaCtrl),
+                                    listPlants(),
                                     SizedBox(height: 15),
+                                    listStatus(),
+                                    SizedBox(height: 15.0),
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
                                           .2,
@@ -111,7 +118,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                       title: "Limpiar",
                                       isLoading: false,
                                       onPressed: () async {
-                                        // await clearFilters()();
+                                        // await clearFilters();
                                       },
                                     ),
                                     SizedBox(
@@ -161,13 +168,9 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                                   controller: clienteCtrl),
                                             ),
                                             SizedBox(width: 15.0),
-                                            // listPlants(),
-                                            Flexible(
-                                              child: CustomInput(
-                                                  hint: 'Planta',
-                                                  controller: plantaCtrl),
-                                            ),
-                                            // Flexible(child: 'listStatus()'),
+                                            Flexible(child: listPlants()),
+                                            SizedBox(width: 15.0),
+                                            Flexible(child: listStatus()),
                                             SizedBox(width: 15.0),
                                             IconButton(
                                               onPressed: () async {
@@ -177,7 +180,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                             ),
                                             IconButton(
                                               onPressed: () async {
-                                                // await clearFilters();
+                                                await clearFilters();
                                               },
                                               icon: Icon(Icons.clear),
                                             ),
@@ -283,13 +286,79 @@ class _ClientesIndexState extends State<ClientesIndex> {
     );
   }
 
+  Widget listStatus() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      child: AppExpansionTile(
+        key: statusKey,
+        initiallyExpanded: false,
+        title: Text(
+          status.estatus ?? "* Estatus",
+          style: TextStyle(color: Colors.black54, fontSize: 13),
+        ),
+        children: [
+          Container(
+            //height: MediaQuery.of(context).size.height*.2,
+            child: FutureBuilder(
+              future: futureFields,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: RxVariables.dataFromUsers.listStatus!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            status =
+                                RxVariables.dataFromUsers.listStatus![index];
+                            statusKey.currentState!.collapse();
+                          });
+                        },
+                        child: Container(
+                          color: Colors.grey[100],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                    RxVariables.dataFromUsers.listStatus![index]
+                                        .estatus!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: .5,
+                                color: Colors.grey[300],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   _applyFilter() async {
     pathFilter = "?porPagina=10";
     if (clienteCtrl.text.isNotEmpty) {
       pathFilter = pathFilter + "&nombre_cliente=${clienteCtrl.text.trim()}";
     }
-    if (plantaCtrl.text.isNotEmpty) {
-      pathFilter = pathFilter + "&nombre_planta=${plantaCtrl.text.trim()}";
+    if (plant.idCatPlanta != null) {
+      pathFilter = pathFilter + "&id_cat_planta=${plant.idCatPlanta}";
     }
     if (status.idCatEstatus != null) {
       pathFilter = pathFilter + "&id_cat_estatus=${status.idCatEstatus}";
@@ -300,6 +369,23 @@ class _ClientesIndexState extends State<ClientesIndex> {
       isLoading = true;
     });
     await clientesProvider.listClientesWithFilters(pathFilter).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  clearFilters() async {
+    setState(() {
+      isLoading = true;
+    });
+    pathFilter = "?porPagina=30";
+    plant = Plant();
+    status = StatusModel();
+    customer = Customer();
+    clienteCtrl.clear();
+
+    await listProvider.listUsersWithFilters(pathFilter).then((value) {
       setState(() {
         isLoading = false;
       });

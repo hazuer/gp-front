@@ -11,7 +11,6 @@ import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/widgets/table_user.dart';
 
-
 //import '../constants/page_titles.dart';
 import '../widgets/app_scaffold.dart';
 
@@ -60,12 +59,13 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: <Widget>[
                 //SizedBox(
-                  //height: 10,
+                //height: 10,
                 //),
                 Container(
                     width: double.infinity,
                     //height: MediaQuery.of(context).size.width*.8,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                     child: Column(children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width,
@@ -83,7 +83,9 @@ class _HomePageState extends State<HomePage> {
                                   fontWeight: FontWeight.w200),
                             ),
                             Divider(),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             displayMobileLayout
                                 ? ListView(
                                     shrinkWrap: true,

@@ -137,8 +137,9 @@ class _TableClienteListState extends State<TableClienteList> {
                                     children: [
                                       IconButton(
                                         tooltip: 'Activar cliente',
-                                        //padding: EdgeInsets.zero,
                                         onPressed: () {
+                                          dialogs.showEnabledCustomerDialog(
+                                              context, snapshot.data![index]);
                                           //  Navigator.pushNamed(context, RouteNames.);
                                         },
                                         icon: Icon(Icons.check_box_rounded,
@@ -147,10 +148,7 @@ class _TableClienteListState extends State<TableClienteList> {
                                       ),
                                       IconButton(
                                         tooltip: 'Editar',
-                                        //padding: EdgeInsets.zero,
                                         onPressed: () {
-                                          // RxVariables.userSelected = snapshot.data![index];
-                                          //RxVariables.isEdition = true;
                                           Navigator.pushNamed(
                                               context, RouteNames.clienteUpdate,
                                               arguments: ({
@@ -185,8 +183,6 @@ class _TableClienteListState extends State<TableClienteList> {
                                         onPressed: () {
                                           dialogs.showDeleteCustomerDialog(
                                               context, snapshot.data![index]);
-                                          // dialogs.showDeleteCountryDialog(
-                                          //     context, snapshot.data![index]);
                                         },
                                       ),
                                     ],

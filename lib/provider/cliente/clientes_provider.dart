@@ -111,6 +111,7 @@ class ClientesProvider {
   Future crearCliente(String nombreCliente, int planta) async {
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.crearClientes;
+    print('Planta: $planta');
 
     try {
       final dio = Dio();
