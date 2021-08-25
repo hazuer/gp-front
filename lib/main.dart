@@ -9,6 +9,9 @@ import 'package:general_products_web/pages/edit_country_page.dart';
 import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
 import 'package:general_products_web/pages/paises_page.dart';
+import 'package:general_products_web/pages/razon/edit.dart';
+import 'package:general_products_web/pages/razon/index.dart';
+import 'package:general_products_web/pages/razon/store.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'app/auth/login.dart';
 import 'constants/route_names.dart';
@@ -64,22 +67,25 @@ class GeneralProductsApp extends StatelessWidget {
       initialRoute: RouteNames.taraIndex,
       navigatorObservers: [AppRouteObserver()],
       routes: {
-        RouteNames.login        : (_) => LoginPage(),
-        RouteNames.home         : (_) => HomePage(),
-        RouteNames.ordersWork   : (_) => const OrdersWorkPage(),
-        RouteNames.catalogs     : (_) => const CatalogPage(),
-        RouteNames.settings     : (_) => const SettingsPage(),
-        RouteNames.reports      : (_) => ReportsPage(),
-        RouteNames.recoveryPwd  : (_) => RecoveryPasswordPage(),
-        RouteNames.register     : (_) => RegisterPage(),
+        RouteNames.login: (_) => LoginPage(),
+        RouteNames.home: (_) => HomePage(),
+        RouteNames.ordersWork: (_) => const OrdersWorkPage(),
+        RouteNames.catalogs: (_) => const CatalogPage(),
+        RouteNames.settings: (_) => const SettingsPage(),
+        RouteNames.reports: (_) => ReportsPage(),
+        RouteNames.recoveryPwd: (_) => RecoveryPasswordPage(),
+        RouteNames.register: (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
-        RouteNames.editUser     : (_) => EditUserPage(),
-        RouteNames.paises       : (_) => PaisesPage(),
-        RouteNames.editCountry  : (_) => EditCountryPage(),
-        RouteNames.taraIndex    : (_) => TaraIndex(),
-        RouteNames.clienteIndex : (_) => ClientesIndex(),
+        RouteNames.editUser: (_) => EditUserPage(),
+        RouteNames.paises: (_) => PaisesPage(),
+        RouteNames.editCountry: (_) => EditCountryPage(),
+        RouteNames.taraIndex: (_) => TaraIndex(),
+        RouteNames.clienteIndex: (_) => ClientesIndex(),
         RouteNames.clienteUpdate: (_) => ClienteEdit(),
-        RouteNames.clienteStore : (_) => ClienteStore(),
+        RouteNames.clienteStore: (_) => ClienteStore(),
+        RouteNames.razonIndex: (_) => RazonesIndex(),
+        RouteNames.razonUpdate: (_) => RazonEdit(),
+        RouteNames.razonStore: (_) => RazonStore(),
       },
     );
   }

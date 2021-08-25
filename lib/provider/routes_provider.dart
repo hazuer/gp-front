@@ -38,4 +38,12 @@ class RoutesProvider {
 
   //Taras
   String listarTaras = "catalogo/listar-taras";
+
+  // Razones
+  String listarRazones = "catalogo/listar-razones";
+  String editarRazones = 'catalogo/editar-razones';
+  String crearRazones = 'catalogo/crear-razones';
+  String activarRazones = 'catalogo/editar-estatus-razones';
+  String desactivarRazones = 'catalogo/editar-estatus-razones';
+  String eliminarRazones = 'catalogo/editar-estatus-razones';
 }
