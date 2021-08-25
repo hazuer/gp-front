@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/models/plant_model.dart';
-import 'package:general_products_web/models/status_model.dart';
-import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-//import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/tblTara.dart';
+import 'package:general_products_web/widgets/tara/taraDialog.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
@@ -20,15 +17,14 @@ class TaraCreate extends StatefulWidget {
 }
 
 class _TaraCreateState extends State<TaraCreate> {
-  //late Future fUser;
   late Future futureTara;
-  bool isLoading                                       = false;
-  String headerFilter                                  = "?porPagina = 20";
-  TextEditingController taraCtrl                       = TextEditingController();
-  TextEditingController capacidadCtrl                  = TextEditingController();
-  Plant catPlanta                                      = Plant();
-  StatusModel catEstatus                               = StatusModel();
-  TarasProvider tarasProvider                          = TarasProvider();
+  bool isLoading                      = false;
+  String headerFilter                 = "?porPagina = 20";
+  TextEditingController taraCtrl      = TextEditingController();
+  TextEditingController capacidadCtrl = TextEditingController();
+  Plant catPlanta                     = Plant();
+  TarasProvider tarasProvider         = TarasProvider();
+  TaraDialog dialogs                  = TaraDialog();
   final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
@@ -79,14 +75,41 @@ class _TaraCreateState extends State<TaraCreate> {
                           shrinkWrap: true,
                           children: [
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "Tara"),
+                            CustomInput(controller: taraCtrl, hint: "* Tara"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "Capacidad"),
+                            CustomInput(controller: capacidadCtrl,hint: "* Capacidad"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
-                            listStatus(),
-                            SizedBox(height: 30,),
+                            CustomButton(
+                              width: MediaQuery.of(context).size.width *.2,
+                              title: 'Crear',
+                              isLoading: false,
+                              onPressed: () async {
+                                if(taraCtrl.text.isEmpty || capacidadCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
+                                  dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
+                                }else{
+                                  await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                  if (value == null) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.pop(context);
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                    } else {
+                                      final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                      final message   = value["message"];
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      Navigator.pop(context);
+                                      dialogs.showInfoDialog(context,typeAlert, message);
+                                      //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                    }
+                                  });
+                                }
+                              },
+                            ),
                           ],
                         )
                         // _ _ _       _
@@ -106,24 +129,52 @@ class _TaraCreateState extends State<TaraCreate> {
                                     Flexible(
                                       child: CustomInput(
                                         controller:taraCtrl,
-                                        hint: "Tara"
+                                        hint: "* Tara"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(
                                       child: CustomInput(
                                         controller:capacidadCtrl,
-                                        hint: "Capacidad"
+                                        hint: "* Capacidad"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(child: listPlants()),
                                     SizedBox(width: 15,),
-                                    Flexible(child: listStatus()),
-                                    SizedBox(width: 15,),
+                                    Flexible(child:
+                                    CustomButton(
+                                      width: MediaQuery.of(context).size.width *.2,
+                                      title: 'Crear',
+                                      isLoading: false,
+                                      onPressed: () async {
+                                      if(taraCtrl.text.isEmpty || capacidadCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
+                                        dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
+                                      }else{
+                                        await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                        if (value == null) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.pop(context);
+                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                          } else {
+                                            final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                            final message   = value["message"];
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            Navigator.pop(context);
+                                            dialogs.showInfoDialog(context,typeAlert, message);
+                                            //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                          }
+                                        });
+                                      }
+                                    },
+                                    )
+                                  ),
                                   ],
                                 ),
-                                SizedBox(height: 30,),
                               ],
                             ),
                           ),
@@ -147,7 +198,7 @@ class _TaraCreateState extends State<TaraCreate> {
         key: catPlanKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? "Planta",
+          catPlanta.nombrePlanta ?? "* Planta",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -203,112 +254,4 @@ class _TaraCreateState extends State<TaraCreate> {
     );
   }
 
-  Widget listStatus() {
-    return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
-      child: AppExpansionTile(
-        key: catEstatusKey,
-        initiallyExpanded: false,
-        title: Text(
-          catEstatus.estatus ?? "Estatus",
-          style: TextStyle(color: Colors.black54, fontSize: 13),
-        ),
-        children: [
-          Container(
-            //height: MediaQuery.of(context).size.height*.2,
-            child: FutureBuilder(
-              future: futureTara,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    //physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listStatus!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            catEstatus = RxVariables.dataFromUsers.listStatus![index];
-                            catEstatusKey.currentState!.collapse();
-                          });
-                        },
-                        child: Container(
-                          color: Colors.grey[100],
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                    RxVariables.dataFromUsers.listStatus![index].estatus!,
-                                    style: TextStyle(color: Colors.black54, fontSize: 13
-                                  )
-                                ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: .5,
-                                color: Colors.grey[300],
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  applyFilter() async {
-    headerFilter = "?porPagina=20";
-    if (taraCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&nombre_tara=${taraCtrl.text.trim()}";
-    }
-    if (capacidadCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&capacidad=${capacidadCtrl.text.trim()}";
-    }
-
-    if (catPlanta.idCatPlanta != null) {
-      headerFilter = headerFilter + "&id_cat_planta=${catPlanta.idCatPlanta}";
-    }
-
-    if (catEstatus.idCatEstatus != null) {
-      headerFilter = headerFilter + "&id_cat_estatus=${catEstatus.idCatEstatus}";
-    }
-
-    //print(headerFilter);
-    setState(() {
-      isLoading = true;
-    });
-    //await tarasProvider.headerFilterTara(headerFilter).then((value) {
-      //setState(() {
-        //isLoading = false;
-      //});
-    //});
-  }
-
-  clearFilters() async {
-    setState(() {
-      isLoading = true;
-    });
-    headerFilter = "?porPagina = 30";
-    catPlanta    = Plant();
-    catEstatus   = StatusModel();
-    taraCtrl.clear();
-    capacidadCtrl.clear();
-
-    //await tarasProvider.headerFilterTara(headerFilter).then((value) {
-      //setState(() {
-        //isLoading = false;
-      //});
-    //});
-  }
 }

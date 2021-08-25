@@ -94,4 +94,25 @@ class TarasProvider{
       return null;
     }
   }
+
+  Future createTara (String nombreTara, String capacidad, int idCatPlanta) async {
+  RxVariables.errorMessage = '';
+  String url               = routes.urlBase + routes.crearTaras;
+    try {
+      final dio  = Dio();
+      final data = {'nombre_tara'          : nombreTara, 'capacidad': capacidad, 'id_cat_planta': idCatPlanta};
+      final resp = await dio.post(url, data: data, options          : headerWithToken);
+      await getAllTaras();
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+      .toString()
+      .replaceAll("{", "")
+      .replaceAll("[", "")
+      .replaceAll("}", "")
+      .replaceAll("]", "");
+      rxVariables.gvBeSubListTaras.sink.addError("Ocurrio un error, intenta más tarde "+RxVariables.errorMessage);
+      return null;
+    }
+  }
 }

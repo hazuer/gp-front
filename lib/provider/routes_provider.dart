@@ -37,7 +37,9 @@ class RoutesProvider {
   String plantasClientes = "datos-plantas-clientes";
 
   //Taras
-  String listarTaras = "catalogo/listar-taras";
+  String listarTaras        = "catalogo/listar-taras";
+  String crearTaras         = "catalogo/crear-taras";
+  String changeEstatusTaras = "catalogo/editar-estatus-taras";
 
   // Razones
   String listarRazones = "catalogo/listar-razones";
@@ -46,5 +48,4 @@ class RoutesProvider {
   String activarRazones = 'catalogo/editar-estatus-razones';
   String desactivarRazones = 'catalogo/editar-estatus-razones';
   String eliminarRazones = 'catalogo/editar-estatus-razones';
-  String changeEstatusTaras = "catalogo/editar-estatus-taras";
 }

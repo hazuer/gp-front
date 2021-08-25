@@ -152,7 +152,7 @@ class _TableTaraListState extends State<TableTaraList> {
                                 tooltip: "Editar",
                                 //padding: EdgeInsets.zero,
                                   onPressed: (){
-                                  RxVariables.gvTaraSelected = snapshot.data![index];
+                                  RxVariables.gvTaraSelectedById = snapshot.data![index];
                                 //RxVariables.isEdition = true;
                                 Navigator.pushNamed(context, RouteNames.taraEdit);
                                 },
