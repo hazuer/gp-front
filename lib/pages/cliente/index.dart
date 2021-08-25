@@ -118,7 +118,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                       title: "Limpiar",
                                       isLoading: false,
                                       onPressed: () async {
-                                        // await clearFilters();
+                                        await clearFilters();
                                       },
                                     ),
                                     SizedBox(
