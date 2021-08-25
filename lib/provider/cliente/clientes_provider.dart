@@ -42,7 +42,7 @@ class ClientesProvider {
           .replaceAll("[", "")
           .replaceAll("}", "")
           .replaceAll("]", "");
-      rxVariables.listPaisesFilter.sink.addError(RxVariables.errorMessage +
+      rxVariables.listClientesFilter.sink.addError(RxVariables.errorMessage +
           " Por favor contacta con el administrador");
       return null;
     }
@@ -69,7 +69,7 @@ class ClientesProvider {
           .replaceAll("[", "")
           .replaceAll("}", "")
           .replaceAll("]", "");
-      rxVariables.listUsersFilter.sink.addError(RxVariables.errorMessage +
+      rxVariables.listClientesFilter.sink.addError(RxVariables.errorMessage +
           " Por favor contacta con el administrador");
       return null;
     }
@@ -129,7 +129,7 @@ class ClientesProvider {
           .replaceAll("[", "")
           .replaceAll("}", "")
           .replaceAll("]", "");
-      rxVariables.listPaisesFilter.sink.addError(RxVariables.errorMessage +
+      rxVariables.listClientesFilter.sink.addError(RxVariables.errorMessage +
           " Por favor contacta con el administrador");
       return null;
     }
@@ -158,7 +158,7 @@ class ClientesProvider {
           .replaceAll("[", "")
           .replaceAll("}", "")
           .replaceAll("]", "");
-      rxVariables.listPaisesFilter.sink.addError(RxVariables.errorMessage +
+      rxVariables.listClientesFilter.sink.addError(RxVariables.errorMessage +
           " Por favor contacta con el administrador");
       return null;
     }
