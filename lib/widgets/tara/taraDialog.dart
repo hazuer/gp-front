@@ -1,5 +1,3 @@
-//import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';

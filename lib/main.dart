@@ -22,6 +22,7 @@ import 'pages/settings_page.dart';
 import 'pages/slideshow_page.dart';
 import 'widgets/app_route_observer.dart';
 import 'pages/catalogs/tara/index.dart';
+import 'pages/catalogs/tara/create.dart';
 import 'pages/catalogs/tara/edit.dart';
 
 void main() async {
@@ -66,7 +67,7 @@ class GeneralProductsApp extends StatelessWidget {
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
         ),
       ),
-      initialRoute: RouteNames.taraIndex,
+      initialRoute: RouteNames.taraCreate,
       navigatorObservers: [AppRouteObserver()],
       routes: {
         RouteNames.login: (_) => LoginPage(),
@@ -78,12 +79,13 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.recoveryPwd: (_) => RecoveryPasswordPage(),
         RouteNames.register: (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
-        RouteNames.editUser: (_) => EditUserPage(),
-        RouteNames.paises: (_) => PaisesPage(),
-        RouteNames.editCountry: (_) => EditCountryPage(),
-        RouteNames.taraIndex: (_) => TaraIndex(),
-        RouteNames.taraEdit: (_) => TaraEdit(),
-        RouteNames.clienteIndex: (_) => ClientesIndex(),
+        RouteNames.editUser     : (_) => EditUserPage(),
+        RouteNames.paises       : (_) => PaisesPage(),
+        RouteNames.editCountry  : (_) => EditCountryPage(),
+        RouteNames.taraIndex    : (_) => TaraIndex(),
+        RouteNames.taraCreate   : (_) => TaraCreate(),
+        RouteNames.taraEdit     : (_) => TaraEdit(),
+        RouteNames.clienteIndex : (_) => ClientesIndex(),
         RouteNames.clienteUpdate: (_) => ClienteEdit(),
         RouteNames.clienteStore: (_) => ClienteStore(),
         RouteNames.razonIndex: (_) => RazonesIndex(),
