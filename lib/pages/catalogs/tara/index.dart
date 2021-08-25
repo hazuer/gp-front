@@ -6,6 +6,7 @@ import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/provider/tara/tarasProvider.dart';
 import 'package:general_products_web/widgets/tara/tblTara.dart';
 
@@ -77,6 +78,15 @@ class _TaraIndexState extends State<TaraIndex> {
                         ListView(
                           shrinkWrap: true,
                           children: [
+                            CustomButton(
+                              width: MediaQuery.of(context).size.width *.2,
+                              title: "Crear Tara",
+                              isLoading: false,
+                              onPressed: () async {
+                                Navigator.pushNamed(context, RouteNames.taraCreate);
+                              },
+                            ),
+                            SizedBox(height: 15,),
                             CustomInput(controller: taraCtrl, hint: "Tara"),
                             SizedBox(height: 15,),
                             CustomInput(controller: capacidadCtrl,hint: "Capacidad"),
@@ -129,6 +139,22 @@ class _TaraIndexState extends State<TaraIndex> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child:CustomButton(
+                                        width: MediaQuery.of(context).size.width *.2,
+                                        title: "Crear Tara",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          Navigator.pushNamed(context,
+                                            RouteNames.taraCreate);
+                                        },
+                                      ),
+                                    ),
+                                  ]
+                                ),
+                                SizedBox(height: 20.0),
                                 Row(
                                   children: [
                                     Flexible(

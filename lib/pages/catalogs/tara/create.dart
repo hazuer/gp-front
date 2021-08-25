@@ -6,35 +6,35 @@ import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/list_user_provider.dart';
+//import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/provider/tara/tarasProvider.dart';
 import 'package:general_products_web/widgets/tara/tblTara.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
-class TaraStore extends StatefulWidget {
-  TaraStore({Key? key}) : super(key: key);
+class TaraCreate extends StatefulWidget {
+  TaraCreate({Key? key}) : super(key: key);
 
   @override
-  _TaraStoreState createState() => _TaraStoreState();
+  _TaraCreateState createState() => _TaraCreateState();
 }
 
-class _TaraStoreState extends State<TaraStore> {
-  late Future fUser;
-  late Future fField;
-  bool isLoading                                   = false;
-  String pathFilter                                = "?porPagina = 20";
-  TextEditingController taraCtrl                   = TextEditingController();
-  TextEditingController capacidadCtrl              = TextEditingController();
-  Plant plant                                      = Plant();
-  StatusModel status                               = StatusModel();
-  ListUsersProvider usersProvider                        = ListUsersProvider();
-  final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
-  final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
+class _TaraCreateState extends State<TaraCreate> {
+  //late Future fUser;
+  late Future futureTara;
+  bool isLoading                                       = false;
+  String headerFilter                                  = "?porPagina = 20";
+  TextEditingController taraCtrl                       = TextEditingController();
+  TextEditingController capacidadCtrl                  = TextEditingController();
+  Plant catPlanta                                      = Plant();
+  StatusModel catEstatus                               = StatusModel();
+  TarasProvider tarasProvider                          = TarasProvider();
+  final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
+  final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    //fUser = taraProvider.getListTara();
-    fField = usersProvider.listUsers();
+    futureTara = tarasProvider.getAllTaras();
     super.initState();
   }
 
@@ -78,6 +78,7 @@ class _TaraStoreState extends State<TaraStore> {
                         ListView(
                           shrinkWrap: true,
                           children: [
+                            SizedBox(height: 15,),
                             CustomInput(controller: taraCtrl, hint: "Tara"),
                             SizedBox(height: 15,),
                             CustomInput(controller: capacidadCtrl,hint: "Capacidad"),
@@ -85,38 +86,7 @@ class _TaraStoreState extends State<TaraStore> {
                             listPlants(),
                             SizedBox(height: 15,),
                             listStatus(),
-                            SizedBox(height: 15,),
-                            CustomButton(
-                              width: MediaQuery.of(context).size.width * .2,
-                              title: "Buscar",
-                              isLoading: false,
-                              onPressed: () async {
-                                await applyFilter();
-                              },
-                            ),
-                            SizedBox(height: 15,),
-                            CustomButton(
-                              width: MediaQuery.of(context).size.width * .2,
-                              title: "Limpiar",
-                              isLoading: false,
-                              onPressed: () async {
-                                await clearFilters()();
-                              },
-                            ),
                             SizedBox(height: 30,),
-                            isLoading ? 
-                            Container(
-                              margin: EdgeInsets.only(top: 50),
-                              width: 44,
-                              height: 44,
-                              child: CircularProgressIndicator(
-                                valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),
-                              ),
-                            )
-                            : 
-                            ////()
-                            TableTaraList()
-                            //Text("MovilNo hay registros para mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,)
                           ],
                         )
                         // _ _ _       _
@@ -130,6 +100,7 @@ class _TaraStoreState extends State<TaraStore> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                SizedBox(height: 20.0),
                                 Row(
                                   children: [
                                     Flexible(
@@ -150,32 +121,9 @@ class _TaraStoreState extends State<TaraStore> {
                                     SizedBox(width: 15,),
                                     Flexible(child: listStatus()),
                                     SizedBox(width: 15,),
-                                    IconButton(
-                                      onPressed: () async {
-                                        await applyFilter();
-                                      },
-                                      icon: Icon(Icons.filter_alt),
-                                    ),
-                                    IconButton(
-                                      onPressed: () async {
-                                        await clearFilters();
-                                      },
-                                      icon: Icon(Icons.clear),
-                                    ),
                                   ],
                                 ),
                                 SizedBox(height: 30,),
-                                isLoading ? 
-                                Container(
-                                  margin:EdgeInsets.only(top: 50),
-                                  width: 44,
-                                  height:44,
-                                  child:CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),),
-                                )
-                                : 
-                                //TableUserList()
-                                TableTaraList()
-                                //Text("No hay registros para mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,)
                               ],
                             ),
                           ),
@@ -196,17 +144,17 @@ class _TaraStoreState extends State<TaraStore> {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: plantsKey,
+        key: catPlanKey,
         initiallyExpanded: false,
         title: Text(
-          plant.nombrePlanta ?? "Planta",
+          catPlanta.nombrePlanta ?? "Planta",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: fField,
+              future: futureTara,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -217,8 +165,8 @@ class _TaraStoreState extends State<TaraStore> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            plant = RxVariables.dataFromUsers.listPlants![index];
-                            plantsKey.currentState!.collapse();
+                            catPlanta = RxVariables.dataFromUsers.listPlants![index];
+                            catPlanKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -259,17 +207,17 @@ class _TaraStoreState extends State<TaraStore> {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: statusKey,
+        key: catEstatusKey,
         initiallyExpanded: false,
         title: Text(
-          status.estatus ?? "Estatus",
+          catEstatus.estatus ?? "Estatus",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: fField,
+              future: futureTara,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -280,8 +228,8 @@ class _TaraStoreState extends State<TaraStore> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            status =RxVariables.dataFromUsers.listStatus![index];
-                            statusKey.currentState!.collapse();
+                            catEstatus = RxVariables.dataFromUsers.listStatus![index];
+                            catEstatusKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -320,47 +268,47 @@ class _TaraStoreState extends State<TaraStore> {
   }
 
   applyFilter() async {
-    pathFilter = "?porPagina=20";
+    headerFilter = "?porPagina=20";
     if (taraCtrl.text.isNotEmpty) {
-      pathFilter = pathFilter + "&nombre=${taraCtrl.text.trim()}";
+      headerFilter = headerFilter + "&nombre_tara=${taraCtrl.text.trim()}";
     }
     if (capacidadCtrl.text.isNotEmpty) {
-      pathFilter = pathFilter + "&apellido_paterno=${capacidadCtrl.text.trim()}";
+      headerFilter = headerFilter + "&capacidad=${capacidadCtrl.text.trim()}";
     }
 
-    if (plant.idCatPlanta != null) {
-      pathFilter = pathFilter + "&id_cat_planta=${plant.idCatPlanta}";
+    if (catPlanta.idCatPlanta != null) {
+      headerFilter = headerFilter + "&id_cat_planta=${catPlanta.idCatPlanta}";
     }
 
-    if (status.idCatEstatus != null) {
-      pathFilter = pathFilter + "&id_cat_estatus=${status.idCatEstatus}";
+    if (catEstatus.idCatEstatus != null) {
+      headerFilter = headerFilter + "&id_cat_estatus=${catEstatus.idCatEstatus}";
     }
 
-    print(pathFilter);
+    //print(headerFilter);
     setState(() {
       isLoading = true;
     });
-    await usersProvider.listUsersWithFilters(pathFilter).then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
+    //await tarasProvider.headerFilterTara(headerFilter).then((value) {
+      //setState(() {
+        //isLoading = false;
+      //});
+    //});
   }
 
   clearFilters() async {
     setState(() {
       isLoading = true;
     });
-    pathFilter = "?porPagina = 30";
-    plant      = Plant();
-    status     = StatusModel();
+    headerFilter = "?porPagina = 30";
+    catPlanta    = Plant();
+    catEstatus   = StatusModel();
     taraCtrl.clear();
     capacidadCtrl.clear();
 
-    await usersProvider.listUsersWithFilters(pathFilter).then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
+    //await tarasProvider.headerFilterTara(headerFilter).then((value) {
+      //setState(() {
+        //isLoading = false;
+      //});
+    //});
   }
 }
