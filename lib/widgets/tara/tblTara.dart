@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/tara/taraModel.dart';
+import 'package:general_products_web/models/tara/catTaraModel.dart';
 import 'package:general_products_web/widgets/tara/taraDialog.dart';
 
 class TableTaraList extends StatefulWidget {
@@ -22,7 +22,7 @@ class _TableTaraListState extends State<TableTaraList> {
       height: MediaQuery.of(context).size.height*.5,
       child: StreamBuilder(
         stream: rxVariables.lsTarasFiltrosStream,
-        builder: (BuildContext context, AsyncSnapshot<List<TaraModel>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<CatTaraModel>> snapshot) {
           if(snapshot.hasError){
             return Text(RxVariables.errorMessage);
           }
@@ -90,7 +90,7 @@ class _TableTaraListState extends State<TableTaraList> {
                     ),
                   ],
                   rows: List.generate(
-                    snapshot.data!.length, 
+                    snapshot.data!.length,
                     (index) {
                     return DataRow(
                       color: MaterialStateColor.resolveWith((states) {
@@ -140,26 +140,45 @@ class _TableTaraListState extends State<TableTaraList> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                tooltip: "Editar",
-                                //padding: EdgeInsets.zero,
-                                onPressed: (){
-                                RxVariables.gvTaraSelected = snapshot.data![index];
-                               //RxVariables.isEdition = true;
-                               Navigator.pushNamed(context, RouteNames.editUser);
-                              },
-                                icon: Icon(Icons.edit, size: 18, color: GPColors.PrimaryColor)
+                                tooltip: 'Activar',
+                                icon: Icon(Icons.check_box_rounded,
+                                  size: 18, color: GPColors.PrimaryColor
+                                ),
+                                onPressed: () {
+                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "activar", 1);
+                                },
                               ),
                               IconButton(
-                                tooltip: "Eliminar",
+                                tooltip: "Editar",
+                                //padding: EdgeInsets.zero,
+                                  onPressed: (){
+                                  RxVariables.gvTaraSelected = snapshot.data![index];
+                                //RxVariables.isEdition = true;
+                                Navigator.pushNamed(context, RouteNames.taraEdit);
+                                },
+                                icon: Icon(Icons.edit, 
+                                  size: 18, color: GPColors.PrimaryColor
+                                )
+                              ),
+                              IconButton(
+                                tooltip: "Desactivar",
                                 //padding: EdgeInsets.zero,
                                 onPressed: (){
-                                dialogs.showDeleteCustomerDialog(
-                                  context,
-                                  snapshot.data![index],
-                                );
-                              },
-                                icon: Icon(Icons.not_interested_outlined, size: 18, color: GPColors.PrimaryColor,)
-                              )
+                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "desactivar", 2);
+                                },
+                                icon: Icon(Icons.not_interested_outlined,
+                                  size: 18, color: GPColors.PrimaryColor,
+                                )
+                              ),
+                              IconButton(
+                                tooltip: 'Eliminar',
+                                icon: Icon(Icons.delete,
+                                  size: 18, color: GPColors.PrimaryColor
+                                ),
+                                onPressed: () {
+                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "eliminar", 3);
+                                },
+                              ),
                             ]
                           ),
                         ),

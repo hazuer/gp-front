@@ -46,4 +46,5 @@ class RoutesProvider {
   String activarRazones = 'catalogo/editar-estatus-razones';
   String desactivarRazones = 'catalogo/editar-estatus-razones';
   String eliminarRazones = 'catalogo/editar-estatus-razones';
+  String changeEstatusTaras = "catalogo/editar-estatus-taras";
 }

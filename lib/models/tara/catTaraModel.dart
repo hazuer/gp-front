@@ -1,8 +1,8 @@
 /*
 Clase para la definición de los atributos de la entidad de Tara
 */
-class TaraModel {
-  TaraModel({
+class CatTaraModel {
+  CatTaraModel({
     this.idCatTara,
     this.nombreTara,
     this.capacidad,
@@ -16,7 +16,7 @@ class TaraModel {
   String ? estatus;
   String ? nombrePlanta;
 
-  factory TaraModel.fromJson(Map<String, dynamic> json) => TaraModel(
+  factory CatTaraModel.fromJson(Map<String, dynamic> json) => CatTaraModel(
     idCatTara   : json["id_cat_tara"],
     nombreTara  : json["nombre_tara"],
     capacidad   : json["capacidad"] == "" ? null: json["capacidad"].toString(),
