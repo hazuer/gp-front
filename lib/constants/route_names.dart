@@ -11,37 +11,42 @@ class RouteNames {
   static const String editUser = "/edit";
 
   //CRUD Taras
-  static const String taraIndex = "/catalogo/taras";
-  static const String taraCreate = "/catalogo/taras/create";
-  static const String taraEdit = "/catalogo/taras/edit";
-  //static const String taraDestroy = "/catalogo/taras/destroy";
+  static const String taraIndex = "/catalog/taras";
+  static const String taraCreate = "/catalog/taras/create";
+  static const String taraEdit = "/catalog/taras/edit";
+  //static const String taraDestroy = "/catalog/taras/destroy";
 
   static const String paises = '/paises';
   static const String editCountry = '/edit-country';
 
   //CRUD Clientes
-  static const String clienteIndex = '/catalogo/clientes';
-  static const String clienteUpdate = '/catalogo/clientes/update';
-  static const String clienteStore = '/catalogo/clientes/store';
+  static const String clienteIndex = '/catalog/clientes';
+  static const String clienteUpdate = '/catalog/clientes/update';
+  static const String clienteStore = '/catalog/clientes/store';
 
   // CRUD Razones
-  static const String razonIndex = '/catalogo/razones';
-  static const String razonUpdate = '/catalogo/razones/update';
-  static const String razonStore = '/catalogo/razones/store';
+  static const String razonIndex = '/catalog/razones';
+  static const String razonUpdate = '/catalog/razones/update';
+  static const String razonStore = '/catalog/razones/store';
 
   // CRUD Tintas
-  static const String tintaIndex = '/catalogo/tintas';
-  static const String tintaUpdate = '/catalogo/tintas/update';
-  static const String tintaStore = '/catalogo/tintas/store';
-  static const String tintaImport = '/catalogo/tintas/import';
+  static const String tintaIndex = '/catalog/tintas';
+  static const String tintaUpdate = '/catalog/tintas/update';
+  static const String tintaStore = '/catalog/tintas/store';
+  static const String tintaImport = '/catalog/tintas/import';
 
   //CRUD Plantas
-  static const String plantsIndex  = "/catalogo/plants";
-  static const String plantsCreate = "/catalogo/plants/create";
-  static const String plantsEdit   = "/catalogo/plants/edit";
+  static const String plantsIndex  = "/catalog/plants";
+  static const String plantsCreate = "/catalog/plants/create";
+  static const String plantsEdit   = "/catalog/plants/edit";
 
   //CRUD Maquinas
-  static const String machineIndex  = "/catalogo/machine";
-  static const String machineCreate = "/catalogo/machine/create";
-  static const String machineEdit   = "/catalogo/machine/edit";
+  static const String machineIndex  = "/catalog/machine";
+  static const String machineCreate = "/catalog/machine/create";
+  static const String machineEdit   = "/catalog/machine/edit";
+
+  //CRUD Maquinas
+  static const String designIndex  = "/catalog/design";
+  static const String designCreate = "/catalog/design/create";
+  static const String designEdit   = "/catalog/design/edit";
 }

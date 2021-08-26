@@ -32,6 +32,10 @@ import 'pages/catalogs/plant/edit.dart';
 import 'pages/catalogs/machine/index.dart';
 import 'pages/catalogs/machine/create.dart';
 import 'pages/catalogs/machine/edit.dart';
+//Diseño
+import 'pages/catalogs/design/index.dart';
+import 'pages/catalogs/design/create.dart';
+import 'pages/catalogs/design/edit.dart';
 
 
 
@@ -77,7 +81,7 @@ class GeneralProductsApp extends StatelessWidget {
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
         ),
       ),
-      initialRoute: RouteNames.plantsIndex,
+      initialRoute: RouteNames.login,
       navigatorObservers: [AppRouteObserver()],
       routes: {
         RouteNames.login: (_) => LoginPage(),
@@ -113,6 +117,11 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.machineIndex : (_) => MachineIndex(),
         RouteNames.machineCreate: (_) => MachineCreate(),
         RouteNames.machineEdit  : (_) => MachineEdit(),
+
+        //Diseños
+        RouteNames.designIndex : (_) => DesignIndex(),
+        RouteNames.designCreate: (_) => DesignCreate(),
+        RouteNames.designEdit  : (_) => DesignEdit(),
       },
     );
   }
