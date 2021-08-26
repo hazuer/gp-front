@@ -65,7 +65,7 @@ Future showInfoDialog(
           builder: (context, setState) {
             return AlertDialog(
               title: Center(
-                child: Text("¿Desea $accion la maquina: ${alertDialogMachineDisable.nombreMaquina}?",
+                child: Text("¿Desea $accion la máquina: ${alertDialogMachineDisable.nombreMaquina}?",
                 textAlign: TextAlign.center,
                 )
               ),
