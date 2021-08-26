@@ -24,6 +24,16 @@ import 'widgets/app_route_observer.dart';
 import 'pages/catalogs/tara/index.dart';
 import 'pages/catalogs/tara/create.dart';
 import 'pages/catalogs/tara/edit.dart';
+//Plantas
+import 'pages/catalogs/plant/index.dart';
+import 'pages/catalogs/plant/create.dart';
+import 'pages/catalogs/plant/edit.dart';
+//Maquina
+import 'pages/catalogs/machine/index.dart';
+import 'pages/catalogs/machine/create.dart';
+import 'pages/catalogs/machine/edit.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,7 +77,7 @@ class GeneralProductsApp extends StatelessWidget {
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
         ),
       ),
-      initialRoute: RouteNames.login,
+      initialRoute: RouteNames.plantsIndex,
       navigatorObservers: [AppRouteObserver()],
       routes: {
         RouteNames.login: (_) => LoginPage(),
@@ -95,6 +105,14 @@ class GeneralProductsApp extends StatelessWidget {
         // RouteNames.tintaUpdate: (_) => TintasIndex(),
         // RouteNames.tintaStore: (_) => TintasIndex(),
         // RouteNames.tintaImport: (_) => TintasIndex(),
+        //Plantas
+        RouteNames.plantsIndex   : (_) => PlantIndex(),
+        RouteNames.plantsCreate  : (_) => PlantCreate(),
+        RouteNames.plantsEdit    : (_) => PlantEdit(),
+        //Maquinas
+        RouteNames.machineIndex : (_) => MachineIndex(),
+        RouteNames.machineCreate: (_) => MachineCreate(),
+        RouteNames.machineEdit  : (_) => MachineEdit(),
       },
     );
   }
