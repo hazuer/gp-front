@@ -27,6 +27,18 @@ import 'widgets/app_route_observer.dart';
 import 'pages/catalogs/tara/index.dart';
 import 'pages/catalogs/tara/create.dart';
 import 'pages/catalogs/tara/edit.dart';
+//Plantas
+import 'pages/catalogs/plant/index.dart';
+import 'pages/catalogs/plant/create.dart';
+import 'pages/catalogs/plant/edit.dart';
+//Maquina
+import 'pages/catalogs/machine/index.dart';
+import 'pages/catalogs/machine/create.dart';
+import 'pages/catalogs/machine/edit.dart';
+//Diseño
+import 'pages/catalogs/design/index.dart';
+import 'pages/catalogs/design/create.dart';
+import 'pages/catalogs/design/edit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,7 +82,7 @@ class GeneralProductsApp extends StatelessWidget {
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
         ),
       ),
-      initialRoute: RouteNames.tintaImport,
+      initialRoute: RouteNames.login,
       navigatorObservers: [AppRouteObserver()],
       routes: {
         RouteNames.login: (_) => LoginPage(),
@@ -95,9 +107,22 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.razonUpdate: (_) => RazonEdit(),
         RouteNames.razonStore: (_) => RazonStore(),
         RouteNames.tintaIndex: (_) => TintasIndex(),
-        RouteNames.tintaUpdate: (_) => TintaEdit(),
-        RouteNames.tintaStore: (_) => TintaStore(),
-        RouteNames.tintaImport: (_) => TintaImport(),
+        RouteNames.tintaUpdate: (_) => TintasIndex(),
+        RouteNames.tintaStore: (_) => TintasIndex(),
+        RouteNames.tintaImport: (_) => TintasIndex(),
+        //Plantas
+        RouteNames.plantsIndex: (_) => PlantIndex(),
+        RouteNames.plantsCreate: (_) => PlantCreate(),
+        RouteNames.plantsEdit: (_) => PlantEdit(),
+        //Maquinas
+        RouteNames.machineIndex: (_) => MachineIndex(),
+        RouteNames.machineCreate: (_) => MachineCreate(),
+        RouteNames.machineEdit: (_) => MachineEdit(),
+
+        //Diseños
+        RouteNames.designIndex: (_) => DesignIndex(),
+        RouteNames.designCreate: (_) => DesignCreate(),
+        RouteNames.designEdit: (_) => DesignEdit(),
       },
     );
   }

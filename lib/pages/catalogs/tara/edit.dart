@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
-import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/list_user_provider.dart';
-import 'package:general_products_web/widgets/tara/tblTara.dart';
+import 'package:general_products_web/provider/tara/tarasProvider.dart';
+import 'package:general_products_web/widgets/tara/taraDialog.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
@@ -19,22 +18,24 @@ class TaraEdit extends StatefulWidget {
 }
 
 class _TaraEditState extends State<TaraEdit> {
-  late Future fUser;
-  late Future fField;
-  bool isLoading                                   = false;
-  String pathFilter                                = "?porPagina = 20";
-  TextEditingController taraCtrl                   = TextEditingController();
-  TextEditingController capacidadCtrl              = TextEditingController();
-  Plant plant                                      = Plant();
-  StatusModel status                               = StatusModel();
-  ListUsersProvider usersProvider                        = ListUsersProvider();
-  final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
-  final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
+  //late Future fUser;
+  late Future futureTara;
+  bool isLoading                                       = false;
+  String headerFilter                                  = "?porPagina = 20";
+  TextEditingController taraEditCtrl                   = TextEditingController();
+  TextEditingController capacidadEditCtrl              = TextEditingController();
+  Plant catPlanta                                      = Plant();
+  StatusModel catEstatus                               = StatusModel();
+  TarasProvider tarasProvider                          = TarasProvider();
+  TaraDialog dialogs                                   = TaraDialog();
+  final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
+  final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    //fUser = taraProvider.getListTara();
-    fField = usersProvider.listUsers();
+    futureTara             = tarasProvider.getAllTaras();
+    taraEditCtrl.text      = RxVariables.gvTaraSelectedById.nombreTara!;
+    capacidadEditCtrl.text = RxVariables.gvTaraSelectedById.capacidad??"";
     super.initState();
   }
 
@@ -78,45 +79,42 @@ class _TaraEditState extends State<TaraEdit> {
                         ListView(
                           shrinkWrap: true,
                           children: [
-                            CustomInput(controller: taraCtrl, hint: "Tara"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "Capacidad"),
+                            CustomInput(controller: taraEditCtrl, hint: "* Tara"),
+                            SizedBox(height: 15,),
+                            CustomInput(controller: capacidadEditCtrl,hint: "* Capacidad"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
-                            listStatus(),
-                            SizedBox(height: 15,),
                             CustomButton(
-                              width: MediaQuery.of(context).size.width * .2,
-                              title: "Buscar",
+                              width: MediaQuery.of(context).size.width *.2,
+                              title: 'Guardar',
                               isLoading: false,
                               onPressed: () async {
-                                await applyFilter();
+                                //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
+                                if(taraEditCtrl.text=="" || capacidadEditCtrl.text==""){
+                                  dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
+                                }else{
+                                  await TarasProvider().editTara(RxVariables.gvTaraSelectedById.idCatTara!,taraEditCtrl.text.trim(),capacidadEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                  if (value == null) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.pop(context);
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                    } else {
+                                      final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                      final message   = value["message"];
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      Navigator.pop(context);
+                                      dialogs.showInfoDialog(context,typeAlert, message);
+                                    }
+                                  });
+                                }
                               },
                             ),
-                            SizedBox(height: 15,),
-                            CustomButton(
-                              width: MediaQuery.of(context).size.width * .2,
-                              title: "Limpiar",
-                              isLoading: false,
-                              onPressed: () async {
-                                await clearFilters()();
-                              },
-                            ),
-                            SizedBox(height: 30,),
-                            isLoading ? 
-                            Container(
-                              margin: EdgeInsets.only(top: 50),
-                              width: 44,
-                              height: 44,
-                              child: CircularProgressIndicator(
-                                valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),
-                              ),
-                            )
-                            : 
-                            ////()
-                            TableTaraList()
-                            //Text("MovilNo hay registros para mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,)
                           ],
                         )
                         // _ _ _       _
@@ -130,52 +128,59 @@ class _TaraEditState extends State<TaraEdit> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
+                                SizedBox(height: 20.0),
                                 Row(
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraCtrl,
-                                        hint: "Tara"
+                                        controller:taraEditCtrl,
+                                        hint: "* Tara"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(
                                       child: CustomInput(
-                                        controller:capacidadCtrl,
-                                        hint: "Capacidad"
+                                        controller:capacidadEditCtrl,
+                                        hint: "* Capacidad"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(child: listPlants()),
                                     SizedBox(width: 15,),
-                                    Flexible(child: listStatus()),
+                                    Flexible(child:
+                                    CustomButton(
+                                    width: MediaQuery.of(context).size.width *.2,
+                                    title: 'Guardar',
+                                    isLoading: false,
+                                    onPressed: () async {
+                                      //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
+                                      if(taraEditCtrl.text=="" || capacidadEditCtrl.text==""){
+                                        dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
+                                      }else{
+                                        await TarasProvider().editTara(RxVariables.gvTaraSelectedById.idCatTara!,taraEditCtrl.text.trim(),capacidadEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                        if (value == null) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Navigator.pop(context);
+                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                          } else {
+                                            final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                            final message   = value["message"];
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            Navigator.pop(context);
+                                            dialogs.showInfoDialog(context,typeAlert, message);
+                                          }
+                                        });
+                                      }
+                                    },
+                                  )
+                                ),
                                     SizedBox(width: 15,),
-                                    IconButton(
-                                      onPressed: () async {
-                                        await applyFilter();
-                                      },
-                                      icon: Icon(Icons.filter_alt),
-                                    ),
-                                    IconButton(
-                                      onPressed: () async {
-                                        await clearFilters();
-                                      },
-                                      icon: Icon(Icons.clear),
-                                    ),
                                   ],
                                 ),
-                                SizedBox(height: 30,),
-                                isLoading ? 
-                                Container(
-                                  margin:EdgeInsets.only(top: 50),
-                                  width: 44,
-                                  height:44,
-                                  child:CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),),
-                                )
-                                : 
-                                //TableUserList()
-                                TableTaraList()
-                                //Text("No hay registros para mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,)
                               ],
                             ),
                           ),
@@ -196,17 +201,17 @@ class _TaraEditState extends State<TaraEdit> {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: plantsKey,
+        key: catPlanKey,
         initiallyExpanded: false,
         title: Text(
-          plant.nombrePlanta ?? "Planta",
+          catPlanta.nombrePlanta ?? RxVariables.gvTaraSelectedById.nombrePlanta!,
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: fField,
+              future: futureTara,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -217,8 +222,8 @@ class _TaraEditState extends State<TaraEdit> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            plant = RxVariables.dataFromUsers.listPlants![index];
-                            plantsKey.currentState!.collapse();
+                            catPlanta = RxVariables.dataFromUsers.listPlants![index];
+                            catPlanKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -255,112 +260,4 @@ class _TaraEditState extends State<TaraEdit> {
     );
   }
 
-  Widget listStatus() {
-    return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
-      child: AppExpansionTile(
-        key: statusKey,
-        initiallyExpanded: false,
-        title: Text(
-          status.estatus ?? "Estatus",
-          style: TextStyle(color: Colors.black54, fontSize: 13),
-        ),
-        children: [
-          Container(
-            //height: MediaQuery.of(context).size.height*.2,
-            child: FutureBuilder(
-              future: fField,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    //physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listStatus!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            status =RxVariables.dataFromUsers.listStatus![index];
-                            statusKey.currentState!.collapse();
-                          });
-                        },
-                        child: Container(
-                          color: Colors.grey[100],
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                    RxVariables.dataFromUsers.listStatus![index].estatus!,
-                                    style: TextStyle(color: Colors.black54, fontSize: 13
-                                  )
-                                ),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: .5,
-                                color: Colors.grey[300],
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  applyFilter() async {
-    pathFilter = "?porPagina=20";
-    if (taraCtrl.text.isNotEmpty) {
-      pathFilter = pathFilter + "&nombre=${taraCtrl.text.trim()}";
-    }
-    if (capacidadCtrl.text.isNotEmpty) {
-      pathFilter = pathFilter + "&apellido_paterno=${capacidadCtrl.text.trim()}";
-    }
-
-    if (plant.idCatPlanta != null) {
-      pathFilter = pathFilter + "&id_cat_planta=${plant.idCatPlanta}";
-    }
-
-    if (status.idCatEstatus != null) {
-      pathFilter = pathFilter + "&id_cat_estatus=${status.idCatEstatus}";
-    }
-
-    print(pathFilter);
-    setState(() {
-      isLoading = true;
-    });
-    await usersProvider.listUsersWithFilters(pathFilter).then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
-  }
-
-  clearFilters() async {
-    setState(() {
-      isLoading = true;
-    });
-    pathFilter = "?porPagina = 30";
-    plant      = Plant();
-    status     = StatusModel();
-    taraCtrl.clear();
-    capacidadCtrl.clear();
-
-    await usersProvider.listUsersWithFilters(pathFilter).then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
-  }
 }

@@ -1,36 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/models/plant_model.dart';
+import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/widgets/catalogs/machine/machineDialog.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
-class TaraCreate extends StatefulWidget {
-  TaraCreate({Key? key}) : super(key: key);
+class MachineEdit extends StatefulWidget {
+  MachineEdit({Key? key}) : super(key: key);
 
   @override
-  _TaraCreateState createState() => _TaraCreateState();
+  _MachineEditState createState() => _MachineEditState();
 }
 
-class _TaraCreateState extends State<TaraCreate> {
-  late Future futureTara;
-  bool isLoading                      = false;
-  String headerFilter                 = "?porPagina = 20";
-  TextEditingController taraCtrl      = TextEditingController();
-  TextEditingController capacidadCtrl = TextEditingController();
-  Plant catPlanta                     = Plant();
-  TarasProvider tarasProvider         = TarasProvider();
-  TaraDialog dialogs                  = TaraDialog();
+class _MachineEditState extends State<MachineEdit> {
+  //late Future fUser;
+  late Future futureMachine;
+  bool isLoading                                       = false;
+  String headerFilter                                  = "?porPagina = 20";
+  TextEditingController machineEditCtrl                = TextEditingController();
+  TextEditingController modelEditCtrl                  = TextEditingController();
+  Plant catPlanta                                      = Plant();
+  StatusModel catEstatus                               = StatusModel();
+  MachinesProvider machinesProvider                    = MachinesProvider();
+  MachineDialog dialogs                                = MachineDialog();
   final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara = tarasProvider.getAllTaras();
+    futureMachine             = machinesProvider.getAllMachines();
+    machineEditCtrl.text      = RxVariables.gvMachineSelectedById.nombreMaquina!;
+    modelEditCtrl.text = RxVariables.gvMachineSelectedById.modelo??"";
     super.initState();
   }
 
@@ -39,7 +44,7 @@ class _TaraCreateState extends State<TaraCreate> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Taras / Crear",
+      pageTitle: "Catálogos / Máquinas / Editar",
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
@@ -57,7 +62,7 @@ class _TaraCreateState extends State<TaraCreate> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Text('Crear', style:
+                        Text('Editar', style:
                           TextStyle(
                             color: Color(0xff313945),
                             fontSize: 13.00,
@@ -75,27 +80,28 @@ class _TaraCreateState extends State<TaraCreate> {
                           shrinkWrap: true,
                           children: [
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "* Tara"),
+                            CustomInput(controller: machineEditCtrl, hint: "* Nombre Máquina"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "* Capacidad"),
+                            CustomInput(controller: modelEditCtrl,hint: "* Modelo"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
                             CustomButton(
                               width: MediaQuery.of(context).size.width *.2,
-                              title: 'Crear',
+                              title: 'Guardar',
                               isLoading: false,
                               onPressed: () async {
-                                if(taraCtrl.text.isEmpty || capacidadCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
+                                //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-maquinas
+                                if(machineEditCtrl.text=="" || modelEditCtrl.text==""){
                                   dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                 }else{
-                                  await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                  await MachinesProvider().editMachine(RxVariables.gvMachineSelectedById.idCatMaquina!,machineEditCtrl.text.trim(),modelEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
                                   if (value == null) {
                                     setState(() {
                                       isLoading = false;
                                     });
                                     Navigator.pop(context);
-                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la máquina : ${RxVariables.errorMessage}");
                                     } else {
                                       final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                       final message   = value["message"];
@@ -104,7 +110,6 @@ class _TaraCreateState extends State<TaraCreate> {
                                       });
                                       Navigator.pop(context);
                                       dialogs.showInfoDialog(context,typeAlert, message);
-                                      //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
                                     }
                                   });
                                 }
@@ -128,15 +133,15 @@ class _TaraCreateState extends State<TaraCreate> {
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraCtrl,
-                                        hint: "* Tara"
+                                        controller:machineEditCtrl,
+                                        hint: "* Nombre Máquina"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(
                                       child: CustomInput(
-                                        controller:capacidadCtrl,
-                                        hint: "* Capacidad"
+                                        controller:modelEditCtrl,
+                                        hint: "* Modelo"
                                       )
                                     ),
                                     SizedBox(width: 15,),
@@ -144,20 +149,21 @@ class _TaraCreateState extends State<TaraCreate> {
                                     SizedBox(width: 15,),
                                     Flexible(child:
                                     CustomButton(
-                                      width: MediaQuery.of(context).size.width *.2,
-                                      title: 'Crear',
-                                      isLoading: false,
-                                      onPressed: () async {
-                                      if(taraCtrl.text.isEmpty || capacidadCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
+                                    width: MediaQuery.of(context).size.width *.2,
+                                    title: 'Guardar',
+                                    isLoading: false,
+                                    onPressed: () async {
+                                      //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-maquinas
+                                      if(machineEditCtrl.text=="" || modelEditCtrl.text==""){
                                         dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                       }else{
-                                        await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                        await MachinesProvider().editMachine(RxVariables.gvMachineSelectedById.idCatMaquina!,machineEditCtrl.text.trim(),modelEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
                                         if (value == null) {
                                           setState(() {
                                             isLoading = false;
                                           });
                                           Navigator.pop(context);
-                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la máquina : ${RxVariables.errorMessage}");
                                           } else {
                                             final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                             final message   = value["message"];
@@ -166,13 +172,13 @@ class _TaraCreateState extends State<TaraCreate> {
                                             });
                                             Navigator.pop(context);
                                             dialogs.showInfoDialog(context,typeAlert, message);
-                                            //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
                                           }
                                         });
                                       }
                                     },
-                                    )
-                                  ),
+                                  )
+                                ),
+                                    SizedBox(width: 15,),
                                   ],
                                 ),
                               ],
@@ -198,14 +204,14 @@ class _TaraCreateState extends State<TaraCreate> {
         key: catPlanKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? "* Planta",
+          catPlanta.nombrePlanta ?? RxVariables.gvMachineSelectedById.nombrePlanta!,
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futureMachine,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(

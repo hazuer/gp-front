@@ -9,14 +9,14 @@ import 'package:general_products_web/widgets/tara/taraDialog.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
-class TaraCreate extends StatefulWidget {
-  TaraCreate({Key? key}) : super(key: key);
+class PlantCreate extends StatefulWidget {
+  PlantCreate({Key? key}) : super(key: key);
 
   @override
-  _TaraCreateState createState() => _TaraCreateState();
+  _PlantCreateState createState() => _PlantCreateState();
 }
 
-class _TaraCreateState extends State<TaraCreate> {
+class _PlantCreateState extends State<PlantCreate> {
   late Future futureTara;
   bool isLoading                      = false;
   String headerFilter                 = "?porPagina = 20";
@@ -39,7 +39,7 @@ class _TaraCreateState extends State<TaraCreate> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Taras / Crear",
+      pageTitle: "Catálogos / Plantas / Crear",
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

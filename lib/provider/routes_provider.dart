@@ -37,7 +37,10 @@ class RoutesProvider {
   String plantasClientes = "datos-plantas-clientes";
 
   //Taras
-  String listarTaras = "catalogo/listar-taras";
+  String listarTaras        = "catalogo/listar-taras";
+  String crearTaras         = "catalogo/crear-taras";
+  String editarTaras        = "catalogo/editar-taras";
+  String changeEstatusTaras = "catalogo/editar-estatus-taras";
 
   // Razones
   String listarRazones = "catalogo/listar-razones";
@@ -46,7 +49,6 @@ class RoutesProvider {
   String activarRazones = 'catalogo/editar-estatus-razones';
   String desactivarRazones = 'catalogo/editar-estatus-razones';
   String eliminarRazones = 'catalogo/editar-estatus-razones';
-  String changeEstatusTaras = "catalogo/editar-estatus-taras";
 
   // Tintas
   String listarTintas = "catalogo/listar-tintas";
@@ -54,4 +56,16 @@ class RoutesProvider {
   String crearTintas = "catalogo/crear-tintas";
   String importarTintas = "catalogo/importar-tintas-csv";
   String changeEstatusTintas = "catalogo/editar-estatus-tintas";
+
+  //Maquinas
+  String listarMachines        = "catalogo/listar-maquinas";
+  String crearMachines         = "catalogo/crear-maquinas";
+  String editarMachines        = "catalogo/editar-maquinas";
+  String changeEstatusMachines = "catalogo/editar-estatus-maquinas";
+
+  //Plantas
+  String listarPlants        = "catalogo/listar-plantas";
+  String crearPlants         = "catalogo/crear-plantas";
+  String editarPlants        = "catalogo/editar-plantas";
+  String changeEstatusPlants = "catalogo/editar-estatus-planta";
 }

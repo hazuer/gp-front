@@ -7,33 +7,33 @@ import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/tblTara.dart';
+import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/widgets/catalogs/machine/tblMachine.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
-class TaraIndex extends StatefulWidget {
-  TaraIndex({Key? key}) : super(key: key);
+class MachineIndex extends StatefulWidget {
+  MachineIndex({Key? key}) : super(key: key);
 
   @override
-  _TaraIndexState createState() => _TaraIndexState();
+  _MachineIndexState createState() => _MachineIndexState();
 }
 
-class _TaraIndexState extends State<TaraIndex> {
-  late Future futureTara;
+class _MachineIndexState extends State<MachineIndex> {
+  late Future futureMachine;
   bool isLoading                                       = false;
   String headerFilter                                  = "?porPagina = 20";
-  TextEditingController taraCtrl                       = TextEditingController();
-  TextEditingController capacidadCtrl                  = TextEditingController();
+  TextEditingController maquinaCtrl                       = TextEditingController();
+  TextEditingController modelodCtrl                  = TextEditingController();
   Plant catPlanta                                      = Plant();
   StatusModel catEstatus                               = StatusModel();
-  TarasProvider tarasProvider                          = TarasProvider();
+  MachinesProvider machinesProvider                    = MachinesProvider();
   final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara = tarasProvider.getAllTaras();
+    futureMachine = machinesProvider.getAllMachines();
     super.initState();
   }
 
@@ -42,7 +42,7 @@ class _TaraIndexState extends State<TaraIndex> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Taras",
+      pageTitle: "Catálogos / Máquinas",
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
@@ -60,7 +60,7 @@ class _TaraIndexState extends State<TaraIndex> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Text('Listado de Taras', style:
+                        Text('Listado de Máquinas', style:
                           TextStyle(
                             color: Color(0xff313945),
                             fontSize: 13.00,
@@ -79,16 +79,16 @@ class _TaraIndexState extends State<TaraIndex> {
                           children: [
                             CustomButton(
                               width: MediaQuery.of(context).size.width *.2,
-                              title: "Crear Tara",
+                              title: "Crear Máquina",
                               isLoading: false,
                               onPressed: () async {
-                                Navigator.pushNamed(context, RouteNames.taraCreate);
+                                Navigator.pushNamed(context, RouteNames.machineCreate);
                               },
                             ),
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "Tara"),
+                            CustomInput(controller: maquinaCtrl, hint: "Nombre Máquina"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "Capacidad"),
+                            CustomInput(controller: modelodCtrl,hint: "Modelo"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
@@ -122,7 +122,7 @@ class _TaraIndexState extends State<TaraIndex> {
                               ),
                             )
                             : 
-                            TableTaraList()
+                            TableMachineList()
                           ],
                         )
                         // _ _ _       _
@@ -141,11 +141,11 @@ class _TaraIndexState extends State<TaraIndex> {
                                     Flexible(
                                       child:CustomButton(
                                         width: MediaQuery.of(context).size.width *.2,
-                                        title: "Crear Tara",
+                                        title: "Crear Máquina",
                                         isLoading: false,
                                         onPressed: () async {
                                           Navigator.pushNamed(context,
-                                            RouteNames.taraCreate);
+                                            RouteNames.machineCreate);
                                         },
                                       ),
                                     ),
@@ -156,15 +156,15 @@ class _TaraIndexState extends State<TaraIndex> {
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraCtrl,
-                                        hint: "Tara"
+                                        controller:maquinaCtrl,
+                                        hint: "Nombre Máquina"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(
                                       child: CustomInput(
-                                        controller:capacidadCtrl,
-                                        hint: "Capacidad"
+                                        controller:modelodCtrl,
+                                        hint: "Modelo"
                                       )
                                     ),
                                     SizedBox(width: 15,),
@@ -197,7 +197,7 @@ class _TaraIndexState extends State<TaraIndex> {
                                   child:CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),),
                                 )
                                 : 
-                                TableTaraList()
+                                TableMachineList()
                               ],
                             ),
                           ),
@@ -228,7 +228,7 @@ class _TaraIndexState extends State<TaraIndex> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futureMachine,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -291,7 +291,7 @@ class _TaraIndexState extends State<TaraIndex> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futureMachine,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -343,11 +343,11 @@ class _TaraIndexState extends State<TaraIndex> {
 
   applyFilter() async {
     headerFilter = "?porPagina=20";
-    if (taraCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&nombre_tara=${taraCtrl.text.trim()}";
+    if (maquinaCtrl.text.isNotEmpty) {
+      headerFilter = headerFilter + "&nombre_maquina=${maquinaCtrl.text.trim()}";
     }
-    if (capacidadCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&capacidad=${capacidadCtrl.text.trim()}";
+    if (modelodCtrl.text.isNotEmpty) {
+      headerFilter = headerFilter + "&modelo=${modelodCtrl.text.trim()}";
     }
 
     if (catPlanta.idCatPlanta != null) {
@@ -361,7 +361,7 @@ class _TaraIndexState extends State<TaraIndex> {
     setState(() {
       isLoading = true;
     });
-    await tarasProvider.headerFilterTara(headerFilter).then((value) {
+    await machinesProvider.headerFilterMachine(headerFilter).then((value) {
       setState(() {
         isLoading = false;
       });
@@ -375,10 +375,10 @@ class _TaraIndexState extends State<TaraIndex> {
     headerFilter = "?porPagina = 30";
     catPlanta    = Plant();
     catEstatus   = StatusModel();
-    taraCtrl.clear();
-    capacidadCtrl.clear();
+    maquinaCtrl.clear();
+    modelodCtrl.clear();
 
-    await tarasProvider.headerFilterTara(headerFilter).then((value) {
+    await machinesProvider.headerFilterMachine(headerFilter).then((value) {
       setState(() {
         isLoading = false;
       });

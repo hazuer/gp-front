@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/tara/catTaraModel.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
+import 'package:general_products_web/widgets/catalogs/machine/machineDialog.dart';
 
-class TableTaraList extends StatefulWidget {
-  const TableTaraList({ Key? key }) : super(key: key);
+class TableMachineList extends StatefulWidget {
+  const TableMachineList({ Key? key }) : super(key: key);
 
   @override
-  _TableTaraListState createState() => _TableTaraListState();
+  _TableMachineListState createState() => _TableMachineListState();
 }
 
-class _TableTaraListState extends State<TableTaraList> {
-  TaraDialog dialogs = TaraDialog();
+class _TableMachineListState extends State<TableMachineList> {
+  MachineDialog dialogs = MachineDialog();
   bool isLoading     = false;
   @override
   Widget build(BuildContext context) {
@@ -21,8 +21,8 @@ class _TableTaraListState extends State<TableTaraList> {
       width: double.infinity,
       height: MediaQuery.of(context).size.height*.5,
       child: StreamBuilder(
-        stream: rxVariables.lsTarasFiltrosStream,
-        builder: (BuildContext context, AsyncSnapshot<List<CatTaraModel>> snapshot) {
+        stream: rxVariables.lsMachinesFiltrosStream,
+        builder: (BuildContext context, AsyncSnapshot<List<CatMachineModel>> snapshot) {
           if(snapshot.hasError){
             return Text(RxVariables.errorMessage);
           }
@@ -47,7 +47,7 @@ class _TableTaraListState extends State<TableTaraList> {
                     DataColumn(
                       label: Expanded(
                         child: Text(
-                          'Tara',
+                          'Máquina',
                           style: TextStyle( color: Colors.white, fontSize: 13), textAlign: TextAlign.center,
                         ),
                       ),
@@ -55,7 +55,7 @@ class _TableTaraListState extends State<TableTaraList> {
                     DataColumn(
                       label: Expanded(
                         child: Text(
-                          'Capacidad',
+                          'Modelo',
                           style: TextStyle( color: Colors.white, fontSize: 13),
                           textAlign: TextAlign.center,
                         ),
@@ -101,7 +101,7 @@ class _TableTaraListState extends State<TableTaraList> {
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "${snapshot.data![index].nombreTara??""}",
+                            "${snapshot.data![index].nombreMaquina??""}",
                             style: TextStyle(fontSize: 13),
                           ),
                         ),
@@ -110,7 +110,7 @@ class _TableTaraListState extends State<TableTaraList> {
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            snapshot.data![index].capacidad??"",
+                            snapshot.data![index].modelo??"",
                             style: TextStyle(fontSize: 13),
                           ),
                         ),
@@ -145,15 +145,15 @@ class _TableTaraListState extends State<TableTaraList> {
                                   size: 18, color: GPColors.PrimaryColor
                                 ),
                                 onPressed: () {
-                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "activar", 1);
+                                  dialogs.dialogChangeStatusMachine(context,snapshot.data![index], "activar", 1);
                                 },
                               ),
                               IconButton(
                                 tooltip: "Editar",
                                 //padding: EdgeInsets.zero,
                                   onPressed: (){
-                                  RxVariables.gvTaraSelectedById = snapshot.data![index];
-                                Navigator.pushNamed(context, RouteNames.taraEdit);
+                                  RxVariables.gvMachineSelectedById = snapshot.data![index];
+                                Navigator.pushNamed(context, RouteNames.machineEdit);
                                 },
                                 icon: Icon(Icons.edit, 
                                   size: 18, color: GPColors.PrimaryColor
@@ -163,7 +163,7 @@ class _TableTaraListState extends State<TableTaraList> {
                                 tooltip: "Desactivar",
                                 //padding: EdgeInsets.zero,
                                 onPressed: (){
-                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "desactivar", 2);
+                                  dialogs.dialogChangeStatusMachine(context,snapshot.data![index], "desactivar", 2);
                                 },
                                 icon: Icon(Icons.not_interested_outlined,
                                   size: 18, color: GPColors.PrimaryColor,
@@ -175,7 +175,7 @@ class _TableTaraListState extends State<TableTaraList> {
                                   size: 18, color: GPColors.PrimaryColor
                                 ),
                                 onPressed: () {
-                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "eliminar", 3);
+                                  dialogs.dialogChangeStatusMachine(context,snapshot.data![index], "eliminar", 3);
                                 },
                               ),
                             ]

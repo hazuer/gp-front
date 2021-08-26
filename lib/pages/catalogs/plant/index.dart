@@ -8,18 +8,18 @@ import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/tblTara.dart';
+import 'package:general_products_web/widgets/catalogs/plant/tblTara.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
-class TaraIndex extends StatefulWidget {
-  TaraIndex({Key? key}) : super(key: key);
+class PlantIndex extends StatefulWidget {
+  PlantIndex({Key? key}) : super(key: key);
 
   @override
-  _TaraIndexState createState() => _TaraIndexState();
+  _PlantIndexState createState() => _PlantIndexState();
 }
 
-class _TaraIndexState extends State<TaraIndex> {
+class _PlantIndexState extends State<PlantIndex> {
   late Future futureTara;
   bool isLoading                                       = false;
   String headerFilter                                  = "?porPagina = 20";
@@ -42,7 +42,7 @@ class _TaraIndexState extends State<TaraIndex> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Taras",
+      pageTitle: "Catálogos / Plantas",
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
@@ -60,7 +60,7 @@ class _TaraIndexState extends State<TaraIndex> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Text('Listado de Taras', style:
+                        Text('Listado de Plantas', style:
                           TextStyle(
                             color: Color(0xff313945),
                             fontSize: 13.00,
@@ -79,16 +79,14 @@ class _TaraIndexState extends State<TaraIndex> {
                           children: [
                             CustomButton(
                               width: MediaQuery.of(context).size.width *.2,
-                              title: "Crear Tara",
+                              title: "Crear Planta",
                               isLoading: false,
                               onPressed: () async {
                                 Navigator.pushNamed(context, RouteNames.taraCreate);
                               },
                             ),
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "Tara"),
-                            SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "Capacidad"),
+                            CustomInput(controller: taraCtrl, hint: "Nombre Planta"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
@@ -141,7 +139,7 @@ class _TaraIndexState extends State<TaraIndex> {
                                     Flexible(
                                       child:CustomButton(
                                         width: MediaQuery.of(context).size.width *.2,
-                                        title: "Crear Tara",
+                                        title: "Crear Planta",
                                         isLoading: false,
                                         onPressed: () async {
                                           Navigator.pushNamed(context,
@@ -157,14 +155,7 @@ class _TaraIndexState extends State<TaraIndex> {
                                     Flexible(
                                       child: CustomInput(
                                         controller:taraCtrl,
-                                        hint: "Tara"
-                                      )
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Flexible(
-                                      child: CustomInput(
-                                        controller:capacidadCtrl,
-                                        hint: "Capacidad"
+                                        hint: "Nombre Planta"
                                       )
                                     ),
                                     SizedBox(width: 15,),
@@ -221,7 +212,7 @@ class _TaraIndexState extends State<TaraIndex> {
         key: catPlanKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? "Planta",
+          catPlanta.nombrePlanta ?? "País",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [

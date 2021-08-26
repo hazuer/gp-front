@@ -14,6 +14,9 @@ import 'package:rxdart/rxdart.dart';
 //Taras
 import 'package:general_products_web/models/tara/dtTaraModel.dart';
 import 'package:general_products_web/models/tara/catTaraModel.dart';
+//Maquinas
+import 'package:general_products_web/models/catalogs/machine/dtMachineModel.dart';
+import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
 
 class RxVariables {
   static LoginResponse loginResponse = LoginResponse();
@@ -32,10 +35,8 @@ class RxVariables {
   static SearchUserResponse userById = SearchUserResponse();
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
-  //static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjRmNTYzZjI5MGUyYTg2MTRlODI3MDRjMmQxNDc4YzQ1ZmRiZDM1NGFkOWRmZWRkYTY5ZjYxOTcwMDMyZWJiNjI0ZTVjZjRmN2NiY2ZhZTMiLCJpYXQiOjE2Mjk3MzEwNzksIm5iZiI6MTYyOTczMTA3OSwiZXhwIjoxNjI5ODE3NDc4LCJzdWIiOiIyNCIsInNjb3BlcyI6W119.W_XSibTsrrry5ki4kH912e72TQgfUKQ_xB0jHI1CzNVidg0od7l8XNKR2Y7JlR86QCbeZ2sohJba4x2FDqCbiAgot08XVbvt9rNM3z71XNyRu3gSdYurmdGNd_avbgxwJjXW5GcSzwd-I8vxRFH_-RScXavU1Lt2SePQYbGkyUzVcb6XYJqI5Ta8ZPRiy-qCwlAP4fNv00ESIoiaJUVxZ9WAWVA0tdocUakMbuJ66Xnkl5g77e6Fho2cEUUfJRMGgdedMct5pQcYI1bIljp74IkpjSQd3y_rm0stjk7RkozjTGyCTM1hzJonZ8VM4VyW51Dm7hCmB8_6F3ET2ApInbFRfT7W6o5m_3Lo98___E5sFi65eZCEDVVXrSMxkqAFxJycYoYZEbn3CR5IOLstIfzbXgkORCiabEACjQ8JxHaaAxqeD8DmusFEOUZDgI7oSn19WFd5I1w4e_xc8XPLq8khji6aclkEyarbkKaFyfXXKEt-485xRp8oYIgLQ9HdfDIl_GiYxZvDZTLK4PDQKQuPFZwKsC_Rsd8NaTK8PzvqYWtNh_NOCRHByyyOYz6VnzRhJ0XkGLWfdA2C3rI_7VgElstOMIBC1wf9YXcSBcDHAmVR37nQjKCOSSXVyX_QxsI-YXfV5HUnHj896pBTwAQwONvAsd4pqDeTCJRSqzU";
-  //"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiY2Y5MTQwM2Q5MjI4MTFiYzZiOWVjOTk0OTdhNzZiNWE0NTVmMGQyOThlOTI3NDU2NWYwOWQxZGRlZTllMDlhZjNiNWQ3NDZjODEyNzQxM2EiLCJpYXQiOjE2Mjg4Nzg1MzcsIm5iZiI6MTYyODg3ODUzNywiZXhwIjoxNjI4OTY0OTM3LCJzdWIiOiIxNSIsInNjb3BlcyI6W119.qXSGVN8lbKvStr6NvFEBzeqNUHNqLFLpW89CkmmM7kAvL9hPQdO10WaSxivIStAyEpGlSn-TPGmrPCuZiySayL6x0HdjEM4QH4ZJpbJlVs4aGqcBK-FsXi9p5O05dUtDmRU1cJTG0ecrKCwAtas2yAoiQeLG_hd5CfOE-H7x4PVBxdD84v-oFmPMuu1ermCU5TcezeHXPO84lTFCMGIYKVwLi2-D_DInoUdLBWmT172V0-ZQx3qX-NXjgdxoJbW7XO-GZec__T3LWGXisIY8-s12piIqn7l6KTYjVOMHJzxYcuyfNwrjqRumUmMx28gLlAyd1L5vyHSOtv6RO3t_-pPeThecT7zoI6Hk5T6IraCrRp8tr4Hms5Oktop1tZnicj2yXk3pZ5tKEPvCjjYYEEPr1pgpMszawrz3L43kPVN0l1HFyeWkVbKkvW2RvWVBPNSWbSaAFZZjrOmZqbRlXbIM1HMEPyL09-TyP71A9G2-JEE7eXOGVtJ5XiCa9K3vpWTpwye1bxayWQQ-tolylV0kzqlhsMyiZ18DO0dG6KOwytS3VDRWOCg0AU0li0PnyZwKi2EyaqJkdw_ohDaHGqSrIx3rcwcYBrEBXZH9t9Ax3__jfsVFoZHb35BkxLGhNyDwBhfpwcqHlLAx7LtGVMp4CNl0TMdVZoz2pkfsbAI";
-  static String token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMTQ1ZDNjYzRiZDY1YTRiNjhjZDA3NmY1MWJhYjdlOWFmYTEyNTc4ZWVkNmYzZDlhZmY3ZWJhOWFjMWI3Nzk4YjFhMTg2MWRlYzQ4MWIxMjIiLCJpYXQiOjE2MzAwMDI5NDcsIm5iZiI6MTYzMDAwMjk0NywiZXhwIjoxNjMwMDA2NTQ3LCJzdWIiOiIyNCIsInNjb3BlcyI6W119.q0tDvHIrjFCN3fHOCrIvYrn-UKkS6ZQRbjIreU0FOtGzD4Q422AtBDbnOc6XY9jLSpCKgwGknIdHmlxR7dztwOuBmCMikLgfLEwKJwsQ_tCtWDSUrwJf8aKYtir5dfr6eydeNlfAhjGn-7RzNu_cizEEMYv2rSdfhhI9W-ilccxI7_Hjr5a71j4ctPIl4Cy4lgarPL4w1MNOz1Xf9Mimghq5STPyyi2okUrAoM7D_iBDgu2SoykivBFb6AwAjt13cw6eauVm26XRmzeX5ee4_kHIeMh91dxAREDe4CLsU2NlS7JCrT5j_sbjBG1eOY6Yvy0v8z1yebdHCpd1o9eJwN53d1fdmnv03LvpBB-2F19RyKd_9CHkDoc3y--b4Aed3Cqj0ya7XYBHecwKO7LXLcqblap9mluoxNdrwXLcqQI8xI4dL77X4NWNpZlhPvXHzJzylLwokymACB0m1bhdR3QI49vSlnK_VqMPhAC79jDMKmeW3pjrpl-GD757B8QIq3uCUppjmSRufv582BRAY5rM9BNV20CHPLlw3nV5HHptAv_4HgoPXAGyQsXMewUsfamT-fqOawbq39NE35eZ6TjLOGeRn6om4Wl_jNsaDqxMJUMw7JBSa_YShQUiSTHwDi1FAjD_lwE6ei7pyPLxYHLRtixcpxu06hqKivJe_W8";
+  static String token = "";
+  //static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZTExYzg4NWY3NTRhZjRkNmZjMWU2YWUyOTJlNWQwYjI2YjhmMTE4ZTJjZjIxMzU3N2VlZTczNTFjNGIwYzQxODcwYjkyMjg5NjBlYjg1ZTQiLCJpYXQiOjE2Mjk5OTU1ODEsIm5iZiI6MTYyOTk5NTU4MSwiZXhwIjoxNjI5OTk5MTgxLCJzdWIiOiIxNiIsInNjb3BlcyI6W119.n_L0qoKcm_y8XiW1QuO8afYKIpDdtwYyGNEpzhp-p7ti4KBUZ566Q_-aS-Usta6KLRON42cK4Jpgxy8hWSRh8MOm2wOkB6lGbiLOraq4UklaurEFunOo2ilNzzZwRas2HO720EEbeOnqljsiN6Y3J0GOmh0g5JI9j2_efyxRhNeTRUpWiYNXlIqrFkeQvQB4FV5kXXyhYblcFJWcznx8SMWuR7y1drglxSJsQdQ5pHVPAsD4GOP9ls3oBPIFabHZ5UTkHweF0_Ke-kqi8z1s3lT-vIujcqFasGhfa4PynS0ibgf6PhRct2O9EPGNOAwnMf1aoGD-Zc6-CjLtv8Vx6VFPlbqn15148iLhHbmZtvwFrTYq2oaVPtaLw0GcfgjF7s-gRqUHiq-DPGd7Oy_kmhyuX6SvxMBT8fHznD0v8jvzFLaS5XHRSPbYFuDGYf-oBtyUmanm8mN8xi09co7mOmfEiK2EM0l3Ln1SbQK3odNcbPA60H3uYP5EANd9oRYDxhRHwQjS6ejClzJrd863Tsw2wC6YvhBmFiHp2JdqVY0gAwc35hy_J3N0vBawwKzi9U84Lei4xhtHvpVNj8AV1R-46wcYqNQixUYemwSyHMgFq4WTYnC-ONyf1KuISEjgUJMgclpDrtegN9kelO96B_CXym_LyR3sLmktEYt_Z00";
 
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
@@ -49,7 +50,7 @@ class RxVariables {
       listClientesFilter.stream;
 
   //Taras
-  static CatTaraModel gvTaraSelected = CatTaraModel();
+  static CatTaraModel gvTaraSelectedById = CatTaraModel();
   static DtTaraModel gvListTaras = DtTaraModel(tarassList: []);
   final gvBeSubListTaras = BehaviorSubject<List<CatTaraModel>>();
   Stream<List<CatTaraModel>> get lsTarasFiltrosStream =>
@@ -71,6 +72,13 @@ class RxVariables {
   static ListTintasModel listTinta = ListTintasModel(inkList: []);
   // Cambiar tintaSelected por el modelo grlobal en lugar de inkList
 
+  //Taras
+  static CatMachineModel gvMachineSelectedById = CatMachineModel();
+  static DtMachineModel gvListMachines = DtMachineModel(machinesList: []);
+  final gvBeSubListMachines = BehaviorSubject<List<CatMachineModel>>();
+  Stream<List<CatMachineModel>> get lsMachinesFiltrosStream =>
+      gvBeSubListMachines.stream;
+
   static final RxVariables _bloc = new RxVariables._internal();
 
   factory RxVariables() {
@@ -87,6 +95,7 @@ class RxVariables {
     gvBeSubListRazones.close();
     listRazonesFilter.close();
     listTintasFilter.close();
+    gvBeSubListMachines.close();
   }
 }
 

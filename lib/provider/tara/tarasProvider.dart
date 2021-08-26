@@ -5,7 +5,7 @@ import 'package:general_products_web/models/tara/catTaraModel.dart';
 import 'package:general_products_web/models/tara/dtTaraModel.dart';
 
 class TarasProvider{
-  RoutesProvider routes = RoutesProvider();
+  RoutesProvider routes         = RoutesProvider();
   final Options headerWithToken = new Options(
     headers: {
       'Content-Type'    : 'application/json',
@@ -25,7 +25,6 @@ class TarasProvider{
     try {
       final dio               = Dio();
       final result            = await dio.get(url,options: headerWithToken);
-      //print("statusCode: ${result.statusCode}");
       provDtTara              = DtTaraModel.fromJson(result.data);
       RxVariables.gvListTaras = provDtTara;
       provDtTara.tarassList.forEach((item){
@@ -36,7 +35,12 @@ class TarasProvider{
       rxVariables.gvBeSubListTaras.sink.add(provListTaras);
       return result.data;
     }on DioError catch (e) {
-      RxVariables.errorMessage =  e.response!.data["message"].toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
+      RxVariables.errorMessage =  e.response!.data["message"]
+      .toString()
+      .replaceAll("{", "")
+      .replaceAll("[", "")
+      .replaceAll("}", "")
+      .replaceAll("]", "");
       rxVariables.gvBeSubListTaras.sink.addError("Ocurrio un error, intenta más tarde "+RxVariables.errorMessage);
       return  null;
     }
@@ -52,7 +56,6 @@ class TarasProvider{
     try {
       final dio               = Dio();
       final result            = await dio.get(url, options: headerWithToken);
-      //print("statusCode: ${result.statusCode}");
       provDtTara              = DtTaraModel.fromJson(result.data);
       RxVariables.gvListTaras = provDtTara;
       provDtTara.tarassList.forEach((element) {
@@ -79,7 +82,10 @@ class TarasProvider{
 
     try {
       final dio  = Dio();
-      final data = {'id_cat_tara': idCatTara, 'id_cat_estatus': idCatStatus};
+      final data = {
+        'id_cat_tara': idCatTara,
+        'id_cat_estatus': idCatStatus
+      };
       final resp = await dio.post(url, data: data, options: headerWithToken);
       await getAllTaras();
       RxVariables.errorMessage = resp.data["message"].toString().replaceAll("{", "").replaceAll("[", "").replaceAll("}", "").replaceAll("]", "");
@@ -91,6 +97,59 @@ class TarasProvider{
       .replaceAll("[", "")
       .replaceAll("}", "")
       .replaceAll("]", "");
+      return null;
+    }
+  }
+
+  Future createTara (String nombreTara, String capacidad, int idCatPlanta) async {
+  RxVariables.errorMessage = '';
+  String url               = routes.urlBase + routes.crearTaras;
+    try {
+      final dio  = Dio();
+      final data = {
+        'nombre_tara'  : nombreTara,
+        'capacidad'    : capacidad,
+        'id_cat_planta': idCatPlanta
+      };
+      final resp = await dio.post(url, data: data, options: headerWithToken);
+      await getAllTaras();
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+      .toString()
+      .replaceAll("{", "")
+      .replaceAll("[", "")
+      .replaceAll("}", "")
+      .replaceAll("]", "");
+      rxVariables.gvBeSubListTaras.sink.addError("Ocurrio un error, intenta más tarde "+RxVariables.errorMessage);
+      return null;
+    }
+  }
+
+  Future editTara(int idCatTara, String nombreTara, String capacidad, int idPlanta) async {
+    RxVariables.errorMessage = '';
+    String url               = routes.urlBase + routes.editarTaras;
+
+    try {
+      final dio  = Dio();
+      final data = {
+        'id_cat_tara'  : idCatTara,
+        'nombre_tara'  : nombreTara,
+        'capacidad'    : capacidad,
+        'id_cat_planta': idPlanta
+      };
+
+      final resp = await dio.post(url, data: data, options: headerWithToken);
+      await getAllTaras();
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+      .toString()
+      .replaceAll("{", "")
+      .replaceAll("[", "")
+      .replaceAll("}", "")
+      .replaceAll("]", "");
+      rxVariables.gvBeSubListTaras.sink.addError("Ocurrio un error, intenta más tarde "+RxVariables.errorMessage);
       return null;
     }
   }

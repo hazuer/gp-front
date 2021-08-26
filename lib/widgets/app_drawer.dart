@@ -241,7 +241,7 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                     fontSize: 13,
                                   )),
                               onTap: () async {
-                                // await _navigateTo(context, RouteNames.paises);
+                                await _navigateTo(context, RouteNames.designIndex);
                               },
                               // selected: _selectedRoute == RouteNames.paises,
                             ),
@@ -267,7 +267,7 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                     fontSize: 13,
                                   )),
                               onTap: () async {
-                                // await _navigateTo(context, RouteNames.paises);
+                                await _navigateTo(context, RouteNames.plantsIndex);
                               },
                               // selected: _selectedRoute == RouteNames.paises,
                             ),
@@ -302,12 +302,12 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                               contentPadding: EdgeInsets.only(left: 16.0),
                               leading: const Icon(Icons.precision_manufacturing,
                                   size: 27),
-                              title: const Text('Maquinas',
+                              title: const Text('Máquinas',
                                   style: TextStyle(
                                     fontSize: 13,
                                   )),
                               onTap: () async {
-                                // await _navigateTo(context, RouteNames.paises);
+                                await _navigateTo(context, RouteNames.machineIndex);
                               },
                               // selected: _selectedRoute == RouteNames.paises,
                             ),

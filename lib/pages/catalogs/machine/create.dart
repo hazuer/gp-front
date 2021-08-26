@@ -4,33 +4,33 @@ import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/widgets/catalogs/machine/machineDialog.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
-class TaraCreate extends StatefulWidget {
-  TaraCreate({Key? key}) : super(key: key);
+class MachineCreate extends StatefulWidget {
+  MachineCreate({Key? key}) : super(key: key);
 
   @override
-  _TaraCreateState createState() => _TaraCreateState();
+  _MachineCreateState createState() => _MachineCreateState();
 }
 
-class _TaraCreateState extends State<TaraCreate> {
-  late Future futureTara;
+class _MachineCreateState extends State<MachineCreate> {
+  late Future futureMachine;
   bool isLoading                      = false;
   String headerFilter                 = "?porPagina = 20";
-  TextEditingController taraCtrl      = TextEditingController();
-  TextEditingController capacidadCtrl = TextEditingController();
+  TextEditingController machineCtrl      = TextEditingController();
+  TextEditingController modelCtrl = TextEditingController();
   Plant catPlanta                     = Plant();
-  TarasProvider tarasProvider         = TarasProvider();
-  TaraDialog dialogs                  = TaraDialog();
+  MachinesProvider machinesProvider         = MachinesProvider();
+  MachineDialog dialogs                  = MachineDialog();
   final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara = tarasProvider.getAllTaras();
+    futureMachine = machinesProvider.getAllMachines();
     super.initState();
   }
 
@@ -39,7 +39,7 @@ class _TaraCreateState extends State<TaraCreate> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Taras / Crear",
+      pageTitle: "Catálogos / Máquinas / Crear",
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
@@ -75,9 +75,9 @@ class _TaraCreateState extends State<TaraCreate> {
                           shrinkWrap: true,
                           children: [
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "* Tara"),
+                            CustomInput(controller: machineCtrl, hint: "* Nombre Máquina"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "* Capacidad"),
+                            CustomInput(controller: modelCtrl,hint: "* Modelo"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
@@ -86,16 +86,16 @@ class _TaraCreateState extends State<TaraCreate> {
                               title: 'Crear',
                               isLoading: false,
                               onPressed: () async {
-                                if(taraCtrl.text.isEmpty || capacidadCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
+                                if(machineCtrl.text.isEmpty || modelCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
                                   dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                 }else{
-                                  await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                  await MachinesProvider().createMachine(machineCtrl.text.trim(),modelCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
                                   if (value == null) {
                                     setState(() {
                                       isLoading = false;
                                     });
                                     Navigator.pop(context);
-                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la máquina : ${RxVariables.errorMessage}");
                                     } else {
                                       final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                       final message   = value["message"];
@@ -128,15 +128,15 @@ class _TaraCreateState extends State<TaraCreate> {
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraCtrl,
-                                        hint: "* Tara"
+                                        controller:machineCtrl,
+                                        hint: "* Nombre Máquina"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(
                                       child: CustomInput(
-                                        controller:capacidadCtrl,
-                                        hint: "* Capacidad"
+                                        controller:modelCtrl,
+                                        hint: "* Modelo"
                                       )
                                     ),
                                     SizedBox(width: 15,),
@@ -148,16 +148,16 @@ class _TaraCreateState extends State<TaraCreate> {
                                       title: 'Crear',
                                       isLoading: false,
                                       onPressed: () async {
-                                      if(taraCtrl.text.isEmpty || capacidadCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
+                                      if(machineCtrl.text.isEmpty || modelCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
                                         dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                       }else{
-                                        await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                        await MachinesProvider().createMachine(machineCtrl.text.trim(),modelCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
                                         if (value == null) {
                                           setState(() {
                                             isLoading = false;
                                           });
                                           Navigator.pop(context);
-                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la máquina : ${RxVariables.errorMessage}");
                                           } else {
                                             final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                             final message   = value["message"];
@@ -205,7 +205,7 @@ class _TaraCreateState extends State<TaraCreate> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futureMachine,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
