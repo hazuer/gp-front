@@ -20,7 +20,6 @@ class TaraIndex extends StatefulWidget {
 }
 
 class _TaraIndexState extends State<TaraIndex> {
-  //late Future fUser;
   late Future futureTara;
   bool isLoading                                       = false;
   String headerFilter                                  = "?porPagina = 20";
@@ -123,9 +122,7 @@ class _TaraIndexState extends State<TaraIndex> {
                               ),
                             )
                             : 
-                            ////()
                             TableTaraList()
-                            //Text("MovilNo hay registros para mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,)
                           ],
                         )
                         // _ _ _       _
@@ -200,9 +197,7 @@ class _TaraIndexState extends State<TaraIndex> {
                                   child:CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),),
                                 )
                                 : 
-                                //TableUserList()
                                 TableTaraList()
-                                //Text("No hay registros para mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,)
                               ],
                             ),
                           ),
@@ -363,7 +358,6 @@ class _TaraIndexState extends State<TaraIndex> {
       headerFilter = headerFilter + "&id_cat_estatus=${catEstatus.idCatEstatus}";
     }
 
-    //print(headerFilter);
     setState(() {
       isLoading = true;
     });

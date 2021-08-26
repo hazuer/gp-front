@@ -14,7 +14,7 @@ class TableTaraList extends StatefulWidget {
 
 class _TableTaraListState extends State<TableTaraList> {
   TaraDialog dialogs = TaraDialog();
-  bool isLoading        = false;
+  bool isLoading     = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +28,7 @@ class _TableTaraListState extends State<TableTaraList> {
           }
           if(snapshot.hasData){
             if(snapshot.data!.isEmpty){
-              return Text("No hay usuarios por mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,);
+              return Text("No hay registros por mostrar", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),textAlign: TextAlign.center,);
             }else{
             return SingleChildScrollView(
               padding: EdgeInsets.zero,
@@ -153,7 +153,6 @@ class _TableTaraListState extends State<TableTaraList> {
                                 //padding: EdgeInsets.zero,
                                   onPressed: (){
                                   RxVariables.gvTaraSelectedById = snapshot.data![index];
-                                //RxVariables.isEdition = true;
                                 Navigator.pushNamed(context, RouteNames.taraEdit);
                                 },
                                 icon: Icon(Icons.edit, 

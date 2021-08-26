@@ -20,22 +20,23 @@ class TaraEdit extends StatefulWidget {
 class _TaraEditState extends State<TaraEdit> {
   //late Future fUser;
   late Future futureTara;
-  bool isLoading                      = false;
-  String headerFilter                 = "?porPagina = 20";
-  TextEditingController taraCtrl      = TextEditingController();
-  TextEditingController capacidadCtrl = TextEditingController();
-  Plant catPlanta                     = Plant();
-  StatusModel catEstatus              = StatusModel();
-  TarasProvider tarasProvider         = TarasProvider();
-  TaraDialog dialogs                  = TaraDialog();
+  bool isLoading                                       = false;
+  String headerFilter                                  = "?porPagina = 20";
+  TextEditingController taraEditCtrl                   = TextEditingController();
+  TextEditingController capacidadEditCtrl              = TextEditingController();
+  Plant catPlanta                                      = Plant();
+  StatusModel catEstatus                               = StatusModel();
+  TarasProvider tarasProvider                          = TarasProvider();
+  TaraDialog dialogs                                   = TaraDialog();
   final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara = tarasProvider.getAllTaras();
+    futureTara             = tarasProvider.getAllTaras();
+    taraEditCtrl.text      = RxVariables.gvTaraSelectedById.nombreTara!;
+    capacidadEditCtrl.text = RxVariables.gvTaraSelectedById.capacidad??"";
     super.initState();
-    print(RxVariables.gvTaraSelectedById.nombreTara);
   }
 
   @override
@@ -79,22 +80,39 @@ class _TaraEditState extends State<TaraEdit> {
                           shrinkWrap: true,
                           children: [
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "Tara"),
+                            CustomInput(controller: taraEditCtrl, hint: "* Tara"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "Capacidad"),
+                            CustomInput(controller: capacidadEditCtrl,hint: "* Capacidad"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
                             CustomButton(
                               width: MediaQuery.of(context).size.width *.2,
-                              title: 'Crear',
+                              title: 'Guardar',
                               isLoading: false,
                               onPressed: () async {
-                                //await clientesProvider.crearCliente(
-                                  //clienteCtrl.text.trim(),
-                                  //plant.idCatPlanta!,
-                                //);
-                                //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
+                                if(taraEditCtrl.text=="" || capacidadEditCtrl.text==""){
+                                  dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
+                                }else{
+                                  await TarasProvider().editTara(RxVariables.gvTaraSelectedById.idCatTara!,taraEditCtrl.text.trim(),capacidadEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                  if (value == null) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.pop(context);
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                    } else {
+                                      final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                      final message   = value["message"];
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      Navigator.pop(context);
+                                      dialogs.showInfoDialog(context,typeAlert, message);
+                                    }
+                                  });
+                                }
                               },
                             ),
                           ],
@@ -115,53 +133,47 @@ class _TaraEditState extends State<TaraEdit> {
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraCtrl,
+                                        controller:taraEditCtrl,
                                         hint: "* Tara"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(
                                       child: CustomInput(
-                                        controller:capacidadCtrl,
-                                        hint: "Capacidad"
+                                        controller:capacidadEditCtrl,
+                                        hint: "* Capacidad"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(child: listPlants()),
                                     SizedBox(width: 15,),
                                     Flexible(child:
-                                  CustomButton(
+                                    CustomButton(
                                     width: MediaQuery.of(context).size.width *.2,
-                                    title: 'Crear',
+                                    title: 'Guardar',
                                     isLoading: false,
                                     onPressed: () async {
-                                      if(taraCtrl.text.isEmpty || catPlanta.idCatPlanta == null || catEstatus.idCatEstatus == null){
+                                      //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
+                                      if(taraEditCtrl.text=="" || capacidadEditCtrl.text==""){
                                         dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                       }else{
-                                        //dialogs.showInfoDialog(context, "Continue!", "Favor de validar los campos marcados con asterisco (*)");
-                                        await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
-                                        //print(value.toString());
+                                        await TarasProvider().editTara(RxVariables.gvTaraSelectedById.idCatTara!,taraEditCtrl.text.trim(),capacidadEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
                                         if (value == null) {
                                           setState(() {
                                             isLoading = false;
                                           });
                                           Navigator.pop(context);
-                                          //#showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
-                                        } else {
-                                          final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
-                                          final message   = value["message"];
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                          Navigator.pop(context);
-                                          //#showInfoDialog(context,typeAlert, message);
-                                        }
-                                      });
-                                      //await clientesProvider.crearCliente(
-                                        //clienteCtrl.text.trim(),
-                                        //plant.idCatPlanta!,
-                                      //);
-                                      //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                          } else {
+                                            final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                            final message   = value["message"];
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                            Navigator.pop(context);
+                                            dialogs.showInfoDialog(context,typeAlert, message);
+                                          }
+                                        });
                                       }
                                     },
                                   )
@@ -192,7 +204,7 @@ class _TaraEditState extends State<TaraEdit> {
         key: catPlanKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? "* Planta",
+          catPlanta.nombrePlanta ?? RxVariables.gvTaraSelectedById.nombrePlanta!,
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -246,34 +258,6 @@ class _TaraEditState extends State<TaraEdit> {
         ],
       ),
     );
-  }
-
-  applyFilter() async {
-    headerFilter = "?porPagina=20";
-    if (taraCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&nombre_tara=${taraCtrl.text.trim()}";
-    }
-    if (capacidadCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&capacidad=${capacidadCtrl.text.trim()}";
-    }
-
-    if (catPlanta.idCatPlanta != null) {
-      headerFilter = headerFilter + "&id_cat_planta=${catPlanta.idCatPlanta}";
-    }
-
-    if (catEstatus.idCatEstatus != null) {
-      headerFilter = headerFilter + "&id_cat_estatus=${catEstatus.idCatEstatus}";
-    }
-
-    //print(headerFilter);
-    setState(() {
-      isLoading = true;
-    });
-    //await tarasProvider.headerFilterTara(headerFilter).then((value) {
-      //setState(() {
-        //isLoading = false;
-      //});
-    //});
   }
 
 }

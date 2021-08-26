@@ -39,6 +39,7 @@ class RoutesProvider {
   //Taras
   String listarTaras        = "catalogo/listar-taras";
   String crearTaras         = "catalogo/crear-taras";
+  String editarTaras        = "catalogo/editar-taras";
   String changeEstatusTaras = "catalogo/editar-estatus-taras";
 
   // Razones
