@@ -9,6 +9,7 @@ import 'package:general_products_web/models/razon/dtRazonModel.dart';
 import 'package:general_products_web/models/razon/razonModel.dart';
 import 'package:general_products_web/models/razon/razonesModel.dart';
 import 'package:general_products_web/models/search_user_response.dart';
+import 'package:general_products_web/models/tinta/tintasModel.dart';
 import 'package:rxdart/rxdart.dart';
 //Taras
 import 'package:general_products_web/models/tara/dtTaraModel.dart';
@@ -61,6 +62,10 @@ class RxVariables {
   final listRazonesFilter = BehaviorSubject<List<ReasonsList>>();
   Stream<List<ReasonsList>> get listRazonesStream2 => listRazonesFilter.stream;
 
+  // Tintas
+  final listTintasFilter = BehaviorSubject<List<InkList>>();
+  Stream<List<InkList>> get listTintasStream => listTintasFilter.stream;
+
   static final RxVariables _bloc = new RxVariables._internal();
 
   factory RxVariables() {
@@ -76,6 +81,7 @@ class RxVariables {
     gvBeSubListTaras.close();
     gvBeSubListRazones.close();
     listRazonesFilter.close();
+    listTintasFilter.close();
   }
 }
 

@@ -253,7 +253,8 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                     fontSize: 13,
                                   )),
                               onTap: () async {
-                                // await _navigateTo(context, RouteNames.paises);
+                                await _navigateTo(
+                                    context, RouteNames.tintaIndex);
                               },
                               // selected: _selectedRoute == RouteNames.paises,
                             ),

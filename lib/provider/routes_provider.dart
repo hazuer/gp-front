@@ -49,4 +49,11 @@ class RoutesProvider {
   String activarRazones = 'catalogo/editar-estatus-razones';
   String desactivarRazones = 'catalogo/editar-estatus-razones';
   String eliminarRazones = 'catalogo/editar-estatus-razones';
+
+  // Tintas
+  String listarTintas = "catalogo/listar-tintas";
+  String editarTintas = "catalogo/editar-tintas";
+  String crearTintas = "catalogo/crear-tintas";
+  String importarTintas = "catalogo/listar-tintas-csv";
+  String changeEstatusTintas = "catalogo/editar-estatus-tintas";
 }

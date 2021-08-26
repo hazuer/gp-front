@@ -12,6 +12,7 @@ import 'package:general_products_web/pages/paises_page.dart';
 import 'package:general_products_web/pages/razon/edit.dart';
 import 'package:general_products_web/pages/razon/index.dart';
 import 'package:general_products_web/pages/razon/store.dart';
+import 'package:general_products_web/pages/tintas/index.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'app/auth/login.dart';
 import 'constants/route_names.dart';
@@ -90,6 +91,10 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.razonIndex: (_) => RazonesIndex(),
         RouteNames.razonUpdate: (_) => RazonEdit(),
         RouteNames.razonStore: (_) => RazonStore(),
+        RouteNames.tintaIndex: (_) => TintasIndex(),
+        // RouteNames.tintaUpdate: (_) => TintasIndex(),
+        // RouteNames.tintaStore: (_) => TintasIndex(),
+        // RouteNames.tintaImport: (_) => TintasIndex(),
       },
     );
   }

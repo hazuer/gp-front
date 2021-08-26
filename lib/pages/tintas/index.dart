@@ -1,43 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/customer_model.dart';
-import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
-import 'package:general_products_web/provider/cliente/clientes_provider.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/provider/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
-import 'package:general_products_web/widgets/cliente/table_cliente.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/widgets/tinta/table_tinta.dart';
 
-class ClientesIndex extends StatefulWidget {
+class TintasIndex extends StatefulWidget {
   @override
-  _ClientesIndexState createState() => _ClientesIndexState();
+  _TintasIndexState createState() => _TintasIndexState();
 }
 
-class _ClientesIndexState extends State<ClientesIndex> {
-  late Future futureClientes;
+class _TintasIndexState extends State<TintasIndex> {
+  late Future futureTintas;
   late Future futureFields;
   bool isLoading = false;
   String pathFilter = "?porPagina=20";
-  TextEditingController clienteCtrl = TextEditingController();
-  TextEditingController plantaCtrl = TextEditingController();
-  Customer customer = Customer();
-  Plant plant = Plant();
   StatusModel status = StatusModel();
-  ClientesProvider clientesProvider = ClientesProvider();
+  TintasProvider tintasProvider = TintasProvider();
   ListUsersProvider listProvider = ListUsersProvider();
 
-  final GlobalKey<AppExpansionTileState> customerKey = new GlobalKey();
-  final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
+  TextEditingController tintaCtrl = TextEditingController();
+  TextEditingController codigoGpCtrl = TextEditingController();
+  TextEditingController codigoSapCtrl = TextEditingController();
+
+  final GlobalKey<AppExpansionTileState> tintaKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureClientes = clientesProvider.listClientes();
+    futureTintas = tintasProvider.listTintas();
     futureFields = listProvider.dataListUser();
     super.initState();
   }
@@ -47,7 +44,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: 'Catálogos / Clientes',
+      pageTitle: 'Catálogos / Tintas',
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
@@ -68,7 +65,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Listado de clientes',
+                            'Listado de tintas',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 13.00,
@@ -83,23 +80,38 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
                                           .2,
-                                      title: "Crear Cliente",
+                                      title: "Crear tinta",
                                       isLoading: false,
                                       onPressed: () async {
-                                        Navigator.pushNamed(
-                                            context, RouteNames.clienteStore);
+                                        // Navigator.pushNamed(
+                                        //     context, RouteNames.tintaStore);
+                                      },
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    CustomButton(
+                                      width: MediaQuery.of(context).size.width *
+                                          .2,
+                                      title: "Importar tinta",
+                                      isLoading: false,
+                                      onPressed: () async {
+                                        // Navigator.pushNamed(
+                                        //     context, RouteNames.tintaImport);
                                       },
                                     ),
                                     SizedBox(height: 20.0),
                                     CustomInput(
-                                        hint: 'Cliente',
-                                        controller: clienteCtrl),
-                                    // _listClientes(),
+                                        hint: 'Tinta', controller: tintaCtrl),
                                     SizedBox(height: 15),
-                                    listPlants(),
+                                    CustomInput(
+                                        hint: 'Código GP',
+                                        controller: codigoGpCtrl),
+                                    SizedBox(height: 15),
+                                    CustomInput(
+                                        hint: 'Código SAP',
+                                        controller: codigoSapCtrl),
                                     SizedBox(height: 15),
                                     listStatus(),
-                                    SizedBox(height: 15.0),
+                                    SizedBox(height: 10),
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
                                           .2,
@@ -118,7 +130,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                       title: "Limpiar",
                                       isLoading: false,
                                       onPressed: () async {
-                                        await clearFilters();
+                                        await _clearFilters();
                                       },
                                     ),
                                     SizedBox(
@@ -135,7 +147,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                                       GPColors.PrimaryColor),
                                             ),
                                           )
-                                        : TableClienteList(),
+                                        : TableTintaList(),
                                   ],
                                 )
                               : Container(
@@ -147,28 +159,59 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        CustomButton(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .2,
-                                          title: "Crear Cliente",
-                                          isLoading: false,
-                                          onPressed: () async {
-                                            Navigator.pushNamed(context,
-                                                RouteNames.clienteStore);
-                                          },
+                                        Row(
+                                          children: [
+                                            Flexible(
+                                              child: CustomButton(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .2,
+                                                title: "Crear tinta",
+                                                isLoading: false,
+                                                onPressed: () async {
+                                                  // Navigator.pushNamed(context,
+                                                  //     RouteNames.tintaStore);
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(width: 20.0),
+                                            Flexible(
+                                              child: CustomButton(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .2,
+                                                title: "Importar tinta",
+                                                isLoading: false,
+                                                onPressed: () async {
+                                                  // Navigator.pushNamed(context,
+                                                  //     RouteNames.tintaImport);
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(height: 20.0),
                                         Row(
                                           children: [
                                             Flexible(
                                               child: CustomInput(
-                                                  hint: 'Cliente',
-                                                  controller: clienteCtrl),
+                                                  hint: 'Tinta',
+                                                  controller: tintaCtrl),
                                             ),
                                             SizedBox(width: 15.0),
-                                            Flexible(child: listPlants()),
+                                            Flexible(
+                                              child: CustomInput(
+                                                  hint: 'Código GP',
+                                                  controller: codigoGpCtrl),
+                                            ),
+                                            SizedBox(width: 15.0),
+                                            Flexible(
+                                              child: CustomInput(
+                                                  hint: 'Código SAP',
+                                                  controller: codigoSapCtrl),
+                                            ),
                                             SizedBox(width: 15.0),
                                             Flexible(child: listStatus()),
                                             SizedBox(width: 15.0),
@@ -180,13 +223,13 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                             ),
                                             IconButton(
                                               onPressed: () async {
-                                                await clearFilters();
+                                                await _clearFilters();
                                               },
                                               icon: Icon(Icons.clear),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 10.0),
+                                        SizedBox(height: 20.0),
                                         isLoading
                                             ? Container(
                                                 margin:
@@ -202,7 +245,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                                               .PrimaryColor),
                                                 ),
                                               )
-                                            : TableClienteList(),
+                                            : TableTintaList(),
                                       ],
                                     ),
                                   ),
@@ -216,72 +259,6 @@ class _ClientesIndexState extends State<ClientesIndex> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget listPlants() {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
-      child: AppExpansionTile(
-        key: plantsKey,
-        initiallyExpanded: false,
-        title: Text(
-          plant.nombrePlanta ?? "Planta",
-          style: TextStyle(color: Colors.black54, fontSize: 13),
-        ),
-        children: [
-          Container(
-            //height: MediaQuery.of(context).size.height*.2,
-            child: FutureBuilder(
-              future: futureFields,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    //physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listPlants!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            plant =
-                                RxVariables.dataFromUsers.listPlants![index];
-                            plantsKey.currentState!.collapse();
-                          });
-                        },
-                        child: Container(
-                          color: Colors.grey[100],
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                    RxVariables.dataFromUsers.listPlants![index]
-                                        .nombrePlanta!,
-                                    style: TextStyle(
-                                        color: Colors.black54, fontSize: 13)),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: .5,
-                                color: Colors.grey[300],
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -354,11 +331,14 @@ class _ClientesIndexState extends State<ClientesIndex> {
 
   _applyFilter() async {
     pathFilter = "?porPagina=10";
-    if (clienteCtrl.text.isNotEmpty) {
-      pathFilter = pathFilter + "&nombre_cliente=${clienteCtrl.text.trim()}";
+    if (tintaCtrl.text.isNotEmpty) {
+      pathFilter = pathFilter + "&nombre_tinta=${tintaCtrl.text.trim()}";
     }
-    if (plant.idCatPlanta != null) {
-      pathFilter = pathFilter + "&id_cat_planta=${plant.idCatPlanta}";
+    if (codigoGpCtrl.text.isNotEmpty) {
+      pathFilter = pathFilter + "&codigo_gp=${codigoGpCtrl.text.trim()}";
+    }
+    if (codigoSapCtrl.text.isNotEmpty) {
+      pathFilter = pathFilter + "&codigo_cliente=${codigoSapCtrl.text.trim()}";
     }
     if (status.idCatEstatus != null) {
       pathFilter = pathFilter + "&id_cat_estatus=${status.idCatEstatus}";
@@ -368,27 +348,21 @@ class _ClientesIndexState extends State<ClientesIndex> {
     setState(() {
       isLoading = true;
     });
-    await clientesProvider.listClientesWithFilters(pathFilter).then((value) {
+    await tintasProvider.listTintasWithFiltter(pathFilter).then((value) {
       setState(() {
         isLoading = false;
       });
     });
   }
 
-  clearFilters() async {
+  _clearFilters() async {
     setState(() {
       isLoading = true;
     });
     pathFilter = "?porPagina=30";
-    plant = Plant();
     status = StatusModel();
-    customer = Customer();
-    clienteCtrl.clear();
-
-    await listProvider.listUsersWithFilters(pathFilter).then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
+    tintaCtrl.clear();
+    codigoGpCtrl.clear();
+    codigoSapCtrl.clear();
   }
 }

@@ -28,7 +28,6 @@ class RazonesProvider {
       print('StatusCode: ${resp.statusCode}');
       listRazonesModel = ListRazonesModel.fromJson(resp.data);
       print(listRazonesModel.reasonsList.length);
-      print(RxVariables.listClientes.customersList.length);
       listRazonesModel.reasonsList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listActives.add(element);
@@ -63,7 +62,6 @@ class RazonesProvider {
       print('StatusCode: ${resp.statusCode}');
       listRazonesModel = ListRazonesModel.fromJson(resp.data);
       print(listRazonesModel.reasonsList.length);
-      print(RxVariables.listClientes.customersList.length);
       listRazonesModel.reasonsList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listFilters.add(element);
