@@ -56,4 +56,16 @@ class RoutesProvider {
   String crearTintas = "catalogo/crear-tintas";
   String importarTintas = "catalogo/listar-tintas-csv";
   String changeEstatusTintas = "catalogo/editar-estatus-tintas";
+
+  //Maquinas
+  String listarMachines        = "catalogo/listar-maquinas";
+  String crearMachines         = "catalogo/crear-maquinas";
+  String editarMachines        = "catalogo/editar-maquinas";
+  String changeEstatusMachines = "catalogo/editar-estatus-maquinas";
+
+  //Plantas
+  String listarPlants        = "catalogo/listar-plantas";
+  String crearPlants         = "catalogo/crear-plantas";
+  String editarPlants        = "catalogo/editar-plantas";
+  String changeEstatusPlants = "catalogo/editar-estatus-planta";
 }

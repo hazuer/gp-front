@@ -5,8 +5,8 @@ import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/widgets/catalogs/machine/machineDialog.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
@@ -19,23 +19,23 @@ class MachineEdit extends StatefulWidget {
 
 class _MachineEditState extends State<MachineEdit> {
   //late Future fUser;
-  late Future futureTara;
+  late Future futureMachine;
   bool isLoading                                       = false;
   String headerFilter                                  = "?porPagina = 20";
-  TextEditingController taraEditCtrl                   = TextEditingController();
-  TextEditingController capacidadEditCtrl              = TextEditingController();
+  TextEditingController machineEditCtrl                = TextEditingController();
+  TextEditingController modelEditCtrl                  = TextEditingController();
   Plant catPlanta                                      = Plant();
   StatusModel catEstatus                               = StatusModel();
-  TarasProvider tarasProvider                          = TarasProvider();
-  TaraDialog dialogs                                   = TaraDialog();
+  MachinesProvider machinesProvider                    = MachinesProvider();
+  MachineDialog dialogs                                = MachineDialog();
   final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara             = tarasProvider.getAllTaras();
-    taraEditCtrl.text      = RxVariables.gvTaraSelectedById.nombreTara!;
-    capacidadEditCtrl.text = RxVariables.gvTaraSelectedById.capacidad??"";
+    futureMachine             = machinesProvider.getAllMachines();
+    machineEditCtrl.text      = RxVariables.gvMachineSelectedById.nombreMaquina!;
+    modelEditCtrl.text = RxVariables.gvMachineSelectedById.modelo??"";
     super.initState();
   }
 
@@ -80,9 +80,9 @@ class _MachineEditState extends State<MachineEdit> {
                           shrinkWrap: true,
                           children: [
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraEditCtrl, hint: "* Tara"),
+                            CustomInput(controller: machineEditCtrl, hint: "* Nombre Máquina"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadEditCtrl,hint: "* Capacidad"),
+                            CustomInput(controller: modelEditCtrl,hint: "* Modelo"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
@@ -91,17 +91,17 @@ class _MachineEditState extends State<MachineEdit> {
                               title: 'Guardar',
                               isLoading: false,
                               onPressed: () async {
-                                //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
-                                if(taraEditCtrl.text=="" || capacidadEditCtrl.text==""){
+                                //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-maquinas
+                                if(machineEditCtrl.text=="" || modelEditCtrl.text==""){
                                   dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                 }else{
-                                  await TarasProvider().editTara(RxVariables.gvTaraSelectedById.idCatTara!,taraEditCtrl.text.trim(),capacidadEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                  await MachinesProvider().editMachine(RxVariables.gvMachineSelectedById.idCatMaquina!,machineEditCtrl.text.trim(),modelEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
                                   if (value == null) {
                                     setState(() {
                                       isLoading = false;
                                     });
                                     Navigator.pop(context);
-                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la máquina : ${RxVariables.errorMessage}");
                                     } else {
                                       final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                       final message   = value["message"];
@@ -133,15 +133,15 @@ class _MachineEditState extends State<MachineEdit> {
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraEditCtrl,
-                                        hint: "* Tara"
+                                        controller:machineEditCtrl,
+                                        hint: "* Nombre Máquina"
                                       )
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(
                                       child: CustomInput(
-                                        controller:capacidadEditCtrl,
-                                        hint: "* Capacidad"
+                                        controller:modelEditCtrl,
+                                        hint: "* Modelo"
                                       )
                                     ),
                                     SizedBox(width: 15,),
@@ -153,17 +153,17 @@ class _MachineEditState extends State<MachineEdit> {
                                     title: 'Guardar',
                                     isLoading: false,
                                     onPressed: () async {
-                                      //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
-                                      if(taraEditCtrl.text=="" || capacidadEditCtrl.text==""){
+                                      //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-maquinas
+                                      if(machineEditCtrl.text=="" || modelEditCtrl.text==""){
                                         dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                       }else{
-                                        await TarasProvider().editTara(RxVariables.gvTaraSelectedById.idCatTara!,taraEditCtrl.text.trim(),capacidadEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                        await MachinesProvider().editMachine(RxVariables.gvMachineSelectedById.idCatMaquina!,machineEditCtrl.text.trim(),modelEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
                                         if (value == null) {
                                           setState(() {
                                             isLoading = false;
                                           });
                                           Navigator.pop(context);
-                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la máquina : ${RxVariables.errorMessage}");
                                           } else {
                                             final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                             final message   = value["message"];
@@ -204,14 +204,14 @@ class _MachineEditState extends State<MachineEdit> {
         key: catPlanKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? RxVariables.gvTaraSelectedById.nombrePlanta!,
+          catPlanta.nombrePlanta ?? RxVariables.gvMachineSelectedById.nombrePlanta!,
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futureMachine,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
