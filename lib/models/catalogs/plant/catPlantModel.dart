@@ -22,7 +22,9 @@ class CatPlantModel {
     idCatPlanta : json["id_cat_planta"],
     nombrePlanta: json["nombre_planta"],
     estatus     : json["estatus"],
+    idCatEstatus: json["id_cat_estatus"],
     nombrePais  : json["nombre_pais"],
+    idCatPais   : json["id_cat_pais"],
   );
 
   Map<String, dynamic> toJson() => {

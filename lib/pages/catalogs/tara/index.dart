@@ -108,7 +108,7 @@ class _TaraIndexState extends State<TaraIndex> {
                               title: "Limpiar",
                               isLoading: false,
                               onPressed: () async {
-                                await clearFilters()();
+                                await clearFilters();
                               },
                             ),
                             SizedBox(height: 30,),

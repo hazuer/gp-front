@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/models/plant_model.dart';
-import 'package:general_products_web/models/status_model.dart';
+//import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+import 'package:general_products_web/provider/catalogs/plant/plantsProvider.dart';
+import 'package:general_products_web/widgets/catalogs/plant/plantaDialog.dart';
+import 'package:general_products_web/models/catalogs/plant/catPaisModel.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
@@ -18,24 +18,21 @@ class PlantEdit extends StatefulWidget {
 }
 
 class _PlantEditState extends State<PlantEdit> {
-  //late Future fUser;
-  late Future futureTara;
-  bool isLoading                                       = false;
-  String headerFilter                                  = "?porPagina = 20";
-  TextEditingController taraEditCtrl                   = TextEditingController();
-  TextEditingController capacidadEditCtrl              = TextEditingController();
-  Plant catPlanta                                      = Plant();
-  StatusModel catEstatus                               = StatusModel();
-  TarasProvider tarasProvider                          = TarasProvider();
-  TaraDialog dialogs                                   = TaraDialog();
-  final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
+  late Future futurecatPais;
+  bool isLoading                  = false;
+  String headerFilter             = "?porPagina = 20";
+  TextEditingController plantCtrl = TextEditingController();
+  CatPaisModel catPais            = CatPaisModel();
+  PlantsProvider plantsProvider   = PlantsProvider();
+  PlantDialog dialogs             = PlantDialog();
+  final GlobalKey<AppExpansionTileState> catPaisKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara             = tarasProvider.getAllTaras();
-    taraEditCtrl.text      = RxVariables.gvTaraSelectedById.nombreTara!;
-    capacidadEditCtrl.text = RxVariables.gvTaraSelectedById.capacidad??"";
+    futurecatPais     = plantsProvider.getAllPais();
+    plantCtrl.text    = RxVariables.gvPlantSelectedById.nombrePlanta!;
+    catPais.idCatPais = RxVariables.gvPlantSelectedById.idCatPais; //setear el valor del id del catalogo de pais
     super.initState();
   }
 
@@ -80,28 +77,25 @@ class _PlantEditState extends State<PlantEdit> {
                           shrinkWrap: true,
                           children: [
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraEditCtrl, hint: "* Tara"),
+                            CustomInput(controller: plantCtrl, hint: "* Nombre Planta"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadEditCtrl,hint: "* Capacidad"),
-                            SizedBox(height: 15,),
-                            listPlants(),
+                            listPais(),
                             SizedBox(height: 15,),
                             CustomButton(
                               width: MediaQuery.of(context).size.width *.2,
                               title: 'Guardar',
                               isLoading: false,
                               onPressed: () async {
-                                //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
-                                if(taraEditCtrl.text=="" || capacidadEditCtrl.text==""){
+                                if(plantCtrl.text =="" || catPais.idCatPais == null){
                                   dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                 }else{
-                                  await TarasProvider().editTara(RxVariables.gvTaraSelectedById.idCatTara!,taraEditCtrl.text.trim(),capacidadEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                  await PlantsProvider().editPlant(RxVariables.gvPlantSelectedById.idCatPlanta!,plantCtrl.text.trim(), catPais.idCatPais!,).then((value) {
                                   if (value == null) {
                                     setState(() {
                                       isLoading = false;
                                     });
                                     Navigator.pop(context);
-                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la planta : ${RxVariables.errorMessage}");
                                     } else {
                                       final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                       final message   = value["message"];
@@ -110,6 +104,7 @@ class _PlantEditState extends State<PlantEdit> {
                                       });
                                       Navigator.pop(context);
                                       dialogs.showInfoDialog(context,typeAlert, message);
+                                      //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
                                     }
                                   });
                                 }
@@ -133,37 +128,29 @@ class _PlantEditState extends State<PlantEdit> {
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraEditCtrl,
-                                        hint: "* Tara"
+                                        controller:plantCtrl,
+                                        hint: "* Nombre Planta"
                                       )
                                     ),
                                     SizedBox(width: 15,),
-                                    Flexible(
-                                      child: CustomInput(
-                                        controller:capacidadEditCtrl,
-                                        hint: "* Capacidad"
-                                      )
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Flexible(child: listPlants()),
+                                    Flexible(child: listPais()),
                                     SizedBox(width: 15,),
                                     Flexible(child:
                                     CustomButton(
-                                    width: MediaQuery.of(context).size.width *.2,
-                                    title: 'Guardar',
-                                    isLoading: false,
-                                    onPressed: () async {
-                                      //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
-                                      if(taraEditCtrl.text=="" || capacidadEditCtrl.text==""){
+                                      width: MediaQuery.of(context).size.width *.2,
+                                      title: 'Guardar',
+                                      isLoading: false,
+                                      onPressed: () async {
+                                      if(plantCtrl.text =="" || catPais.idCatPais == null){
                                         dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                       }else{
-                                        await TarasProvider().editTara(RxVariables.gvTaraSelectedById.idCatTara!,taraEditCtrl.text.trim(),capacidadEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                        await PlantsProvider().editPlant(RxVariables.gvPlantSelectedById.idCatPlanta!,plantCtrl.text.trim(), catPais.idCatPais!).then((value) {
                                         if (value == null) {
                                           setState(() {
                                             isLoading = false;
                                           });
                                           Navigator.pop(context);
-                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la planta : ${RxVariables.errorMessage}");
                                           } else {
                                             final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                             final message   = value["message"];
@@ -172,13 +159,13 @@ class _PlantEditState extends State<PlantEdit> {
                                             });
                                             Navigator.pop(context);
                                             dialogs.showInfoDialog(context,typeAlert, message);
+                                            //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
                                           }
                                         });
                                       }
                                     },
-                                  )
-                                ),
-                                    SizedBox(width: 15,),
+                                    )
+                                  ),
                                   ],
                                 ),
                               ],
@@ -197,33 +184,33 @@ class _PlantEditState extends State<PlantEdit> {
     );
   }
 
-  Widget listPlants() {
+ Widget listPais() {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: catPlanKey,
+        key: catPaisKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? RxVariables.gvTaraSelectedById.nombrePlanta!,
+          catPais.nombrePais ?? RxVariables.gvPlantSelectedById.nombrePais!,  //Seteo de titutlo para mostrar
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futurecatPais,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listPlants!.length,
+                    itemCount: RxVariables.gvListCatPais.listCountries.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catPlanta = RxVariables.dataFromUsers.listPlants![index];
-                            catPlanKey.currentState!.collapse();
+                            catPais = RxVariables.gvListCatPais.listCountries[index];
+                            catPaisKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -234,7 +221,7 @@ class _PlantEditState extends State<PlantEdit> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                  RxVariables.dataFromUsers.listPlants![index].nombrePlanta!,
+                                  RxVariables.gvListCatPais.listCountries[index].nombrePais!,
                                   style: TextStyle(color: Colors.black54, fontSize: 13)
                                 ),
                               ),
@@ -259,5 +246,4 @@ class _PlantEditState extends State<PlantEdit> {
       ),
     );
   }
-
 }

@@ -108,7 +108,7 @@ class _MachineIndexState extends State<MachineIndex> {
                               title: "Limpiar",
                               isLoading: false,
                               onPressed: () async {
-                                await clearFilters()();
+                                await clearFilters();
                               },
                             ),
                             SizedBox(height: 30,),

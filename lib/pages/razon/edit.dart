@@ -19,11 +19,9 @@ class RazonEdit extends StatefulWidget {
 }
 
 class _RazonEditState extends State<RazonEdit> {
-  late Future futureRazones;
   late Future futureFields;
   bool isLoading = false;
   TextEditingController razonCtrl = TextEditingController();
-  // TextEditingController plantaCtrl = TextEditingController();
   RazonDialog dialogs = RazonDialog();
   Plant plant = Plant();
   StatusModel status = StatusModel();
@@ -35,7 +33,6 @@ class _RazonEditState extends State<RazonEdit> {
 
   @override
   void initState() {
-    futureRazones = razonesProvider.listRazones();
     futureFields = listProvider.listUsers();
     razonCtrl.text = RxVariables.razonSelected.razon!;
     plant.idCatPlanta = RxVariables.razonSelected.idCatPlanta!;

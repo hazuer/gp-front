@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                                         title: "Limpiar",
                                         isLoading: false,
                                         onPressed: () async {
-                                          await clearFilters()();
+                                          await clearFilters();
                                         },
                                       ),
                                       SizedBox(

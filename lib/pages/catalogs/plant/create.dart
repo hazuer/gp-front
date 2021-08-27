@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/models/plant_model.dart';
+//import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+import 'package:general_products_web/provider/catalogs/plant/plantsProvider.dart';
+import 'package:general_products_web/widgets/catalogs/plant/plantaDialog.dart';
+import 'package:general_products_web/models/catalogs/plant/catPaisModel.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
@@ -17,20 +18,19 @@ class PlantCreate extends StatefulWidget {
 }
 
 class _PlantCreateState extends State<PlantCreate> {
-  late Future futureTara;
-  bool isLoading                      = false;
-  String headerFilter                 = "?porPagina = 20";
-  TextEditingController taraCtrl      = TextEditingController();
-  TextEditingController capacidadCtrl = TextEditingController();
-  Plant catPlanta                     = Plant();
-  TarasProvider tarasProvider         = TarasProvider();
-  TaraDialog dialogs                  = TaraDialog();
-  final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
+  late Future futurecatPais;
+  bool isLoading                  = false;
+  String headerFilter             = "?porPagina = 20";
+  TextEditingController plantCtrl = TextEditingController();
+  CatPaisModel catPais            = CatPaisModel();
+  PlantsProvider plantsProvider   = PlantsProvider();
+  PlantDialog dialogs             = PlantDialog();
+  final GlobalKey<AppExpansionTileState> catPaisKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara = tarasProvider.getAllTaras();
+    futurecatPais = plantsProvider.getAllPais();
     super.initState();
   }
 
@@ -75,27 +75,25 @@ class _PlantCreateState extends State<PlantCreate> {
                           shrinkWrap: true,
                           children: [
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "* Tara"),
+                            CustomInput(controller: plantCtrl, hint: "* Nombre Planta"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "* Capacidad"),
-                            SizedBox(height: 15,),
-                            listPlants(),
+                            listPais(),
                             SizedBox(height: 15,),
                             CustomButton(
                               width: MediaQuery.of(context).size.width *.2,
                               title: 'Crear',
                               isLoading: false,
                               onPressed: () async {
-                                if(taraCtrl.text.isEmpty || capacidadCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
+                                if(plantCtrl.text.isEmpty || catPais.idCatPais == null){
                                   dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                 }else{
-                                  await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                  await PlantsProvider().createPlant(plantCtrl.text.trim(), catPais.idCatPais!,).then((value) {
                                   if (value == null) {
                                     setState(() {
                                       isLoading = false;
                                     });
                                     Navigator.pop(context);
-                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la planta : ${RxVariables.errorMessage}");
                                     } else {
                                       final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                       final message   = value["message"];
@@ -128,19 +126,12 @@ class _PlantCreateState extends State<PlantCreate> {
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraCtrl,
-                                        hint: "* Tara"
+                                        controller:plantCtrl,
+                                        hint: "* Nombre Planta"
                                       )
                                     ),
                                     SizedBox(width: 15,),
-                                    Flexible(
-                                      child: CustomInput(
-                                        controller:capacidadCtrl,
-                                        hint: "* Capacidad"
-                                      )
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Flexible(child: listPlants()),
+                                    Flexible(child: listPais()),
                                     SizedBox(width: 15,),
                                     Flexible(child:
                                     CustomButton(
@@ -148,16 +139,16 @@ class _PlantCreateState extends State<PlantCreate> {
                                       title: 'Crear',
                                       isLoading: false,
                                       onPressed: () async {
-                                      if(taraCtrl.text.isEmpty || capacidadCtrl.text.isEmpty || catPlanta.idCatPlanta == null){
+                                      if(plantCtrl.text.isEmpty || catPais.idCatPais == null){
                                         dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
                                       }else{
-                                        await TarasProvider().createTara(taraCtrl.text.trim(),capacidadCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
+                                        await PlantsProvider().createPlant(plantCtrl.text.trim(), catPais.idCatPais!,).then((value) {
                                         if (value == null) {
                                           setState(() {
                                             isLoading = false;
                                           });
                                           Navigator.pop(context);
-                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la planta : ${RxVariables.errorMessage}");
                                           } else {
                                             final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                                             final message   = value["message"];
@@ -191,33 +182,33 @@ class _PlantCreateState extends State<PlantCreate> {
     );
   }
 
-  Widget listPlants() {
+ Widget listPais() {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: catPlanKey,
+        key: catPaisKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? "* Planta",
+          catPais.nombrePais ?? "* País",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futurecatPais,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listPlants!.length,
+                    itemCount: RxVariables.gvListCatPais.listCountries.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catPlanta = RxVariables.dataFromUsers.listPlants![index];
-                            catPlanKey.currentState!.collapse();
+                            catPais = RxVariables.gvListCatPais.listCountries[index];
+                            catPaisKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -228,7 +219,7 @@ class _PlantCreateState extends State<PlantCreate> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                  RxVariables.dataFromUsers.listPlants![index].nombrePlanta!,
+                                  RxVariables.gvListCatPais.listCountries[index].nombrePais!,
                                   style: TextStyle(color: Colors.black54, fontSize: 13)
                                 ),
                               ),
@@ -253,5 +244,4 @@ class _PlantCreateState extends State<PlantCreate> {
       ),
     );
   }
-
 }

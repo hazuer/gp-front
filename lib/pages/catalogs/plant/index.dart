@@ -107,7 +107,7 @@ class _PlantIndexState extends State<PlantIndex> {
                               title: "Limpiar",
                               isLoading: false,
                               onPressed: () async {
-                                await clearFilters()();
+                                await clearFilters();
                               },
                             ),
                             SizedBox(height: 30,),
@@ -231,7 +231,7 @@ class _PlantIndexState extends State<PlantIndex> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            //catPais = RxVariables.dataFromUsers.listPais![index];
+                            catPais = RxVariables.gvListCatPais.listCountries[index];
                             catPaisKey.currentState!.collapse();
                           });
                         },
@@ -339,9 +339,9 @@ class _PlantIndexState extends State<PlantIndex> {
       headerFilter = headerFilter + "&nombre_planta=${plantCtrl.text.trim()}";
     }
 
-    /*if (catPais.idcatPais != null) {
-      headerFilter = headerFilter + "&id_cat_planta=${catPais.idcatPais}";
-    }*/
+    if (catPais.idCatPais != null) {
+      headerFilter = headerFilter + "&id_cat_pais=${catPais.idCatPais}";
+    }
 
     if (catEstatus.idCatEstatus != null) {
       headerFilter = headerFilter + "&id_cat_estatus=${catEstatus.idCatEstatus}";
@@ -362,10 +362,9 @@ class _PlantIndexState extends State<PlantIndex> {
       isLoading = true;
     });
     headerFilter = "?porPagina = 30";
-    //catPais    = Plant();
+    catPais      = CatPaisModel();
     catEstatus   = StatusModel();
     plantCtrl.clear();
-    //capacidadCtrl.clear();
 
     await plantsProvider.headerFilterPlant(headerFilter).then((value) {
       setState(() {
