@@ -81,7 +81,7 @@ class _ClienteStoreState extends State<ClienteStore> {
                                   shrinkWrap: true,
                                   children: [
                                     CustomInput(
-                                        hint: 'Cliente',
+                                        hint: '* Cliente',
                                         controller: clienteCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),
@@ -148,7 +148,7 @@ class _ClienteStoreState extends State<ClienteStore> {
                                             Flexible(
                                                 child: CustomInput(
                                               controller: clienteCtrl,
-                                              hint: 'Cliente',
+                                              hint: '* Cliente',
                                             )),
                                             SizedBox(width: 15),
                                             Flexible(child: listPlants()),

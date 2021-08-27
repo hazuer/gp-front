@@ -68,7 +68,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Listado de clientes',
+                            'Listado de Clientes',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 13.00,
@@ -173,14 +173,14 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                             Flexible(child: listStatus()),
                                             SizedBox(width: 15.0),
                                             IconButton(
-                                              tooltip: 'Limpiar',
+                                              tooltip: 'Buscar',
                                               onPressed: () async {
                                                 await _applyFilter();
                                               },
                                               icon: Icon(Icons.filter_alt),
                                             ),
                                             IconButton(
-                                              tooltip: 'Buscar',
+                                              tooltip: 'Limpiar',
                                               onPressed: () async {
                                                 await clearFilters();
                                               },
