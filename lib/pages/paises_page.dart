@@ -37,7 +37,7 @@ class _PaisesPageState extends State<PaisesPage> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: 'Catálogos / Paises',
+      pageTitle: 'Catálogos / Países',
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
@@ -58,7 +58,7 @@ class _PaisesPageState extends State<PaisesPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            'Listado de paises',
+                            'Listado de Países',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 14.08,
@@ -83,7 +83,7 @@ class _PaisesPageState extends State<PaisesPage> {
                                     SizedBox(height: 15),
                                     CustomInput(
                                       controller: paisController,
-                                      hint: 'Pais',
+                                      hint: 'País',
                                     ),
                                     SizedBox(height: 15),
                                     listStatus(),

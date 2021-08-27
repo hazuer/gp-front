@@ -32,8 +32,8 @@ class _TablePaisesListState extends State<TablePaisesList> {
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {
               return Text(
-                'No hay paises por mostrar',
-                style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),
+                'No hay registros por mostrar',
+                style: TextStyle(color: GPColors.PrimaryColor, fontSize: 13),
                 textAlign: TextAlign.center,
               );
             } else {
@@ -55,7 +55,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                       DataColumn(
                         label: Expanded(
                           child: Text(
-                            'Paises',
+                            'Países',
                             style: TextStyle(color: Colors.white, fontSize: 13),
                             textAlign: TextAlign.center,
                           ),

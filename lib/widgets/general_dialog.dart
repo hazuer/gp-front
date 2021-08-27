@@ -244,17 +244,15 @@ class GeneralDialog {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(
-                                    context,
-                                    "Ocurrió un error al inhabilitar este pais",
-                                    "Error: ${RxVariables.errorMessage}");
+                                showInfoDialog(context, "¡Error!", "Ocurrió un error al deshabilitar el país : ${RxVariables.errorMessage}");
                               } else {
+                                final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                final message   = value["message"];
                                 setState(() {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(context,
-                                    "¡Pais deshabilitado con exito!", "");
+                                showInfoDialog(context,typeAlert, message);
                               }
                             });
                           },
@@ -352,17 +350,15 @@ class GeneralDialog {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(
-                                    context,
-                                    "Ocurrió un error al eliminar este pais",
-                                    "Error: ${RxVariables.errorMessage}");
+                                showInfoDialog(context, "¡Error!", "Ocurrió un error al eliminar el país : ${RxVariables.errorMessage}");
                               } else {
+                                final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                final message   = value["message"];
                                 setState(() {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(
-                                    context, "¡Pais eliminado con exito!", "");
+                                showInfoDialog(context,typeAlert, message);
                               }
                             });
                           },
@@ -460,17 +456,15 @@ class GeneralDialog {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(
-                                    context,
-                                    "Ocurrió un error al habilitar este pais",
-                                    "Error: ${RxVariables.errorMessage}");
+                                showInfoDialog(context, "¡Error!", "Ocurrió un error al activar el país : ${RxVariables.errorMessage}");
                               } else {
+                                final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
+                                final message   = value["message"];
                                 setState(() {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(
-                                    context, "¡Pais habilitado con exito!", "");
+                                showInfoDialog(context,typeAlert, message);
                               }
                             });
                           },
