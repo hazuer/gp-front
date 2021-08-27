@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -7,8 +6,9 @@ import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/catalogs/plant/tblTara.dart';
+import 'package:general_products_web/provider/catalogs/plant/plantsProvider.dart';
+import 'package:general_products_web/widgets/catalogs/plant/tblPlant.dart';
+import 'package:general_products_web/models/catalogs/plant/catPaisModel.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
@@ -20,20 +20,21 @@ class PlantIndex extends StatefulWidget {
 }
 
 class _PlantIndexState extends State<PlantIndex> {
-  late Future futureTara;
+  late Future futurePlant;
+  late Future futurecatPais;
   bool isLoading                                       = false;
   String headerFilter                                  = "?porPagina = 20";
-  TextEditingController taraCtrl                       = TextEditingController();
-  TextEditingController capacidadCtrl                  = TextEditingController();
-  Plant catPlanta                                      = Plant();
+  TextEditingController plantCtrl                      = TextEditingController();
+  CatPaisModel catPais                                 = CatPaisModel();
   StatusModel catEstatus                               = StatusModel();
-  TarasProvider tarasProvider                          = TarasProvider();
-  final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
+  PlantsProvider plantsProvider                        = PlantsProvider();
+  final GlobalKey<AppExpansionTileState> catPaisKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara = tarasProvider.getAllTaras();
+    futurePlant   = plantsProvider.getAllPlants();
+    futurecatPais = plantsProvider.getAllPais();
     super.initState();
   }
 
@@ -82,13 +83,13 @@ class _PlantIndexState extends State<PlantIndex> {
                               title: "Crear Planta",
                               isLoading: false,
                               onPressed: () async {
-                                Navigator.pushNamed(context, RouteNames.taraCreate);
+                                Navigator.pushNamed(context, RouteNames.plantsCreate);
                               },
                             ),
                             SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "Nombre Planta"),
+                            CustomInput(controller: plantCtrl, hint: "Nombre Planta"),
                             SizedBox(height: 15,),
-                            listPlants(),
+                            listPais(),
                             SizedBox(height: 15,),
                             listStatus(),
                             SizedBox(height: 15,),
@@ -120,7 +121,7 @@ class _PlantIndexState extends State<PlantIndex> {
                               ),
                             )
                             : 
-                            TableTaraList()
+                            TablePlantList()
                           ],
                         )
                         // _ _ _       _
@@ -143,7 +144,7 @@ class _PlantIndexState extends State<PlantIndex> {
                                         isLoading: false,
                                         onPressed: () async {
                                           Navigator.pushNamed(context,
-                                            RouteNames.taraCreate);
+                                            RouteNames.plantsCreate);
                                         },
                                       ),
                                     ),
@@ -154,12 +155,12 @@ class _PlantIndexState extends State<PlantIndex> {
                                   children: [
                                     Flexible(
                                       child: CustomInput(
-                                        controller:taraCtrl,
+                                        controller:plantCtrl,
                                         hint: "Nombre Planta"
                                       )
                                     ),
                                     SizedBox(width: 15,),
-                                    Flexible(child: listPlants()),
+                                    Flexible(child: listPais()),
                                     SizedBox(width: 15,),
                                     Flexible(child: listStatus()),
                                     SizedBox(width: 15,),
@@ -188,7 +189,7 @@ class _PlantIndexState extends State<PlantIndex> {
                                   child:CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),),
                                 )
                                 : 
-                                TableTaraList()
+                                TablePlantList()
                               ],
                             ),
                           ),
@@ -205,33 +206,33 @@ class _PlantIndexState extends State<PlantIndex> {
     );
   }
 
-  Widget listPlants() {
+  Widget listPais() {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: catPlanKey,
+        key: catPaisKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? "País",
+          catPais.nombrePais ?? "País",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futurePlant,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listPlants!.length,
+                    itemCount: RxVariables.gvListCatPais.listCountries.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catPlanta = RxVariables.dataFromUsers.listPlants![index];
-                            catPlanKey.currentState!.collapse();
+                            //catPais = RxVariables.dataFromUsers.listPais![index];
+                            catPaisKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -242,7 +243,7 @@ class _PlantIndexState extends State<PlantIndex> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                  RxVariables.dataFromUsers.listPlants![index].nombrePlanta!,
+                                  RxVariables.gvListCatPais.listCountries[index].nombrePais!,
                                   style: TextStyle(color: Colors.black54, fontSize: 13)
                                 ),
                               ),
@@ -282,7 +283,7 @@ class _PlantIndexState extends State<PlantIndex> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futurePlant,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -334,16 +335,13 @@ class _PlantIndexState extends State<PlantIndex> {
 
   applyFilter() async {
     headerFilter = "?porPagina=20";
-    if (taraCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&nombre_tara=${taraCtrl.text.trim()}";
-    }
-    if (capacidadCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&capacidad=${capacidadCtrl.text.trim()}";
+    if (plantCtrl.text.isNotEmpty) {
+      headerFilter = headerFilter + "&nombre_planta=${plantCtrl.text.trim()}";
     }
 
-    if (catPlanta.idCatPlanta != null) {
-      headerFilter = headerFilter + "&id_cat_planta=${catPlanta.idCatPlanta}";
-    }
+    /*if (catPais.idcatPais != null) {
+      headerFilter = headerFilter + "&id_cat_planta=${catPais.idcatPais}";
+    }*/
 
     if (catEstatus.idCatEstatus != null) {
       headerFilter = headerFilter + "&id_cat_estatus=${catEstatus.idCatEstatus}";
@@ -352,7 +350,7 @@ class _PlantIndexState extends State<PlantIndex> {
     setState(() {
       isLoading = true;
     });
-    await tarasProvider.headerFilterTara(headerFilter).then((value) {
+    await plantsProvider.headerFilterPlant(headerFilter).then((value) {
       setState(() {
         isLoading = false;
       });
@@ -364,12 +362,12 @@ class _PlantIndexState extends State<PlantIndex> {
       isLoading = true;
     });
     headerFilter = "?porPagina = 30";
-    catPlanta    = Plant();
+    //catPais    = Plant();
     catEstatus   = StatusModel();
-    taraCtrl.clear();
-    capacidadCtrl.clear();
+    plantCtrl.clear();
+    //capacidadCtrl.clear();
 
-    await tarasProvider.headerFilterTara(headerFilter).then((value) {
+    await plantsProvider.headerFilterPlant(headerFilter).then((value) {
       setState(() {
         isLoading = false;
       });

@@ -84,7 +84,7 @@ class GeneralProductsApp extends StatelessWidget {
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
         ),
       ),
-      initialRoute: RouteNames.clienteIndex,
+      initialRoute: RouteNames.plantsIndex,
       navigatorObservers: [AppRouteObserver()],
       routes: {
         RouteNames.login: (_) => LoginPage(),

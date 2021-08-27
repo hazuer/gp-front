@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/tara/catTaraModel.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
+import 'package:general_products_web/models/catalogs/plant/catPlantModel.dart';
+import 'package:general_products_web/provider/catalogs/plant/plantsProvider.dart';
 
-class TaraDialog {
+class PlantDialog {
 Future showInfoDialog(
       BuildContext context, String title, String detail) async {
     return showDialog<void>(
@@ -56,7 +56,7 @@ Future showInfoDialog(
     );
   }
 
-  Future dialogChangeStatusTara(BuildContext context, CatTaraModel alertDialogTaraDisable, String accion, int idCatStatus) async {
+  Future dialogChangeStatusPlant(BuildContext context, CatPlantModel alertDialogPlantDisable, String accion, int idCatStatus) async {
     bool isLoading = false;
     return showDialog(
       context: context,
@@ -65,7 +65,7 @@ Future showInfoDialog(
           builder: (context, setState) {
             return AlertDialog(
               title: Center(
-                child: Text("¿Desea $accion la tara: ${alertDialogTaraDisable.nombreTara}?",
+                child: Text("¿Desea $accion la planta: ${alertDialogPlantDisable.nombrePlanta}?",
                 textAlign: TextAlign.center,
                 )
               ),
@@ -124,14 +124,14 @@ Future showInfoDialog(
                         setState(() {
                           isLoading = true;
                         });
-                        await TarasProvider().changeStatusTaraProvider(alertDialogTaraDisable.idCatTara!, idCatStatus).then((value) {
+                        await PlantsProvider().changeStatusPlantProvider(alertDialogPlantDisable.idCatPlanta!, idCatStatus).then((value) {
                           //print(value.toString());
                           if (value == null) {
                             setState(() {
                               isLoading = false;
                             });
                             Navigator.pop(context);
-                            showInfoDialog(context, "¡Error!", "Ocurrió un error al $accion la tara : ${RxVariables.errorMessage}");
+                            showInfoDialog(context, "¡Error!", "Ocurrió un error al $accion la planta : ${RxVariables.errorMessage}");
                           } else {
                             final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
                             final message   = value["message"];

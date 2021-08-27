@@ -17,6 +17,12 @@ import 'package:general_products_web/models/tara/catTaraModel.dart';
 //Maquinas
 import 'package:general_products_web/models/catalogs/machine/dtMachineModel.dart';
 import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
+//Plantas
+import 'package:general_products_web/models/catalogs/plant/dtPlantModel.dart';
+import 'package:general_products_web/models/catalogs/plant/catPlantModel.dart';
+//cat_pais
+import 'package:general_products_web/models/catalogs/plant/dtPaisModel.dart';
+import 'package:general_products_web/models/catalogs/plant/catPaisModel.dart';
 
 class RxVariables {
   static LoginResponse loginResponse = LoginResponse();
@@ -75,12 +81,25 @@ class RxVariables {
   static ListTintasModel listTinta = ListTintasModel(inkList: []);
   // Cambiar tintaSelected por el modelo grlobal en lugar de inkList
 
-  //Taras
+  //Maquinas
   static CatMachineModel gvMachineSelectedById = CatMachineModel();
   static DtMachineModel gvListMachines = DtMachineModel(machinesList: []);
   final gvBeSubListMachines = BehaviorSubject<List<CatMachineModel>>();
   Stream<List<CatMachineModel>> get lsMachinesFiltrosStream =>
       gvBeSubListMachines.stream;
+
+  //Plantas
+  static CatPlantModel gvPlantSelectedById = CatPlantModel();
+  static DtPlantModel gvListPlants = DtPlantModel(plantsList: []);
+  final gvBeSubListPlants = BehaviorSubject<List<CatPlantModel>>();
+  Stream<List<CatPlantModel>> get lsPlantsFiltrosStream =>
+      gvBeSubListPlants.stream;
+
+  //cat_pais llamado desde el listado de plantas
+  static DtPaisModel gvListCatPais = DtPaisModel(listCountries: []);
+  final gvBeSubListCatPais = BehaviorSubject<List<CatPaisModel>>();
+  Stream<List<CatPaisModel>> get lsCatPaisFiltrosStream =>
+      gvBeSubListCatPais.stream;
 
   static final RxVariables _bloc = new RxVariables._internal();
 
@@ -99,6 +118,8 @@ class RxVariables {
     listRazonesFilter.close();
     listTintasFilter.close();
     gvBeSubListMachines.close();
+    gvBeSubListPlants.close();
+    gvBeSubListCatPais.close();
   }
 }
 

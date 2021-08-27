@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/tara/catTaraModel.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+import 'package:general_products_web/models/catalogs/plant/catPlantModel.dart';
+import 'package:general_products_web/widgets/catalogs/plant/plantaDialog.dart';
 
-class TableTaraList extends StatefulWidget {
-  const TableTaraList({ Key? key }) : super(key: key);
+class TablePlantList extends StatefulWidget {
+  const TablePlantList({ Key? key }) : super(key: key);
 
   @override
-  _TableTaraListState createState() => _TableTaraListState();
+  _TablePlantListState createState() => _TablePlantListState();
 }
 
-class _TableTaraListState extends State<TableTaraList> {
-  TaraDialog dialogs = TaraDialog();
-  bool isLoading     = false;
+class _TablePlantListState extends State<TablePlantList> {
+  PlantDialog dialogs = PlantDialog();
+  bool isLoading      = false;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height*.5,
       child: StreamBuilder(
-        stream: rxVariables.lsTarasFiltrosStream,
-        builder: (BuildContext context, AsyncSnapshot<List<CatTaraModel>> snapshot) {
+        stream: rxVariables.lsPlantsFiltrosStream,
+        builder: (BuildContext context, AsyncSnapshot<List<CatPlantModel>> snapshot) {
           if(snapshot.hasError){
             return Text(RxVariables.errorMessage);
           }
@@ -48,6 +48,14 @@ class _TableTaraListState extends State<TableTaraList> {
                       label: Expanded(
                         child: Text(
                           'Planta',
+                          style: TextStyle( color: Colors.white, fontSize: 13), textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'País',
                           style: TextStyle( color: Colors.white, fontSize: 13), textAlign: TextAlign.center,
                         ),
                       ),
@@ -83,7 +91,16 @@ class _TableTaraListState extends State<TableTaraList> {
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "${snapshot.data![index].nombreTara??""}",
+                            "${snapshot.data![index].nombrePlanta??""}",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ),
+                      ),
+                       DataCell(
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${snapshot.data![index].nombrePais??""}",
                             style: TextStyle(fontSize: 13),
                           ),
                         ),
@@ -109,15 +126,15 @@ class _TableTaraListState extends State<TableTaraList> {
                                   size: 18, color: GPColors.PrimaryColor
                                 ),
                                 onPressed: () {
-                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "activar", 1);
+                                  dialogs.dialogChangeStatusPlant(context,snapshot.data![index], "activar", 1);
                                 },
                               ),
                               IconButton(
                                 tooltip: "Editar",
                                 //padding: EdgeInsets.zero,
                                   onPressed: (){
-                                  RxVariables.gvTaraSelectedById = snapshot.data![index];
-                                Navigator.pushNamed(context, RouteNames.taraEdit);
+                                  RxVariables.gvPlantSelectedById = snapshot.data![index];
+                                Navigator.pushNamed(context, RouteNames.plantsEdit);
                                 },
                                 icon: Icon(Icons.edit, 
                                   size: 18, color: GPColors.PrimaryColor
@@ -127,7 +144,7 @@ class _TableTaraListState extends State<TableTaraList> {
                                 tooltip: "Desactivar",
                                 //padding: EdgeInsets.zero,
                                 onPressed: (){
-                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "desactivar", 2);
+                                  dialogs.dialogChangeStatusPlant(context,snapshot.data![index], "desactivar", 2);
                                 },
                                 icon: Icon(Icons.not_interested_outlined,
                                   size: 18, color: GPColors.PrimaryColor,
@@ -139,7 +156,7 @@ class _TableTaraListState extends State<TableTaraList> {
                                   size: 18, color: GPColors.PrimaryColor
                                 ),
                                 onPressed: () {
-                                  dialogs.dialogChangeStatusTara(context,snapshot.data![index], "eliminar", 3);
+                                  dialogs.dialogChangeStatusPlant(context,snapshot.data![index], "eliminar", 3);
                                 },
                               ),
                             ]
