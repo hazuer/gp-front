@@ -45,6 +45,37 @@ class RazonesProvider {
     }
   }
 
+  Future listarRazones() async {
+    List<RazonModel> provListRazones = [];
+    RxVariables.errorMessage = "";
+    DtRazonesModel provDtRazon = DtRazonesModel(reasonsList: []);
+    String url = routes.urlBase + routes.listarRazones;
+
+    try {
+      final dio = Dio();
+      final result = await dio.get(url, options: headerWithToken);
+      provDtRazon = DtRazonesModel.fromJson(result.data);
+      RxVariables.gvListRazones = provDtRazon;
+      provDtRazon.reasonsList.forEach((item) {
+        if (item.estatus!.toLowerCase() == "activo") {
+          provListRazones.add(item);
+        }
+      });
+      rxVariables.gvBeSubListRazones.sink.add(provListRazones);
+      return result.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      rxVariables.gvBeSubListRazones.sink.addError(
+          "Ocurrio un error, intenta más tarde " + RxVariables.errorMessage);
+      return null;
+    }
+  }
+
   Future listRazonesWithFiltter(String path) async {
     List<ReasonsList> listFilters = [];
     RxVariables.errorMessage = '';
@@ -58,9 +89,7 @@ class RazonesProvider {
       final resp = await dio.get(url, options: headerWithToken);
       listRazonesModel = ListRazonesModel.fromJson(resp.data);
       listRazonesModel.reasonsList.forEach((element) {
-        if (element.estatus!.toLowerCase() == 'activo') {
-          listFilters.add(element);
-        }
+        listFilters.add(element);
       });
       rxVariables.listRazonesFilter.sink.add(listFilters);
     } on DioError catch (e) {

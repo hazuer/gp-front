@@ -217,12 +217,14 @@ class _TintasIndexState extends State<TintasIndex> {
                                             Flexible(child: listStatus()),
                                             SizedBox(width: 15.0),
                                             IconButton(
+                                              tooltip: 'Buscar',
                                               onPressed: () async {
                                                 await _applyFilter();
                                               },
                                               icon: Icon(Icons.filter_alt),
                                             ),
                                             IconButton(
+                                              tooltip: 'Limpiar',
                                               onPressed: () async {
                                                 await _clearFilters();
                                               },

@@ -8,6 +8,7 @@ import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/widgets/tinta/tinta_dialog.dart';
 
 class TintaStore extends StatefulWidget {
   const TintaStore({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _TintaStoreState extends State<TintaStore> {
   TextEditingController codigoGpCtrl = TextEditingController();
   TextEditingController codigoSapCtrl = TextEditingController();
   Plant plant = Plant();
+  TintaDialog dialogs = TintaDialog();
   TintasProvider tintasProvider = TintasProvider();
   ListUsersProvider listProvider = ListUsersProvider();
 
@@ -93,20 +95,48 @@ class _TintaStoreState extends State<TintaStore> {
                                       title: 'Crear',
                                       isLoading: false,
                                       onPressed: () async {
-                                        await tintasProvider.crearTinta(
-                                          tintaCtrl.text.trim(),
-                                          codigoGpCtrl.text.trim(),
-                                          codigoSapCtrl.text.trim(),
-                                          plant.idCatPlanta!,
-                                        );
-                                        Navigator.pushReplacementNamed(
-                                            context, RouteNames.tintaIndex);
-                                        // await razonesProvider.crearRazon(
-                                        //   tintaCtrl.text.trim(),
-                                        //   plant.idCatPlanta!,
-                                        // );
-                                        // Navigator.pushReplacementNamed(
-                                        //     context, RouteNames.razonIndex);
+                                        if (tintaCtrl.text.isEmpty ||
+                                            codigoGpCtrl.text.isEmpty ||
+                                            codigoSapCtrl.text.isEmpty ||
+                                            plant.idCatPlanta == null) {
+                                          dialogs.showInfoDialog(
+                                              context,
+                                              "¡Atención!",
+                                              "Favor de validar los campos marcados con asterisco (*)");
+                                        } else {
+                                          await TintasProvider()
+                                              .crearTinta(
+                                            tintaCtrl.text.trim(),
+                                            codigoGpCtrl.text.trim(),
+                                            codigoSapCtrl.text.trim(),
+                                            plant.idCatPlanta!,
+                                          )
+                                              .then((value) {
+                                            if (value == null) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Error!",
+                                                  "Ocurrió un error al crear la tinta : ${RxVariables.errorMessage}");
+                                            } else {
+                                              final typeAlert =
+                                                  (value["result"])
+                                                      ? "¡Éxito!"
+                                                      : "¡Error!";
+                                              final message = value["message"];
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context, typeAlert, message);
+                                              //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                            }
+                                          });
+                                        }
                                       },
                                     ),
                                     SizedBox(
@@ -156,22 +186,51 @@ class _TintaStoreState extends State<TintaStore> {
                                           title: 'Crear',
                                           isLoading: false,
                                           onPressed: () async {
-                                            await tintasProvider.crearTinta(
-                                              tintaCtrl.text.trim(),
-                                              codigoGpCtrl.text.trim(),
-                                              codigoSapCtrl.text.trim(),
-                                              plant.idCatPlanta!,
-                                            );
-                                            Navigator.pushReplacementNamed(
-                                                context, RouteNames.tintaIndex);
-                                            // await razonesProvider
-                                            //     .crearRazon(
-                                            //   tintaCtrl.text.trim(),
-                                            //   plant.idCatPlanta!,
-                                            // );
-                                            // Navigator.pushReplacementNamed(
-                                            //     context,
-                                            //     RouteNames.razonIndex);
+                                            if (tintaCtrl.text.isEmpty ||
+                                                codigoGpCtrl.text.isEmpty ||
+                                                codigoSapCtrl.text.isEmpty ||
+                                                plant.idCatPlanta == null) {
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Atención!",
+                                                  "Favor de validar los campos marcados con asterisco (*)");
+                                            } else {
+                                              await TintasProvider()
+                                                  .crearTinta(
+                                                tintaCtrl.text.trim(),
+                                                codigoGpCtrl.text.trim(),
+                                                codigoSapCtrl.text.trim(),
+                                                plant.idCatPlanta!,
+                                              )
+                                                  .then((value) {
+                                                if (value == null) {
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                  Navigator.pop(context);
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Error!",
+                                                      "Ocurrió un error al crear la tinta : ${RxVariables.errorMessage}");
+                                                } else {
+                                                  final typeAlert =
+                                                      (value["result"])
+                                                          ? "¡Éxito!"
+                                                          : "¡Error!";
+                                                  final message =
+                                                      value["message"];
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                  Navigator.pop(context);
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      typeAlert,
+                                                      message);
+                                                  //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                                }
+                                              });
+                                            }
                                           },
                                         ),
                                       ],

@@ -3,7 +3,7 @@ import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/cliente/list_clientes_model.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/widgets/cliente/general_dialog.dart';
+import 'package:general_products_web/widgets/cliente/clienteDialog.dart';
 
 class TableClienteList extends StatefulWidget {
   const TableClienteList({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class TableClienteList extends StatefulWidget {
 }
 
 class _TableClienteListState extends State<TableClienteList> {
-  GeneralDialog dialogs = GeneralDialog();
+  ClienteDialog dialogs = ClienteDialog();
 
   @override
   Widget build(BuildContext context) {
@@ -136,10 +136,13 @@ class _TableClienteListState extends State<TableClienteList> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        tooltip: 'Activar cliente',
+                                        tooltip: 'Activar',
                                         onPressed: () {
-                                          dialogs.showEnabledCustomerDialog(
-                                              context, snapshot.data![index]);
+                                          dialogs.dialogChangeStatusCliente(
+                                              context,
+                                              snapshot.data![index],
+                                              'activar',
+                                              1);
                                           //  Navigator.pushNamed(context, RouteNames.);
                                         },
                                         icon: Icon(Icons.check_box_rounded,
@@ -162,8 +165,11 @@ class _TableClienteListState extends State<TableClienteList> {
                                         tooltip: "Desactivar",
                                         //padding: EdgeInsets.zero,
                                         onPressed: () {
-                                          dialogs.showDisabledCustomerDialog(
-                                              context, snapshot.data![index]);
+                                          dialogs.dialogChangeStatusCliente(
+                                              context,
+                                              snapshot.data![index],
+                                              'desactivar',
+                                              2);
                                         },
                                         icon: Icon(
                                           Icons.not_interested_outlined,
@@ -172,13 +178,16 @@ class _TableClienteListState extends State<TableClienteList> {
                                         ),
                                       ),
                                       IconButton(
-                                        tooltip: 'Eliminar cliente',
+                                        tooltip: 'Eliminar',
                                         icon: Icon(Icons.delete,
                                             size: 18,
                                             color: GPColors.PrimaryColor),
                                         onPressed: () {
-                                          dialogs.showDeleteCustomerDialog(
-                                              context, snapshot.data![index]);
+                                          dialogs.dialogChangeStatusCliente(
+                                              context,
+                                              snapshot.data![index],
+                                              'eliminar',
+                                              3);
                                         },
                                       ),
                                     ],

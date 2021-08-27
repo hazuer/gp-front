@@ -173,12 +173,14 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                             Flexible(child: listStatus()),
                                             SizedBox(width: 15.0),
                                             IconButton(
+                                              tooltip: 'Limpiar',
                                               onPressed: () async {
                                                 await _applyFilter();
                                               },
                                               icon: Icon(Icons.filter_alt),
                                             ),
                                             IconButton(
+                                              tooltip: 'Buscar',
                                               onPressed: () async {
                                                 await clearFilters();
                                               },
@@ -385,7 +387,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
     customer = Customer();
     clienteCtrl.clear();
 
-    await listProvider.listUsersWithFilters(pathFilter).then((value) {
+    await clientesProvider.listClientesWithFilters(pathFilter).then((value) {
       setState(() {
         isLoading = false;
       });

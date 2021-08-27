@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/models/razon/razonModel.dart';
+import 'package:general_products_web/models/razon/razonesModel.dart';
 import 'package:general_products_web/provider/razon/razonesProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -59,7 +60,7 @@ class RazonDialog {
 
   Future dialogChangeStatusRazon(
       BuildContext context,
-      RazonModel alertDialogRazonDisable,
+      ReasonsList alertDialogRazonDisable,
       String accion,
       int idCatStatus) async {
     bool isLoading = false;

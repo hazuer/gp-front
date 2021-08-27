@@ -56,7 +56,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                         label: Expanded(
                           child: Text(
                             'Paises',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            style: TextStyle(color: Colors.white, fontSize: 13),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -65,7 +65,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                         label: Expanded(
                           child: Text(
                             'Estatus',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            style: TextStyle(color: Colors.white, fontSize: 13),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -74,7 +74,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                         label: Expanded(
                           child: Text(
                             'Opciones',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                            style: TextStyle(color: Colors.white, fontSize: 13),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -92,7 +92,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                               alignment: Alignment.center,
                               child: Text(
                                 snapshot.data![index].nombrePais ?? '',
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: 13),
                               ),
                             ),
                           ),
@@ -101,7 +101,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                               alignment: Alignment.center,
                               child: Text(
                                 snapshot.data![index].estatus ?? '',
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: 13),
                               ),
                             ),
                           ),

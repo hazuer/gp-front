@@ -9,6 +9,7 @@ import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/widgets/tinta/tinta_dialog.dart';
 
 class TintaEdit extends StatefulWidget {
   const TintaEdit({Key? key}) : super(key: key);
@@ -25,6 +26,7 @@ class _TintaEditState extends State<TintaEdit> {
   TextEditingController codigoGpCtrl = TextEditingController();
   TextEditingController codigoSapCtrl = TextEditingController();
   Plant plant = Plant();
+  TintaDialog dialogs = TintaDialog();
   StatusModel status = StatusModel();
   TintasProvider tintasProvider = TintasProvider();
   ListUsersProvider listProvider = ListUsersProvider();
@@ -104,16 +106,55 @@ class _TintaEditState extends State<TintaEdit> {
                                       title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
-                                        await tintasProvider.editarTinta(
-                                          RxVariables.tintaSelected.idCatTinta!,
-                                          tintaCtrl.text.trim(),
-                                          codigoSapCtrl.text.trim(),
-                                          codigoGpCtrl.text.trim(),
-                                          idPlanta!,
-                                        );
-
-                                        Navigator.pushReplacementNamed(
-                                            context, RouteNames.tintaIndex);
+                                        if (tintaCtrl.text == "" ||
+                                            codigoGpCtrl.text == "" ||
+                                            codigoSapCtrl.text == "") {
+                                          dialogs.showInfoDialog(
+                                              context,
+                                              "¡Atención!",
+                                              "Favor de validar los campos marcados con asterisco (*)");
+                                        } else {
+                                          await TintasProvider()
+                                              .editarTinta(
+                                            RxVariables
+                                                .tintaSelected.idCatTinta!,
+                                            tintaCtrl.text.trim(),
+                                            codigoSapCtrl.text.trim(),
+                                            codigoGpCtrl.text.trim(),
+                                            idPlanta!,
+                                          )
+                                              .then((value) {
+                                            if (value == null) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Error!",
+                                                  "Ocurrió un error al editar la tinta : ${RxVariables.errorMessage}");
+                                            } else {
+                                              final typeAlert =
+                                                  (value["result"])
+                                                      ? "¡Éxito!"
+                                                      : "¡Error!";
+                                              final message = value["message"];
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context, typeAlert, message);
+                                            }
+                                          });
+                                        }
+                                        // await tintasProvider.editarTinta(
+                                        //   RxVariables.tintaSelected.idCatTinta!,
+                                        //   tintaCtrl.text.trim(),
+                                        //   codigoSapCtrl.text.trim(),
+                                        //   codigoGpCtrl.text.trim(),
+                                        //   idPlanta!,
+                                        // );
                                       },
                                     ),
                                     SizedBox(
@@ -153,18 +194,51 @@ class _TintaEditState extends State<TintaEdit> {
                                               title: 'Guardar',
                                               isLoading: false,
                                               onPressed: () async {
-                                                await tintasProvider
-                                                    .editarTinta(
-                                                  RxVariables.tintaSelected
-                                                      .idCatTinta!,
-                                                  tintaCtrl.text.trim(),
-                                                  codigoSapCtrl.text.trim(),
-                                                  codigoGpCtrl.text.trim(),
-                                                  idPlanta!,
-                                                );
-                                                Navigator.pushReplacementNamed(
-                                                    context,
-                                                    RouteNames.tintaIndex);
+                                                if (tintaCtrl.text == "" ||
+                                                    codigoGpCtrl.text == "" ||
+                                                    codigoSapCtrl.text == "") {
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Atención!",
+                                                      "Favor de validar los campos marcados con asterisco (*)");
+                                                } else {
+                                                  await TintasProvider()
+                                                      .editarTinta(
+                                                    RxVariables.tintaSelected
+                                                        .idCatTinta!,
+                                                    tintaCtrl.text.trim(),
+                                                    codigoSapCtrl.text.trim(),
+                                                    codigoGpCtrl.text.trim(),
+                                                    idPlanta!,
+                                                  )
+                                                      .then((value) {
+                                                    if (value == null) {
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          "¡Error!",
+                                                          "Ocurrió un error al editar la tinta : ${RxVariables.errorMessage}");
+                                                    } else {
+                                                      final typeAlert =
+                                                          (value["result"])
+                                                              ? "¡Éxito!"
+                                                              : "¡Error!";
+                                                      final message =
+                                                          value["message"];
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          typeAlert,
+                                                          message);
+                                                    }
+                                                  });
+                                                }
                                               },
                                             ),
                                           ],

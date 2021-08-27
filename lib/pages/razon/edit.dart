@@ -38,6 +38,7 @@ class _RazonEditState extends State<RazonEdit> {
     futureRazones = razonesProvider.listRazones();
     futureFields = listProvider.listUsers();
     razonCtrl.text = RxVariables.razonSelected.razon!;
+    plant.idCatPlanta = RxVariables.razonSelected.idCatPlanta!;
     super.initState();
   }
 
@@ -90,9 +91,6 @@ class _RazonEditState extends State<RazonEdit> {
                                       title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
-                                        // print('Solo ${razonInfo['razon']}');
-                                        // final int idRazon =
-                                        //     razonInfo['idRazon'];
                                         if (razonCtrl.text == "" ||
                                             plant.idCatPlanta == null) {
                                           dialogs.showInfoDialog(
@@ -131,13 +129,6 @@ class _RazonEditState extends State<RazonEdit> {
                                             }
                                           });
                                         }
-                                        // await razonesProvider.editarRazon(
-                                        //     idRazon,
-                                        //     razonCtrl.text.trim(),
-                                        //     plant.idCatPlanta!);
-
-                                        // Navigator.pushReplacementNamed(
-                                        //     context, RouteNames.razonIndex);
                                       },
                                     ),
                                     SizedBox(
@@ -212,16 +203,6 @@ class _RazonEditState extends State<RazonEdit> {
                                                     }
                                                   });
                                                 }
-                                                // final int idRazon =
-                                                //     razonInfo['idRazon'];
-                                                // await razonesProvider
-                                                //     .editarRazon(
-                                                //         idRazon,
-                                                //         razonCtrl.text.trim(),
-                                                //         plant.idCatPlanta!);
-                                                // Navigator.pushReplacementNamed(
-                                                //     context,
-                                                //     RouteNames.razonIndex);
                                               },
                                             ),
                                           ],

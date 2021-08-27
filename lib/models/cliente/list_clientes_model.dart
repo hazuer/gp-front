@@ -53,18 +53,24 @@ class CustomersList {
     this.nombreCliente,
     this.nombrePlanta,
     this.estatus,
+    this.idCatEstatus,
+    this.idCatPlanta,
   });
 
   int? idCatCliente;
   String? nombreCliente;
   String? nombrePlanta;
   String? estatus;
+  int? idCatEstatus;
+  int? idCatPlanta;
 
   factory CustomersList.fromJson(Map<String, dynamic> json) => CustomersList(
         idCatCliente: json["id_cat_cliente"],
         nombreCliente: json["nombre_cliente"],
         nombrePlanta: json["nombre_planta"],
         estatus: json["estatus"],
+        idCatEstatus: json["id_cat_estatus"],
+        idCatPlanta: json["id_cat_planta"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -72,5 +78,7 @@ class CustomersList {
         "nombre_cliente": nombreCliente,
         "nombre_planta": nombrePlanta,
         "estatus": estatus,
+        "id_cat_estatus": idCatEstatus,
+        "id_cat_planta": idCatPlanta,
       };
 }

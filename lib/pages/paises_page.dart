@@ -287,7 +287,6 @@ class _PaisesPageState extends State<PaisesPage> {
       path = path + "&id_cat_estatus=${status.idCatEstatus}";
     }
 
-    print(path);
     setState(() {
       isLoading = true;
     });

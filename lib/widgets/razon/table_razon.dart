@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/razon/dtRazonModel.dart';
-import 'package:general_products_web/models/razon/razonModel.dart';
 import 'package:general_products_web/models/razon/razonesModel.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/widgets/razon/general_dialog.dart';
+import 'package:general_products_web/widgets/razon/razonDialog.dart';
 
 class TableRazonList extends StatefulWidget {
   const TableRazonList({Key? key}) : super(key: key);
@@ -15,7 +13,7 @@ class TableRazonList extends StatefulWidget {
 }
 
 class _TableRazonListState extends State<TableRazonList> {
-  GeneralDialog dialogs = GeneralDialog();
+  RazonDialog dialogs = RazonDialog();
 
   @override
   Widget build(BuildContext context) {
@@ -136,39 +134,38 @@ class _TableRazonListState extends State<TableRazonList> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        tooltip: 'Activar razón',
+                                        tooltip: 'Activar',
                                         onPressed: () {
-                                          dialogs.showEnabledRazonDialog(
-                                              context, snapshot.data![index]);
+                                          dialogs.dialogChangeStatusRazon(
+                                              context,
+                                              snapshot.data![index],
+                                              'activar',
+                                              1);
                                         },
                                         icon: Icon(Icons.check_box_rounded,
                                             size: 18,
                                             color: GPColors.PrimaryColor),
                                       ),
                                       IconButton(
-                                        tooltip: 'Editar razón',
+                                        tooltip: 'Editar',
                                         onPressed: () {
                                           RxVariables.razonSelected =
                                               snapshot.data![index];
                                           Navigator.pushNamed(
                                               context, RouteNames.razonUpdate);
-                                          // arguments: ({
-                                          //   'idRazon': snapshot
-                                          //       .data![index].idCatRazon,
-                                          //   'razon':
-                                          //       snapshot.data![index].razon,
-                                          // }));
                                         },
                                         icon: Icon(Icons.edit,
                                             size: 18,
                                             color: GPColors.PrimaryColor),
                                       ),
                                       IconButton(
-                                        tooltip: "Desactivar razón",
-                                        //padding: EdgeInsets.zero,
+                                        tooltip: "Desactivar",
                                         onPressed: () {
-                                          dialogs.showDisableRazonDialog(
-                                              context, snapshot.data![index]);
+                                          dialogs.dialogChangeStatusRazon(
+                                              context,
+                                              snapshot.data![index],
+                                              'desactivar',
+                                              2);
                                         },
                                         icon: Icon(
                                           Icons.not_interested_outlined,
@@ -177,13 +174,16 @@ class _TableRazonListState extends State<TableRazonList> {
                                         ),
                                       ),
                                       IconButton(
-                                        tooltip: 'Eliminar razón',
+                                        tooltip: 'Eliminar',
                                         icon: Icon(Icons.delete,
                                             size: 18,
                                             color: GPColors.PrimaryColor),
                                         onPressed: () {
-                                          dialogs.showDeleteRazonDialog(
-                                              context, snapshot.data![index]);
+                                          dialogs.dialogChangeStatusRazon(
+                                              context,
+                                              snapshot.data![index],
+                                              'eliminar',
+                                              3);
                                         },
                                       ),
                                     ]),

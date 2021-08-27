@@ -24,6 +24,7 @@ class ClientesProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
+      listClientesModel = ListClientesModel.fromJson(resp.data);
       listClientesModel.customersList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listActives.add(element);

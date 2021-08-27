@@ -3,6 +3,8 @@ import 'package:general_products_web/models/cliente/list_clientes_model.dart';
 import 'package:general_products_web/provider/cliente/clientes_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
+import 'package:general_products_web/models/tara/catTaraModel.dart';
+import 'package:general_products_web/provider/tara/tarasProvider.dart';
 
 class ClienteDialog {
   Future showInfoDialog(
@@ -145,7 +147,7 @@ class ClienteDialog {
                                 });
                                 Navigator.pop(context);
                                 showInfoDialog(context, "¡Error!",
-                                    "Ocurrió un error al $accion al cliente: ${RxVariables.errorMessage}");
+                                    "Ocurrió un error al $accion al cliente : ${RxVariables.errorMessage}");
                               } else {
                                 final typeAlert =
                                     (value["result"]) ? "¡Éxito!" : "¡Error!";

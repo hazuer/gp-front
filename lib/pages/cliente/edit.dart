@@ -39,6 +39,7 @@ class _ClienteEditState extends State<ClienteEdit> {
     clienteCtrl.text = RxVariables.clienteSelected.nombreCliente!;
     futureClients = clientesProvider.listClientes();
     futureFields = listProvider.listUsers();
+    plant.idCatPlanta = RxVariables.clienteSelected.idCatPlanta!;
     super.initState();
   }
 
