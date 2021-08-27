@@ -9,6 +9,7 @@ import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/widgets/razon/razonDialog.dart';
 
 class RazonStore extends StatefulWidget {
   const RazonStore({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _RazonStoreState extends State<RazonStore> {
   StatusModel status = StatusModel();
   RazonesProvider razonesProvider = RazonesProvider();
   ListUsersProvider listProvider = ListUsersProvider();
+  RazonDialog dialogs = RazonDialog();
   final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
@@ -76,7 +78,7 @@ class _RazonStoreState extends State<RazonStore> {
                                   shrinkWrap: true,
                                   children: [
                                     CustomInput(
-                                        hint: 'Razón', controller: razonCtrl),
+                                        hint: '* Razón', controller: razonCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),
                                     SizedBox(height: 15),
@@ -86,12 +88,50 @@ class _RazonStoreState extends State<RazonStore> {
                                       title: 'Crear',
                                       isLoading: false,
                                       onPressed: () async {
-                                        await razonesProvider.crearRazon(
-                                          razonCtrl.text.trim(),
-                                          plant.idCatPlanta!,
-                                        );
-                                        Navigator.pushReplacementNamed(
-                                            context, RouteNames.razonIndex);
+                                        if (razonCtrl.text.isEmpty ||
+                                            plant.idCatPlanta == null) {
+                                          dialogs.showInfoDialog(
+                                              context,
+                                              "¡Atención!",
+                                              "Favor de validar los campos marcados con asterisco (*)");
+                                        } else {
+                                          await razonesProvider
+                                              .crearRazon(
+                                            razonCtrl.text.trim(),
+                                            plant.idCatPlanta!,
+                                          )
+                                              .then((value) {
+                                            if (value == null) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Error!",
+                                                  "Ocurrió un error al crear la razón : ${RxVariables.errorMessage}");
+                                            } else {
+                                              final typeAlert =
+                                                  (value["result"])
+                                                      ? "¡Éxito!"
+                                                      : "¡Error!";
+                                              final message = value["message"];
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context, typeAlert, message);
+                                              //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                            }
+                                          });
+                                        }
+                                        // await razonesProvider.crearRazon(
+                                        //   razonCtrl.text.trim(),
+                                        //   plant.idCatPlanta!,
+                                        // );
+                                        // Navigator.pushReplacementNamed(
+                                        //     context, RouteNames.razonIndex);
                                       },
                                     ),
                                     SizedBox(
@@ -111,7 +151,7 @@ class _RazonStoreState extends State<RazonStore> {
                                             Flexible(
                                                 child: CustomInput(
                                               controller: razonCtrl,
-                                              hint: 'Razón',
+                                              hint: '* Razón',
                                             )),
                                             SizedBox(width: 15),
                                             Flexible(child: listPlants()),
@@ -124,14 +164,55 @@ class _RazonStoreState extends State<RazonStore> {
                                               title: 'Crear',
                                               isLoading: false,
                                               onPressed: () async {
-                                                await razonesProvider
-                                                    .crearRazon(
-                                                  razonCtrl.text.trim(),
-                                                  plant.idCatPlanta!,
-                                                );
-                                                Navigator.pushReplacementNamed(
-                                                    context,
-                                                    RouteNames.razonIndex);
+                                                if (razonCtrl.text.isEmpty ||
+                                                    plant.idCatPlanta == null) {
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Atención!",
+                                                      "Favor de validar los campos marcados con asterisco (*)");
+                                                } else {
+                                                  await razonesProvider
+                                                      .crearRazon(
+                                                    razonCtrl.text.trim(),
+                                                    plant.idCatPlanta!,
+                                                  )
+                                                      .then((value) {
+                                                    if (value == null) {
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          "¡Error!",
+                                                          "Ocurrió un error al crear la razón : ${RxVariables.errorMessage}");
+                                                    } else {
+                                                      final typeAlert =
+                                                          (value["result"])
+                                                              ? "¡Éxito!"
+                                                              : "¡Error!";
+                                                      final message =
+                                                          value["message"];
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          typeAlert,
+                                                          message);
+                                                      //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                                    }
+                                                  });
+                                                }
+                                                // await razonesProvider
+                                                //     .crearRazon(
+                                                //   razonCtrl.text.trim(),
+                                                //   plant.idCatPlanta!,
+                                                // );
+                                                // Navigator.pushReplacementNamed(
+                                                //     context,
+                                                //     RouteNames.razonIndex);
                                               },
                                             ),
                                           ],
@@ -161,7 +242,7 @@ class _RazonStoreState extends State<RazonStore> {
         key: plantsKey,
         initiallyExpanded: false,
         title: Text(
-          plant.nombrePlanta ?? 'Planta',
+          plant.nombrePlanta ?? '* Planta',
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [

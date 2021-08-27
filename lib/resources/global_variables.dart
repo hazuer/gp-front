@@ -35,8 +35,9 @@ class RxVariables {
   static SearchUserResponse userById = SearchUserResponse();
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
-  static String token = "";
-  //static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZTExYzg4NWY3NTRhZjRkNmZjMWU2YWUyOTJlNWQwYjI2YjhmMTE4ZTJjZjIxMzU3N2VlZTczNTFjNGIwYzQxODcwYjkyMjg5NjBlYjg1ZTQiLCJpYXQiOjE2Mjk5OTU1ODEsIm5iZiI6MTYyOTk5NTU4MSwiZXhwIjoxNjI5OTk5MTgxLCJzdWIiOiIxNiIsInNjb3BlcyI6W119.n_L0qoKcm_y8XiW1QuO8afYKIpDdtwYyGNEpzhp-p7ti4KBUZ566Q_-aS-Usta6KLRON42cK4Jpgxy8hWSRh8MOm2wOkB6lGbiLOraq4UklaurEFunOo2ilNzzZwRas2HO720EEbeOnqljsiN6Y3J0GOmh0g5JI9j2_efyxRhNeTRUpWiYNXlIqrFkeQvQB4FV5kXXyhYblcFJWcznx8SMWuR7y1drglxSJsQdQ5pHVPAsD4GOP9ls3oBPIFabHZ5UTkHweF0_Ke-kqi8z1s3lT-vIujcqFasGhfa4PynS0ibgf6PhRct2O9EPGNOAwnMf1aoGD-Zc6-CjLtv8Vx6VFPlbqn15148iLhHbmZtvwFrTYq2oaVPtaLw0GcfgjF7s-gRqUHiq-DPGd7Oy_kmhyuX6SvxMBT8fHznD0v8jvzFLaS5XHRSPbYFuDGYf-oBtyUmanm8mN8xi09co7mOmfEiK2EM0l3Ln1SbQK3odNcbPA60H3uYP5EANd9oRYDxhRHwQjS6ejClzJrd863Tsw2wC6YvhBmFiHp2JdqVY0gAwc35hy_J3N0vBawwKzi9U84Lei4xhtHvpVNj8AV1R-46wcYqNQixUYemwSyHMgFq4WTYnC-ONyf1KuISEjgUJMgclpDrtegN9kelO96B_CXym_LyR3sLmktEYt_Z00";
+  // static String token = "";
+  static String token =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiOWFjM2YyZTVlMDNjZTQ0M2JjYzA0NmI3MTRmNjZhOTFlMzcxOTgyMTcwNTgyZDE5ZDZlMmQzMmI1OWNiYzUyYWE2NjQ3YzAwY2FjNjRlNjkiLCJpYXQiOjE2MzAwNjk3NjQsIm5iZiI6MTYzMDA2OTc2NCwiZXhwIjoxNjMwMDczMzY0LCJzdWIiOiIyNCIsInNjb3BlcyI6W119.fpG0LWkT1Wt1PynB9_LF0aP2OE2q_maQYVdsJuh_1CMTmmlFdJeu7dPK4c0-eg-9R8tC7_6WIFjTxu5dRGiCBLZQL4McPjhplEUf0m6ojLgR2zPDAiDjwsksmmmxm_f-IkYzERFOFdt7OY-JSWO1uDXxY7psr-EUZATKTigri-3awLOO95rzDE9EVzUtMYsuE1DcgkgC3sQ65qaDbS9EHRjqHh0-_9AQCq6rqmvBWHgrIftoe0kLJloSu-M6e4mFekUIOJ94KeWX_KEIwE07OztEXuZVzlOVYNTrWN7jpb7ZNH_l1iHxvJ7iZyqpYQ69M3pT2Qemdr1xUQmf0wHOB-n6wyTZSwzZgzXToLQUVNw0TF-_RRkTrdolnxM2g_WNueVEX6kCB38L2XKWTnaXIDp6frNmKpRDRfRXAOX-AJ4KnnjmpcWn0p3FTJtwGCzfuJDjn4byXpiTAOnfO1qTJ4OsSts-Rt1opvemdTlt7A4q4TtvgfxQCjCsK0bt1Zjson4gn1B3t-a9jpDMHYKtjPCMFUhunGEGuIaDy6t3tsgh0bRPzdM-i__5w6QpZMH9OXwzim6bw3h7fq3UMGMUFSc1_KEw3fru-UkTR16EI_ZPsTsmfIBSEjtDLioOBxkUhvnvViEQew-zBFiIoGgTp_dUaIWh1Y0wQ_FtqpOl1M0";
 
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
@@ -45,6 +46,7 @@ class RxVariables {
   final listPaisesFilter = BehaviorSubject<List<CountriesList>>();
   Stream<List<CountriesList>> get listPaisesStream => listPaisesFilter.stream;
 
+  static CustomersList clienteSelected = CustomersList();
   final listClientesFilter = BehaviorSubject<List<CustomersList>>();
   Stream<List<CustomersList>> get listClientesStream =>
       listClientesFilter.stream;
@@ -58,6 +60,7 @@ class RxVariables {
 
   // Razones
   static RazonModel gvRazonSelected = RazonModel();
+  static ReasonsList razonSelected = ReasonsList();
   static DtRazonesModel gvListRazones = DtRazonesModel(reasonsList: []);
   final gvBeSubListRazones = BehaviorSubject<List<RazonModel>>();
   Stream<List<RazonModel>> get listRazonesStream => gvBeSubListRazones.stream;

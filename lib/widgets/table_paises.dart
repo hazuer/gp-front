@@ -112,7 +112,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    tooltip: 'Activar pais',
+                                    tooltip: 'Activar',
                                     icon: Icon(Icons.check_box_rounded,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
@@ -121,20 +121,20 @@ class _TablePaisesListState extends State<TablePaisesList> {
                                     },
                                   ),
                                   IconButton(
-                                    tooltip: 'Editar pais',
+                                    tooltip: 'Editar',
                                     icon: Icon(Icons.edit,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
                                       RxVariables.countrySelected =
                                           snapshot.data![index];
                                       Navigator.pushNamed(
-                                          context, RouteNames.editCountry,
-                                          arguments:
-                                              snapshot.data![index].idCatPais);
+                                        context,
+                                        RouteNames.paisEdit,
+                                      );
                                     },
                                   ),
                                   IconButton(
-                                    tooltip: 'Desactivar pais',
+                                    tooltip: 'Desactivar',
                                     icon: Icon(Icons.not_interested_outlined,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
@@ -143,7 +143,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
                                     },
                                   ),
                                   IconButton(
-                                    tooltip: 'Eliminar pais',
+                                    tooltip: 'Eliminar',
                                     icon: Icon(Icons.delete,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {

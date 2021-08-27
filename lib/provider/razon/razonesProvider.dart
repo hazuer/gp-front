@@ -25,15 +25,12 @@ class RazonesProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print('StatusCode: ${resp.statusCode}');
       listRazonesModel = ListRazonesModel.fromJson(resp.data);
-      print(listRazonesModel.reasonsList.length);
       listRazonesModel.reasonsList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listActives.add(element);
         }
       });
-      print(listActives.length);
       rxVariables.listRazonesFilter.sink.add(listActives);
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
@@ -59,15 +56,12 @@ class RazonesProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print('StatusCode: ${resp.statusCode}');
       listRazonesModel = ListRazonesModel.fromJson(resp.data);
-      print(listRazonesModel.reasonsList.length);
       listRazonesModel.reasonsList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listFilters.add(element);
         }
       });
-      print(listFilters.length);
       rxVariables.listRazonesFilter.sink.add(listFilters);
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
@@ -85,7 +79,6 @@ class RazonesProvider {
   Future crearRazon(String razon, int planta) async {
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.crearRazones;
-    print('Planta: $planta');
 
     try {
       final dio = Dio();
@@ -93,7 +86,6 @@ class RazonesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listRazones();
       return resp.data;
     } on DioError catch (e) {
@@ -122,7 +114,6 @@ class RazonesProvider {
       };
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
-      print(resp.data);
       await listRazones();
       return resp.data;
     } on DioError catch (e) {
@@ -138,6 +129,33 @@ class RazonesProvider {
     }
   }
 
+  Future changeStatusRazonProvider(int idCatRazon, int idCatStatus) async {
+    RxVariables.errorMessage = '';
+    String url = routes.urlBase + routes.changeEstatusRazones;
+
+    try {
+      final dio = Dio();
+      final data = {'id_cat_razon': idCatRazon, 'id_cat_estatus': idCatStatus};
+      final resp = await dio.post(url, data: data, options: headerWithToken);
+      await listRazones();
+      RxVariables.errorMessage = resp.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      return null;
+    }
+  }
+
   Future activarRazon(int idRazon, int idStatus) async {
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.activarRazones;
@@ -149,7 +167,6 @@ class RazonesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listRazones();
       return resp.data;
     } on DioError catch (e) {
@@ -174,7 +191,6 @@ class RazonesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listRazones();
       return resp.data;
     } on DioError catch (e) {
@@ -198,7 +214,6 @@ class RazonesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listRazones();
       return resp.data;
     } on DioError catch (e) {
@@ -240,7 +255,7 @@ class RazonesProvider {
           .replaceAll("[", "")
           .replaceAll("}", "")
           .replaceAll("]", "");
-      rxVariables.gvBeSubListTaras.sink.addError(
+      rxVariables.gvBeSubListRazones.sink.addError(
           "Ocurrio un error, intenta más tarde " + RxVariables.errorMessage);
       return null;
     }

@@ -24,16 +24,12 @@ class ListPaisesProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print('StatusCode: ${resp.statusCode}');
       listPaisesModel = ListPaisesModel.fromJson(resp.data);
-      print(listPaisesModel.countriesList.length);
-      print(RxVariables.listPaises.countriesList.length);
       listPaisesModel.countriesList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listActives.add(element);
         }
       });
-      print(listActives.length);
       rxVariables.listPaisesFilter.sink.add(listActives);
 
       return resp.data;
@@ -61,14 +57,11 @@ class ListPaisesProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print("statusCode: ${resp.statusCode}");
       listPaisesModel = ListPaisesModel.fromJson(resp.data);
       RxVariables.listPaises = listPaisesModel;
-      print(RxVariables.listPaises.countriesList.length);
       listPaisesModel.countriesList.forEach((element) {
         listFilters.add(element);
       });
-      print(listFilters.length);
       rxVariables.listPaisesFilter.sink.add(listFilters);
 
       return resp.data;
@@ -94,7 +87,6 @@ class ListPaisesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listPaises();
       return resp.data;
     } on DioError catch (e) {
@@ -120,7 +112,6 @@ class ListPaisesProvider {
       final data = {'id_cat_pais': idPais, 'nombre_pais': nombrePais};
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
-      print(resp.data);
       await listPaises();
       return resp.data;
     } on DioError catch (e) {
@@ -147,7 +138,6 @@ class ListPaisesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listPaises();
       return resp.data;
     } on DioError catch (e) {
@@ -172,7 +162,6 @@ class ListPaisesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listPaises();
       return resp.data;
     } on DioError catch (e) {
@@ -197,7 +186,6 @@ class ListPaisesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listPaises();
       return resp.data;
     } on DioError catch (e) {

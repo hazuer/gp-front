@@ -148,14 +148,16 @@ class _TableRazonListState extends State<TableRazonList> {
                                       IconButton(
                                         tooltip: 'Editar razón',
                                         onPressed: () {
+                                          RxVariables.razonSelected =
+                                              snapshot.data![index];
                                           Navigator.pushNamed(
-                                              context, RouteNames.razonUpdate,
-                                              arguments: ({
-                                                'idRazon': snapshot
-                                                    .data![index].idCatRazon,
-                                                'razon':
-                                                    snapshot.data![index].razon,
-                                              }));
+                                              context, RouteNames.razonUpdate);
+                                          // arguments: ({
+                                          //   'idRazon': snapshot
+                                          //       .data![index].idCatRazon,
+                                          //   'razon':
+                                          //       snapshot.data![index].razon,
+                                          // }));
                                         },
                                         icon: Icon(Icons.edit,
                                             size: 18,

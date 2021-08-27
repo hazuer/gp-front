@@ -7,6 +7,7 @@ import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
+import 'package:general_products_web/widgets/cliente/clienteDialog.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
@@ -26,6 +27,7 @@ class _ClienteStoreState extends State<ClienteStore> {
   TextEditingController plantaCtrl = TextEditingController();
   Plant plant = Plant();
   StatusModel status = StatusModel();
+  ClienteDialog dialogs = ClienteDialog();
   ClientesProvider clientesProvider = ClientesProvider();
   ListUsersProvider listProvider = ListUsersProvider();
   final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
@@ -90,12 +92,43 @@ class _ClienteStoreState extends State<ClienteStore> {
                                       title: 'Crear',
                                       isLoading: false,
                                       onPressed: () async {
-                                        await clientesProvider.crearCliente(
-                                          clienteCtrl.text.trim(),
-                                          plant.idCatPlanta!,
-                                        );
-                                        Navigator.pushReplacementNamed(
-                                            context, RouteNames.clienteIndex);
+                                        if (clienteCtrl.text.isEmpty ||
+                                            plant.idCatPlanta == null) {
+                                          dialogs.showInfoDialog(
+                                              context,
+                                              "¡Atención!",
+                                              "Favor de validar los campos marcados con asterisco (*)");
+                                        } else {
+                                          await ClientesProvider()
+                                              .crearCliente(
+                                            clienteCtrl.text.trim(),
+                                            plant.idCatPlanta!,
+                                          )
+                                              .then((value) {
+                                            if (value == null) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Error!",
+                                                  "Ocurrió un error al crear al cliente : ${RxVariables.errorMessage}");
+                                            } else {
+                                              final typeAlert =
+                                                  (value["result"])
+                                                      ? "¡Éxito!"
+                                                      : "¡Error!";
+                                              final message = value["message"];
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context, typeAlert, message);
+                                            }
+                                          });
+                                        }
                                       },
                                     ),
                                     SizedBox(
@@ -128,14 +161,46 @@ class _ClienteStoreState extends State<ClienteStore> {
                                               title: 'Crear',
                                               isLoading: false,
                                               onPressed: () async {
-                                                await clientesProvider
-                                                    .crearCliente(
-                                                  clienteCtrl.text.trim(),
-                                                  plant.idCatPlanta!,
-                                                );
-                                                Navigator.pushReplacementNamed(
-                                                    context,
-                                                    RouteNames.clienteIndex);
+                                                if (clienteCtrl.text.isEmpty ||
+                                                    plant.idCatPlanta == null) {
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Atención!",
+                                                      "Favor de validar los campos marcados con asterisco (*)");
+                                                } else {
+                                                  await ClientesProvider()
+                                                      .crearCliente(
+                                                    clienteCtrl.text.trim(),
+                                                    plant.idCatPlanta!,
+                                                  )
+                                                      .then((value) {
+                                                    if (value == null) {
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          "¡Error!",
+                                                          "Ocurrió un error al crear al cliente : ${RxVariables.errorMessage}");
+                                                    } else {
+                                                      final typeAlert =
+                                                          (value["result"])
+                                                              ? "¡Éxito!"
+                                                              : "¡Error!";
+                                                      final message =
+                                                          value["message"];
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          typeAlert,
+                                                          message);
+                                                    }
+                                                  });
+                                                }
                                               },
                                             ),
                                           ],
@@ -165,7 +230,7 @@ class _ClienteStoreState extends State<ClienteStore> {
         key: plantsKey,
         initiallyExpanded: false,
         title: Text(
-          plant.nombrePlanta ?? 'Planta',
+          plant.nombrePlanta ?? '* Planta',
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [

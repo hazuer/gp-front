@@ -17,7 +17,8 @@ class RouteNames {
   //static const String taraDestroy = "/catalog/taras/destroy";
 
   static const String paises = '/paises';
-  static const String editCountry = '/edit-country';
+  static const String paisCreate = '/catalog/paises/create';
+  static const String paisEdit = '/edit-country';
 
   //CRUD Clientes
   static const String clienteIndex = '/catalog/clientes';
@@ -36,17 +37,17 @@ class RouteNames {
   static const String tintaImport = '/catalog/tintas/import';
 
   //CRUD Plantas
-  static const String plantsIndex  = "/catalog/plants";
+  static const String plantsIndex = "/catalog/plants";
   static const String plantsCreate = "/catalog/plants/create";
-  static const String plantsEdit   = "/catalog/plants/edit";
+  static const String plantsEdit = "/catalog/plants/edit";
 
   //CRUD Maquinas
-  static const String machineIndex  = "/catalog/machine";
+  static const String machineIndex = "/catalog/machine";
   static const String machineCreate = "/catalog/machine/create";
-  static const String machineEdit   = "/catalog/machine/edit";
+  static const String machineEdit = "/catalog/machine/edit";
 
   //CRUD Maquinas
-  static const String designIndex  = "/catalog/design";
+  static const String designIndex = "/catalog/design";
   static const String designCreate = "/catalog/design/create";
-  static const String designEdit   = "/catalog/design/edit";
+  static const String designEdit = "/catalog/design/edit";
 }
