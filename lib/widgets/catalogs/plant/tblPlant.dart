@@ -133,6 +133,7 @@ class _TablePlantListState extends State<TablePlantList> {
                                 tooltip: "Editar",
                                 //padding: EdgeInsets.zero,
                                   onPressed: (){
+                                    //Asignación de datos para su edición
                                   RxVariables.gvPlantSelectedById = snapshot.data![index];
                                 Navigator.pushNamed(context, RouteNames.plantsEdit);
                                 },

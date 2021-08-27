@@ -128,17 +128,16 @@ class PlantsProvider{
     }
   }
 
-  Future editPlant(int idCatPlanta, String nombrePlanta, String capacidad, int idPlanta) async {
+  Future editPlant(int idCatPlanta, String nombrePlanta, int idCatPais) async {
     RxVariables.errorMessage = '';
     String url               = routes.urlBase + routes.editarPlants;
 
     try {
       final dio  = Dio();
       final data = {
-        'id_cat_pais'  : idCatPlanta,
-        'nombre_planta'  : nombrePlanta,
-        'capacidad'    : capacidad,
-        'id_cat_pais': idPlanta
+        'id_cat_planta': idCatPlanta,
+        'nombre_planta': nombrePlanta,
+        'id_cat_pais'  : idCatPais
       };
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
