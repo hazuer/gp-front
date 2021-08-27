@@ -108,7 +108,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                         controller: codigoGpCtrl),
                                     SizedBox(height: 15),
                                     CustomInput(
-                                        hint: 'Código SAP',
+                                        hint: 'Código Cliente',
                                         controller: codigoSapCtrl),
                                     SizedBox(height: 15),
                                     listStatus(),
@@ -210,7 +210,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                             SizedBox(width: 15.0),
                                             Flexible(
                                               child: CustomInput(
-                                                  hint: 'Código SAP',
+                                                  hint: 'Código Cliente',
                                                   controller: codigoSapCtrl),
                                             ),
                                             SizedBox(width: 15.0),

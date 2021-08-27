@@ -97,7 +97,7 @@ class _TintaEditState extends State<TintaEdit> {
                                         controller: codigoGpCtrl),
                                     SizedBox(height: 15),
                                     CustomInput(
-                                        hint: 'Código SAP',
+                                        hint: 'Código Cliente',
                                         controller: codigoSapCtrl),
                                     SizedBox(height: 15),
                                     CustomButton(
@@ -183,7 +183,7 @@ class _TintaEditState extends State<TintaEdit> {
                                             SizedBox(width: 15),
                                             Flexible(
                                                 child: CustomInput(
-                                                    hint: 'Código SAP',
+                                                    hint: 'Código Cliente',
                                                     controller: codigoSapCtrl)),
                                             SizedBox(width: 15),
                                             CustomButton(
