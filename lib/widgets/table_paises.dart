@@ -21,7 +21,7 @@ class _TablePaisesListState extends State<TablePaisesList> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.4,
+      height: MediaQuery.of(context).size.height * 0.5,
       child: StreamBuilder(
         stream: rxVariables.listPaisesStream,
         builder: (BuildContext context,
