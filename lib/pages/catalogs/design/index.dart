@@ -108,7 +108,7 @@ class _DesignIndexState extends State<DesignIndex> {
                               title: "Limpiar",
                               isLoading: false,
                               onPressed: () async {
-                                await clearFilters()();
+                                await clearFilters();
                               },
                             ),
                             SizedBox(height: 30,),
