@@ -104,15 +104,14 @@ class PlantsProvider{
     }
   }
 
-  Future createPlant (String nombrePlanta, String capacidad, int idCatPlanta) async {
+  Future createPlant (String nombrePlanta, int idCatPais) async {
   RxVariables.errorMessage = '';
   String url               = routes.urlBase + routes.crearPlants;
     try {
       final dio  = Dio();
       final data = {
-        'nombre_planta'  : nombrePlanta,
-        'capacidad'    : capacidad,
-        'id_cat_planta': idCatPlanta
+        'nombre_planta': nombrePlanta,
+        'id_cat_pais'  : idCatPais
       };
       final resp = await dio.post(url, data: data, options: headerWithToken);
       await getAllPlants();
@@ -136,10 +135,10 @@ class PlantsProvider{
     try {
       final dio  = Dio();
       final data = {
-        'id_cat_planta'  : idCatPlanta,
+        'id_cat_pais'  : idCatPlanta,
         'nombre_planta'  : nombrePlanta,
         'capacidad'    : capacidad,
-        'id_cat_planta': idPlanta
+        'id_cat_pais': idPlanta
       };
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
