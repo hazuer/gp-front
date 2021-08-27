@@ -83,6 +83,15 @@ class _TableTintaListState extends State<TableTintaList> {
                       DataColumn(
                         label: Expanded(
                           child: Text(
+                            'Planta',
+                            style: TextStyle(color: Colors.white, fontSize: 13),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Expanded(
+                          child: Text(
                             'Estatus',
                             style: TextStyle(color: Colors.white, fontSize: 13),
                             textAlign: TextAlign.center,
@@ -132,6 +141,15 @@ class _TableTintaListState extends State<TableTintaList> {
                               alignment: Alignment.center,
                               child: Text(
                                 snapshot.data![index].codigoCliente ?? '',
+                                style: TextStyle(fontSize: 13),
+                              ),
+                            ),
+                          ),
+                           DataCell(
+                            Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                snapshot.data![index].nombrePlanta ?? '',
                                 style: TextStyle(fontSize: 13),
                               ),
                             ),
