@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/tinta/tintasModel.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
+import 'package:general_products_web/widgets/tinta/tinta_dialog.dart';
 
 class TableTintaList extends StatefulWidget {
   const TableTintaList({Key? key}) : super(key: key);
@@ -11,6 +13,9 @@ class TableTintaList extends StatefulWidget {
 }
 
 class _TableTintaListState extends State<TableTintaList> {
+  TintaDialog tintaDialog = TintaDialog();
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -149,9 +154,11 @@ class _TableTintaListState extends State<TableTintaList> {
                                   IconButton(
                                     tooltip: 'Activar tinta',
                                     onPressed: () {
-                                      // dialogs.showEnabledCustomerDialog(
-                                      //     context, snapshot.data![index]);
-                                      //  Navigator.pushNamed(context, RouteNames.);
+                                      tintaDialog.dialogChangeStatusTinta(
+                                          context,
+                                          snapshot.data![index],
+                                          'activar',
+                                          1);
                                     },
                                     icon: Icon(Icons.check_box_rounded,
                                         size: 18, color: GPColors.PrimaryColor),
@@ -159,14 +166,12 @@ class _TableTintaListState extends State<TableTintaList> {
                                   IconButton(
                                     tooltip: 'Editar tinta',
                                     onPressed: () {
-                                      // Navigator.pushNamed(
-                                      //     context, RouteNames.clienteUpdate,
-                                      //     arguments: ({
-                                      //       'idCliente': snapshot
-                                      //           .data![index].idCatCliente,
-                                      //       'nombreCliente': snapshot
-                                      //           .data![index].nombreCliente,
-                                      //     }));
+                                      RxVariables.tintaSelected =
+                                          snapshot.data![index];
+                                      Navigator.pushNamed(
+                                        context,
+                                        RouteNames.tintaUpdate,
+                                      );
                                     },
                                     icon: Icon(Icons.edit,
                                         size: 18, color: GPColors.PrimaryColor),
@@ -174,8 +179,11 @@ class _TableTintaListState extends State<TableTintaList> {
                                   IconButton(
                                     tooltip: "Desactivar tinta",
                                     onPressed: () {
-                                      // dialogs.showDisabledCustomerDialog(
-                                      //     context, snapshot.data![index]);
+                                      tintaDialog.dialogChangeStatusTinta(
+                                          context,
+                                          snapshot.data![index],
+                                          'desactivar',
+                                          2);
                                     },
                                     icon: Icon(
                                       Icons.not_interested_outlined,
@@ -188,8 +196,11 @@ class _TableTintaListState extends State<TableTintaList> {
                                     icon: Icon(Icons.delete,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      // dialogs.showDeleteCustomerDialog(
-                                      //     context, snapshot.data![index]);
+                                      tintaDialog.dialogChangeStatusTinta(
+                                          context,
+                                          snapshot.data![index],
+                                          'eliminar',
+                                          3);
                                     },
                                   ),
                                 ],

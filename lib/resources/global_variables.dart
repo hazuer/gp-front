@@ -63,9 +63,9 @@ class RxVariables {
       gvBeSubListTaras.stream;
 
   // Razones
-  static RazonModel gvRazonSelected   = RazonModel();
+  static RazonModel gvRazonSelected = RazonModel();
   static DtRazonesModel gvListRazones = DtRazonesModel(reasonsList: []);
-  final gvBeSubListRazones            = BehaviorSubject<List<RazonModel>>();
+  final gvBeSubListRazones = BehaviorSubject<List<RazonModel>>();
   Stream<List<RazonModel>> get listRazonesStream => gvBeSubListRazones.stream;
 
   final listRazonesFilter = BehaviorSubject<List<ReasonsList>>();
@@ -74,12 +74,16 @@ class RxVariables {
   // Tintas
   final listTintasFilter = BehaviorSubject<List<InkList>>();
   Stream<List<InkList>> get listTintasStream => listTintasFilter.stream;
+  static InkList tintaSelected = InkList();
+  static ListTintasModel listTinta = ListTintasModel(inkList: []);
+  // Cambiar tintaSelected por el modelo grlobal en lugar de inkList
 
   //Maquinas
   static CatMachineModel gvMachineSelectedById = CatMachineModel();
-  static DtMachineModel gvListMachines = DtMachineModel( machinesList: []);
+  static DtMachineModel gvListMachines = DtMachineModel(machinesList: []);
   final gvBeSubListMachines = BehaviorSubject<List<CatMachineModel>>();
-  Stream<List<CatMachineModel>> get lsMachinesFiltrosStream => gvBeSubListMachines.stream;
+  Stream<List<CatMachineModel>> get lsMachinesFiltrosStream =>
+      gvBeSubListMachines.stream;
 
   //Plantas
   static CatPlantModel gvPlantSelectedById = CatPlantModel();

@@ -1,3 +1,4 @@
+// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/status_model.dart';
@@ -20,7 +21,7 @@ class _TintasIndexState extends State<TintasIndex> {
   late Future futureTintas;
   late Future futureFields;
   bool isLoading = false;
-  String pathFilter = "?porPagina=20";
+  String pathFilter = "?porPagina=10";
   StatusModel status = StatusModel();
   TintasProvider tintasProvider = TintasProvider();
   ListUsersProvider listProvider = ListUsersProvider();
@@ -83,8 +84,8 @@ class _TintasIndexState extends State<TintasIndex> {
                                       title: "Crear tinta",
                                       isLoading: false,
                                       onPressed: () async {
-                                        // Navigator.pushNamed(
-                                        //     context, RouteNames.tintaStore);
+                                        Navigator.pushNamed(
+                                            context, RouteNames.tintaStore);
                                       },
                                     ),
                                     SizedBox(height: 20.0),
@@ -94,8 +95,8 @@ class _TintasIndexState extends State<TintasIndex> {
                                       title: "Importar tinta",
                                       isLoading: false,
                                       onPressed: () async {
-                                        // Navigator.pushNamed(
-                                        //     context, RouteNames.tintaImport);
+                                        Navigator.pushNamed(
+                                            context, RouteNames.tintaImport);
                                       },
                                     ),
                                     SizedBox(height: 20.0),
@@ -170,8 +171,8 @@ class _TintasIndexState extends State<TintasIndex> {
                                                 title: "Crear tinta",
                                                 isLoading: false,
                                                 onPressed: () async {
-                                                  // Navigator.pushNamed(context,
-                                                  //     RouteNames.tintaStore);
+                                                  Navigator.pushNamed(context,
+                                                      RouteNames.tintaStore);
                                                 },
                                               ),
                                             ),
@@ -185,8 +186,8 @@ class _TintasIndexState extends State<TintasIndex> {
                                                 title: "Importar tinta",
                                                 isLoading: false,
                                                 onPressed: () async {
-                                                  // Navigator.pushNamed(context,
-                                                  //     RouteNames.tintaImport);
+                                                  Navigator.pushNamed(context,
+                                                      RouteNames.tintaImport);
                                                 },
                                               ),
                                             ),
@@ -358,11 +359,18 @@ class _TintasIndexState extends State<TintasIndex> {
   _clearFilters() async {
     setState(() {
       isLoading = true;
+      // futureFields = tintasProvider.listTintas();
+      // isLoading = false;
     });
-    pathFilter = "?porPagina=30";
+    pathFilter = "?porPagina=10";
     status = StatusModel();
     tintaCtrl.clear();
     codigoGpCtrl.clear();
     codigoSapCtrl.clear();
+    await tintasProvider.listTintasWithFiltter(pathFilter).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 }

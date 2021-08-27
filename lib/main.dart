@@ -12,7 +12,10 @@ import 'package:general_products_web/pages/paises_page.dart';
 import 'package:general_products_web/pages/razon/edit.dart';
 import 'package:general_products_web/pages/razon/index.dart';
 import 'package:general_products_web/pages/razon/store.dart';
+import 'package:general_products_web/pages/tintas/edit.dart';
+import 'package:general_products_web/pages/tintas/import.dart';
 import 'package:general_products_web/pages/tintas/index.dart';
+import 'package:general_products_web/pages/tintas/store.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'app/auth/login.dart';
 import 'constants/route_names.dart';
@@ -36,8 +39,6 @@ import 'pages/catalogs/machine/edit.dart';
 import 'pages/catalogs/design/index.dart';
 import 'pages/catalogs/design/create.dart';
 import 'pages/catalogs/design/edit.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -93,35 +94,35 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.recoveryPwd: (_) => RecoveryPasswordPage(),
         RouteNames.register: (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
-        RouteNames.editUser     : (_) => EditUserPage(),
-        RouteNames.paises       : (_) => PaisesPage(),
-        RouteNames.editCountry  : (_) => EditCountryPage(),
-        RouteNames.taraIndex    : (_) => TaraIndex(),
-        RouteNames.taraCreate   : (_) => TaraCreate(),
-        RouteNames.taraEdit     : (_) => TaraEdit(),
-        RouteNames.clienteIndex : (_) => ClientesIndex(),
+        RouteNames.editUser: (_) => EditUserPage(),
+        RouteNames.paises: (_) => PaisesPage(),
+        RouteNames.editCountry: (_) => EditCountryPage(),
+        RouteNames.taraIndex: (_) => TaraIndex(),
+        RouteNames.taraCreate: (_) => TaraCreate(),
+        RouteNames.taraEdit: (_) => TaraEdit(),
+        RouteNames.clienteIndex: (_) => ClientesIndex(),
         RouteNames.clienteUpdate: (_) => ClienteEdit(),
         RouteNames.clienteStore: (_) => ClienteStore(),
         RouteNames.razonIndex: (_) => RazonesIndex(),
         RouteNames.razonUpdate: (_) => RazonEdit(),
         RouteNames.razonStore: (_) => RazonStore(),
         RouteNames.tintaIndex: (_) => TintasIndex(),
-        // RouteNames.tintaUpdate: (_) => TintasIndex(),
-        // RouteNames.tintaStore: (_) => TintasIndex(),
-        // RouteNames.tintaImport: (_) => TintasIndex(),
+        RouteNames.tintaUpdate: (_) => TintasIndex(),
+        RouteNames.tintaStore: (_) => TintasIndex(),
+        RouteNames.tintaImport: (_) => TintasIndex(),
         //Plantas
-        RouteNames.plantsIndex   : (_) => PlantIndex(),
-        RouteNames.plantsCreate  : (_) => PlantCreate(),
-        RouteNames.plantsEdit    : (_) => PlantEdit(),
+        RouteNames.plantsIndex: (_) => PlantIndex(),
+        RouteNames.plantsCreate: (_) => PlantCreate(),
+        RouteNames.plantsEdit: (_) => PlantEdit(),
         //Maquinas
-        RouteNames.machineIndex : (_) => MachineIndex(),
+        RouteNames.machineIndex: (_) => MachineIndex(),
         RouteNames.machineCreate: (_) => MachineCreate(),
-        RouteNames.machineEdit  : (_) => MachineEdit(),
+        RouteNames.machineEdit: (_) => MachineEdit(),
 
         //Diseños
-        RouteNames.designIndex : (_) => DesignIndex(),
+        RouteNames.designIndex: (_) => DesignIndex(),
         RouteNames.designCreate: (_) => DesignCreate(),
-        RouteNames.designEdit  : (_) => DesignEdit(),
+        RouteNames.designEdit: (_) => DesignEdit(),
       },
     );
   }

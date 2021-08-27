@@ -54,7 +54,7 @@ class RoutesProvider {
   String listarTintas = "catalogo/listar-tintas";
   String editarTintas = "catalogo/editar-tintas";
   String crearTintas = "catalogo/crear-tintas";
-  String importarTintas = "catalogo/listar-tintas-csv";
+  String importarTintas = "catalogo/importar-tintas-csv";
   String changeEstatusTintas = "catalogo/editar-estatus-tintas";
 
   //Maquinas
