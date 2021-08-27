@@ -37,6 +37,12 @@ class RoutesProvider {
   String eliminarClientes = "catalogo/editar-estatus-clientes";
   String plantasClientes = "datos-plantas-clientes";
 
+  // Diseños
+  String listarDisenos = "catalogo/listar-disenos";
+  String crearDisenos = "catalogo/crear-disenos";
+  String editarDisenos = "catalogo/editar-disenos";
+  String changeEstatusDisenos = "catalogo/editar-estatus-disenos";
+
   //Taras
   String listarTaras = "catalogo/listar-taras";
   String crearTaras = "catalogo/crear-taras";

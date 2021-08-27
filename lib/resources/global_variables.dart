@@ -1,3 +1,4 @@
+import 'package:general_products_web/models/catalogs/design/designsModel.dart';
 import 'package:general_products_web/models/cliente/list_clientes_model.dart';
 import 'package:general_products_web/models/customer_model.dart';
 import 'package:general_products_web/models/data_list_user_model.dart';
@@ -41,8 +42,9 @@ class RxVariables {
   static SearchUserResponse userById = SearchUserResponse();
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
-  static String token = "";
-  //static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZGQ0MDg1NTI4YTEwZTkwMWJjZDE0YTk1MWVlMTViMTRjOTkzOTc5YTZlZGE2OWEyOWMwNWFjN2M4ZjA4OTZkZmI1OWUxYjk2ZmE1YjRlZTgiLCJpYXQiOjE2MzAwODI2NTksIm5iZiI6MTYzMDA4MjY1OSwiZXhwIjoxNjMwMDg2MjU5LCJzdWIiOiIxNiIsInNjb3BlcyI6W119.YRCY6NA7a5uGO5VXlN0JinMSZ7aYeTiYmsunyBQt4dvQ3W7QRtNGsMxAfVHDVdmU_n18QL-AXPlJI8JEiDeUfgOQ6CQ_xB9C7oAStCTi4yyHf02JMN4r2GT0qT1QdimKcglUwrlve2FCLgLpr2sZz9PXJhg7K5g7J2Q3hEvy-IazpAn8x1R8q7m0UY-j0RGC3zu9KcgfvfQGQ5lMqLFbTFTmd_QwDIHb_d2sDTijyTzidyBYV00Hv1oWSbs2pS7lxUvzcHAm3hMF0yr4E6iTaAKvS4V-rgn6p2Ww4JbvV0CEtabXiU2XGi2VUFwR4bUl3dcA29y6VYe6rbJ1nlL5oXG2IpJLyw1kk6IKG60CoFRl0Gw38EI2pP7_Akige8R3VNz32qDw87CLaZBbGEX83prpmbDCij7ROs6gG5NBtjNSTBRfQHUK2F6FZkYg3johI9MSkaMK5QWQPZLpcfwTbS0Zhz7ArTgedZGOZBd4_MUG8t5lb1WmW7rwRdsrIomfvggoJ3AOujt9Xge9RlxJmYb1gA_4pxOnzLl4PYY_GI5i5RPC2aE3yUZSbAGdDBqqW_s6_-lc67d9w5dAUPLN9evPn-Rdl__HC2t9sqIVJ8QhHCyfRdwZpdpTMk8xcdeFwg3x7eHWXBJ49_SVJvoCJTLmwKfdGbLudzUizW2EJtM";
+  // static String token = "";
+  static String token =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiN2QyOTRiMzk2YWQ4M2M0NjdiMTg1MTUwOTRjNDk4ZGRjMzNhMzQzZWE4MjIyNzQyNzM1ZjkzYzQwYjU2MGMwYzFkZTIxMDc5Y2U2NjAwNDMiLCJpYXQiOjE2MzAwOTgzMzYsIm5iZiI6MTYzMDA5ODMzNiwiZXhwIjoxNjMwMTAxOTM2LCJzdWIiOiIyNCIsInNjb3BlcyI6W119.kzjyxBmGfB_ozdHeX71J0u2GR8VsYbW0xVHhCnHTDytkYBigcHfqpZp9vBW56KMpxzZOXhKWHoMd6jQYhJaYrE7WLGT3DI2KUxS6ZBIXLFMqagmTbZGKnsV5vQ-VTDUloqe95masTVDTMHWErRLsousKGsu8ursQ0AfOEFIi7RTZYP8sQIEs8F15GstQTM4XqJtT-7vyalPPnYOym5olHkgtrzkXSxwoahC0RIWpVcarzgv9Ai72on8GsQ7gXbNmLlLRCqJFGb6HnxC-HSu6D051VKeVI-WHqACkYRAC0rFbPHyAmt0mfvlX2sCg3vE-Im67WGbriBRtjw1fEXnO9iyaXP_UCnbeAPRivv7FLkZz1iz2k4CzAWvYcY1OLI2lwtAPlg5_Kuz9y8cDwvsBllvmpauM_iN_BeyKBpdlFLjPlmmB4SXov0C4rUpoWWOTnlc67SepV7DqeH6EKn6F80A7J9Hu8mqGsugV0IfKbeWzAr4FKGuEo6nGfpy081rN5NcUf07U6g9n5gnOJHAijn75a6eHqPllsWoiijWf2zb80NYktgmGTesAD68ZX9zykNukgq3RE-mSQOkzYKkKFRd5WOUSHb5hLi3W9KA4R_zjMImRFYqsB_Z-oU697ijlJ6eKYljaPb-ytLBi4eb3uZL35lv66PNHn2JmSuZMfk4";
 
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
@@ -80,6 +82,12 @@ class RxVariables {
   static ListTintasModel listTinta = ListTintasModel(inkList: []);
   // Cambiar tintaSelected por el modelo grlobal en lugar de inkList
 
+  // Diseños
+  final listDesignsFilter = BehaviorSubject<List<DesignsList>>();
+  Stream<List<DesignsList>> get listDesignsStream => listDesignsFilter.stream;
+  static DesignsList designSelected = DesignsList();
+  static ListDesignsModel listDesign = ListDesignsModel(designsList: []);
+
   //Maquinas
   static CatMachineModel gvMachineSelectedById = CatMachineModel();
   static DtMachineModel gvListMachines = DtMachineModel(machinesList: []);
@@ -112,6 +120,7 @@ class RxVariables {
     listUsersFilter.close();
     listPaisesFilter.close();
     listClientesFilter.close();
+    listDesignsFilter.close();
     gvBeSubListTaras.close();
     gvBeSubListRazones.close();
     listRazonesFilter.close();
