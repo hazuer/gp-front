@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -9,6 +8,7 @@ import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/provider/catalogs/plant/plantsProvider.dart';
 import 'package:general_products_web/widgets/catalogs/plant/tblPlant.dart';
+import 'package:general_products_web/models/catalogs/plant/catPaisModel.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
@@ -21,19 +21,20 @@ class PlantIndex extends StatefulWidget {
 
 class _PlantIndexState extends State<PlantIndex> {
   late Future futurePlant;
+  late Future futurecatPais;
   bool isLoading                                       = false;
   String headerFilter                                  = "?porPagina = 20";
-  TextEditingController plantCtrl                       = TextEditingController();
-  //TextEditingController capacidadCtrl                  = TextEditingController();
-  //Pais catPais                                      = Pais();
+  TextEditingController plantCtrl                      = TextEditingController();
+  CatPaisModel catPais                                 = CatPaisModel();
   StatusModel catEstatus                               = StatusModel();
-  PlantsProvider plantsProvider                          = PlantsProvider();
-  final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
+  PlantsProvider plantsProvider                        = PlantsProvider();
+  final GlobalKey<AppExpansionTileState> catPaisKey    = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futurePlant = plantsProvider.getAllPlants();
+    futurePlant   = plantsProvider.getAllPlants();
+    futurecatPais = plantsProvider.getAllPais();
     super.initState();
   }
 
@@ -88,7 +89,7 @@ class _PlantIndexState extends State<PlantIndex> {
                             SizedBox(height: 15,),
                             CustomInput(controller: plantCtrl, hint: "Nombre Planta"),
                             SizedBox(height: 15,),
-                            listPlants(),
+                            listPais(),
                             SizedBox(height: 15,),
                             listStatus(),
                             SizedBox(height: 15,),
@@ -159,7 +160,7 @@ class _PlantIndexState extends State<PlantIndex> {
                                       )
                                     ),
                                     SizedBox(width: 15,),
-                                    Flexible(child: listPlants()),
+                                    Flexible(child: listPais()),
                                     SizedBox(width: 15,),
                                     Flexible(child: listStatus()),
                                     SizedBox(width: 15,),
@@ -205,15 +206,14 @@ class _PlantIndexState extends State<PlantIndex> {
     );
   }
 
-  Widget listPlants() {
+  Widget listPais() {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: catPlanKey,
+        key: catPaisKey,
         initiallyExpanded: false,
         title: Text(
-          //catPais.nombrePlanta ?? "País",
-          "PAISS",
+          catPais.nombrePais ?? "País",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -226,13 +226,13 @@ class _PlantIndexState extends State<PlantIndex> {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listPlants!.length,
+                    itemCount: RxVariables.gvListCatPais.listCountries.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            //catPais = RxVariables.dataFromUsers.listPlants![index];
-                            catPlanKey.currentState!.collapse();
+                            //catPais = RxVariables.dataFromUsers.listPais![index];
+                            catPaisKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -243,7 +243,7 @@ class _PlantIndexState extends State<PlantIndex> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                  RxVariables.dataFromUsers.listPlants![index].nombrePlanta!,
+                                  RxVariables.gvListCatPais.listCountries[index].nombrePais!,
                                   style: TextStyle(color: Colors.black54, fontSize: 13)
                                 ),
                               ),
@@ -338,9 +338,6 @@ class _PlantIndexState extends State<PlantIndex> {
     if (plantCtrl.text.isNotEmpty) {
       headerFilter = headerFilter + "&nombre_planta=${plantCtrl.text.trim()}";
     }
-    /*if (capacidadCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&capacidad=${capacidadCtrl.text.trim()}";
-    }*/
 
     /*if (catPais.idcatPais != null) {
       headerFilter = headerFilter + "&id_cat_planta=${catPais.idcatPais}";

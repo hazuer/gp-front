@@ -3,6 +3,9 @@ import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
 import 'package:general_products_web/models/catalogs/plant/catPlantModel.dart';
 import 'package:general_products_web/models/catalogs/plant/dtPlantModel.dart';
+import 'package:general_products_web/models/catalogs/plant/catPaisModel.dart';
+import 'package:general_products_web/models/catalogs/plant/dtPaisModel.dart';
+
 
 class PlantsProvider{
   RoutesProvider routes         = RoutesProvider();
@@ -153,4 +156,37 @@ class PlantsProvider{
       return null;
     }
   }
+
+  //cargar el select de paises en el crud de plantas
+  Future getAllPais()async {
+    List<CatPaisModel> provListPais = [];
+    RxVariables.errorMessage        = "";
+    DtPaisModel provDtPais          = DtPaisModel(listCountries: []);
+    String url                      = routes.urlBase+routes.paisesEstatusListas;
+
+    try {
+      final dio                 = Dio();
+      final result              = await dio.get(url,options: headerWithToken);
+      provDtPais                = DtPaisModel.fromJson(result.data);
+      RxVariables.gvListCatPais = provDtPais;
+      provDtPais.listCountries.forEach((item){
+        //TODO:Filtrar por los paises activos, deben retornase desde el back solo los activos
+        //if(item.estatus!.toLowerCase() == "activo"){
+          provListPais.add( item );
+        //}
+      });
+      rxVariables.gvBeSubListCatPais.sink.add(provListPais);
+      return result.data;
+    }on DioError catch (e) {
+      RxVariables.errorMessage =  e.response!.data["message"]
+      .toString()
+      .replaceAll("{", "")
+      .replaceAll("[", "")
+      .replaceAll("}", "")
+      .replaceAll("]", "");
+      rxVariables.gvBeSubListPlants.sink.addError("Ocurrio un error, intenta más tarde "+RxVariables.errorMessage);
+      return  null;
+    }
+  }
+
 }

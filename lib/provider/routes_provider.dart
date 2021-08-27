@@ -68,4 +68,5 @@ class RoutesProvider {
   String crearPlants         = "catalogo/crear-plantas";
   String editarPlants        = "catalogo/editar-plantas";
   String changeEstatusPlants = "catalogo/editar-estatus-planta";
+  String paisesEstatusListas = "catalogo/paises-estatus-listas";
 }
