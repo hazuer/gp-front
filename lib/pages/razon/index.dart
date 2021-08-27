@@ -69,7 +69,7 @@ class _RazonesIndexState extends State<RazonesIndex> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Listado de razones',
+                            'Listado de Razones',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 13.00,
@@ -84,7 +84,7 @@ class _RazonesIndexState extends State<RazonesIndex> {
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
                                           .2,
-                                      title: "Crear razón",
+                                      title: "Crear Razón",
                                       isLoading: false,
                                       onPressed: () async {
                                         Navigator.pushNamed(
@@ -152,7 +152,7 @@ class _RazonesIndexState extends State<RazonesIndex> {
                                                   .size
                                                   .width *
                                               .2,
-                                          title: "Crear razón",
+                                          title: "Crear Razón",
                                           isLoading: false,
                                           onPressed: () async {
                                             Navigator.pushNamed(

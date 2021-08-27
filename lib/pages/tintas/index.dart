@@ -66,7 +66,7 @@ class _TintasIndexState extends State<TintasIndex> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Listado de tintas',
+                            'Listado de Tintas',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 13.00,
@@ -81,7 +81,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
                                           .2,
-                                      title: "Crear tinta",
+                                      title: "Crear Tinta",
                                       isLoading: false,
                                       onPressed: () async {
                                         Navigator.pushNamed(
@@ -92,7 +92,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
                                           .2,
-                                      title: "Importar tinta",
+                                      title: "Importar Tinta",
                                       isLoading: false,
                                       onPressed: () async {
                                         Navigator.pushNamed(
@@ -108,7 +108,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                         controller: codigoGpCtrl),
                                     SizedBox(height: 15),
                                     CustomInput(
-                                        hint: 'Código SAP',
+                                        hint: 'Código Cliente',
                                         controller: codigoSapCtrl),
                                     SizedBox(height: 15),
                                     listStatus(),
@@ -168,7 +168,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                                         .size
                                                         .width *
                                                     .2,
-                                                title: "Crear tinta",
+                                                title: "Crear Tinta",
                                                 isLoading: false,
                                                 onPressed: () async {
                                                   Navigator.pushNamed(context,
@@ -183,7 +183,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                                         .size
                                                         .width *
                                                     .2,
-                                                title: "Importar tinta",
+                                                title: "Importar Tinta",
                                                 isLoading: false,
                                                 onPressed: () async {
                                                   Navigator.pushNamed(context,
@@ -210,7 +210,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                             SizedBox(width: 15.0),
                                             Flexible(
                                               child: CustomInput(
-                                                  hint: 'Código SAP',
+                                                  hint: 'Código Cliente',
                                                   controller: codigoSapCtrl),
                                             ),
                                             SizedBox(width: 15.0),

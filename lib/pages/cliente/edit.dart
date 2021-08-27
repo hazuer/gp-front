@@ -82,7 +82,7 @@ class _ClienteEditState extends State<ClienteEdit> {
                                   shrinkWrap: true,
                                   children: [
                                     CustomInput(
-                                        hint: '*Cliente ',
+                                        hint: '* Cliente ',
                                         controller: clienteCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),

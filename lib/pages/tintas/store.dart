@@ -84,7 +84,7 @@ class _TintaStoreState extends State<TintaStore> {
                                         controller: codigoGpCtrl),
                                     SizedBox(height: 15),
                                     CustomInput(
-                                        hint: 'Código SAP',
+                                        hint: 'Código Cliente',
                                         controller: codigoSapCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),
@@ -169,7 +169,7 @@ class _TintaStoreState extends State<TintaStore> {
                                             SizedBox(width: 15),
                                             Flexible(
                                                 child: CustomInput(
-                                              hint: 'Código SAP',
+                                              hint: 'Código Cliente',
                                               controller: codigoSapCtrl,
                                             )),
                                             SizedBox(width: 15),
