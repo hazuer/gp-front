@@ -294,7 +294,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
         key: statusKey,
         initiallyExpanded: false,
         title: Text(
-          status.estatus ?? "* Estatus",
+          status.estatus ?? "Estatus",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/authorize_user.dart';
+import 'package:general_products_web/pages/catalogs/pais/create.dart';
+import 'package:general_products_web/pages/catalogs/pais/edit.dart';
 import 'package:general_products_web/pages/cliente/edit.dart';
 import 'package:general_products_web/pages/cliente/index.dart';
 import 'package:general_products_web/pages/cliente/store.dart';
@@ -95,8 +97,10 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.register: (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
         RouteNames.editUser: (_) => EditUserPage(),
+        // Paises
         RouteNames.paises: (_) => PaisesPage(),
-        RouteNames.editCountry: (_) => EditCountryPage(),
+        RouteNames.paisCreate: (_) => PaisCreate(),
+        RouteNames.paisEdit: (_) => PaisEdit(),
         RouteNames.taraIndex: (_) => TaraIndex(),
         RouteNames.taraCreate: (_) => TaraCreate(),
         RouteNames.taraEdit: (_) => TaraEdit(),
@@ -107,9 +111,9 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.razonUpdate: (_) => RazonEdit(),
         RouteNames.razonStore: (_) => RazonStore(),
         RouteNames.tintaIndex: (_) => TintasIndex(),
-        RouteNames.tintaUpdate: (_) => TintasIndex(),
-        RouteNames.tintaStore: (_) => TintasIndex(),
-        RouteNames.tintaImport: (_) => TintasIndex(),
+        RouteNames.tintaUpdate: (_) => TintaEdit(),
+        RouteNames.tintaStore: (_) => TintaStore(),
+        RouteNames.tintaImport: (_) => TintaImport(),
         //Plantas
         RouteNames.plantsIndex: (_) => PlantIndex(),
         RouteNames.plantsCreate: (_) => PlantCreate(),

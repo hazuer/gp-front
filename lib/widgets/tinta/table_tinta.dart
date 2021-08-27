@@ -152,7 +152,7 @@ class _TableTintaListState extends State<TableTintaList> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    tooltip: 'Activar tinta',
+                                    tooltip: 'Activar',
                                     onPressed: () {
                                       tintaDialog.dialogChangeStatusTinta(
                                           context,
@@ -164,7 +164,7 @@ class _TableTintaListState extends State<TableTintaList> {
                                         size: 18, color: GPColors.PrimaryColor),
                                   ),
                                   IconButton(
-                                    tooltip: 'Editar tinta',
+                                    tooltip: 'Editar',
                                     onPressed: () {
                                       RxVariables.tintaSelected =
                                           snapshot.data![index];
@@ -177,7 +177,7 @@ class _TableTintaListState extends State<TableTintaList> {
                                         size: 18, color: GPColors.PrimaryColor),
                                   ),
                                   IconButton(
-                                    tooltip: "Desactivar tinta",
+                                    tooltip: "Desactivar",
                                     onPressed: () {
                                       tintaDialog.dialogChangeStatusTinta(
                                           context,
@@ -192,7 +192,7 @@ class _TableTintaListState extends State<TableTintaList> {
                                     ),
                                   ),
                                   IconButton(
-                                    tooltip: 'Eliminar tinta',
+                                    tooltip: 'Eliminar',
                                     icon: Icon(Icons.delete,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {

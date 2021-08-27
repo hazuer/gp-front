@@ -9,6 +9,7 @@ import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/widgets/razon/razonDialog.dart';
 
 class RazonEdit extends StatefulWidget {
   const RazonEdit({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class _RazonEditState extends State<RazonEdit> {
   bool isLoading = false;
   TextEditingController razonCtrl = TextEditingController();
   // TextEditingController plantaCtrl = TextEditingController();
+  RazonDialog dialogs = RazonDialog();
   Plant plant = Plant();
   StatusModel status = StatusModel();
   RazonesProvider razonesProvider = RazonesProvider();
@@ -35,14 +37,13 @@ class _RazonEditState extends State<RazonEdit> {
   void initState() {
     futureRazones = razonesProvider.listRazones();
     futureFields = listProvider.listUsers();
+    razonCtrl.text = RxVariables.razonSelected.razon!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
-    final razonInfo =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     return AppScaffold(
       pageTitle: 'Catálogos / Razones / Editar',
@@ -79,8 +80,7 @@ class _RazonEditState extends State<RazonEdit> {
                                   shrinkWrap: true,
                                   children: [
                                     CustomInput(
-                                        hint: razonInfo['razon'],
-                                        controller: razonCtrl),
+                                        hint: '* Razón', controller: razonCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),
                                     SizedBox(height: 15),
@@ -90,16 +90,54 @@ class _RazonEditState extends State<RazonEdit> {
                                       title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
-                                        print('Solo ${razonInfo['razon']}');
-                                        final int idRazon =
-                                            razonInfo['idRazon'];
-                                        await razonesProvider.editarRazon(
-                                            idRazon,
-                                            razonCtrl.text.trim(),
-                                            plant.idCatPlanta!);
+                                        // print('Solo ${razonInfo['razon']}');
+                                        // final int idRazon =
+                                        //     razonInfo['idRazon'];
+                                        if (razonCtrl.text == "" ||
+                                            plant.idCatPlanta == null) {
+                                          dialogs.showInfoDialog(
+                                              context,
+                                              "¡Atención!",
+                                              "Favor de validar los campos marcados con asterisco (*)");
+                                        } else {
+                                          await RazonesProvider()
+                                              .editarRazon(
+                                                  RxVariables.razonSelected
+                                                      .idCatRazon!,
+                                                  razonCtrl.text.trim(),
+                                                  plant.idCatPlanta!)
+                                              .then((value) {
+                                            if (value == null) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Error!",
+                                                  "Ocurrió un error al editar la razón : ${RxVariables.errorMessage}");
+                                            } else {
+                                              final typeAlert =
+                                                  (value["result"])
+                                                      ? "¡Éxito!"
+                                                      : "¡Error!";
+                                              final message = value["message"];
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context, typeAlert, message);
+                                            }
+                                          });
+                                        }
+                                        // await razonesProvider.editarRazon(
+                                        //     idRazon,
+                                        //     razonCtrl.text.trim(),
+                                        //     plant.idCatPlanta!);
 
-                                        Navigator.pushReplacementNamed(
-                                            context, RouteNames.razonIndex);
+                                        // Navigator.pushReplacementNamed(
+                                        //     context, RouteNames.razonIndex);
                                       },
                                     ),
                                     SizedBox(
@@ -119,7 +157,7 @@ class _RazonEditState extends State<RazonEdit> {
                                             Flexible(
                                                 child: CustomInput(
                                               controller: razonCtrl,
-                                              hint: razonInfo['razon'],
+                                              hint: '* Razón',
                                             )),
                                             SizedBox(width: 15),
                                             Flexible(child: listPlants()),
@@ -132,16 +170,58 @@ class _RazonEditState extends State<RazonEdit> {
                                               title: 'Guardar',
                                               isLoading: false,
                                               onPressed: () async {
-                                                final int idRazon =
-                                                    razonInfo['idRazon'];
-                                                await razonesProvider
-                                                    .editarRazon(
-                                                        idRazon,
-                                                        razonCtrl.text.trim(),
-                                                        plant.idCatPlanta!);
-                                                Navigator.pushReplacementNamed(
-                                                    context,
-                                                    RouteNames.razonIndex);
+                                                if (razonCtrl.text == "" ||
+                                                    plant.idCatPlanta == null) {
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Atención!",
+                                                      "Favor de validar los campos marcados con asterisco (*)");
+                                                } else {
+                                                  await RazonesProvider()
+                                                      .editarRazon(
+                                                          RxVariables
+                                                              .razonSelected
+                                                              .idCatRazon!,
+                                                          razonCtrl.text.trim(),
+                                                          plant.idCatPlanta!)
+                                                      .then((value) {
+                                                    if (value == null) {
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          "¡Error!",
+                                                          "Ocurrió un error al editar la razón : ${RxVariables.errorMessage}");
+                                                    } else {
+                                                      final typeAlert =
+                                                          (value["result"])
+                                                              ? "¡Éxito!"
+                                                              : "¡Error!";
+                                                      final message =
+                                                          value["message"];
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          typeAlert,
+                                                          message);
+                                                    }
+                                                  });
+                                                }
+                                                // final int idRazon =
+                                                //     razonInfo['idRazon'];
+                                                // await razonesProvider
+                                                //     .editarRazon(
+                                                //         idRazon,
+                                                //         razonCtrl.text.trim(),
+                                                //         plant.idCatPlanta!);
+                                                // Navigator.pushReplacementNamed(
+                                                //     context,
+                                                //     RouteNames.razonIndex);
                                               },
                                             ),
                                           ],
@@ -171,7 +251,7 @@ class _RazonEditState extends State<RazonEdit> {
         key: plantKey,
         initiallyExpanded: false,
         title: Text(
-          plant.nombrePlanta ?? 'Planta',
+          plant.nombrePlanta ?? RxVariables.razonSelected.nombrePlanta!,
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [

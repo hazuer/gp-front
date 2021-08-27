@@ -149,14 +149,10 @@ class _TableClienteListState extends State<TableClienteList> {
                                       IconButton(
                                         tooltip: 'Editar',
                                         onPressed: () {
-                                          Navigator.pushNamed(
-                                              context, RouteNames.clienteUpdate,
-                                              arguments: ({
-                                                'idCliente': snapshot
-                                                    .data![index].idCatCliente,
-                                                'nombreCliente': snapshot
-                                                    .data![index].nombreCliente,
-                                              }));
+                                          RxVariables.clienteSelected =
+                                              snapshot.data![index];
+                                          Navigator.pushNamed(context,
+                                              RouteNames.clienteUpdate);
                                         },
                                         icon: Icon(Icons.edit,
                                             size: 18,

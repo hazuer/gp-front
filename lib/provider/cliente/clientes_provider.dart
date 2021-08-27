@@ -24,16 +24,11 @@ class ClientesProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print('StatusCode: ${resp.statusCode}');
-      listClientesModel = ListClientesModel.fromJson(resp.data);
-      print(listClientesModel.customersList.length);
-      print(RxVariables.listClientes.customersList.length);
       listClientesModel.customersList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listActives.add(element);
         }
       });
-      print(listActives.length);
       rxVariables.listClientesFilter.sink.add(listActives);
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
@@ -58,7 +53,6 @@ class ClientesProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print("statusCode: ${resp.statusCode}");
       listClientesModel = PlantsStatusCustomersModel.fromJson(resp.data);
       // RxVariables.listClientes = listClientesModel;
 
@@ -86,14 +80,10 @@ class ClientesProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print('StatusCode: ${resp.statusCode}');
       listClientesModel = ListClientesModel.fromJson(resp.data);
-      print(listClientesModel.customersList.length);
-      print(RxVariables.listClientes.customersList.length);
       listClientesModel.customersList.forEach((element) {
         listFilters.add(element);
       });
-      print(listFilters.length);
       rxVariables.listClientesFilter.sink.add(listFilters);
 
       return resp.data;
@@ -111,7 +101,6 @@ class ClientesProvider {
   Future crearCliente(String nombreCliente, int planta) async {
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.crearClientes;
-    print('Planta: $planta');
 
     try {
       final dio = Dio();
@@ -119,7 +108,6 @@ class ClientesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listClientes();
       return resp.data;
     } on DioError catch (e) {
@@ -148,7 +136,6 @@ class ClientesProvider {
       };
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
-      print(resp.data);
       await listClientes();
       return resp.data;
     } on DioError catch (e) {
@@ -164,6 +151,36 @@ class ClientesProvider {
     }
   }
 
+  Future changeStatusClienteProvider(int idCatCliente, int idCatStatus) async {
+    RxVariables.errorMessage = '';
+    String url = routes.urlBase + routes.changeEstatusClientes;
+
+    try {
+      final dio = Dio();
+      final data = {
+        'id_cat_cliente': idCatCliente,
+        'id_cat_estatus': idCatStatus
+      };
+      final resp = await dio.post(url, data: data, options: headerWithToken);
+      await listClientes();
+      RxVariables.errorMessage = resp.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      return null;
+    }
+  }
+
   Future desactivarCliente(int idCliente, int idStatus) async {
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.desactivarClientes;
@@ -175,7 +192,6 @@ class ClientesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listClientes();
       return resp.data;
     } on DioError catch (e) {
@@ -200,7 +216,6 @@ class ClientesProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listClientes();
       return resp.data;
     } on DioError catch (e) {

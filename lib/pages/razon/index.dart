@@ -173,12 +173,14 @@ class _RazonesIndexState extends State<RazonesIndex> {
                                             Flexible(child: listStatus()),
                                             SizedBox(width: 15.0),
                                             IconButton(
+                                              tooltip: 'Buscar',
                                               onPressed: () async {
                                                 await _applyFilter();
                                               },
                                               icon: Icon(Icons.filter_alt),
                                             ),
                                             IconButton(
+                                              tooltip: 'Limpiar',
                                               onPressed: () async {
                                                 await clearFilters();
                                               },
@@ -295,7 +297,7 @@ class _RazonesIndexState extends State<RazonesIndex> {
         key: statusKey,
         initiallyExpanded: false,
         title: Text(
-          status.estatus ?? "* Estatus",
+          status.estatus ?? "Estatus",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -385,7 +387,7 @@ class _RazonesIndexState extends State<RazonesIndex> {
     status = StatusModel();
     razonCtrl.clear();
 
-    await listProvider.listUsersWithFilters(pathFilter).then((value) {
+    await razonesProvider.listRazonesWithFiltter(pathFilter).then((value) {
       setState(() {
         isLoading = false;
       });

@@ -42,7 +42,7 @@ class RxVariables {
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
   //static String token ="";
-  static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiYzM1ZThlNTM3ZDJiZDM4ZmY3ZjBiOTNiMjZlOThjOGYxMmQ1ZjQ3MGZmYmZmMzBlY2ZlOWJlNzc5NzA0MmNmYTllZWZiMTkyNGUwODZlZjQiLCJpYXQiOjE2MzAwNzEwMTksIm5iZiI6MTYzMDA3MTAxOSwiZXhwIjoxNjMwMDc0NjE5LCJzdWIiOiIxNiIsInNjb3BlcyI6W119.OXLAbQK-s7e0jIneqo1duORGUSMDpNyH1YCQVtoHU_YII6hpt9IbdnUZxcR7bKhlDSSMl9GwUeIWh32lM8iZtr8hvKduG9qG84R5IoyjCoEMoHFdwz9_HV89aiK-cwmHPNnm5W1Hjjsohd5iXLhhc6TntnlTVQW4tRPINBXPoyTjyy4OzZ2xAlJlXYQpUiHgLdFjNzmhhbcnpMaR_Wg2zm8yQtoLIKE_7xVkFJgMzmRHEaDs13Jt0voKKBXaCBr5Wm756ASKVuYhuOWIfILjHBWKRjKDeQRno6Umx7bzbyigdFn_cPn4beJOw4IbVOhhaDXragMTp6HZZVZ5C_tk3lkgU78qjNrCrpJORuYdthe5oQfYb0x8rygJnQCPCZsuiKCt8_0eR47Q4KlAhZkOvA0_O-GcA_2TyJbJzfDYyiONjACGeQnOGzJtYpRPPJ0iUtqpE4wI9-LpXk-qDNL-DrWLqqq04wpRsabXZwQNe6RJt583JZlfTXaAefdzCzGgh1FaJ3OODgV46liFMdJSKM16Cde8tr9OyKqi_XJjGxeb6m3t3Ww1ILXgnnpnaUJaBFXE6AA1M0ch0z1zSbNlBVqpPZEkd9l55EFmikwKiqkhGHK41OqB9aA5WBYTcMrDY4GisVBP39mbOszlf3LI07KlBKKb2fd0q4HHsiz3CH8";
+  static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiOTU5MGIzY2Q0YjJkYjI0NzM1NGVjMWI1ODI2NWFlOTdiNDdiNzI0ZWFiMjRkNDY4YmI2OGJiMzJiNWExYTk4ZTk4MDRmOWIzMjc1ODMwNjYiLCJpYXQiOjE2MzAwNzQ4NjEsIm5iZiI6MTYzMDA3NDg2MSwiZXhwIjoxNjMwMDc4NDYxLCJzdWIiOiIxNiIsInNjb3BlcyI6W119.CeKjzbSjXsfOGDMAzg6Z9NlyAWf7fH-hLYqPuh1kimDLFCKXnoB7mfFn1m4wqZk_HN9IHCGRnXHLHHggTLfr1oAtYj-wSjqse5jXflI9-S13AL-uYMsnHZ0hLE8MTAhJFmdGS5Ah0hItIlCrQIP9qP9GgZkcP3hC7vYpYH6SEJMjhPMsgqQBJXqoQN024pU8gbgzB9mrn2abMeEsrhMMDTqjqjJkvTmOsSrXC5tgkznrUV_lBLcz0T83hN5MTEFClwx4X3hT6ATSS4XaQMURWm3cCAp_MAVw9GCuL1HZivPD2Xuc0Uma26g8wUoLLnnV5jwc7rrc--C4JkGixFVrXPgwEYcAXU_3yTuk8fgZhczPbTNTMgfWP_QKqmVjzWjY7LKfIRX9hN1lDPZdKUnBFiWWBdQZ3ohcowouNfpgDGZMZcz-CIrkUXMCDmKSMNhAYS6eaMNNvutq2vGtTayBIwKFW7ljm5FnL-UBfThm1-Gra9DkWtTaSLej_NOFjbvKMw9mBPaTC5TNq7COchkTFEzQE0ItWjik9FxVO21MUpFdwv6iCH99VRvLzt_XfIVs-Cg_buP6gW3Vn_D8Z-7wMzTwVGQjp-8jvmt00vHj6AuzIVMD_p1EqHCu94w4LDnVS2bHizSnVCjJ43xKc7cbAbNx4cyI_-ErsCSuB2IKmM0";
 
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
@@ -51,6 +51,7 @@ class RxVariables {
   final listPaisesFilter = BehaviorSubject<List<CountriesList>>();
   Stream<List<CountriesList>> get listPaisesStream => listPaisesFilter.stream;
 
+  static CustomersList clienteSelected = CustomersList();
   final listClientesFilter = BehaviorSubject<List<CustomersList>>();
   Stream<List<CustomersList>> get listClientesStream =>
       listClientesFilter.stream;
@@ -64,6 +65,7 @@ class RxVariables {
 
   // Razones
   static RazonModel gvRazonSelected = RazonModel();
+  static ReasonsList razonSelected = ReasonsList();
   static DtRazonesModel gvListRazones = DtRazonesModel(reasonsList: []);
   final gvBeSubListRazones = BehaviorSubject<List<RazonModel>>();
   Stream<List<RazonModel>> get listRazonesStream => gvBeSubListRazones.stream;
@@ -87,15 +89,16 @@ class RxVariables {
 
   //Plantas
   static CatPlantModel gvPlantSelectedById = CatPlantModel();
-  static DtPlantModel gvListPlants = DtPlantModel( plantsList: []);
+  static DtPlantModel gvListPlants = DtPlantModel(plantsList: []);
   final gvBeSubListPlants = BehaviorSubject<List<CatPlantModel>>();
-  Stream<List<CatPlantModel>> get lsPlantsFiltrosStream => gvBeSubListPlants.stream;
+  Stream<List<CatPlantModel>> get lsPlantsFiltrosStream =>
+      gvBeSubListPlants.stream;
 
   //cat_pais llamado desde el listado de plantas
-  static DtPaisModel gvListCatPais = DtPaisModel( listCountries: []);
+  static DtPaisModel gvListCatPais = DtPaisModel(listCountries: []);
   final gvBeSubListCatPais = BehaviorSubject<List<CatPaisModel>>();
-  Stream<List<CatPaisModel>> get lsCatPaisFiltrosStream => gvBeSubListCatPais.stream;
-
+  Stream<List<CatPaisModel>> get lsCatPaisFiltrosStream =>
+      gvBeSubListCatPais.stream;
 
   static final RxVariables _bloc = new RxVariables._internal();
 

@@ -7,6 +7,7 @@ import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
+import 'package:general_products_web/widgets/cliente/clienteDialog.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
@@ -26,6 +27,7 @@ class _ClienteEditState extends State<ClienteEdit> {
   TextEditingController plantaCtrl = TextEditingController();
   Plant plant = Plant();
   StatusModel status = StatusModel();
+  ClienteDialog dialogs = ClienteDialog();
   ClientesProvider clientesProvider = ClientesProvider();
   ListUsersProvider listProvider = ListUsersProvider();
 
@@ -34,6 +36,7 @@ class _ClienteEditState extends State<ClienteEdit> {
 
   @override
   void initState() {
+    clienteCtrl.text = RxVariables.clienteSelected.nombreCliente!;
     futureClients = clientesProvider.listClientes();
     futureFields = listProvider.listUsers();
     super.initState();
@@ -42,8 +45,6 @@ class _ClienteEditState extends State<ClienteEdit> {
   @override
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
-    final clienteInfo =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     return AppScaffold(
       pageTitle: 'Catálogos / Clientes / Editar',
@@ -80,7 +81,7 @@ class _ClienteEditState extends State<ClienteEdit> {
                                   shrinkWrap: true,
                                   children: [
                                     CustomInput(
-                                        hint: clienteInfo['nombreCliente'],
+                                        hint: '*Cliente ',
                                         controller: clienteCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),
@@ -91,17 +92,44 @@ class _ClienteEditState extends State<ClienteEdit> {
                                       title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
-                                        print(
-                                            'Solo ${clienteInfo['nombreCliente']}');
-                                        final int idCliente =
-                                            clienteInfo['idCliente'];
-                                        await clientesProvider.editCliente(
-                                            idCliente,
-                                            clienteCtrl.text.trim(),
-                                            plant.idCatPlanta!);
-
-                                        Navigator.pushReplacementNamed(
-                                            context, RouteNames.clienteIndex);
+                                        if (clienteCtrl.text == '' ||
+                                            plant.idCatPlanta == null) {
+                                          dialogs.showInfoDialog(
+                                              context,
+                                              "¡Atención!",
+                                              "Favor de validar los campos marcados con asterisco (*)");
+                                        } else {
+                                          await ClientesProvider()
+                                              .editCliente(
+                                                  RxVariables.clienteSelected
+                                                      .idCatCliente!,
+                                                  clienteCtrl.text.trim(),
+                                                  plant.idCatPlanta!)
+                                              .then((value) {
+                                            if (value == null) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Error!",
+                                                  "Ocurrió un error al editar al cliente: ${RxVariables.errorMessage}");
+                                            } else {
+                                              final typeAlert =
+                                                  (value["result"])
+                                                      ? "¡Éxito!"
+                                                      : "¡Error!";
+                                              final message = value["message"];
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              Navigator.pop(context);
+                                              dialogs.showInfoDialog(
+                                                  context, typeAlert, message);
+                                            }
+                                          });
+                                        }
                                       },
                                     ),
                                     SizedBox(
@@ -121,8 +149,7 @@ class _ClienteEditState extends State<ClienteEdit> {
                                             Flexible(
                                                 child: CustomInput(
                                               controller: clienteCtrl,
-                                              hint:
-                                                  clienteInfo['nombreCliente'],
+                                              hint: '* Cliente',
                                             )),
                                             SizedBox(width: 15),
                                             Flexible(child: listPlants()),
@@ -135,16 +162,49 @@ class _ClienteEditState extends State<ClienteEdit> {
                                               title: 'Guardar',
                                               isLoading: false,
                                               onPressed: () async {
-                                                final int idCliente =
-                                                    clienteInfo['idCliente'];
-                                                await clientesProvider
-                                                    .editCliente(
-                                                        idCliente,
-                                                        clienteCtrl.text.trim(),
-                                                        plant.idCatPlanta!);
-                                                Navigator.pushReplacementNamed(
-                                                    context,
-                                                    RouteNames.clienteIndex);
+                                                if (clienteCtrl.text == '' ||
+                                                    plant.idCatPlanta == null) {
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Atención!",
+                                                      "Favor de validar los campos marcados con asterisco (*)");
+                                                } else {
+                                                  await ClientesProvider()
+                                                      .editCliente(
+                                                          RxVariables
+                                                              .clienteSelected
+                                                              .idCatCliente!,
+                                                          clienteCtrl.text
+                                                              .trim(),
+                                                          plant.idCatPlanta!)
+                                                      .then((value) {
+                                                    if (value == null) {
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          "¡Error!",
+                                                          "Ocurrió un error al editar al cliente : ${RxVariables.errorMessage}");
+                                                    } else {
+                                                      final typeAlert =
+                                                          (value["result"])
+                                                              ? "¡Éxito!"
+                                                              : "¡Error!";
+                                                      final message =
+                                                          value["message"];
+                                                      setState(() {
+                                                        isLoading = false;
+                                                      });
+                                                      Navigator.pop(context);
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          typeAlert,
+                                                          message);
+                                                    }
+                                                  });
+                                                }
                                               },
                                             ),
                                           ],
@@ -174,7 +234,7 @@ class _ClienteEditState extends State<ClienteEdit> {
         key: plantKey,
         initiallyExpanded: false,
         title: Text(
-          plant.nombrePlanta ?? 'Planta',
+          plant.nombrePlanta ?? RxVariables.clienteSelected.nombrePlanta!,
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [

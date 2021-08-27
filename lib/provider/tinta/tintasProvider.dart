@@ -35,15 +35,12 @@ class TintasProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print('StatusCode: ${resp.statusCode}');
       listTintasModel = ListTintasModel.fromJson(resp.data);
-      print(listTintasModel.inkList.length);
       listTintasModel.inkList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listActives.add(element);
         }
       });
-      print(listActives.length);
       rxVariables.listTintasFilter.sink.add(listActives);
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
@@ -69,13 +66,10 @@ class TintasProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      print('StatusCode: ${resp.statusCode}');
       listTintasModel = ListTintasModel.fromJson(resp.data);
-      print(listTintasModel.inkList.length);
       listTintasModel.inkList.forEach((element) {
         listFilters.add(element);
       });
-      print(listFilters.length);
       rxVariables.listTintasFilter.sink.add(listFilters);
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
@@ -106,7 +100,6 @@ class TintasProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listTintas();
       return resp.data;
     } on DioError catch (e) {
@@ -139,7 +132,6 @@ class TintasProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listTintas();
       return resp.data;
     } on DioError catch (e) {
@@ -166,7 +158,6 @@ class TintasProvider {
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
 
-      print(resp.data);
       await listTintas();
       return resp.data;
     } on DioError catch (e) {
@@ -180,21 +171,22 @@ class TintasProvider {
     }
   }
 
+  // Los prints de aquí aun están siendo utilizados
   Future loadFromStorage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowedExtensions: ['csv'],
       type: FileType.custom,
     );
-    print(result!.files.first.name);
-    final values = CsvToListConverter().convert(result.files.first.name);
+    // print(result!.files.first.name);
+    final values = CsvToListConverter().convert(result!.files.first.name);
     String csv = encodeCsv(values);
-    print(csv);
-    print(values.first);
+    // print(csv);
+    // print(values.first);
 
     List<List<dynamic>> cvsList = CsvToListConverter().convert(csv);
-    print(csv);
+    // print(csv);
     String path = result.files.first.path!;
-    print(path);
+    // print(path);
 
     // final csvFile = File(path).openRead();
     // print(csvFile);
@@ -225,9 +217,9 @@ class TintasProvider {
 
     // final data = await rootBundle.loadString('Prueba1.csv');
     final data = await rootBundle.loadString('Prueba1.csv');
-    print(data);
+    // print(data);
     List<List<dynamic>> csvTable = CsvToListConverter().convert(data);
-    print(csvTable);
+    // print(csvTable);
   }
 
   late List csvList;
@@ -236,14 +228,14 @@ class TintasProvider {
 
   Future importCsv(int idPlanta, FilePickerResult file) async {
     // FilePickerResult? file = await FilePicker.platform.pickFiles();
-    print('Print en Provider ${file.names}');
-    print('Print del Id $idPlanta');
+    // print('Print en Provider ${file.names}');
+    // print('Print del Id $idPlanta');
 
     final tsv = await readCsv('$file');
-    print('PRint de prueba');
+    // print('PRint de prueba');
 
-    print(tsv);
-    print('PRint de prueba');
+    // print(tsv);
+    // print('PRint de prueba');
 
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.importarTintas;

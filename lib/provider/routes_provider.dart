@@ -32,20 +32,22 @@ class RoutesProvider {
   String listClientes = "catalogo/listar-clientes";
   String editarClientes = "catalogo/editar-clientes";
   String crearClientes = "catalogo/crear-clientes";
+  String changeEstatusClientes = "catalogo/editar-estatus-clientes";
   String desactivarClientes = "catalogo/editar-estatus-clientes";
   String eliminarClientes = "catalogo/editar-estatus-clientes";
   String plantasClientes = "datos-plantas-clientes";
 
   //Taras
-  String listarTaras        = "catalogo/listar-taras";
-  String crearTaras         = "catalogo/crear-taras";
-  String editarTaras        = "catalogo/editar-taras";
+  String listarTaras = "catalogo/listar-taras";
+  String crearTaras = "catalogo/crear-taras";
+  String editarTaras = "catalogo/editar-taras";
   String changeEstatusTaras = "catalogo/editar-estatus-taras";
 
   // Razones
   String listarRazones = "catalogo/listar-razones";
   String editarRazones = 'catalogo/editar-razones';
   String crearRazones = 'catalogo/crear-razones';
+  String changeEstatusRazones = 'catalogo/editar-estatus-razones';
   String activarRazones = 'catalogo/editar-estatus-razones';
   String desactivarRazones = 'catalogo/editar-estatus-razones';
   String eliminarRazones = 'catalogo/editar-estatus-razones';
@@ -58,15 +60,15 @@ class RoutesProvider {
   String changeEstatusTintas = "catalogo/editar-estatus-tintas";
 
   //Maquinas
-  String listarMachines        = "catalogo/listar-maquinas";
-  String crearMachines         = "catalogo/crear-maquinas";
-  String editarMachines        = "catalogo/editar-maquinas";
+  String listarMachines = "catalogo/listar-maquinas";
+  String crearMachines = "catalogo/crear-maquinas";
+  String editarMachines = "catalogo/editar-maquinas";
   String changeEstatusMachines = "catalogo/editar-estatus-maquinas";
 
   //Plantas
-  String listarPlants        = "catalogo/listar-plantas";
-  String crearPlants         = "catalogo/crear-plantas";
-  String editarPlants        = "catalogo/editar-plantas";
+  String listarPlants = "catalogo/listar-plantas";
+  String crearPlants = "catalogo/crear-plantas";
+  String editarPlants = "catalogo/editar-plantas";
   String changeEstatusPlants = "catalogo/editar-estatus-planta";
   String paisesEstatusListas = "catalogo/paises-estatus-listas";
 }
