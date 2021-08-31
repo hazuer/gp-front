@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/razon/razonModel.dart';
 import 'package:general_products_web/models/razon/razonesModel.dart';
 import 'package:general_products_web/provider/razon/razonesProvider.dart';
@@ -46,7 +47,8 @@ class RazonDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushReplacementNamed(
+                                context, RouteNames.razonIndex);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,

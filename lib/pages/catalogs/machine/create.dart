@@ -122,7 +122,6 @@ class _MachineCreateState extends State<MachineCreate> {
                                                 setState(() {
                                                   isLoading = false;
                                                 });
-                                                Navigator.pop(context);
                                                 dialogs.showInfoDialog(
                                                     context,
                                                     "¡Error!",

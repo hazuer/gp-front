@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/models/catalogs/plant/catPlantModel.dart';
@@ -43,7 +44,9 @@ class PlantDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushReplacementNamed(
+                                context, RouteNames.plantsIndex);
+                            // Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,

@@ -106,7 +106,7 @@ class _RazonStoreState extends State<RazonStore> {
                                               setState(() {
                                                 isLoading = false;
                                               });
-                                              Navigator.pop(context);
+                                              // Navigator.pop(context);
                                               dialogs.showInfoDialog(
                                                   context,
                                                   "¡Error!",

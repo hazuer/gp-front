@@ -110,7 +110,7 @@ class _ClienteStoreState extends State<ClienteStore> {
                                               setState(() {
                                                 isLoading = false;
                                               });
-                                              Navigator.pop(context);
+                                              // Navigator.pop(context);
                                               dialogs.showInfoDialog(
                                                   context,
                                                   "¡Error!",

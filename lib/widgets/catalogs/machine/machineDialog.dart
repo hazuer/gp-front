@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
@@ -43,7 +44,8 @@ class MachineDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushReplacementNamed(
+                                context, RouteNames.machineIndex);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,

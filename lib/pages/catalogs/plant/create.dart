@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/constants/route_names.dart';
 //import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
@@ -114,7 +115,10 @@ class _PlantCreateState extends State<PlantCreate> {
                                                 setState(() {
                                                   isLoading = false;
                                                 });
-                                                Navigator.pop(context);
+                                                // Navigator.pushReplacementNamed(
+                                                //     context,
+                                                //     RouteNames.plantsIndex);
+                                                // Navigator.pop(context);
                                                 dialogs.showInfoDialog(
                                                     context,
                                                     "¡Error!",
