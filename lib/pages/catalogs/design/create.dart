@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/models/plant_model.dart';
+import 'package:general_products_web/models/tinta/tintasModel.dart';
+import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/provider/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
@@ -17,20 +21,33 @@ class DesignCreate extends StatefulWidget {
 }
 
 class _DesignCreateState extends State<DesignCreate> {
-  late Future futureTara;
+  late Future futureTintas;
+  late Future futureFields;
   bool isLoading = false;
   String headerFilter = "?porPagina = 20";
-  TextEditingController taraCtrl = TextEditingController();
-  TextEditingController capacidadCtrl = TextEditingController();
+
+  TextEditingController designCtrl = TextEditingController();
+  TextEditingController descripcionCtrl = TextEditingController();
+  TextEditingController tintasCtrl = TextEditingController();
+
   Plant catPlanta = Plant();
-  TarasProvider tarasProvider = TarasProvider();
+  ListUsersProvider listProvider = ListUsersProvider();
+
+  // TarasProvider tarasProvider = TarasProvider();
+
+  TintasProvider tintasProvider = TintasProvider();
+
   TaraDialog dialogs = TaraDialog();
-  final GlobalKey<AppExpansionTileState> catPlanKey = new GlobalKey();
-  final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
+  InkList catTintas = InkList();
+  // ListTintasModel catTintas = ListTintasModel(inkList: []);
+  final GlobalKey<AppExpansionTileState> catPlantsKey = new GlobalKey();
+  final GlobalKey<AppExpansionTileState> catTintasKey = new GlobalKey();
+  // final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureTara = tarasProvider.getAllTaras();
+    futureTintas = tintasProvider.listTintas();
+    futureFields = listProvider.dataListUser();
     super.initState();
   }
 
@@ -80,18 +97,24 @@ class _DesignCreateState extends State<DesignCreate> {
                                         height: 15,
                                       ),
                                       CustomInput(
-                                          controller: taraCtrl,
+                                          controller: designCtrl,
                                           hint: "* Nombre diseño"),
                                       SizedBox(
                                         height: 15,
                                       ),
                                       CustomInput(
-                                          controller: capacidadCtrl,
+                                          controller: descripcionCtrl,
                                           hint: "* Descripción"),
                                       SizedBox(
                                         height: 15,
                                       ),
-                                      listPlants(),
+                                      listarPlants(),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomInput(
+                                          controller: tintasCtrl,
+                                          hint: "* Tintas"),
                                       SizedBox(
                                         height: 15,
                                       ),
@@ -102,19 +125,21 @@ class _DesignCreateState extends State<DesignCreate> {
                                         title: 'Crear',
                                         isLoading: false,
                                         onPressed: () async {
-                                          if (taraCtrl.text.isEmpty ||
-                                              capacidadCtrl.text.isEmpty ||
+                                          if (designCtrl.text.isEmpty ||
+                                              descripcionCtrl.text.isEmpty ||
+                                              tintasCtrl.text.isEmpty ||
                                               catPlanta.idCatPlanta == null) {
                                             dialogs.showInfoDialog(
                                                 context,
                                                 "¡Atención!",
                                                 "Favor de validar los campos marcados con asterisco (*)");
                                           } else {
-                                            await TarasProvider()
-                                                .createTara(
-                                              taraCtrl.text.trim(),
-                                              capacidadCtrl.text.trim(),
+                                            await DesignsProvider()
+                                                .createDesign(
+                                              designCtrl.text.trim(),
+                                              descripcionCtrl.text.trim(),
                                               catPlanta.idCatPlanta!,
+                                              tintasCtrl.text.trim(),
                                             )
                                                 .then((value) {
                                               if (value == null) {
@@ -125,7 +150,7 @@ class _DesignCreateState extends State<DesignCreate> {
                                                 dialogs.showInfoDialog(
                                                     context,
                                                     "¡Error!",
-                                                    "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
+                                                    "Ocurrió un error al crear el diseño : ${RxVariables.errorMessage}");
                                               } else {
                                                 final typeAlert =
                                                     (value["result"])
@@ -157,85 +182,94 @@ class _DesignCreateState extends State<DesignCreate> {
                                     child: SingleChildScrollView(
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(height: 20.0),
                                           Row(
                                             children: [
                                               Flexible(
                                                   child: CustomInput(
-                                                      controller: taraCtrl,
+                                                      controller: designCtrl,
                                                       hint: "* Nombre diseño")),
                                               SizedBox(
                                                 width: 15,
                                               ),
                                               Flexible(
                                                   child: CustomInput(
-                                                      controller: capacidadCtrl,
+                                                      controller:
+                                                          descripcionCtrl,
                                                       hint: "* Descripción")),
                                               SizedBox(
                                                 width: 15,
                                               ),
-                                              Flexible(child: listPlants()),
+                                              Flexible(child: listarPlants()),
                                               SizedBox(
                                                 width: 15,
                                               ),
-                                              Flexible(
-                                                  child: CustomButton(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .2,
-                                                title: 'Crear',
-                                                isLoading: false,
-                                                onPressed: () async {
-                                                  if (taraCtrl.text.isEmpty ||
-                                                      capacidadCtrl
-                                                          .text.isEmpty ||
-                                                      catPlanta.idCatPlanta ==
-                                                          null) {
+                                              Flexible(child: listarTintas()),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 20.0),
+                                          CustomButton(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .2,
+                                            title: 'Crear',
+                                            isLoading: false,
+                                            onPressed: () async {
+                                              if (designCtrl.text.isEmpty ||
+                                                  descripcionCtrl
+                                                      .text.isEmpty ||
+                                                  tintasCtrl.text.isEmpty ||
+                                                  catPlanta.idCatPlanta ==
+                                                      null) {
+                                                dialogs.showInfoDialog(
+                                                    context,
+                                                    "¡Atención!",
+                                                    "Favor de validar los campos marcados con asterisco (*)");
+                                              } else {
+                                                await DesignsProvider()
+                                                    .createDesign(
+                                                  designCtrl.text.trim(),
+                                                  descripcionCtrl.text.trim(),
+                                                  catPlanta.idCatPlanta!,
+                                                  tintasCtrl.text.trim(),
+                                                )
+                                                    .then((value) {
+                                                  if (value == null) {
+                                                    setState(() {
+                                                      isLoading = false;
+                                                    });
+                                                    Navigator.pop(context);
                                                     dialogs.showInfoDialog(
                                                         context,
-                                                        "¡Atención!",
-                                                        "Favor de validar los campos marcados con asterisco (*)");
+                                                        "¡Error!",
+                                                        "Ocurrió un error al crear el diseño : ${RxVariables.errorMessage}");
                                                   } else {
-                                                    await TarasProvider()
-                                                        .createTara(
-                                                      taraCtrl.text.trim(),
-                                                      capacidadCtrl.text.trim(),
-                                                      catPlanta.idCatPlanta!,
-                                                    )
-                                                        .then((value) {
-                                                      if (value == null) {
-                                                        setState(() {
-                                                          isLoading = false;
-                                                        });
-                                                        Navigator.pop(context);
-                                                        dialogs.showInfoDialog(
-                                                            context,
-                                                            "¡Error!",
-                                                            "Ocurrió un error al crear la tara : ${RxVariables.errorMessage}");
-                                                      } else {
-                                                        final typeAlert =
-                                                            (value["result"])
-                                                                ? "¡Éxito!"
-                                                                : "¡Error!";
-                                                        final message =
-                                                            value["message"];
-                                                        setState(() {
-                                                          isLoading = false;
-                                                        });
-                                                        Navigator.pop(context);
-                                                        dialogs.showInfoDialog(
-                                                            context,
-                                                            typeAlert,
-                                                            message);
-                                                        //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
-                                                      }
+                                                    final typeAlert =
+                                                        (value["result"])
+                                                            ? "¡Éxito!"
+                                                            : "¡Error!";
+                                                    final message =
+                                                        value["message"];
+                                                    setState(() {
+                                                      isLoading = false;
                                                     });
+                                                    Navigator.pop(context);
+                                                    dialogs.showInfoDialog(
+                                                        context,
+                                                        typeAlert,
+                                                        message);
+                                                    //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
                                                   }
-                                                },
-                                              )),
-                                            ],
+                                                });
+                                              }
+                                            },
                                           ),
                                         ],
                                       ),
@@ -251,12 +285,83 @@ class _DesignCreateState extends State<DesignCreate> {
         ));
   }
 
-  Widget listPlants() {
+  Widget listarTintas() {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: catPlanKey,
+        key: catTintasKey,
+        initiallyExpanded: false,
+        title: Text(
+          catTintas.nombreTinta ?? "* Tinta",
+          style: TextStyle(color: Colors.black54, fontSize: 13),
+        ),
+        children: [
+          Container(
+            //height: MediaQuery.of(context).size.height*.2,
+            child: FutureBuilder(
+              future: futureTintas,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: RxVariables.listTinta.inkList.length,
+                    // itemCount: RxVariables.listTinta.inkList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            catTintas = RxVariables.listTinta.inkList[index];
+                            catTintasKey.currentState!.collapse();
+
+                            // catPlanta =
+                            //     RxVariables.dataFromUsers.listPlants![index];
+                            // catPlanKey.currentState!.collapse();
+                          });
+                        },
+                        child: Container(
+                          color: Colors.grey[100],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                    // catTintas.nombreTinta ?? '* Tinta',
+                                    RxVariables
+                                        .listTinta.inkList[index].nombreTinta!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: .5,
+                                color: Colors.grey[300],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget listarPlants() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      child: AppExpansionTile(
+        key: catPlantsKey,
         initiallyExpanded: false,
         title: Text(
           catPlanta.nombrePlanta ?? "* Planta",
@@ -266,7 +371,7 @@ class _DesignCreateState extends State<DesignCreate> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTara,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -279,7 +384,7 @@ class _DesignCreateState extends State<DesignCreate> {
                           setState(() {
                             catPlanta =
                                 RxVariables.dataFromUsers.listPlants![index];
-                            catPlanKey.currentState!.collapse();
+                            catPlantsKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -316,4 +421,70 @@ class _DesignCreateState extends State<DesignCreate> {
       ),
     );
   }
+
+  // Widget listStatus() {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+  //     child: AppExpansionTile(
+  //       key: catEstatusKey,
+  //       initiallyExpanded: false,
+  //       title: Text(
+  //         catEstatus.estatus ?? "Estatus",
+  //         style: TextStyle(color: Colors.black54, fontSize: 13),
+  //       ),
+  //       children: [
+  //         Container(
+  //           //height: MediaQuery.of(context).size.height*.2,
+  //           child: FutureBuilder(
+  //             future: futureTara,
+  //             builder: (BuildContext context, AsyncSnapshot snapshot) {
+  //               if (snapshot.hasData) {
+  //                 return ListView.builder(
+  //                   //physics: NeverScrollableScrollPhysics(),
+  //                   shrinkWrap: true,
+  //                   itemCount: RxVariables.dataFromUsers.listStatus!.length,
+  //                   itemBuilder: (BuildContext context, int index) {
+  //                     return GestureDetector(
+  //                       onTap: () {
+  //                         setState(() {
+  //                           catEstatus =
+  //                               RxVariables.dataFromUsers.listStatus![index];
+  //                           catEstatusKey.currentState!.collapse();
+  //                         });
+  //                       },
+  //                       child: Container(
+  //                         color: Colors.grey[100],
+  //                         child: Column(
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                           children: [
+  //                             Padding(
+  //                               padding: EdgeInsets.all(12),
+  //                               child: Text(
+  //                                   RxVariables.dataFromUsers.listStatus![index]
+  //                                       .estatus!,
+  //                                   style: TextStyle(
+  //                                       color: Colors.black54, fontSize: 13)),
+  //                             ),
+  //                             Container(
+  //                               width: double.infinity,
+  //                               height: .5,
+  //                               color: Colors.grey[300],
+  //                             )
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     );
+  //                   },
+  //                 );
+  //               } else {
+  //                 return CircularProgressIndicator();
+  //               }
+  //             },
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

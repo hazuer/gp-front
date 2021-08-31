@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
+import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
+import 'package:general_products_web/widgets/catalogs/design/taraDialog.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+// import 'package:general_products_web/provider/tara/tarasProvider.dart';
+// import 'package:general_products_web/widgets/tara/taraDialog.dart';
 
 import '../../../widgets/app_scaffold.dart';
 
@@ -19,20 +21,24 @@ class DesignEdit extends StatefulWidget {
 
 class _DesignEditState extends State<DesignEdit> {
   //late Future fUser;
-  late Future futureTara;
+  // late Future futureDesign;
   bool isLoading = false;
   String headerFilter = "?porPagina = 20";
   TextEditingController designCtrl = TextEditingController();
   TextEditingController descripcionCtrl = TextEditingController();
   Plant catPlanta = Plant();
   StatusModel catEstatus = StatusModel();
-  TarasProvider tarasProvider = TarasProvider();
-  TaraDialog dialogs = TaraDialog();
+  // TarasProvider tarasProvider = TarasProvider();
+  // TaraDialog dialogs = TaraDialog();
+  DesignDialog dialogs = DesignDialog();
   final GlobalKey<AppExpansionTileState> catPlanKey = new GlobalKey();
-  final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
+  // final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
+    designCtrl.text = RxVariables.designSelected.nombreDiseno!;
+    descripcionCtrl.text = RxVariables.designSelected.descripcion!;
+    // catPlanta.idCatPlanta = RxVariables.designSelected.idCatPlanta!;
     // futureTara             = tarasProvider.getAllTaras();
     // designCtrl.text = RxVariables.gvTaraSelectedById.nombreTara!;
     // descripcionCtrl.text = RxVariables.gvTaraSelectedById.capacidad ?? "";
@@ -115,14 +121,14 @@ class _DesignEditState extends State<DesignEdit> {
                                                 "¡Atención!",
                                                 "Favor de validar los campos marcados con asterisco (*)");
                                           } else {
-                                            await TarasProvider()
-                                                .editTara(
-                                              RxVariables.gvTaraSelectedById
-                                                  .idCatTara!,
-                                              designCtrl.text.trim(),
-                                              descripcionCtrl.text.trim(),
-                                              catPlanta.idCatPlanta!,
-                                            )
+                                            await DesignsProvider()
+                                                .editDesign(
+                                                    RxVariables.designSelected
+                                                        .idCatDiseno!,
+                                                    designCtrl.text.trim(),
+                                                    descripcionCtrl.text.trim(),
+                                                    RxVariables.designSelected
+                                                        .idCatPlanta!)
                                                 .then((value) {
                                               if (value == null) {
                                                 setState(() {
@@ -132,7 +138,7 @@ class _DesignEditState extends State<DesignEdit> {
                                                 dialogs.showInfoDialog(
                                                     context,
                                                     "¡Error!",
-                                                    "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                                    "Ocurrió un error al editar el diseño : ${RxVariables.errorMessage}");
                                               } else {
                                                 final typeAlert =
                                                     (value["result"])
@@ -204,16 +210,18 @@ class _DesignEditState extends State<DesignEdit> {
                                                         "¡Atención!",
                                                         "Favor de validar los campos marcados con asterisco (*)");
                                                   } else {
-                                                    await TarasProvider()
-                                                        .editTara(
-                                                      RxVariables
-                                                          .gvTaraSelectedById
-                                                          .idCatTara!,
-                                                      designCtrl.text.trim(),
-                                                      descripcionCtrl.text
-                                                          .trim(),
-                                                      catPlanta.idCatPlanta!,
-                                                    )
+                                                    await DesignsProvider()
+                                                        .editDesign(
+                                                            RxVariables
+                                                                .designSelected
+                                                                .idCatDiseno!,
+                                                            designCtrl.text
+                                                                .trim(),
+                                                            descripcionCtrl.text
+                                                                .trim(),
+                                                            RxVariables
+                                                                .designSelected
+                                                                .idCatPlanta!)
                                                         .then((value) {
                                                       if (value == null) {
                                                         setState(() {
@@ -223,7 +231,7 @@ class _DesignEditState extends State<DesignEdit> {
                                                         dialogs.showInfoDialog(
                                                             context,
                                                             "¡Error!",
-                                                            "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                                            "Ocurrió un error al editar el diseño : ${RxVariables.errorMessage}");
                                                       } else {
                                                         final typeAlert =
                                                             (value["result"])

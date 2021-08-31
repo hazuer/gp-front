@@ -46,38 +46,68 @@ class DesignsProvider {
     }
   }
 
-  //Filtrar taras sin importar el estatus
-  Future headerFilterTara(String path) async {
-    List<CatTaraModel> provListTaras = [];
+  Future headerFilterDesigns(String path) async {
+    List<DesignsList> listDesigns = [];
     RxVariables.errorMessage = '';
-    DtTaraModel provDtTara = DtTaraModel(tarassList: []);
-    String url = routes.urlBase + routes.listarTaras + path;
+    ListDesignsModel listDesignsModel = ListDesignsModel(designsList: []);
+
+    String url = routes.urlBase + routes.listarDisenos + path;
 
     try {
       final dio = Dio();
-      final result = await dio.get(url, options: headerWithToken);
-      provDtTara = DtTaraModel.fromJson(result.data);
-      RxVariables.gvListTaras = provDtTara;
-      provDtTara.tarassList.forEach((element) {
-        //if(element.estatus!.toLowerCase() == "activo"){
-        provListTaras.add(element);
-        //}
+
+      final resp = await dio.get(url, options: headerWithToken);
+      listDesignsModel = ListDesignsModel.fromJson(resp.data);
+      listDesignsModel.designsList.forEach((element) {
+        listDesigns.add(element);
       });
-      rxVariables.gvBeSubListTaras.sink.add(provListTaras);
-      return result.data;
+      rxVariables.listDesignsFilter.sink.add(listDesigns);
     } on DioError catch (e) {
-      RxVariables.errorMessage = e.response!.data
+      RxVariables.errorMessage = e.response!.data["message"]
           .toString()
           .replaceAll("{", "")
           .replaceAll("[", "")
           .replaceAll("}", "")
           .replaceAll("]", "");
+      rxVariables.listDesignsFilter.sink.addError(RxVariables.errorMessage +
+          " Por favor contacta con el administrador");
+      return null;
+    }
+  }
+
+  Future createDesign(String nombreDiseno, String descripcion, int idPlanta,
+      String tintas) async {
+    RxVariables.errorMessage = '';
+    String url = routes.urlBase + routes.crearDisenos;
+
+    try {
+      final dio = Dio();
+      final data = {
+        'nombre_diseno': nombreDiseno,
+        'descripcion': descripcion,
+        'id_cat_planta': idPlanta,
+        'tintas': tintas
+      };
+
+      final resp = await dio.post(url, data: data, options: headerWithToken);
+
+      await getAllDesigns();
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      rxVariables.listDesignsFilter.sink.addError(RxVariables.errorMessage +
+          " Por favor contacta con el administrador");
       return null;
     }
   }
 
   Future editDesign(int idCatDesign, String nombreDesign, String descripcion,
-      int idCatStatus) async {
+      int idCatPlanta) async {
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.editarDisenos;
 
@@ -87,7 +117,7 @@ class DesignsProvider {
         'id_cat_diseno': idCatDesign,
         'nombre_diseno': nombreDesign,
         'descripcion': descripcion,
-        'id_cat_estatus': idCatStatus,
+        'id_cat_planta': idCatPlanta,
       };
       final resp = await dio.post(url, data: data, options: headerWithToken);
       await getAllDesigns();

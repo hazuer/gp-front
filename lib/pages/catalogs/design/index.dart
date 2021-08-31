@@ -25,8 +25,9 @@ class _DesignIndexState extends State<DesignIndex> {
   late Future futureFields;
   bool isLoading = false;
   String headerFilter = "?porPagina = 20";
-  TextEditingController taraCtrl = TextEditingController();
-  TextEditingController capacidadCtrl = TextEditingController();
+  TextEditingController designCtrl = TextEditingController();
+  TextEditingController descripcionCtrl = TextEditingController();
+  TextEditingController tintaCtrl = TextEditingController();
   Plant catPlanta = Plant();
   StatusModel catEstatus = StatusModel();
   // TarasProvider tarasProvider = TarasProvider();
@@ -99,20 +100,34 @@ class _DesignIndexState extends State<DesignIndex> {
                                       SizedBox(
                                         height: 15,
                                       ),
-                                      CustomInput(
-                                          controller: taraCtrl, hint: "Nombre"),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Importar Diseño",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          Navigator.pushNamed(
+                                              context, RouteNames.designCreate);
+                                        },
+                                      ),
                                       SizedBox(
                                         height: 15,
                                       ),
                                       CustomInput(
-                                          controller: capacidadCtrl,
+                                          controller: designCtrl,
+                                          hint: "Nombre"),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomInput(
+                                          controller: descripcionCtrl,
                                           hint: "Descripción"),
                                       SizedBox(
                                         height: 15,
                                       ),
                                       CustomInput(
-                                          controller: capacidadCtrl,
-                                          hint: "Tinta"),
+                                          controller: tintaCtrl, hint: "Tinta"),
                                       SizedBox(
                                         height: 15,
                                       ),
@@ -187,27 +202,43 @@ class _DesignIndexState extends State<DesignIndex> {
                                                 },
                                               ),
                                             ),
+                                            SizedBox(width: 20),
+                                            Flexible(
+                                              child: CustomButton(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .2,
+                                                title: "Importar Diseño",
+                                                isLoading: false,
+                                                onPressed: () async {
+                                                  Navigator.pushNamed(context,
+                                                      RouteNames.designCreate);
+                                                },
+                                              ),
+                                            ),
                                           ]),
                                           SizedBox(height: 20.0),
                                           Row(
                                             children: [
                                               Flexible(
                                                   child: CustomInput(
-                                                      controller: taraCtrl,
+                                                      controller: designCtrl,
                                                       hint: "Nombre")),
                                               SizedBox(
                                                 width: 15,
                                               ),
                                               Flexible(
                                                   child: CustomInput(
-                                                      controller: capacidadCtrl,
+                                                      controller:
+                                                          descripcionCtrl,
                                                       hint: "Descripción")),
                                               SizedBox(
                                                 width: 15,
                                               ),
                                               Flexible(
                                                   child: CustomInput(
-                                                      controller: capacidadCtrl,
+                                                      controller: tintaCtrl,
                                                       hint: "Tinta")),
                                               SizedBox(
                                                 width: 15,
@@ -399,16 +430,20 @@ class _DesignIndexState extends State<DesignIndex> {
 
   applyFilter() async {
     headerFilter = "?porPagina=20";
-    if (taraCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&nombre_diseno=${taraCtrl.text.trim()}";
+    if (designCtrl.text.isNotEmpty) {
+      headerFilter = headerFilter + "&nombre_diseno=${designCtrl.text.trim()}";
     }
-    if (capacidadCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&capacidad=${capacidadCtrl.text.trim()}";
+    if (descripcionCtrl.text.isNotEmpty) {
+      headerFilter =
+          headerFilter + "&descripcion=${descripcionCtrl.text.trim()}";
+    }
+    if (tintaCtrl.text.isNotEmpty) {
+      headerFilter = headerFilter + "&nombre_tinta=${tintaCtrl.text.trim()}";
     }
 
-    if (catPlanta.idCatPlanta != null) {
-      headerFilter = headerFilter + "&id_cat_planta=${catPlanta.idCatPlanta}";
-    }
+    // if (catPlanta.idCatPlanta != null) {
+    //   headerFilter = headerFilter + "&id_cat_planta=${catPlanta.idCatPlanta}";
+    // }
 
     if (catEstatus.idCatEstatus != null) {
       headerFilter =
@@ -418,7 +453,7 @@ class _DesignIndexState extends State<DesignIndex> {
     setState(() {
       isLoading = true;
     });
-    await designsProvider.headerFilterTara(headerFilter).then((value) {
+    await designsProvider.headerFilterDesigns(headerFilter).then((value) {
       setState(() {
         isLoading = false;
       });
@@ -432,10 +467,11 @@ class _DesignIndexState extends State<DesignIndex> {
     headerFilter = "?porPagina = 30";
     catPlanta = Plant();
     catEstatus = StatusModel();
-    taraCtrl.clear();
-    capacidadCtrl.clear();
+    designCtrl.clear();
+    descripcionCtrl.clear();
+    tintaCtrl.clear();
 
-    await designsProvider.headerFilterTara(headerFilter).then((value) {
+    await designsProvider.headerFilterDesigns(headerFilter).then((value) {
       setState(() {
         isLoading = false;
       });

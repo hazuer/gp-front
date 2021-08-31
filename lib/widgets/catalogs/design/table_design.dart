@@ -164,8 +164,8 @@ class _TableDesignListState extends State<TableDesignList> {
                                           tooltip: "Editar",
                                           //padding: EdgeInsets.zero,
                                           onPressed: () {
-                                            // RxVariables.designSelected =
-                                            //     snapshot.data![index];
+                                            RxVariables.designSelected =
+                                                snapshot.data![index];
                                             Navigator.pushNamed(
                                                 context, RouteNames.designEdit);
                                           },
