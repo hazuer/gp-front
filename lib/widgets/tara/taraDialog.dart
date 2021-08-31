@@ -45,7 +45,7 @@ class TaraDialog {
                           ),
                           onPressed: () {
                             Navigator.pushReplacementNamed(
-                                context, RouteNames.paises);
+                                context, RouteNames.taraIndex);
                             // Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
