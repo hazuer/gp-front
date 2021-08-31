@@ -47,8 +47,9 @@ class RazonDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, RouteNames.razonIndex);
+                            Navigator.pop(context);
+                            // Navigator.pushReplacementNamed(
+                            //     context, RouteNames.razonIndex);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,

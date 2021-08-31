@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/provider/list_paises_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -98,10 +99,13 @@ class _PaisCreateState extends State<PaisCreate> {
                                                   isLoading = false;
                                                 });
                                                 // Navigator.pop(context);
-                                                dialogs.showInfoDialog(
-                                                    context,
-                                                    "¡Error!",
-                                                    "Ocurrió un error al crear el pais : ${RxVariables.errorMessage}");
+                                                dialogs
+                                                    .showInfoDialog(
+                                                        context,
+                                                        "¡Error!",
+                                                        "Ocurrió un error al crear el pais : ${RxVariables.errorMessage}")
+                                                    .then((value) =>
+                                                        Navigator.pop(context));
                                               } else {
                                                 final typeAlert =
                                                     (value["result"])

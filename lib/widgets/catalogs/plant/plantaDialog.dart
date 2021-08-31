@@ -44,9 +44,9 @@ class PlantDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, RouteNames.plantsIndex);
-                            // Navigator.pop(context);
+                            // Navigator.pushReplacementNamed(
+                            //     context, RouteNames.plantsIndex);
+                            Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,

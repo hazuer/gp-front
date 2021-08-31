@@ -44,8 +44,9 @@ class MachineDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, RouteNames.machineIndex);
+                            Navigator.pop(context);
+                            // Navigator.pushReplacementNamed(
+                            //     context, RouteNames.machineIndex);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,

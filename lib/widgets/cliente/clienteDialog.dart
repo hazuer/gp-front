@@ -46,8 +46,9 @@ class ClienteDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, RouteNames.clienteIndex);
+                            Navigator.pop(context);
+                            // Navigator.pushReplacementNamed(
+                            //     context, RouteNames.clienteIndex);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,

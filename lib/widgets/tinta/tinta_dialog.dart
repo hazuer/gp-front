@@ -44,8 +44,9 @@ class TintaDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, RouteNames.tintaIndex);
+                            Navigator.pop(context);
+                            // Navigator.pushReplacementNamed(
+                            //     context, RouteNames.tintaIndex);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,
