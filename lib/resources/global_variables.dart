@@ -42,9 +42,8 @@ class RxVariables {
   static SearchUserResponse userById = SearchUserResponse();
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
-  // static String token = "";
-  static String token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiNmE1NDNlZGUxYmQ3OTBiNTc4ZDA4MWEyMDUzNWRmYzk5MjRjY2ZmZDU0MWJiZDU3OTIyYTQ4MTM2ZTdmNDA1NmUxZGYyZmMxNTljYTk1NTgiLCJpYXQiOjE2MzA0MzEzNzUsIm5iZiI6MTYzMDQzMTM3NSwiZXhwIjoxNjMwNDM0OTc1LCJzdWIiOiIyNCIsInNjb3BlcyI6W119.iPAmlmetg7PyIW2NcBJb83vHR7eSw9KwvaGXzQNDUc0LAYLmriwy76HX8OOAynARuOCbRdrotmsQltXRtgpimnC5ZXphOxJPG5_Io_AGd7vUERBgNUjA9GgV9UIhR5BPKr23aYxXetneTvzUHTgpgsSXMb-KiUKhIv1QEkVS1gmA6l7RJAyK2XMXdOYdmry6YvVPy1o8PDqlVTte_jc0NxSe_KEAQmgQPKWT9SgRCphVs0gD3rnlr2GZsfF9qIneyzb2jn0KhI6ovXYCNG9k8eQcuxz35iOoo9LB_OqlBSfJUmdIeLx-iUwGuxWMHB-2R7tRehdl2OWbAxlZ61d_WScFmk0EkUp0AUeQ_c68Yt66Q6wdyYgD0WsKHYy3bxDED4jzItkDCKzJm1fYfzE1pjwZa2-7WHfeVFBkBwMe75fQzPV4hVvbk0ZHtOLmEotRWZv7nz2_TUz89Wkgy4JzVLz07OvzJIAutq21OK8efjvZmLfhFXZCzDa_evsJ5qVue_5HIXL2jwEBnYFsGqB-9Rg3rOkhjP62JXqO94dNAvkBtF07dvKdu6Tcgkh0VrWiF6h_Sk5kWJsGqtXIhtXjFH6NvzvGtFRgHqrmxzQgSFIGFqivIQO43mf43AnwRgB9RsSLQbZScQImXRLcC03T0lB4c35W1tDirLGd02lqMcI";
+  static String token = "";
+  //static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiOGMyMjVhNjRlZjQ4Y2IyYWNmNzU2NzUwMjVkZDZmNTQwOTJiNDYzOTkwMGZjZTgxNzUzY2UzMDA1OTBiZjg3YmU4NDY2NWYzODZlOWI1ODMiLCJpYXQiOjE2MzA0MzE3NzUsIm5iZiI6MTYzMDQzMTc3NSwiZXhwIjoxNjMwNDM1Mzc1LCJzdWIiOiIxNiIsInNjb3BlcyI6W119.xK-6D-NLlXK0CEWXYAjzLzDHurNt_myiRhezgroFVK67IfA7fFm6PJjp2P2sz_nhCu7w7n_2G7nUlWHO8JgWG0Dzxokff6xpM4EVPYsm62V5MrtRYLLuh_PHfYIJfj88bxO9GB_Zc5lO767rcVEf7HcB1ANMLQeKnNdLIi5_3EU-fE-MVchS0XX-ZmF-oE4mnfpxre1WODnmZz21Oj82Ze1A6gjaYuCCb89ncSecXACcFvCaAzGzWx87RHgyEZ3ixUUshkgx5jO6HirNs73DXMWqjRcnsG-1yK-uPJaSuGUbYftcTy-fjewj3nXzFF_EOLLp3p2HxNt1K4K3tJLzDsEjMzt4WoGzt01Fgr7lZTFUhHFJ6zYn9vvn0qN_S2OeyDFZplrthbBIbpSWlko3oyQCU3SCa76P81e3APxfvKf-tu0eN_a2cAtRudwBDryMVWwuJTN8zvFPXXlASVaBzl6Z4WxYeh39fqjtN7QYjBHtsHg5Dncfg4cHqa8lXwnYoNHnfe9lOCAajvJfLya_2eT-7NiKuL4n8wQdjyt4Z9WhWK2lTGefQzDqWukKaw7o5dx7bQTnpsEbqmKPC_clodZa-mxm5BCspXw8pebAjell8xA0p-9VM0jFdOHuRdO4Ixv1oFJY9IrrHzSYOE3IRAQ1_KNI_1h0TWU4bzBGw48";
 
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
@@ -79,7 +78,7 @@ class RxVariables {
   final listTintasFilter = BehaviorSubject<List<InkList>>();
   Stream<List<InkList>> get listTintasStream => listTintasFilter.stream;
   static InkList tintaSelected = InkList();
-  static ListTintasModel listTinta = ListTintasModel(inkList: []);
+  static ListTintasModel gvListTinta = ListTintasModel(inkList: []);
   // Cambiar tintaSelected por el modelo grlobal en lugar de inkList
 
   // Diseños

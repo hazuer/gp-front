@@ -36,12 +36,14 @@ class TintasProvider {
 
       final resp = await dio.get(url, options: headerWithToken);
       listTintasModel = ListTintasModel.fromJson(resp.data);
+      RxVariables.gvListTinta = listTintasModel;
       listTintasModel.inkList.forEach((element) {
         if (element.estatus!.toLowerCase() == 'activo') {
           listActives.add(element);
         }
       });
       rxVariables.listTintasFilter.sink.add(listActives);
+      return resp.data;
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
           .toString()
