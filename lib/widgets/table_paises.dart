@@ -27,7 +27,15 @@ class _TablePaisesListState extends State<TablePaisesList> {
         builder: (BuildContext context,
             AsyncSnapshot<List<CountriesList>> snapshot) {
           if (snapshot.hasError) {
-            return Text(RxVariables.errorMessage);
+            return Center(
+                child: Container(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),
+                    )));
+            // return Text(RxVariables.errorMessage);
           }
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {

@@ -117,7 +117,7 @@ class _TintaStoreState extends State<TintaStore> {
                                               setState(() {
                                                 isLoading = false;
                                               });
-                                              Navigator.pop(context);
+                                              // Navigator.pop(context);
                                               dialogs.showInfoDialog(
                                                   context,
                                                   "¡Error!",

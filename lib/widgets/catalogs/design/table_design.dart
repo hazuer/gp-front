@@ -25,7 +25,14 @@ class _TableDesignListState extends State<TableDesignList> {
         builder:
             (BuildContext context, AsyncSnapshot<List<DesignsList>> snapshot) {
           if (snapshot.hasError) {
-            return Text(RxVariables.errorMessage);
+            return Center(
+                child: Container(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),
+                    )));
           }
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {
