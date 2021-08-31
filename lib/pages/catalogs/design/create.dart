@@ -8,7 +8,6 @@ import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
 import 'package:general_products_web/widgets/tara/taraDialog.dart';
 
 import '../../../widgets/app_scaffold.dart';
@@ -307,13 +306,13 @@ class _DesignCreateState extends State<DesignCreate> {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.listTinta.inkList.length,
+                    itemCount: RxVariables.gvListTinta.inkList.length,
                     // itemCount: RxVariables.listTinta.inkList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catTintas = RxVariables.listTinta.inkList[index];
+                            catTintas = RxVariables.gvListTinta.inkList[index];
                             catTintasKey.currentState!.collapse();
 
                             // catPlanta =
@@ -331,7 +330,7 @@ class _DesignCreateState extends State<DesignCreate> {
                                 child: Text(
                                     // catTintas.nombreTinta ?? '* Tinta',
                                     RxVariables
-                                        .listTinta.inkList[index].nombreTinta!,
+                                        .gvListTinta.inkList[index].nombreTinta!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),
