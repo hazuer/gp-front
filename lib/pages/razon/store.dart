@@ -45,6 +45,7 @@ class _RazonStoreState extends State<RazonStore> {
 
     return AppScaffold(
       pageTitle: 'Catálogos / Razones / Crear',
+      backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

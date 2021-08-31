@@ -19,7 +19,7 @@ class RazonesProvider {
     RxVariables.errorMessage = '';
     ListRazonesModel listRazonesModel = ListRazonesModel(reasonsList: []);
 
-    String url = routes.urlBase + routes.listarRazones;
+    String url = routes.urlBase + routes.listarRazones + '?porPagina=100';
 
     try {
       final dio = Dio();

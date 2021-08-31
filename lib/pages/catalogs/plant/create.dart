@@ -19,13 +19,13 @@ class PlantCreate extends StatefulWidget {
 
 class _PlantCreateState extends State<PlantCreate> {
   late Future futurecatPais;
-  bool isLoading                  = false;
-  String headerFilter             = "?porPagina = 20";
+  bool isLoading = false;
+  String headerFilter = "?porPagina = 20";
   TextEditingController plantCtrl = TextEditingController();
-  CatPaisModel catPais            = CatPaisModel();
-  PlantsProvider plantsProvider   = PlantsProvider();
-  PlantDialog dialogs             = PlantDialog();
-  final GlobalKey<AppExpansionTileState> catPaisKey    = new GlobalKey();
+  CatPaisModel catPais = CatPaisModel();
+  PlantsProvider plantsProvider = PlantsProvider();
+  PlantDialog dialogs = PlantDialog();
+  final GlobalKey<AppExpansionTileState> catPaisKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
@@ -39,152 +39,205 @@ class _PlantCreateState extends State<PlantCreate> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Plantas / Crear",
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color(0xffF5F6F5),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                //height: MediaQuery.of(context).size.width*.8,
-                margin:EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child:Column(children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Color(0xffffffff),
-                    padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Text('Crear', style:
-                          TextStyle(
-                            color: Color(0xff313945),
-                            fontSize: 13.00,
-                            fontWeight: FontWeight.w200
-                          ),
-                        ),
-                        Divider(),
-                        SizedBox(height: 10),
-                        // __ __
-                        //|  \  \ ___  _ _
-                        //|     |/ . \| | |
-                        //|_|_|_|\___/|__/
-                        displayMobileLayout ? 
-                        ListView(
-                          shrinkWrap: true,
-                          children: [
-                            SizedBox(height: 15,),
-                            CustomInput(controller: plantCtrl, hint: "* Nombre Planta"),
-                            SizedBox(height: 15,),
-                            listPais(),
-                            SizedBox(height: 15,),
-                            CustomButton(
-                              width: MediaQuery.of(context).size.width *.2,
-                              title: 'Crear',
-                              isLoading: false,
-                              onPressed: () async {
-                                if(plantCtrl.text.isEmpty || catPais.idCatPais == null){
-                                  dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
-                                }else{
-                                  await PlantsProvider().createPlant(plantCtrl.text.trim(), catPais.idCatPais!,).then((value) {
-                                  if (value == null) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    Navigator.pop(context);
-                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la planta : ${RxVariables.errorMessage}");
-                                    } else {
-                                      final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
-                                      final message   = value["message"];
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                      Navigator.pop(context);
-                                      dialogs.showInfoDialog(context,typeAlert, message);
-                                      //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
-                                    }
-                                  });
-                                }
-                              },
+        pageTitle: "Catálogos / Plantas / Crear",
+        backButton: true,
+        body: SingleChildScrollView(
+          child: Container(
+            color: Color(0xffF5F6F5),
+            child: Column(
+              children: <Widget>[
+                Container(
+                    width: double.infinity,
+                    //height: MediaQuery.of(context).size.width*.8,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: Column(children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Color(0xffffffff),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 30.0, horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Text(
+                              'Crear',
+                              style: TextStyle(
+                                  color: Color(0xff313945),
+                                  fontSize: 13.00,
+                                  fontWeight: FontWeight.w200),
                             ),
-                          ],
-                        )
-                        // _ _ _       _
-                        //| | | | ___ | |_
-                        //| | | |/ ._>| . \
-                        //|__/_/ \___.|___/
-                        : 
-                        Container(
-                          height:MediaQuery.of(context).size.height * .7,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(height: 20.0),
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: CustomInput(
-                                        controller:plantCtrl,
-                                        hint: "* Nombre Planta"
-                                      )
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Flexible(child: listPais()),
-                                    SizedBox(width: 15,),
-                                    Flexible(child:
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *.2,
-                                      title: 'Crear',
-                                      isLoading: false,
-                                      onPressed: () async {
-                                      if(plantCtrl.text.isEmpty || catPais.idCatPais == null){
-                                        dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
-                                      }else{
-                                        await PlantsProvider().createPlant(plantCtrl.text.trim(), catPais.idCatPais!,).then((value) {
-                                        if (value == null) {
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                          Navigator.pop(context);
-                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al crear la planta : ${RxVariables.errorMessage}");
+                            Divider(),
+                            SizedBox(height: 10),
+                            // __ __
+                            //|  \  \ ___  _ _
+                            //|     |/ . \| | |
+                            //|_|_|_|\___/|__/
+                            displayMobileLayout
+                                ? ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomInput(
+                                          controller: plantCtrl,
+                                          hint: "* Nombre Planta"),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      listPais(),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: 'Crear',
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          if (plantCtrl.text.isEmpty ||
+                                              catPais.idCatPais == null) {
+                                            dialogs.showInfoDialog(
+                                                context,
+                                                "¡Atención!",
+                                                "Favor de validar los campos marcados con asterisco (*)");
                                           } else {
-                                            final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
-                                            final message   = value["message"];
-                                            setState(() {
-                                              isLoading = false;
+                                            await PlantsProvider()
+                                                .createPlant(
+                                              plantCtrl.text.trim(),
+                                              catPais.idCatPais!,
+                                            )
+                                                .then((value) {
+                                              if (value == null) {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.pop(context);
+                                                dialogs.showInfoDialog(
+                                                    context,
+                                                    "¡Error!",
+                                                    "Ocurrió un error al crear la planta : ${RxVariables.errorMessage}");
+                                              } else {
+                                                final typeAlert =
+                                                    (value["result"])
+                                                        ? "¡Éxito!"
+                                                        : "¡Error!";
+                                                final message =
+                                                    value["message"];
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.pop(context);
+                                                dialogs.showInfoDialog(context,
+                                                    typeAlert, message);
+                                                //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                              }
                                             });
-                                            Navigator.pop(context);
-                                            dialogs.showInfoDialog(context,typeAlert, message);
-                                            //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
                                           }
-                                        });
-                                      }
-                                    },
-                                    )
+                                        },
+                                      ),
+                                    ],
+                                  )
+                                // _ _ _       _
+                                //| | | | ___ | |_
+                                //| | | |/ ._>| . \
+                                //|__/_/ \___.|___/
+                                : Container(
+                                    height:
+                                        MediaQuery.of(context).size.height * .7,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(height: 20.0),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                  child: CustomInput(
+                                                      controller: plantCtrl,
+                                                      hint: "* Nombre Planta")),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              Flexible(child: listPais()),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              Flexible(
+                                                  child: CustomButton(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .2,
+                                                title: 'Crear',
+                                                isLoading: false,
+                                                onPressed: () async {
+                                                  if (plantCtrl.text.isEmpty ||
+                                                      catPais.idCatPais ==
+                                                          null) {
+                                                    dialogs.showInfoDialog(
+                                                        context,
+                                                        "¡Atención!",
+                                                        "Favor de validar los campos marcados con asterisco (*)");
+                                                  } else {
+                                                    await PlantsProvider()
+                                                        .createPlant(
+                                                      plantCtrl.text.trim(),
+                                                      catPais.idCatPais!,
+                                                    )
+                                                        .then((value) {
+                                                      if (value == null) {
+                                                        setState(() {
+                                                          isLoading = false;
+                                                        });
+                                                        Navigator.pop(context);
+                                                        dialogs.showInfoDialog(
+                                                            context,
+                                                            "¡Error!",
+                                                            "Ocurrió un error al crear la planta : ${RxVariables.errorMessage}");
+                                                      } else {
+                                                        final typeAlert =
+                                                            (value["result"])
+                                                                ? "¡Éxito!"
+                                                                : "¡Error!";
+                                                        final message =
+                                                            value["message"];
+                                                        setState(() {
+                                                          isLoading = false;
+                                                        });
+                                                        Navigator.pop(context);
+                                                        dialogs.showInfoDialog(
+                                                            context,
+                                                            typeAlert,
+                                                            message);
+                                                        //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                                      }
+                                                    });
+                                                  }
+                                                },
+                                              )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  )
-                ])
-              )
-            ],
+                      )
+                    ]))
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 
- Widget listPais() {
+  Widget listPais() {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
         key: catPaisKey,
         initiallyExpanded: false,
@@ -207,7 +260,8 @@ class _PlantCreateState extends State<PlantCreate> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catPais = RxVariables.gvListCatPais.listCountries[index];
+                            catPais =
+                                RxVariables.gvListCatPais.listCountries[index];
                             catPaisKey.currentState!.collapse();
                           });
                         },
@@ -219,9 +273,10 @@ class _PlantCreateState extends State<PlantCreate> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                  RxVariables.gvListCatPais.listCountries[index].nombrePais!,
-                                  style: TextStyle(color: Colors.black54, fontSize: 13)
-                                ),
+                                    RxVariables.gvListCatPais
+                                        .listCountries[index].nombrePais!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
                               ),
                               Container(
                                 width: double.infinity,

@@ -20,22 +20,23 @@ class MachineEdit extends StatefulWidget {
 class _MachineEditState extends State<MachineEdit> {
   //late Future fUser;
   late Future futureMachine;
-  bool isLoading                                       = false;
-  String headerFilter                                  = "?porPagina = 20";
-  TextEditingController machineEditCtrl                = TextEditingController();
-  TextEditingController modelEditCtrl                  = TextEditingController();
-  Plant catPlanta                                      = Plant();
-  StatusModel catEstatus                               = StatusModel();
-  MachinesProvider machinesProvider                    = MachinesProvider();
-  MachineDialog dialogs                                = MachineDialog();
-  final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
+  bool isLoading = false;
+  String headerFilter = "?porPagina = 20";
+  TextEditingController machineEditCtrl = TextEditingController();
+  TextEditingController modelEditCtrl = TextEditingController();
+  Plant catPlanta = Plant();
+  StatusModel catEstatus = StatusModel();
+  MachinesProvider machinesProvider = MachinesProvider();
+  MachineDialog dialogs = MachineDialog();
+  final GlobalKey<AppExpansionTileState> catPlanKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
   @override
   void initState() {
-    futureMachine             = machinesProvider.getAllMachines();
-    machineEditCtrl.text      = RxVariables.gvMachineSelectedById.nombreMaquina!;
-    modelEditCtrl.text = RxVariables.gvMachineSelectedById.modelo??"";
+    futureMachine = machinesProvider.getAllMachines();
+    machineEditCtrl.text = RxVariables.gvMachineSelectedById.nombreMaquina!;
+    modelEditCtrl.text = RxVariables.gvMachineSelectedById.modelo ?? "";
+    catPlanta.idCatPlanta = RxVariables.gvMachineSelectedById.idCatPlanta!;
     super.initState();
   }
 
@@ -44,167 +45,238 @@ class _MachineEditState extends State<MachineEdit> {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Máquinas / Editar",
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color(0xffF5F6F5),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                //height: MediaQuery.of(context).size.width*.8,
-                margin:EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child:Column(children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Color(0xffffffff),
-                    padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Text('Editar', style:
-                          TextStyle(
-                            color: Color(0xff313945),
-                            fontSize: 13.00,
-                            fontWeight: FontWeight.w200
-                          ),
-                        ),
-                        Divider(),
-                        SizedBox(height: 10),
-                        // __ __
-                        //|  \  \ ___  _ _
-                        //|     |/ . \| | |
-                        //|_|_|_|\___/|__/
-                        displayMobileLayout ? 
-                        ListView(
-                          shrinkWrap: true,
-                          children: [
-                            SizedBox(height: 15,),
-                            CustomInput(controller: machineEditCtrl, hint: "* Nombre Máquina"),
-                            SizedBox(height: 15,),
-                            CustomInput(controller: modelEditCtrl,hint: "* Modelo"),
-                            SizedBox(height: 15,),
-                            listPlants(),
-                            SizedBox(height: 15,),
-                            CustomButton(
-                              width: MediaQuery.of(context).size.width *.2,
-                              title: 'Guardar',
-                              isLoading: false,
-                              onPressed: () async {
-                                //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-maquinas
-                                if(machineEditCtrl.text=="" || modelEditCtrl.text==""){
-                                  dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
-                                }else{
-                                  await MachinesProvider().editMachine(RxVariables.gvMachineSelectedById.idCatMaquina!,machineEditCtrl.text.trim(),modelEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
-                                  if (value == null) {
-                                    setState(() {
-                                      isLoading = false;
-                                    });
-                                    Navigator.pop(context);
-                                    dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la máquina : ${RxVariables.errorMessage}");
-                                    } else {
-                                      final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
-                                      final message   = value["message"];
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                      Navigator.pop(context);
-                                      dialogs.showInfoDialog(context,typeAlert, message);
-                                    }
-                                  });
-                                }
-                              },
+        pageTitle: "Catálogos / Máquinas / Editar",
+        backButton: true,
+        body: SingleChildScrollView(
+          child: Container(
+            color: Color(0xffF5F6F5),
+            child: Column(
+              children: <Widget>[
+                Container(
+                    width: double.infinity,
+                    //height: MediaQuery.of(context).size.width*.8,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: Column(children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Color(0xffffffff),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 30.0, horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Text(
+                              'Editar',
+                              style: TextStyle(
+                                  color: Color(0xff313945),
+                                  fontSize: 13.00,
+                                  fontWeight: FontWeight.w200),
                             ),
-                          ],
-                        )
-                        // _ _ _       _
-                        //| | | | ___ | |_
-                        //| | | |/ ._>| . \
-                        //|__/_/ \___.|___/
-                        : 
-                        Container(
-                          height:MediaQuery.of(context).size.height * .7,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SizedBox(height: 20.0),
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: CustomInput(
-                                        controller:machineEditCtrl,
-                                        hint: "* Nombre Máquina"
-                                      )
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Flexible(
-                                      child: CustomInput(
-                                        controller:modelEditCtrl,
-                                        hint: "* Modelo"
-                                      )
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Flexible(child: listPlants()),
-                                    SizedBox(width: 15,),
-                                    Flexible(child:
-                                    CustomButton(
-                                    width: MediaQuery.of(context).size.width *.2,
-                                    title: 'Guardar',
-                                    isLoading: false,
-                                    onPressed: () async {
-                                      //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-maquinas
-                                      if(machineEditCtrl.text=="" || modelEditCtrl.text==""){
-                                        dialogs.showInfoDialog(context, "¡Atención!", "Favor de validar los campos marcados con asterisco (*)");
-                                      }else{
-                                        await MachinesProvider().editMachine(RxVariables.gvMachineSelectedById.idCatMaquina!,machineEditCtrl.text.trim(),modelEditCtrl.text.trim(), catPlanta.idCatPlanta!,).then((value) {
-                                        if (value == null) {
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                          Navigator.pop(context);
-                                          dialogs.showInfoDialog(context, "¡Error!", "Ocurrió un error al editar la máquina : ${RxVariables.errorMessage}");
+                            Divider(),
+                            SizedBox(height: 10),
+                            // __ __
+                            //|  \  \ ___  _ _
+                            //|     |/ . \| | |
+                            //|_|_|_|\___/|__/
+                            displayMobileLayout
+                                ? ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomInput(
+                                          controller: machineEditCtrl,
+                                          hint: "* Nombre Máquina"),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomInput(
+                                          controller: modelEditCtrl,
+                                          hint: "* Modelo"),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      listPlants(),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: 'Guardar',
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-maquinas
+                                          if (machineEditCtrl.text == "" ||
+                                              modelEditCtrl.text == "") {
+                                            dialogs.showInfoDialog(
+                                                context,
+                                                "¡Atención!",
+                                                "Favor de validar los campos marcados con asterisco (*)");
                                           } else {
-                                            final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
-                                            final message   = value["message"];
-                                            setState(() {
-                                              isLoading = false;
+                                            await MachinesProvider()
+                                                .editMachine(
+                                              RxVariables.gvMachineSelectedById
+                                                  .idCatMaquina!,
+                                              machineEditCtrl.text.trim(),
+                                              modelEditCtrl.text.trim(),
+                                              catPlanta.idCatPlanta!,
+                                            )
+                                                .then((value) {
+                                              if (value == null) {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.pop(context);
+                                                dialogs.showInfoDialog(
+                                                    context,
+                                                    "¡Error!",
+                                                    "Ocurrió un error al editar la máquina : ${RxVariables.errorMessage}");
+                                              } else {
+                                                final typeAlert =
+                                                    (value["result"])
+                                                        ? "¡Éxito!"
+                                                        : "¡Error!";
+                                                final message =
+                                                    value["message"];
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.pop(context);
+                                                dialogs.showInfoDialog(context,
+                                                    typeAlert, message);
+                                              }
                                             });
-                                            Navigator.pop(context);
-                                            dialogs.showInfoDialog(context,typeAlert, message);
                                           }
-                                        });
-                                      }
-                                    },
+                                        },
+                                      ),
+                                    ],
                                   )
-                                ),
-                                    SizedBox(width: 15,),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                                // _ _ _       _
+                                //| | | | ___ | |_
+                                //| | | |/ ._>| . \
+                                //|__/_/ \___.|___/
+                                : Container(
+                                    height:
+                                        MediaQuery.of(context).size.height * .7,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(height: 20.0),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                  child: CustomInput(
+                                                      controller:
+                                                          machineEditCtrl,
+                                                      hint:
+                                                          "* Nombre Máquina")),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              Flexible(
+                                                  child: CustomInput(
+                                                      controller: modelEditCtrl,
+                                                      hint: "* Modelo")),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              Flexible(child: listPlants()),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              Flexible(
+                                                  child: CustomButton(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .2,
+                                                title: 'Guardar',
+                                                isLoading: false,
+                                                onPressed: () async {
+                                                  //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-maquinas
+                                                  if (machineEditCtrl.text ==
+                                                          "" ||
+                                                      modelEditCtrl.text ==
+                                                          "") {
+                                                    dialogs.showInfoDialog(
+                                                        context,
+                                                        "¡Atención!",
+                                                        "Favor de validar los campos marcados con asterisco (*)");
+                                                  } else {
+                                                    await MachinesProvider()
+                                                        .editMachine(
+                                                      RxVariables
+                                                          .gvMachineSelectedById
+                                                          .idCatMaquina!,
+                                                      machineEditCtrl.text
+                                                          .trim(),
+                                                      modelEditCtrl.text.trim(),
+                                                      catPlanta.idCatPlanta!,
+                                                    )
+                                                        .then((value) {
+                                                      if (value == null) {
+                                                        setState(() {
+                                                          isLoading = false;
+                                                        });
+                                                        Navigator.pop(context);
+                                                        dialogs.showInfoDialog(
+                                                            context,
+                                                            "¡Error!",
+                                                            "Ocurrió un error al editar la máquina : ${RxVariables.errorMessage}");
+                                                      } else {
+                                                        final typeAlert =
+                                                            (value["result"])
+                                                                ? "¡Éxito!"
+                                                                : "¡Error!";
+                                                        final message =
+                                                            value["message"];
+                                                        setState(() {
+                                                          isLoading = false;
+                                                        });
+                                                        Navigator.pop(context);
+                                                        dialogs.showInfoDialog(
+                                                            context,
+                                                            typeAlert,
+                                                            message);
+                                                      }
+                                                    });
+                                                  }
+                                                },
+                                              )),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                          ],
                         ),
-                      ],
-                    ),
-                  )
-                ])
-              )
-            ],
+                      )
+                    ]))
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 
   Widget listPlants() {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
         key: catPlanKey,
         initiallyExpanded: false,
         title: Text(
-          catPlanta.nombrePlanta ?? RxVariables.gvMachineSelectedById.nombrePlanta!,
+          catPlanta.nombrePlanta ??
+              RxVariables.gvMachineSelectedById.nombrePlanta!,
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -222,7 +294,8 @@ class _MachineEditState extends State<MachineEdit> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catPlanta = RxVariables.dataFromUsers.listPlants![index];
+                            catPlanta =
+                                RxVariables.dataFromUsers.listPlants![index];
                             catPlanKey.currentState!.collapse();
                           });
                         },
@@ -234,9 +307,10 @@ class _MachineEditState extends State<MachineEdit> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                  RxVariables.dataFromUsers.listPlants![index].nombrePlanta!,
-                                  style: TextStyle(color: Colors.black54, fontSize: 13)
-                                ),
+                                    RxVariables.dataFromUsers.listPlants![index]
+                                        .nombrePlanta!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
                               ),
                               Container(
                                 width: double.infinity,
@@ -259,5 +333,4 @@ class _MachineEditState extends State<MachineEdit> {
       ),
     );
   }
-
 }

@@ -44,6 +44,7 @@ class _TintaStoreState extends State<TintaStore> {
 
     return AppScaffold(
       pageTitle: 'Catálogos / Tintas / Crear',
+      backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

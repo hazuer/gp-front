@@ -29,7 +29,7 @@ class TintasProvider {
     RxVariables.errorMessage = '';
     ListTintasModel listTintasModel = ListTintasModel(inkList: []);
 
-    String url = routes.urlBase + routes.listarTintas;
+    String url = routes.urlBase + routes.listarTintas + '?porPagina=100';
 
     try {
       final dio = Dio();

@@ -48,6 +48,7 @@ class _ClienteStoreState extends State<ClienteStore> {
 
     return AppScaffold(
       pageTitle: 'Catálogos / Clientes / Crear',
+      backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

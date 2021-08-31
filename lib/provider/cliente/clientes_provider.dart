@@ -18,7 +18,7 @@ class ClientesProvider {
     RxVariables.errorMessage = '';
     ListClientesModel listClientesModel = ListClientesModel(customersList: []);
 
-    String url = routes.urlBase + routes.listClientes;
+    String url = routes.urlBase + routes.listClientes + '?porPagina=100';
 
     try {
       final dio = Dio();

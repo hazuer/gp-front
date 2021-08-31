@@ -31,6 +31,7 @@ class _PaisEditState extends State<PaisEdit> {
 
     return AppScaffold(
       pageTitle: "Catálogos / Países / Editar",
+      backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

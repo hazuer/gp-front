@@ -28,7 +28,7 @@ class _PaisesPageState extends State<PaisesPage> {
 
   @override
   void initState() {
-    futurePaises = listPaisesProvider.listPaises();
+    futurePaises = listPaisesProvider.listPaisesWithFilters('?porPagina=100');
     super.initState();
   }
 

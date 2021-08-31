@@ -45,6 +45,7 @@ class _RazonEditState extends State<RazonEdit> {
 
     return AppScaffold(
       pageTitle: 'Catálogos / Razones / Editar',
+      backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

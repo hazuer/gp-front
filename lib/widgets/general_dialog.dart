@@ -21,37 +21,66 @@ class GeneralDialog {
           )),
           content: SingleChildScrollView(
             child: Center(
-                child: Text(
-              detail,
-              style: TextStyle(color: Colors.black, fontSize: 17),
-              textAlign: TextAlign.center,
+                child: Column(
+              children: [
+                Text(
+                  detail,
+                  style: TextStyle(color: Colors.black, fontSize: 17),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 10),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width < 600
+                          ? MediaQuery.of(context).size.width * .5
+                          : MediaQuery.of(context).size.width * .3,
+                      child: ElevatedButton(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              "Aceptar",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              elevation: 2,
+                              primary: GPColors.PrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)))),
+                    )),
+              ],
             )),
           ),
-          actions: <Widget>[
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width < 600
-                      ? MediaQuery.of(context).size.width * .5
-                      : MediaQuery.of(context).size.width * .3,
-                  child: ElevatedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          "Aceptar",
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          elevation: 2,
-                          primary: GPColors.PrimaryColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)))),
-                )),
-          ],
+          // actions: <Widget>[
+          //   Padding(
+          //       padding: const EdgeInsets.symmetric(horizontal: 48.0),
+          //       child: Container(
+          //         width: MediaQuery.of(context).size.width < 600
+          //             ? MediaQuery.of(context).size.width * .5
+          //             : MediaQuery.of(context).size.width * .3,
+          //         child: ElevatedButton(
+          //             child: Padding(
+          //               padding: const EdgeInsets.symmetric(vertical: 8.0),
+          //               child: Text(
+          //                 "Aceptar",
+          //                 style: TextStyle(color: Colors.white, fontSize: 14),
+          //               ),
+          //             ),
+          //             onPressed: () {
+          //               Navigator.pop(context);
+          //             },
+          //             style: ElevatedButton.styleFrom(
+          //                 elevation: 2,
+          //                 primary: GPColors.PrimaryColor,
+          //                 shape: RoundedRectangleBorder(
+          //                     borderRadius: BorderRadius.circular(10)))),
+          //       )),
+          // ],
         );
       },
     );
@@ -244,15 +273,17 @@ class GeneralDialog {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(context, "¡Error!", "Ocurrió un error al deshabilitar el país : ${RxVariables.errorMessage}");
+                                showInfoDialog(context, "¡Error!",
+                                    "Ocurrió un error al deshabilitar el país : ${RxVariables.errorMessage}");
                               } else {
-                                final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
-                                final message   = value["message"];
+                                final typeAlert =
+                                    (value["result"]) ? "¡Éxito!" : "¡Error!";
+                                final message = value["message"];
                                 setState(() {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(context,typeAlert, message);
+                                showInfoDialog(context, typeAlert, message);
                               }
                             });
                           },
@@ -350,15 +381,17 @@ class GeneralDialog {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(context, "¡Error!", "Ocurrió un error al eliminar el país : ${RxVariables.errorMessage}");
+                                showInfoDialog(context, "¡Error!",
+                                    "Ocurrió un error al eliminar el país : ${RxVariables.errorMessage}");
                               } else {
-                                final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
-                                final message   = value["message"];
+                                final typeAlert =
+                                    (value["result"]) ? "¡Éxito!" : "¡Error!";
+                                final message = value["message"];
                                 setState(() {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(context,typeAlert, message);
+                                showInfoDialog(context, typeAlert, message);
                               }
                             });
                           },
@@ -456,15 +489,17 @@ class GeneralDialog {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(context, "¡Error!", "Ocurrió un error al activar el país : ${RxVariables.errorMessage}");
+                                showInfoDialog(context, "¡Error!",
+                                    "Ocurrió un error al activar el país : ${RxVariables.errorMessage}");
                               } else {
-                                final typeAlert = (value["result"]) ? "¡Éxito!": "¡Error!";
-                                final message   = value["message"];
+                                final typeAlert =
+                                    (value["result"]) ? "¡Éxito!" : "¡Error!";
+                                final message = value["message"];
                                 setState(() {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
-                                showInfoDialog(context,typeAlert, message);
+                                showInfoDialog(context, typeAlert, message);
                               }
                             });
                           },

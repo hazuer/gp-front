@@ -57,6 +57,7 @@ class _TintaEditState extends State<TintaEdit> {
 
     return AppScaffold(
       pageTitle: 'Catálogos / Tintas / Editar',
+      backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

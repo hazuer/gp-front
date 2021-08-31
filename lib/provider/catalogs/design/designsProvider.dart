@@ -20,7 +20,7 @@ class DesignsProvider {
     RxVariables.errorMessage = '';
     ListDesignsModel listDesignsModel = ListDesignsModel(designsList: []);
 
-    String url = routes.urlBase + routes.listarDisenos;
+    String url = routes.urlBase + routes.listarDisenos + '?porPagina=100';
 
     try {
       final dio = Dio();

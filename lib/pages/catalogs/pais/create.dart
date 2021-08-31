@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/provider/list_paises_provider.dart';
+import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
@@ -30,6 +31,7 @@ class _PaisCreateState extends State<PaisCreate> {
 
     return AppScaffold(
         pageTitle: "Catálogos / Países / Crear",
+        backButton: true,
         body: SingleChildScrollView(
           child: Container(
             color: Color(0xffF5F6F5),
@@ -70,7 +72,8 @@ class _PaisCreateState extends State<PaisCreate> {
                                         height: 15,
                                       ),
                                       CustomInput(
-                                          controller: paisCtrl, hint: "* Nombre País"),
+                                          controller: paisCtrl,
+                                          hint: "* Nombre País"),
                                       SizedBox(
                                         height: 15,
                                       ),

@@ -49,6 +49,7 @@ class _ClienteEditState extends State<ClienteEdit> {
 
     return AppScaffold(
       pageTitle: 'Catálogos / Clientes / Editar',
+      backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),

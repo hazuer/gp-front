@@ -57,6 +57,7 @@ class _DesignCreateState extends State<DesignCreate> {
 
     return AppScaffold(
         pageTitle: "Catálogos / Diseños / Crear",
+        backButton: true,
         body: SingleChildScrollView(
           child: Container(
             color: Color(0xffF5F6F5),
