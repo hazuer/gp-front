@@ -42,6 +42,7 @@ class RoutesProvider {
   String crearDisenos = "catalogo/crear-disenos";
   String editarDisenos = "catalogo/editar-disenos";
   String changeEstatusDisenos = "catalogo/editar-estatus-disenos";
+  String buscarTintas = 'catalogo/datos-diseno';
 
   //Taras
   String listarTaras = "catalogo/listar-taras";

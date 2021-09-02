@@ -3,6 +3,7 @@ import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
+import 'package:general_products_web/widgets/catalogs/design/table_tintas.dart';
 import 'package:general_products_web/widgets/catalogs/design/taraDialog.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
@@ -258,6 +259,8 @@ class _DesignEditState extends State<DesignEdit> {
                                               ),
                                             ],
                                           ),
+                                          SizedBox(height: 30),
+                                          TableTinta(),
                                         ],
                                       ),
                                     ),

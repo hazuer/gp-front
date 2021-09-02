@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:general_products_web/models/catalogs/design/designsDataModel.dart';
 import 'package:general_products_web/models/catalogs/design/designsModel.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
@@ -75,8 +76,68 @@ class DesignsProvider {
     }
   }
 
+  Future buscarDatosDisenos(int idDiseno) async {
+    List<DesignDatum> listActives = [];
+    RxVariables.errorMessage = '';
+    DesingsDataModel listDesignsDataModel = DesingsDataModel();
+
+    String url =
+        routes.urlBase + routes.buscarTintas + '?id_cat_diseno=$idDiseno';
+    try {
+      final dio = Dio();
+      final resp = await dio.get(url, options: headerWithToken);
+
+      listDesignsDataModel = DesingsDataModel.fromJson(resp.data);
+      // final resp = await dio.get(url, options: headerWithToken);
+      // listDesignsModel = ListDesignsModel.fromJson(resp.data);
+      // listDesignsModel.designsList.forEach((element) {
+      // if (element.estatus!.toLowerCase() == 'activo') {
+      // listActives.add(element);
+      // }
+      // });
+      // rxVariables.listDesignsFilter.sink.add(listActives);
+
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      rxVariables.listDesignsFilter.sink.addError(RxVariables.errorMessage +
+          " Por favor contacta con el administrador");
+      return null;
+    }
+  }
+
+  // Future buscarTintas(String tinta, int idPlanta) async {
+  //   RxVariables.errorMessage = '';
+  //   String url = routes.urlBase + routes.buscarTintas;
+
+  //   try {
+  //     final dio = Dio();
+  //     final data = {
+  //       'nombre_tinta': tinta,
+  //       'id_cat_planta': idPlanta,
+  //     };
+
+  //     final resp = await dio.post(url, data: data, options: headerWithToken);
+  //     return resp.data;
+  //   } on DioError catch (e) {
+  //     RxVariables.errorMessage = e.response!.data["message"]
+  //         .toString()
+  //         .replaceAll("{", "")
+  //         .replaceAll("[", "")
+  //         .replaceAll("}", "")
+  //         .replaceAll("]", "");
+  //     rxVariables.listDesignsFilter.sink.addError(RxVariables.errorMessage +
+  //         " Por favor contacta con el administrador");
+  //     return null;
+  //   }
+  // }
+
   Future createDesign(String nombreDiseno, String descripcion, int idPlanta,
-      String tintas) async {
+      List<int> tintas) async {
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.crearDisenos;
 

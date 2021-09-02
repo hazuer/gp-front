@@ -73,6 +73,7 @@ class TintasProvider {
         listFilters.add(element);
       });
       rxVariables.listTintasFilter.sink.add(listFilters);
+      return resp.data;
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
           .toString()

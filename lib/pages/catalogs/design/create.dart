@@ -5,6 +5,7 @@ import 'package:general_products_web/provider/catalogs/design/designsProvider.da
 import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/provider/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
+import 'package:general_products_web/widgets/catalogs/design/table_tintas.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
@@ -21,6 +22,7 @@ class DesignCreate extends StatefulWidget {
 
 class _DesignCreateState extends State<DesignCreate> {
   late Future futureTintas;
+  late Future futureTintas2;
   late Future futureFields;
   bool isLoading = false;
   String headerFilter = "?porPagina = 20";
@@ -35,8 +37,10 @@ class _DesignCreateState extends State<DesignCreate> {
   // TarasProvider tarasProvider = TarasProvider();
 
   TintasProvider tintasProvider = TintasProvider();
+  DesignsProvider designsProvider = DesignsProvider();
 
   TaraDialog dialogs = TaraDialog();
+  List<InkList> tintas = [];
   InkList catTintas = InkList();
   // ListTintasModel catTintas = ListTintasModel(inkList: []);
   final GlobalKey<AppExpansionTileState> catPlantsKey = new GlobalKey();
@@ -46,6 +50,14 @@ class _DesignCreateState extends State<DesignCreate> {
   @override
   void initState() {
     futureTintas = tintasProvider.listTintas();
+    // final idPlant = RxVariables.designSelected.idCatPlanta;
+    // futureTintas2 = tintasProvider.listTintasWithFiltter(path);
+    // futureTintas =
+    //     tintasProvider.listTintasWithFiltter('?id_cat_planta=$idPlant');
+    // futureTintas2 = designsProvider.buscarTintas(
+    // RxVariables.designSelected.tintas[nombreTinta],
+    // RxVariables.designSelected.idCatPlanta!);
+    // RxVariables.designSelected.
     futureFields = listProvider.dataListUser();
     super.initState();
   }
@@ -112,9 +124,7 @@ class _DesignCreateState extends State<DesignCreate> {
                                       SizedBox(
                                         height: 15,
                                       ),
-                                      CustomInput(
-                                          controller: tintasCtrl,
-                                          hint: "* Tintas"),
+                                      listarTintas(),
                                       SizedBox(
                                         height: 15,
                                       ),
@@ -127,8 +137,8 @@ class _DesignCreateState extends State<DesignCreate> {
                                         onPressed: () async {
                                           if (designCtrl.text.isEmpty ||
                                               descripcionCtrl.text.isEmpty ||
-                                              tintasCtrl.text.isEmpty ||
-                                              catPlanta.idCatPlanta == null) {
+                                              catPlanta.idCatPlanta == null ||
+                                              catTintas.idCatTinta == null) {
                                             dialogs.showInfoDialog(
                                                 context,
                                                 "¡Atención!",
@@ -139,9 +149,8 @@ class _DesignCreateState extends State<DesignCreate> {
                                               designCtrl.text.trim(),
                                               descripcionCtrl.text.trim(),
                                               catPlanta.idCatPlanta!,
-                                              tintasCtrl.text.trim(),
-                                            )
-                                                .then((value) {
+                                              [catTintas.idCatTinta!],
+                                            ).then((value) {
                                               if (value == null) {
                                                 setState(() {
                                                   isLoading = false;
@@ -211,6 +220,11 @@ class _DesignCreateState extends State<DesignCreate> {
                                               SizedBox(
                                                 width: 15,
                                               ),
+                                              Flexible(
+                                                  child: listarTintasCheck()),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
                                             ],
                                           ),
                                           SizedBox(height: 20.0),
@@ -222,11 +236,15 @@ class _DesignCreateState extends State<DesignCreate> {
                                             title: 'Crear',
                                             isLoading: false,
                                             onPressed: () async {
+                                              print(tintas.length);
+                                              print(tintas);
+                                              print(tintas.toString());
                                               if (designCtrl.text.isEmpty ||
                                                   descripcionCtrl
                                                       .text.isEmpty ||
-                                                  tintasCtrl.text.isEmpty ||
                                                   catPlanta.idCatPlanta ==
+                                                      null ||
+                                                  catTintas.idCatTinta ==
                                                       null) {
                                                 dialogs.showInfoDialog(
                                                     context,
@@ -238,9 +256,8 @@ class _DesignCreateState extends State<DesignCreate> {
                                                   designCtrl.text.trim(),
                                                   descripcionCtrl.text.trim(),
                                                   catPlanta.idCatPlanta!,
-                                                  tintasCtrl.text.trim(),
-                                                )
-                                                    .then((value) {
+                                                  [catTintas.idCatTinta!],
+                                                ).then((value) {
                                                   if (value == null) {
                                                     setState(() {
                                                       isLoading = false;
@@ -329,8 +346,8 @@ class _DesignCreateState extends State<DesignCreate> {
                                 padding: EdgeInsets.all(12),
                                 child: Text(
                                     // catTintas.nombreTinta ?? '* Tinta',
-                                    RxVariables
-                                        .gvListTinta.inkList[index].nombreTinta!,
+                                    RxVariables.gvListTinta.inkList[index]
+                                        .nombreTinta!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),
@@ -357,6 +374,7 @@ class _DesignCreateState extends State<DesignCreate> {
   }
 
   Widget listarPlants() {
+    // futureTintas = plants.
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
@@ -397,6 +415,164 @@ class _DesignCreateState extends State<DesignCreate> {
                                 child: Text(
                                     RxVariables.dataFromUsers.listPlants![index]
                                         .nombrePlanta!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: .5,
+                                color: Colors.grey[300],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool valor1 = false;
+  bool valor2 = false;
+  bool valor3 = false;
+  Widget listarTintasCheck() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      child: AppExpansionTile(
+        initiallyExpanded: false,
+        title: Text(
+          catTintas.nombreTinta ?? "* Tinta",
+          style: TextStyle(color: Colors.black54, fontSize: 13),
+        ),
+        children: [
+          Container(
+            child: FutureBuilder(
+              future: futureFields,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  bool valorIndividual = false;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: RxVariables.gvListTinta.inkList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      print(valorIndividual);
+                      return CheckboxListTile(
+                        title: Text(
+                            RxVariables.gvListTinta.inkList[index].nombreTinta!,
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 13)),
+                        value: valorIndividual,
+                        onChanged: (value) {
+                          setState(() {
+                            valorIndividual = value!;
+                            print(valorIndividual);
+                            if (valorIndividual) {
+                              tintas
+                                  .add(RxVariables.gvListTinta.inkList[index]);
+                            }
+                          });
+                        },
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+          // CheckboxListTile(
+          //   title: Text('Jona1'),
+          //   value: valor1,
+          //   onChanged: (value) {
+          //     setState(() {
+          //       valor1 = value!;
+          //     });
+          //   },
+          // ),
+          // CheckboxListTile(
+          //   title: Text('Jona2'),
+          //   value: valor2,
+          //   onChanged: (value) {
+          //     setState(() {
+          //       valor2 = value!;
+          //     });
+          //   },
+          // ),
+          // CheckboxListTile(
+          //   title: Text('Jona3'),
+          //   value: valor3,
+          //   onChanged: (value) {
+          //     setState(() {
+          //       valor3 = value!;
+          //     });
+          //   },
+          // ),
+        ],
+      ),
+    );
+  }
+
+  Widget listarTintas2() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      child: AppExpansionTile(
+        key: catTintasKey,
+        initiallyExpanded: false,
+        title: Text(
+          catTintas.nombreTinta ?? "* Tinta",
+          style: TextStyle(color: Colors.black54, fontSize: 13),
+        ),
+        children: [
+          Container(
+            //height: MediaQuery.of(context).size.height*.2,
+            child: FutureBuilder(
+              future: futureTintas,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: RxVariables.gvListTinta.inkList.length,
+                    // itemCount: RxVariables.listTinta.inkList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            catTintas = RxVariables.gvListTinta.inkList[index];
+                            catTintasKey.currentState!.collapse();
+
+                            // catPlanta =
+                            //     RxVariables.dataFromUsers.listPlants![index];
+                            // catPlanKey.currentState!.collapse();
+                          });
+                        },
+                        onLongPress: () {
+                          setState(() {
+                            tintas.add(RxVariables.gvListTinta.inkList[index]);
+                          });
+                        },
+                        child: Container(
+                          color: Colors.grey[100],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                    // catTintas.nombreTinta ?? '* Tinta',
+                                    RxVariables.gvListTinta.inkList[index]
+                                        .nombreTinta!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),
