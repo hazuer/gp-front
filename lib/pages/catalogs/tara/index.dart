@@ -4,6 +4,7 @@ import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
+import 'package:general_products_web/widgets/inputFloat_custom.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/constants/route_names.dart';
@@ -88,7 +89,7 @@ class _TaraIndexState extends State<TaraIndex> {
                             SizedBox(height: 15,),
                             CustomInput(controller: taraCtrl, hint: "Tara"),
                             SizedBox(height: 15,),
-                            CustomInput(controller: capacidadCtrl,hint: "Capacidad"),
+                            CustomInputFloat(controller: capacidadCtrl,hint: "Peso Tara Kg"),
                             SizedBox(height: 15,),
                             listPlants(),
                             SizedBox(height: 15,),
@@ -162,9 +163,9 @@ class _TaraIndexState extends State<TaraIndex> {
                                     ),
                                     SizedBox(width: 15,),
                                     Flexible(
-                                      child: CustomInput(
+                                      child: CustomInputFloat(
                                         controller:capacidadCtrl,
-                                        hint: "Capacidad"
+                                        hint: "Peso Tara Kg"
                                       )
                                     ),
                                     SizedBox(width: 15,),

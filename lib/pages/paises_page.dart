@@ -28,7 +28,7 @@ class _PaisesPageState extends State<PaisesPage> {
 
   @override
   void initState() {
-    futurePaises = listPaisesProvider.listPaisesWithFilters('?porPagina=100');
+    futurePaises = listPaisesProvider.listPaises();
     super.initState();
   }
 
@@ -279,7 +279,7 @@ class _PaisesPageState extends State<PaisesPage> {
   }
 
   applyFilter() async {
-    path = "?porPagina=10";
+    path = "?porPagina=100";
     if (paisController.text.isNotEmpty) {
       path = path + "&nombre_pais=${paisController.text.trim()}";
     }
@@ -302,7 +302,7 @@ class _PaisesPageState extends State<PaisesPage> {
     setState(() {
       isLoading = true;
     });
-    path = "?porPagina = 30";
+    path = "?porPagina = 100";
     status = StatusModel();
     paisController.clear();
 

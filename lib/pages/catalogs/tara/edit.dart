@@ -3,6 +3,7 @@ import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
+import 'package:general_products_web/widgets/inputFloat_custom.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/provider/tara/tarasProvider.dart';
@@ -92,9 +93,9 @@ class _TaraEditState extends State<TaraEdit> {
                                       SizedBox(
                                         height: 15,
                                       ),
-                                      CustomInput(
+                                      CustomInputFloat(
                                           controller: capacidadEditCtrl,
-                                          hint: "* Capacidad"),
+                                          hint: "* Peso Tara Kg"),
                                       SizedBox(
                                         height: 15,
                                       ),
@@ -177,10 +178,10 @@ class _TaraEditState extends State<TaraEdit> {
                                                 width: 15,
                                               ),
                                               Flexible(
-                                                  child: CustomInput(
+                                                  child: CustomInputFloat(
                                                       controller:
                                                           capacidadEditCtrl,
-                                                      hint: "* Capacidad")),
+                                                      hint: "* Peso Tara Kg")),
                                               SizedBox(
                                                 width: 15,
                                               ),

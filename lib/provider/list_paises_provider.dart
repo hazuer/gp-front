@@ -18,7 +18,7 @@ class ListPaisesProvider {
     RxVariables.errorMessage = '';
     ListPaisesModel listPaisesModel = ListPaisesModel(countriesList: []);
 
-    String url = routes.urlBase + routes.listPaises;
+    String url = routes.urlBase + routes.listPaises+"?porPagina=100";
 
     try {
       final dio = Dio();
