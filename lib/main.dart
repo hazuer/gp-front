@@ -10,6 +10,8 @@ import 'package:general_products_web/pages/cliente/store.dart';
 import 'package:general_products_web/pages/edit_country_page.dart';
 import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
+import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/create.dart';
+import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/index.dart';
 import 'package:general_products_web/pages/paises_page.dart';
 import 'package:general_products_web/pages/razon/edit.dart';
 import 'package:general_products_web/pages/razon/index.dart';
@@ -84,7 +86,7 @@ class GeneralProductsApp extends StatelessWidget {
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
         ),
       ),
-      initialRoute: RouteNames.designCreate,
+      initialRoute: RouteNames.oeIndex,
       navigatorObservers: [AppRouteObserver()],
       routes: {
         RouteNames.login: (_) => LoginPage(),
@@ -127,6 +129,10 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.designIndex: (_) => DesignIndex(),
         RouteNames.designCreate: (_) => DesignCreate(),
         RouteNames.designEdit: (_) => DesignEdit(),
+
+        // Ordenes de entrega
+        RouteNames.oeIndex: (_) => OrdenesEntregaIndex(),
+        RouteNames.oeCreate: (_) => OrdenesEntregaCreate(),
       },
     );
   }

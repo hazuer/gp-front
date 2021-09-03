@@ -177,14 +177,14 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                               contentPadding: EdgeInsets.only(left: 16.0),
                               leading:
                                   const Icon(Icons.delivery_dining, size: 27),
-                              title: const Text("Entregas",
+                              title: const Text("Ordenes de entrega",
                                   style: TextStyle(
                                     fontSize: 13,
                                   )),
                               onTap: () async {
-                                //await _navigateTo(context, RouteNames.paises);
+                                await _navigateTo(context, RouteNames.oeIndex);
                               },
-                              //selected: _selectedRoute == RouteNames.paises,
+                              selected: _selectedRoute == RouteNames.oeIndex,
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
@@ -241,9 +241,11 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                     fontSize: 13,
                                   )),
                               onTap: () async {
-                                await _navigateTo(context, RouteNames.designIndex);
+                                await _navigateTo(
+                                    context, RouteNames.designIndex);
                               },
-                              // selected: _selectedRoute == RouteNames.paises,
+                              selected:
+                                  _selectedRoute == RouteNames.designIndex,
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
@@ -256,7 +258,7 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                 await _navigateTo(
                                     context, RouteNames.tintaIndex);
                               },
-                              // selected: _selectedRoute == RouteNames.paises,
+                              selected: _selectedRoute == RouteNames.tintaIndex,
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
@@ -267,9 +269,11 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                     fontSize: 13,
                                   )),
                               onTap: () async {
-                                await _navigateTo(context, RouteNames.plantsIndex);
+                                await _navigateTo(
+                                    context, RouteNames.plantsIndex);
                               },
-                              // selected: _selectedRoute == RouteNames.paises,
+                              selected:
+                                  _selectedRoute == RouteNames.plantsIndex,
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
@@ -282,7 +286,7 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                 await _navigateTo(
                                     context, RouteNames.razonIndex);
                               },
-                              // selected: _selectedRoute == RouteNames.paises,
+                              selected: _selectedRoute == RouteNames.razonIndex,
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),
@@ -307,9 +311,11 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                     fontSize: 13,
                                   )),
                               onTap: () async {
-                                await _navigateTo(context, RouteNames.machineIndex);
+                                await _navigateTo(
+                                    context, RouteNames.machineIndex);
                               },
-                              // selected: _selectedRoute == RouteNames.paises,
+                              selected:
+                                  _selectedRoute == RouteNames.machineIndex,
                             ),
                             ListTile(
                               contentPadding: EdgeInsets.only(left: 16.0),

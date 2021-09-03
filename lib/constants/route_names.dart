@@ -50,4 +50,9 @@ class RouteNames {
   static const String designIndex = "/catalog/design";
   static const String designCreate = "/catalog/design/create";
   static const String designEdit = "/catalog/design/edit";
+
+  //CRUD Ordenes de entrega
+  static const String oeIndex = '/ordenes-de-trabajo/orden-de-entrega';
+  static const String oeCreate = '/ordenes-de-trabajo/orden-de-entrega/create';
+  static const String oeEdit = '/ordenes-de-trabajo/orden-de-entrega/edit';
 }

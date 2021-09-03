@@ -15,7 +15,6 @@ class DesignsProvider {
     "Authorization": "Bearer ${RxVariables.token}"
   });
 
-  //Listar todas las taras activas
   Future getAllDesigns() async {
     List<DesignsList> listActives = [];
     RxVariables.errorMessage = '';
@@ -34,6 +33,7 @@ class DesignsProvider {
         }
       });
       rxVariables.listDesignsFilter.sink.add(listActives);
+      return resp.data;
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
           .toString()
