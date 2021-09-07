@@ -13,10 +13,7 @@ import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:general_products_web/widgets/tinta/tinta_dialog.dart';
-import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
-
-
 
 class TintaImport extends StatefulWidget {
   const TintaImport({Key? key}) : super(key: key);
@@ -91,10 +88,10 @@ class _TintaImportState extends State<TintaImport> {
       if((response.statusCode==201)){
         errors="";
       }else{
-        errors = rst["errors"][0].toString();
+        errors = ": "+rst["errors"][0].toString();
       }
       Navigator.pop(context);
-      dialogs.showInfoDialog(context,typeAlert,message +": "+ errors);
+      dialogs.showInfoDialog(context,typeAlert,message +""+ errors);
     });
     return "";
   }

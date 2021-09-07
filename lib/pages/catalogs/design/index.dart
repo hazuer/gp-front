@@ -108,7 +108,7 @@ class _DesignIndexState extends State<DesignIndex> {
                                         isLoading: false,
                                         onPressed: () async {
                                           Navigator.pushNamed(
-                                              context, RouteNames.designCreate);
+                                              context, RouteNames.designImport);
                                         },
                                       ),
                                       SizedBox(
@@ -213,7 +213,7 @@ class _DesignIndexState extends State<DesignIndex> {
                                                 isLoading: false,
                                                 onPressed: () async {
                                                   Navigator.pushNamed(context,
-                                                      RouteNames.designCreate);
+                                                      RouteNames.designImport);
                                                 },
                                               ),
                                             ),

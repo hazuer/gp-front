@@ -50,6 +50,7 @@ class RouteNames {
   static const String designIndex = "/catalog/design";
   static const String designCreate = "/catalog/design/create";
   static const String designEdit = "/catalog/design/edit";
+  static const String designImport = '/catalog/design/import';
 
   //CRUD Ordenes de entrega
   static const String oeIndex = '/ordenes-de-trabajo/orden-de-entrega';
