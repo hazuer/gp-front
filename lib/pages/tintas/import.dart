@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/provider/tinta/tintasProvider.dart';
@@ -14,7 +12,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
-//import 'package:web_upload/apps/main_app.dart';
 import 'package:general_products_web/widgets/tinta/tinta_dialog.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
@@ -29,9 +26,9 @@ class TintaImport extends StatefulWidget {
 }
 
 class _TintaImportState extends State<TintaImport> {
-  TintaDialog tintaDialog = TintaDialog();
-  RoutesProvider routes = RoutesProvider();
-  
+  TintaDialog dialogs = TintaDialog();
+  RoutesProvider routes   = RoutesProvider();
+
   late Future futureTintas;
   late Future futureFields;
   bool isLoading = false;
@@ -69,87 +66,38 @@ class _TintaImportState extends State<TintaImport> {
     });
   }
 
-  Future<String> makeRequest() async {
-   // print(_selectedFile);
- 
+  Future<String> makeRequest(String idCatPlanta) async {
     var url = Uri.parse(routes.urlBase + routes.importarTintas);
-    //String url = ;
     var request = new http.MultipartRequest("POST", url);
     request.headers.addAll({
           "Authorization": "Bearer ${RxVariables.token}"
       });
 
       request.fields['_method'] = "PUT";
-      request.fields['id_cat_planta'] = "1";
-
-
-
+      request.fields['id_cat_planta'] = idCatPlanta;
       request.files.add(await http.MultipartFile.fromBytes(
-        'file', _selectedFile,
-        contentType: new MediaType('application', 'text/csv'),
-        filename: "file_up"));
+          'file', _selectedFile,
+          contentType: new MediaType('application', 'text/csv'),
+          filename: "file_up"
+        )
+      );
 
-    request.send().then((response) {
-      print("test");
-      print(response.statusCode);
-      if (response.statusCode == 200) print("Uploaded!");
+    request.send().then((response) async {
+      final rstBack = await response.stream.bytesToString();
+      final rst = json.decode(rstBack);
+      final typeAlert = (response.statusCode==201) ? "¡Éxito!" : "¡Error!";
+      final message = rst["message"];
+      var errors = "";
+      if((response.statusCode==201)){
+        errors="";
+      }else{
+        errors = rst["errors"][0].toString();
+      }
+      Navigator.pop(context);
+      dialogs.showInfoDialog(context,typeAlert,message +": "+ errors);
     });
-
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-          title: Center(
-              child: Text(
-            "demo",//title,
-            textAlign: TextAlign.center,
-          )),
-          content: SingleChildScrollView(
-            child: Center(
-                child: Column(
-              children: [
-                Text(
-                  "data",//detail,
-                  style: TextStyle(color: Colors.black, fontSize: 17),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 10),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width < 600
-                          ? MediaQuery.of(context).size.width * .5
-                          : MediaQuery.of(context).size.width * .3,
-                      child: ElevatedButton(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              "Aceptar",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            // Navigator.pushReplacementNamed(
-                            //     context, RouteNames.tintaIndex);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              elevation: 2,
-                              primary: GPColors.PrimaryColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)))),
-                    )),
-              ],
-            )),
-          ),
-        );
-        }
-        );
-        return "";
+    return "";
   }
-
 
   @override
   void initState() {
@@ -168,7 +116,6 @@ class _TintaImportState extends State<TintaImport> {
         child: Container(
           color: Color(0xffF5F6F5),
           child: Column(
-          
             children: <Widget>[
               Container(
                 width: double.infinity,
@@ -197,6 +144,32 @@ class _TintaImportState extends State<TintaImport> {
                               ? ListView(
                                   shrinkWrap: true,
                                   children: [
+                                    CustomButton(
+                                      width: MediaQuery.of(context).size.width *.2,
+                                      title: '* Selecciona un archivo',
+                                      isLoading: false,
+                                      onPressed: () {
+                                        startWebFilePicker();
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    listPlants(),
+                                    SizedBox(height: 15),
+                                    CustomButton(
+                                      width: MediaQuery.of(context).size.width *.2,
+                                      title: 'Importar',
+                                      isLoading: false,
+                                      onPressed: () {
+                                          if (plant.idCatPlanta == null || _selectedFile.length==0) {
+                                          dialogs.showInfoDialog(
+                                              context,
+                                              "¡Atención!",
+                                              "Favor de validar los campos marcados con asterisco (*)");
+                                        }else{
+                                          makeRequest(plant.idCatPlanta.toString());
+                                        }
+                                      },
+                                    )
                                   ],
                                 )
                               : Container(
@@ -212,7 +185,7 @@ class _TintaImportState extends State<TintaImport> {
                                                 child:
                                             CustomButton(
                                               width: MediaQuery.of(context).size.width *.2,
-                                              title: 'Selecciona un archivo',
+                                              title: '* Selecciona un archivo',
                                               isLoading: false,
                                               onPressed: () {
                                                 startWebFilePicker();
@@ -226,7 +199,14 @@ class _TintaImportState extends State<TintaImport> {
                                               title: 'Importar',
                                               isLoading: false,
                                               onPressed: () {
-                                              makeRequest();
+                                                 if (plant.idCatPlanta == null || _selectedFile.length==0) {
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Atención!",
+                                                      "Favor de validar los campos marcados con asterisco (*)");
+                                                }else{
+                                                  makeRequest(plant.idCatPlanta.toString());
+                                                }
                                               },
                                             ),
                                           ],
@@ -257,7 +237,7 @@ class _TintaImportState extends State<TintaImport> {
         key: plantsKey,
         initiallyExpanded: false,
         title: Text(
-          plant.nombrePlanta ?? "Planta",
+          plant.nombrePlanta ?? "* Planta",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -275,8 +255,7 @@ class _TintaImportState extends State<TintaImport> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            plant =
-                                RxVariables.dataFromUsers.listPlants![index];
+                            plant =RxVariables.dataFromUsers.listPlants![index];
                             plantsKey.currentState!.collapse();
                           });
                         },
