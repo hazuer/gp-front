@@ -145,7 +145,6 @@ class MachineDialog {
                                     alertDialogMachineDisable.idCatMaquina!,
                                     idCatStatus)
                                 .then((value) {
-                              //print(value.toString());
                               if (value == null) {
                                 setState(() {
                                   isLoading = false;
