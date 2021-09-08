@@ -43,6 +43,7 @@ import 'pages/catalogs/machine/edit.dart';
 import 'pages/catalogs/design/index.dart';
 import 'pages/catalogs/design/create.dart';
 import 'pages/catalogs/design/edit.dart';
+import 'pages/catalogs/design/import.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -129,6 +130,7 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.designIndex: (_) => DesignIndex(),
         RouteNames.designCreate: (_) => DesignCreate(),
         RouteNames.designEdit: (_) => DesignEdit(),
+        RouteNames.designImport: (_) => DesignImport(),
 
         // Ordenes de entrega
         RouteNames.oeIndex: (_) => OrdenesEntregaIndex(),

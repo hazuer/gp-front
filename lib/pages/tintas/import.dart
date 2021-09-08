@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
-import 'package:general_products_web/provider/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
@@ -26,11 +25,9 @@ class _TintaImportState extends State<TintaImport> {
   TintaDialog dialogs = TintaDialog();
   RoutesProvider routes   = RoutesProvider();
 
-  late Future futureTintas;
   late Future futureFields;
   bool isLoading = false;
   Plant plant = Plant();
-  TintasProvider tintasProvider = TintasProvider();
   ListUsersProvider listProvider = ListUsersProvider();
 
   final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
