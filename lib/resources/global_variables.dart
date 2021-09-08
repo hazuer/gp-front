@@ -10,6 +10,7 @@ import 'package:general_products_web/models/razon/dtRazonModel.dart';
 import 'package:general_products_web/models/razon/razonModel.dart';
 import 'package:general_products_web/models/razon/razonesModel.dart';
 import 'package:general_products_web/models/search_user_response.dart';
+import 'package:general_products_web/models/settings/ParametrosModel.dart';
 import 'package:general_products_web/models/tinta/tintasModel.dart';
 import 'package:rxdart/rxdart.dart';
 //Taras
@@ -42,9 +43,9 @@ class RxVariables {
   static SearchUserResponse userById = SearchUserResponse();
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
-  // static String token = "";
-  static String token =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZGE4OWY3OTc5NzVkOTAyNTcwZGEzOGRhYjdkYWRjODk4YWU1YTMwNjgxZmQxNmY1N2QwODI1NTIwM2JjNTU5M2NiZDFiOTFhNDhkZjZkOWUiLCJpYXQiOjE2MzA2ODE2MTgsIm5iZiI6MTYzMDY4MTYxOCwiZXhwIjoxNjMwNjg1MjE4LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.cLQwLXbaollQLPHhnfzfjOOS79bOp8FJXDxIjp_tZRSaP-JnjKCinxVbe7hRzNZNXjjEs2zSp39B3b4pyuiELNh149B2tYau6OcGi5da4WwD-su_RRuEkxmmBD7RQwATc8L0M3FRsjr5Yk7nttC5-PKMdi2L6qNMaMyuRseN3w2UyDVDDR43YLldbTSASf9-9llHA_qtgIQEDf_qjtAxLhP9oKka8F3S2uJlv8WjD_kJPnPwszxQVwYcWTNMMpVzPWKRL_ZAbORKNNPP2d8y4ulBn0syYVctxTdaoKSqXYjxKHFG7pr4bIUzJ5LrgpI01jpXMRj9mFoW4RwM7gme_Tum0Sc5rmWytpjtG5Prv3NvSEGI7G1BERQu9bN8KwYzrzwcwYojcFTazkwGahQ1sCoRZamVDDizdMSjxZSs3xWI3xV2i1dT7qgbFf7PuvFzTK5FbhLQzcdHbnIsLwYVxHIHiD7CIJhf4sYgGbuOQUtO15liHUUmJtiJ2MKuyiwst74pNiPwGeDLdoSxLraER9SnEKwkfzbN8kZFhO_CiQuKe1Heaf-aiPZYTOPLPIfb50HAUw2i3SX_FGxzdDCdr8PQvvscuSgRlRWRnIj7sbinikgf1ujXiLxGA_r-QwPYqQVAGxkl5hNRWRuhD0XikCYj5eHmU4ZjSOK36zph5QE";
+  static String token = "";
+  // static String token =
+  //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiNDU3OTc3NTY4NDJkNTlhM2JjMzYzM2VjODkwM2NiNDM3YTE5YjJhZjZlOTI2ZDVmNzQzMGVlOGEyM2IxNmM5MzZiZTNhMDQwYmIzMTZlODgiLCJpYXQiOjE2MzExMjMzNTEsIm5iZiI6MTYzMTEyMzM1MSwiZXhwIjoxNjMxMTI2OTUxLCJzdWIiOiIyNCIsInNjb3BlcyI6W119.WQYnwfApEg3vrFzZcnoQgMQO-l65FuKTA3yWNzxADuLba4qkXDnXGsfYRKaEnIJzwtPJL9T6GD3sz8rFj-Aqb_aZyjr5Txi6MrFsTrWzIrqHNRsRSCwo5Oxl9DY3vQmXU9rmSPyhvmmyODI_ZQkxTA8FvyzAEIHlq62LfXR2Ksx7mCqAGxoIMrAEqf6xKa4HJoHd7oJbnZK2WksZuiYkZ9QWw2dGHKYgjlufRb0VILvPfYmoJQUhhnoxaKuYuCN5iBb0wneqOGAkflme83WUg7a7bPoEtCXDKqBnFTj4p5h_bVVtC-Di6wdQZAdihf-7Vc8FdcJtojszNPCXxYWx4AhNNiip0XgYxyS40VubCIfuC35hBNGcqWwJETIkNU7JMRo1Bz0CHhOda7BjR_K68_l2V274FXAl1F9lX6Cw8smcuZd_7bZ7G7oE66GihX_WTk4qGy8fgbJSopBQBPBpAeJy2iBApRWMT2KWvynJHiLF4uTxM9TSi9RabeQ484p80HNPiOri02qZccQLr71VM1cSox2dubKtk_FDnA7IbP94gdK0ZV03ZmWJtvc6hu9a3kW7bN8stdvCNO7kTQAZdbgjYXQ_4GUdOl72K-3LTYm1kGgvtqiwa4j9ItsZQMr0G2pcJbT0QQboeqmAbR2yBkXIXotw9QIU_t19hkCU4iI";
 
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
@@ -108,6 +109,16 @@ class RxVariables {
   Stream<List<CatPaisModel>> get lsCatPaisFiltrosStream =>
       gvBeSubListCatPais.stream;
 
+  // Parametrizar sistema
+  static Map<String, dynamic> initialParameters = Map<String, dynamic>();
+  // final listParametersFilter = BehaviorSubject<ParametrosModel>();
+  // static ParametrosModel initialParameters = ParametrosModel();
+  // static ParametrosModel parametrosModel = ParametrosModel(systemParams: []);
+  // static SystemParams initialParameters = SystemParams();
+  final listParametersFilter = BehaviorSubject<List<SystemParams>>();
+  Stream<List<SystemParams>> get listParametersStream =>
+      listParametersFilter.stream;
+
   static final RxVariables _bloc = new RxVariables._internal();
 
   factory RxVariables() {
@@ -128,6 +139,7 @@ class RxVariables {
     gvBeSubListMachines.close();
     gvBeSubListPlants.close();
     gvBeSubListCatPais.close();
+    listParametersFilter.close();
   }
 }
 

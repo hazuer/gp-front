@@ -14,6 +14,10 @@ class RoutesProvider {
   String recoverPwd = "recuperar-contraseña";
   String logOut = "cerrar-sesion";
 
+  // Settings
+  String listParameters = "administracion/parametrizar-sistema";
+  String changeParameters = "administracion/parametrizar-sistema-crear-editar";
+
   //Services
   String dataListUser = "datos-listar-usuarios";
   String listUsers =

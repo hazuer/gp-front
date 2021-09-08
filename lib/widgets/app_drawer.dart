@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/general_dialog.dart';
 import '../constants/page_titles.dart';
@@ -21,6 +22,8 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> with RouteAware {
   String? _selectedRoute;
   AppRouteObserver? _routeObserver;
+  final currentUser = RxVariables.loginResponse.data!;
+
   @override
   void initState() {
     super.initState();
@@ -101,13 +104,16 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                           SizedBox(
                                             height: 50,
                                           ),
-                                          Text(
-                                            "Administrador",
-                                            //"${RxVariables.loginResponse.data!.user!.name} ${RxVariables.loginResponse.data!.user!.lastName}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 13,
-                                                color: Color(0xffECF0F1)),
+                                          Expanded(
+                                            child: Text(
+                                              '${currentUser.catProfile!.nameProfile}',
+                                              overflow: TextOverflow.ellipsis,
+                                              // "${RxVariables.loginResponse.data!.user!.name} ${RxVariables.loginResponse.data!.user!.lastName}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 13,
+                                                  color: Color(0xffECF0F1)),
+                                            ),
                                           ),
                                         ],
                                       )
@@ -122,252 +128,303 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                           color: Color(0xff2A3F54),
                         ),
                       ),
+                      (currentUser.catProfile!.profileId == 1)
+                          // Administrador
+                          ? Column(
+                              children: [
+                                ListTileTheme(
+                                  iconColor: Color(0xffE7E7E7),
+                                  child: ListTile(
+                                    leading: const Icon(
+                                        Icons.admin_panel_settings,
+                                        size: 27),
+                                    title: const Text(
+                                      PageTitles.admin,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      await _navigateTo(
+                                          context, RouteNames.home);
+                                    },
+                                    selected: _selectedRoute == RouteNames.home,
+                                  ),
+                                ),
+                                ListTileTheme(
+                                  iconColor: Color(0xffE7E7E7),
+                                  child: ListTile(
+                                    leading:
+                                        const Icon(Icons.settings, size: 27),
+                                    title: const Text(
+                                      PageTitles.settings,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      await _navigateTo(
+                                          context, RouteNames.settings);
+                                    },
+                                    selected:
+                                        _selectedRoute == RouteNames.settings,
+                                  ),
+                                ),
+                                ListTileTheme(
+                                  iconColor: Color(0xffE7E7E7),
+                                  child: AppExpansionTile(
+                                    backgroundColor: Colors.white10,
+                                    title: ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      leading:
+                                          const Icon(Icons.menu_book, size: 27),
+                                      title: const Text(
+                                        PageTitles.catalogs,
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      onTap: () async {
+                                        await _navigateTo(
+                                            context, RouteNames.catalogs);
+                                      },
+                                      selected:
+                                          _selectedRoute == RouteNames.catalogs,
+                                    ),
+                                    children: [
+                                      ListTile(
+                                        // contentPadding: EdgeInsets.only(left: 16.0),
+                                        leading:
+                                            const Icon(Icons.public, size: 27),
+                                        title: const Text(PageTitles.paises,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            )),
+                                        onTap: () async {
+                                          await _navigateTo(
+                                              context, RouteNames.paises);
+                                        },
+                                        selected:
+                                            _selectedRoute == RouteNames.paises,
+                                      ),
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 16.0),
+                                        leading:
+                                            const Icon(Icons.brush, size: 27),
+                                        title: const Text('Diseños',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            )),
+                                        onTap: () async {
+                                          await _navigateTo(
+                                              context, RouteNames.designIndex);
+                                        },
+                                        selected: _selectedRoute ==
+                                            RouteNames.designIndex,
+                                      ),
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 16.0),
+                                        leading: const Icon(Icons.color_lens,
+                                            size: 27),
+                                        title: const Text('Tintas',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            )),
+                                        onTap: () async {
+                                          await _navigateTo(
+                                              context, RouteNames.tintaIndex);
+                                        },
+                                        selected: _selectedRoute ==
+                                            RouteNames.tintaIndex,
+                                      ),
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 16.0),
+                                        leading: const Icon(
+                                            Icons.corporate_fare,
+                                            size: 27),
+                                        title: const Text('Plantas',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            )),
+                                        onTap: () async {
+                                          await _navigateTo(
+                                              context, RouteNames.plantsIndex);
+                                        },
+                                        selected: _selectedRoute ==
+                                            RouteNames.plantsIndex,
+                                      ),
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 16.0),
+                                        leading:
+                                            const Icon(Icons.topic, size: 27),
+                                        title: const Text('Razones',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            )),
+                                        onTap: () async {
+                                          await _navigateTo(
+                                              context, RouteNames.razonIndex);
+                                        },
+                                        selected: _selectedRoute ==
+                                            RouteNames.razonIndex,
+                                      ),
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 16.0),
+                                        leading:
+                                            const Icon(Icons.groups, size: 27),
+                                        title: const Text('Clientes',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            )),
+                                        onTap: () async {
+                                          await _navigateTo(
+                                              context, RouteNames.clienteIndex);
+                                        },
+                                        selected: _selectedRoute ==
+                                            RouteNames.clienteIndex,
+                                      ),
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 16.0),
+                                        leading: const Icon(
+                                            Icons.precision_manufacturing,
+                                            size: 27),
+                                        title: const Text('Máquinas',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            )),
+                                        onTap: () async {
+                                          await _navigateTo(
+                                              context, RouteNames.machineIndex);
+                                        },
+                                        selected: _selectedRoute ==
+                                            RouteNames.machineIndex,
+                                      ),
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 16.0),
+                                        leading: const Icon(
+                                            Icons.format_color_fill,
+                                            size: 27),
+                                        title: const Text('Taras',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            )),
+                                        onTap: () async {
+                                          await _navigateTo(
+                                              context, RouteNames.taraIndex);
+                                        },
+                                        selected: _selectedRoute ==
+                                            RouteNames.taraIndex,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                      (currentUser.catProfile!.profileId == 2 ||
+                              currentUser.catProfile!.profileId == 3 ||
+                              currentUser.catProfile!.profileId == 4)
+                          // Operador, op. cliente y supervisor
+                          ? ListTileTheme(
+                              iconColor: Color(0xffE7E7E7),
+                              child: AppExpansionTile(
+                                backgroundColor: Colors.white10,
+                                title: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading:
+                                      const Icon(Icons.assignment, size: 27),
+                                  title: const Text(
+                                    PageTitles.formWorks,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    await _navigateTo(
+                                        context, RouteNames.ordersWork);
+                                  },
+                                  selected:
+                                      _selectedRoute == RouteNames.ordersWork,
+                                ),
+                                children: [
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: 16.0),
+                                    leading: const Icon(Icons.delivery_dining,
+                                        size: 27),
+                                    title: const Text("Ordenes de entrega",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                        )),
+                                    onTap: () async {
+                                      await _navigateTo(
+                                          context, RouteNames.oeIndex);
+                                    },
+                                    selected:
+                                        _selectedRoute == RouteNames.oeIndex,
+                                  ),
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: 16.0),
+                                    leading: const Icon(Icons.assignment_return,
+                                        size: 27),
+                                    title: const Text('Devoluciones',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                        )),
+                                    onTap: () async {
+                                      //await _navigateTo(context, RouteNames.taraIndex);
+                                    },
+                                    //selected: _selectedRoute == RouteNames.taraIndex,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(),
+                      (currentUser.catProfile!.profileId == 1 ||
+                              currentUser.catProfile!.profileId == 4 ||
+                              currentUser.catProfile!.profileId == 5)
+                          // Administrador, supervisor y consulta
+                          ? ListTileTheme(
+                              iconColor: Color(0xffE7E7E7),
+                              child: ListTile(
+                                leading: const Icon(Icons.bar_chart, size: 27),
+                                title: const Text(
+                                  PageTitles.reports,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                onTap: () async {
+                                  await _navigateTo(
+                                      context, RouteNames.reports);
+                                },
+                                selected: _selectedRoute == RouteNames.reports,
+                              ),
+                            )
+                          : Container(),
                       ListTileTheme(
                         iconColor: Color(0xffE7E7E7),
                         child: ListTile(
-                          leading:
-                              const Icon(Icons.admin_panel_settings, size: 27),
+                          leading: const Icon(Icons.logout, size: 27),
                           title: const Text(
-                            PageTitles.admin,
+                            "Cerrar Sesión",
                             style: TextStyle(
                               fontSize: 13,
                             ),
                           ),
-                          onTap: () async {
-                            await _navigateTo(context, RouteNames.home);
+                          onTap: () {
+                            GeneralDialog().logoutDialog(context);
+                            ListUsersProvider().logOut();
                           },
-                          selected: _selectedRoute == RouteNames.home,
+                          //selected: _selectedRoute == RouteNames.settings,
                         ),
                       ),
-                      ListTileTheme(
-                          iconColor: Color(0xffE7E7E7),
-                          child: ListTile(
-                            leading: const Icon(Icons.settings, size: 27),
-                            title: const Text(
-                              PageTitles.settings,
-                              style: TextStyle(
-                                fontSize: 13,
-                              ),
-                            ),
-                            onTap: () async {
-                              await _navigateTo(context, RouteNames.settings);
-                            },
-                            selected: _selectedRoute == RouteNames.settings,
-                          )),
-                      ListTileTheme(
-                        iconColor: Color(0xffE7E7E7),
-                        child: AppExpansionTile(
-                          backgroundColor: Colors.white10,
-                          title: ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            leading: const Icon(Icons.assignment, size: 27),
-                            title: const Text(
-                              PageTitles.formWorks,
-                              style: TextStyle(
-                                fontSize: 13,
-                              ),
-                            ),
-                            onTap: () async {
-                              await _navigateTo(context, RouteNames.ordersWork);
-                            },
-                            selected: _selectedRoute == RouteNames.ordersWork,
-                          ),
-                          children: [
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading:
-                                  const Icon(Icons.delivery_dining, size: 27),
-                              title: const Text("Ordenes de entrega",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(context, RouteNames.oeIndex);
-                              },
-                              selected: _selectedRoute == RouteNames.oeIndex,
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading:
-                                  const Icon(Icons.assignment_return, size: 27),
-                              title: const Text('Devoluciones',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                //await _navigateTo(context, RouteNames.taraIndex);
-                              },
-                              //selected: _selectedRoute == RouteNames.taraIndex,
-                            ),
-                          ],
-                        ),
-                      ),
-                      ListTileTheme(
-                        iconColor: Color(0xffE7E7E7),
-                        child: AppExpansionTile(
-                          backgroundColor: Colors.white10,
-                          title: ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            leading: const Icon(Icons.menu_book, size: 27),
-                            title: const Text(
-                              PageTitles.catalogs,
-                              style: TextStyle(
-                                fontSize: 13,
-                              ),
-                            ),
-                            onTap: () async {
-                              await _navigateTo(context, RouteNames.catalogs);
-                            },
-                            selected: _selectedRoute == RouteNames.catalogs,
-                          ),
-                          children: [
-                            ListTile(
-                              // contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.public, size: 27),
-                              title: const Text(PageTitles.paises,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(context, RouteNames.paises);
-                              },
-                              selected: _selectedRoute == RouteNames.paises,
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.brush, size: 27),
-                              title: const Text('Diseños',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(
-                                    context, RouteNames.designIndex);
-                              },
-                              selected:
-                                  _selectedRoute == RouteNames.designIndex,
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.color_lens, size: 27),
-                              title: const Text('Tintas',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(
-                                    context, RouteNames.tintaIndex);
-                              },
-                              selected: _selectedRoute == RouteNames.tintaIndex,
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading:
-                                  const Icon(Icons.corporate_fare, size: 27),
-                              title: const Text('Plantas',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(
-                                    context, RouteNames.plantsIndex);
-                              },
-                              selected:
-                                  _selectedRoute == RouteNames.plantsIndex,
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.topic, size: 27),
-                              title: const Text('Razones',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(
-                                    context, RouteNames.razonIndex);
-                              },
-                              selected: _selectedRoute == RouteNames.razonIndex,
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.groups, size: 27),
-                              title: const Text('Clientes',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(
-                                    context, RouteNames.clienteIndex);
-                              },
-                              selected:
-                                  _selectedRoute == RouteNames.clienteIndex,
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading: const Icon(Icons.precision_manufacturing,
-                                  size: 27),
-                              title: const Text('Máquinas',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(
-                                    context, RouteNames.machineIndex);
-                              },
-                              selected:
-                                  _selectedRoute == RouteNames.machineIndex,
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.only(left: 16.0),
-                              leading:
-                                  const Icon(Icons.format_color_fill, size: 27),
-                              title: const Text('Taras',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  )),
-                              onTap: () async {
-                                await _navigateTo(
-                                    context, RouteNames.taraIndex);
-                              },
-                              selected: _selectedRoute == RouteNames.taraIndex,
-                            ),
-                          ],
-                        ),
-                      ),
-                      /*const Divider(
-                    color: Color(0xffF5F6F5),
-                  ),*/
-                      ListTileTheme(
-                          iconColor: Color(0xffE7E7E7),
-                          child: ListTile(
-                            leading: const Icon(Icons.bar_chart, size: 27),
-                            title: const Text(
-                              PageTitles.reports,
-                              style: TextStyle(
-                                fontSize: 13,
-                              ),
-                            ),
-                            onTap: () async {
-                              await _navigateTo(context, RouteNames.reports);
-                            },
-                            selected: _selectedRoute == RouteNames.reports,
-                          )),
-                      ListTileTheme(
-                          iconColor: Color(0xffE7E7E7),
-                          child: ListTile(
-                            leading: const Icon(Icons.logout, size: 27),
-                            title: const Text(
-                              "Cerrar Sesión",
-                              style: TextStyle(
-                                fontSize: 13,
-                              ),
-                            ),
-                            onTap: () {
-                              GeneralDialog().logoutDialog(context);
-                              ListUsersProvider().logOut();
-                            },
-                            //selected: _selectedRoute == RouteNames.settings,
-                          )),
                     ],
                   ),
                 ),

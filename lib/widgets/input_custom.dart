@@ -3,6 +3,7 @@ import 'package:general_products_web/resources/colors.dart';
 
 class CustomInput extends StatelessWidget {
   final String hint;
+  final TextInputType? keyboardType;
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final String? errorText;
@@ -10,6 +11,7 @@ class CustomInput extends StatelessWidget {
   CustomInput({
     Key? key,
     required this.hint,
+    this.keyboardType,
     this.controller,
     this.onChanged,
     this.errorText,
@@ -23,6 +25,7 @@ class CustomInput extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: TextField(
+        keyboardType: keyboardType,
         onChanged: onChanged,
         controller: controller,
         obscureText: isPassword,

@@ -10,6 +10,9 @@ class RouteNames {
   static const String authorizeUser = "/authorize";
   static const String editUser = "/edit";
 
+  // Acceso
+  static const String access = '/access';
+
   //CRUD Taras
   static const String taraIndex = "/catalog/taras";
   static const String taraCreate = "/catalog/taras/create";
