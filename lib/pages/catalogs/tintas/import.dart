@@ -11,7 +11,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
-import 'package:general_products_web/widgets/tinta/tinta_dialog.dart';
+import 'package:general_products_web/widgets/catalogs/tinta/tinta_dialog.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
 
 class TintaImport extends StatefulWidget {

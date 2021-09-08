@@ -1,16 +1,15 @@
-// import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
-import 'package:general_products_web/provider/tinta/tintasProvider.dart';
+import 'package:general_products_web/provider/catalogs/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/widgets/tinta/table_tinta.dart';
+import 'package:general_products_web/widgets/catalogs/tinta/table_tinta.dart';
 
 class TintasIndex extends StatefulWidget {
   @override
@@ -347,7 +346,6 @@ class _TintasIndexState extends State<TintasIndex> {
       pathFilter = pathFilter + "&id_cat_estatus=${status.idCatEstatus}";
     }
 
-    print(pathFilter);
     setState(() {
       isLoading = true;
     });

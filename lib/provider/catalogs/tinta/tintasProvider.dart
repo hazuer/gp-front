@@ -1,19 +1,8 @@
-// import 'dart:html';
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:csv/csv.dart';
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
-// import 'package:file_picker/file_picker.dart';
-import 'package:general_products_web/models/tinta/tintasModel.dart';
+import 'package:general_products_web/models/catalogs/tinta/catTintasModel.dart';
+import 'package:general_products_web/models/catalogs/tinta/dtTintasModel.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
-// import 'package:gx_file_picker/gx_file_picker.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-//import 'package:grizzly_io/io_loader.dart';
-
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TintasProvider {
   RoutesProvider routes = RoutesProvider();

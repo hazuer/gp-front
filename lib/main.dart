@@ -15,10 +15,10 @@ import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega
 import 'package:general_products_web/pages/razon/edit.dart';
 import 'package:general_products_web/pages/razon/index.dart';
 import 'package:general_products_web/pages/razon/store.dart';
-import 'package:general_products_web/pages/tintas/edit.dart';
-import 'package:general_products_web/pages/tintas/import.dart';
-import 'package:general_products_web/pages/tintas/index.dart';
-import 'package:general_products_web/pages/tintas/store.dart';
+import 'package:general_products_web/pages/catalogs/tintas/edit.dart';
+import 'package:general_products_web/pages/catalogs/tintas/import.dart';
+import 'package:general_products_web/pages/catalogs/tintas/index.dart';
+import 'package:general_products_web/pages/catalogs/tintas/store.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'app/auth/login.dart';
 import 'constants/route_names.dart';

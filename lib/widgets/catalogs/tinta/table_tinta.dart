@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/tinta/tintasModel.dart';
+import 'package:general_products_web/models/catalogs/tinta/catTintasModel.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/widgets/tinta/tinta_dialog.dart';
+import 'package:general_products_web/widgets/catalogs/tinta/tinta_dialog.dart';
 
 class TableTintaList extends StatefulWidget {
   const TableTintaList({Key? key}) : super(key: key);

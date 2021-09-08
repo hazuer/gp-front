@@ -1,4 +1,4 @@
-  import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';
+import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';
  /*
  * Clase que define los atributos de la tabla del listado de paises
  */

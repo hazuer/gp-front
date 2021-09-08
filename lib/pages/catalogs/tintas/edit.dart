@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
-import 'package:general_products_web/provider/tinta/tintasProvider.dart';
+import 'package:general_products_web/provider/catalogs/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/widgets/tinta/tinta_dialog.dart';
+import 'package:general_products_web/widgets/catalogs/tinta/tinta_dialog.dart';
 
 class TintaEdit extends StatefulWidget {
   const TintaEdit({Key? key}) : super(key: key);
