@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/authorize_user.dart';
-import 'package:general_products_web/pages/catalogs/pais/create.dart';
-import 'package:general_products_web/pages/catalogs/pais/edit.dart';
+import 'pages/catalogs/pais/create.dart';
+import 'pages/catalogs/pais/edit.dart';
+import 'pages/catalogs/pais/index.dart';
 import 'package:general_products_web/pages/cliente/edit.dart';
 import 'package:general_products_web/pages/cliente/index.dart';
 import 'package:general_products_web/pages/cliente/store.dart';
-import 'package:general_products_web/pages/edit_country_page.dart';
 import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
 import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/create.dart';
 import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/index.dart';
-import 'package:general_products_web/pages/paises_page.dart';
 import 'package:general_products_web/pages/razon/edit.dart';
 import 'package:general_products_web/pages/razon/index.dart';
 import 'package:general_products_web/pages/razon/store.dart';
@@ -101,7 +100,7 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
         RouteNames.editUser: (_) => EditUserPage(),
         // Paises
-        RouteNames.paises: (_) => PaisesPage(),
+        RouteNames.paisesIndex: (_) => PaisesIndex(),
         RouteNames.paisCreate: (_) => PaisCreate(),
         RouteNames.paisEdit: (_) => PaisEdit(),
         RouteNames.taraIndex: (_) => TaraIndex(),

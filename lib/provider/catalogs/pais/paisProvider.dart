@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/list_paises_model.dart';
+import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';
+import 'package:general_products_web/models/catalogs/pais/dtPaisModel.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 
@@ -136,69 +136,21 @@ class ListPaisesProvider {
     }
   }
 
-  Future habilitarPais(int idPais, int idStatus) async {
+    Future changeStatusPaisProvider(int idCatPais, int idCatStatus) async {
     RxVariables.errorMessage = '';
-    String url = routes.urlBase + routes.desactivarPais;
+    String url = routes.urlBase + routes.changeEstatusPais;
 
     try {
       final dio = Dio();
-
-      final data = {'id_cat_pais': idPais, 'id_cat_estatus': idStatus};
-
+      final data = {'id_cat_pais': idCatPais, 'id_cat_estatus': idCatStatus};
       final resp = await dio.post(url, data: data, options: headerWithToken);
-
-      print(resp.data);
       await listPaises();
-      return resp.data;
-    } on DioError catch (e) {
-      RxVariables.errorMessage = e.response!.data
+      RxVariables.errorMessage = resp.data["message"]
           .toString()
           .replaceAll("{", "")
           .replaceAll("[", "")
           .replaceAll("}", "")
           .replaceAll("]", "");
-      return null;
-    }
-  }
-
-  Future deshabilitarPais(int idPais, int idStatus) async {
-    RxVariables.errorMessage = '';
-    String url = routes.urlBase + routes.desactivarPais;
-
-    try {
-      final dio = Dio();
-
-      final data = {'id_cat_pais': idPais, 'id_cat_estatus': idStatus};
-
-      final resp = await dio.post(url, data: data, options: headerWithToken);
-
-      print(resp.data);
-      await listPaises();
-      return resp.data;
-    } on DioError catch (e) {
-      RxVariables.errorMessage = e.response!.data
-          .toString()
-          .replaceAll("{", "")
-          .replaceAll("[", "")
-          .replaceAll("}", "")
-          .replaceAll("]", "");
-      return null;
-    }
-  }
-
-  Future eliminarPais(int idPais, int idStatus) async {
-    RxVariables.errorMessage = '';
-    String url = routes.urlBase + routes.desactivarPais;
-
-    try {
-      final dio = Dio();
-
-      final data = {'id_cat_pais': idPais, 'id_cat_estatus': idStatus};
-
-      final resp = await dio.post(url, data: data, options: headerWithToken);
-
-      print(resp.data);
-      await listPaises();
       return resp.data;
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data

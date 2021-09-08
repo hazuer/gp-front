@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
-
-import 'package:general_products_web/models/list_paises_model.dart';
+import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/widgets/general_dialog.dart';
+import 'package:general_products_web/widgets/catalogs/pais/paisDialog.dart';
 
 class TablePaisesList extends StatefulWidget {
   const TablePaisesList({Key? key}) : super(key: key);
@@ -14,7 +13,7 @@ class TablePaisesList extends StatefulWidget {
 }
 
 class _TablePaisesListState extends State<TablePaisesList> {
-  GeneralDialog dialogs = GeneralDialog();
+  PaisDialog dialogs = PaisDialog();
   bool isLoading = false;
 
   @override
@@ -124,8 +123,9 @@ class _TablePaisesListState extends State<TablePaisesList> {
                                     icon: Icon(Icons.check_box_rounded,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      dialogs.showEnalbledCountryDialog(
-                                          context, snapshot.data![index]);
+                                      dialogs.dialogChangeStatusPais(
+                                          context, snapshot.data![index],"activar",
+                                              1);
                                     },
                                   ),
                                   IconButton(
@@ -146,8 +146,9 @@ class _TablePaisesListState extends State<TablePaisesList> {
                                     icon: Icon(Icons.not_interested_outlined,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      dialogs.showDisabledCountryDialog(
-                                          context, snapshot.data![index]);
+                                      dialogs.dialogChangeStatusPais(
+                                          context, snapshot.data![index],"desactivar",
+                                                2);
                                     },
                                   ),
                                   IconButton(
@@ -155,8 +156,9 @@ class _TablePaisesListState extends State<TablePaisesList> {
                                     icon: Icon(Icons.delete,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      dialogs.showDeleteCountryDialog(
-                                          context, snapshot.data![index]);
+                                      dialogs.dialogChangeStatusPais(
+                                          context, snapshot.data![index], "eliminar",
+                                              3);
                                     },
                                   ),
                                 ],
@@ -182,18 +184,6 @@ class _TablePaisesListState extends State<TablePaisesList> {
           }
         },
       ),
-      // child: StreamBuilder(
-      //   stream: rxVariables.listWorkZonesSelectedStream,
-      //   builder:
-      //       (BuildContext context, AsyncSnapshot<List<PaisesList>> snapshot) {
-      //     if (snapshot.hasError) {
-      //       return Text(RxVariables.errorMessage);
-      //     }
-      //     if(snapshot.hasData) {
-      //       if(snapshot.data!.is)
-      //     }
-      //   },
-      // ),
     );
   }
 }

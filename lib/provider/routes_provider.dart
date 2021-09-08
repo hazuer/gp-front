@@ -27,7 +27,7 @@ class RoutesProvider {
   String listPaises = "catalogo/listar-paises";
   String editarPais = "catalogo/editar-paises";
   String crearPais = "catalogo/crear-paises";
-  String desactivarPais = "catalogo/editar-estatus-paises";
+  String changeEstatusPais = "catalogo/editar-estatus-paises";
 
   String listClientes = "catalogo/listar-clientes";
   String editarClientes = "catalogo/editar-clientes";

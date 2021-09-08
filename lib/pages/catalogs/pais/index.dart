@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/status_model.dart';
-import 'package:general_products_web/provider/list_paises_provider.dart';
+import 'package:general_products_web/provider/catalogs/pais/paisProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/widgets/table_paises.dart';
+import 'package:general_products_web/widgets/catalogs/pais/tblPais.dart';
 
-class PaisesPage extends StatefulWidget {
+class PaisesIndex extends StatefulWidget {
   @override
-  _PaisesPageState createState() => _PaisesPageState();
+  _PaisesIndexState createState() => _PaisesIndexState();
 }
 
-class _PaisesPageState extends State<PaisesPage> {
+class _PaisesIndexState extends State<PaisesIndex> {
   late Future futurePaises;
   late Future futureFields;
   bool isLoading = false;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/provider/list_paises_provider.dart';
+import 'package:general_products_web/provider/catalogs/pais/paisProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
+import 'package:general_products_web/widgets/catalogs/pais/paisDialog.dart';
 
 class PaisEdit extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class PaisEdit extends StatefulWidget {
 class _PaisEditState extends State<PaisEdit> {
   ListPaisesProvider listPaisesProvider = ListPaisesProvider();
   final paisController = TextEditingController();
-  TaraDialog dialogs = TaraDialog();
+  PaisDialog dialogs = PaisDialog();
   bool isLoading = false;
 
   @override

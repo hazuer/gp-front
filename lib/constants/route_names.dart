@@ -16,24 +16,24 @@ class RouteNames {
   static const String taraEdit = "/catalog/taras/edit";
   //static const String taraDestroy = "/catalog/taras/destroy";
 
-  static const String paises = '/paises';
+  static const String paisesIndex = '/catalog/paises';
   static const String paisCreate = '/catalog/paises/create';
-  static const String paisEdit = '/edit-country';
+  static const String paisEdit = '/catalog/paises/edit';
 
   //CRUD Clientes
   static const String clienteIndex = '/catalog/clientes';
-  static const String clienteUpdate = '/catalog/clientes/update';
-  static const String clienteStore = '/catalog/clientes/store';
+  static const String clienteUpdate = '/catalog/clientes/edit';
+  static const String clienteStore = '/catalog/clientes/create';
 
   // CRUD Razones
   static const String razonIndex = '/catalog/razones';
-  static const String razonUpdate = '/catalog/razones/update';
-  static const String razonStore = '/catalog/razones/store';
+  static const String razonUpdate = '/catalog/razones/edit';
+  static const String razonStore = '/catalog/razones/create';
 
   // CRUD Tintas
   static const String tintaIndex = '/catalog/tintas';
-  static const String tintaUpdate = '/catalog/tintas/update';
-  static const String tintaStore = '/catalog/tintas/store';
+  static const String tintaUpdate = '/catalog/tintas/edit';
+  static const String tintaStore = '/catalog/tintas/create';
   static const String tintaImport = '/catalog/tintas/import';
 
   //CRUD Plantas
