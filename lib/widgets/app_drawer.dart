@@ -371,6 +371,21 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                   ),
                                   ListTile(
                                     contentPadding: EdgeInsets.only(left: 16.0),
+                                    leading: const Icon(Icons.delivery_dining,
+                                        size: 27),
+                                    title: const Text("OE - Adiciones",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                        )),
+                                    onTap: () async {
+                                      await _navigateTo(
+                                          context, RouteNames.oeAdicionesIndex);
+                                    },
+                                    selected: _selectedRoute ==
+                                        RouteNames.oeAdicionesIndex,
+                                  ),
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: 16.0),
                                     leading: const Icon(Icons.assignment_return,
                                         size: 27),
                                     title: const Text('Devoluciones',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/provider/settings/parametros_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/models/catalogs/tara/catTaraModel.dart';
