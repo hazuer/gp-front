@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/models/catalogs/tinta/catTintasModel.dart';
+import 'package:general_products_web/provider/catalogs/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
-import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
 
-class MachineDialog {
+class TintaDialog {
   Future showInfoDialog(
       BuildContext context, String title, String detail) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Center(
@@ -46,7 +45,7 @@ class MachineDialog {
                           onPressed: () {
                             Navigator.pop(context);
                             // Navigator.pushReplacementNamed(
-                            //     context, RouteNames.machineIndex);
+                            //     context, RouteNames.tintaIndex);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,
@@ -62,11 +61,8 @@ class MachineDialog {
     );
   }
 
-  Future dialogChangeStatusMachine(
-      BuildContext context,
-      CatMachineModel alertDialogMachineDisable,
-      String accion,
-      int idCatStatus) async {
+  Future dialogChangeStatusTinta(BuildContext context,
+      InkList alertDialogTintaDisable, String accion, int idCatStatus) async {
     bool isLoading = false;
     return showDialog(
       context: context,
@@ -76,7 +72,7 @@ class MachineDialog {
             return AlertDialog(
               title: Center(
                   child: Text(
-                "¿Desea $accion la máquina: ${alertDialogMachineDisable.nombreMaquina}?",
+                "¿Desea $accion la tinta: ${alertDialogTintaDisable.nombreTinta}?",
                 textAlign: TextAlign.center,
               )),
               content: isLoading
@@ -140,18 +136,19 @@ class MachineDialog {
                             setState(() {
                               isLoading = true;
                             });
-                            await MachinesProvider()
-                                .changeStatusMachineProvider(
-                                    alertDialogMachineDisable.idCatMaquina!,
+                            await TintasProvider()
+                                .editarEstatusTinta(
+                                    alertDialogTintaDisable.idCatTinta!,
                                     idCatStatus)
                                 .then((value) {
+                              //print(value.toString());
                               if (value == null) {
                                 setState(() {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
                                 showInfoDialog(context, "¡Error!",
-                                    "Ocurrió un error al $accion la maquina : ${RxVariables.errorMessage}");
+                                    "Ocurrió un error al $accion la tinta : ${RxVariables.errorMessage}");
                               } else {
                                 final typeAlert =
                                     (value["result"]) ? "¡Éxito!" : "¡Error!";

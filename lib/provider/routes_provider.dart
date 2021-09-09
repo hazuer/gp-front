@@ -31,7 +31,7 @@ class RoutesProvider {
   String listPaises = "catalogo/listar-paises";
   String editarPais = "catalogo/editar-paises";
   String crearPais = "catalogo/crear-paises";
-  String desactivarPais = "catalogo/editar-estatus-paises";
+  String changeEstatusPais = "catalogo/editar-estatus-paises";
 
   String listClientes = "catalogo/listar-clientes";
   String editarClientes = "catalogo/editar-clientes";
@@ -47,6 +47,7 @@ class RoutesProvider {
   String editarDisenos = "catalogo/editar-disenos";
   String changeEstatusDisenos = "catalogo/editar-estatus-disenos";
   String buscarTintas = 'catalogo/datos-diseno';
+  String importDesign = 'catalogo/importar-disenos-csv';
 
   //Taras
   String listarTaras = "catalogo/listar-taras";

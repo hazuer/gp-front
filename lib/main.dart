@@ -3,24 +3,23 @@ import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/admin/pantalla_de_acceso.dart';
 import 'package:general_products_web/pages/authorize_user.dart';
-import 'package:general_products_web/pages/catalogs/pais/create.dart';
-import 'package:general_products_web/pages/catalogs/pais/edit.dart';
+import 'pages/catalogs/pais/create.dart';
+import 'pages/catalogs/pais/edit.dart';
+import 'pages/catalogs/pais/index.dart';
 import 'package:general_products_web/pages/cliente/edit.dart';
 import 'package:general_products_web/pages/cliente/index.dart';
 import 'package:general_products_web/pages/cliente/store.dart';
-import 'package:general_products_web/pages/edit_country_page.dart';
 import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
 import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/create.dart';
 import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/index.dart';
-import 'package:general_products_web/pages/paises_page.dart';
-import 'package:general_products_web/pages/razon/edit.dart';
-import 'package:general_products_web/pages/razon/index.dart';
-import 'package:general_products_web/pages/razon/store.dart';
-import 'package:general_products_web/pages/tintas/edit.dart';
-import 'package:general_products_web/pages/tintas/import.dart';
-import 'package:general_products_web/pages/tintas/index.dart';
-import 'package:general_products_web/pages/tintas/store.dart';
+import 'package:general_products_web/pages/catalogs/razon/edit.dart';
+import 'package:general_products_web/pages/catalogs/razon/index.dart';
+import 'package:general_products_web/pages/catalogs/razon/create.dart';
+import 'package:general_products_web/pages/catalogs/tintas/edit.dart';
+import 'package:general_products_web/pages/catalogs/tintas/import.dart';
+import 'package:general_products_web/pages/catalogs/tintas/index.dart';
+import 'package:general_products_web/pages/catalogs/tintas/store.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'app/auth/login.dart';
 import 'constants/route_names.dart';
@@ -44,6 +43,7 @@ import 'pages/catalogs/machine/edit.dart';
 import 'pages/catalogs/design/index.dart';
 import 'pages/catalogs/design/create.dart';
 import 'pages/catalogs/design/edit.dart';
+import 'pages/catalogs/design/import.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,7 +103,7 @@ class GeneralProductsApp extends StatelessWidget {
         // Acceso
         RouteNames.access: (_) => PantallaDeAcceso(),
         // Paises
-        RouteNames.paises: (_) => PaisesPage(),
+        RouteNames.paisesIndex: (_) => PaisesIndex(),
         RouteNames.paisCreate: (_) => PaisCreate(),
         RouteNames.paisEdit: (_) => PaisEdit(),
         RouteNames.taraIndex: (_) => TaraIndex(),
@@ -113,8 +113,8 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.clienteUpdate: (_) => ClienteEdit(),
         RouteNames.clienteStore: (_) => ClienteStore(),
         RouteNames.razonIndex: (_) => RazonesIndex(),
-        RouteNames.razonUpdate: (_) => RazonEdit(),
-        RouteNames.razonStore: (_) => RazonStore(),
+        RouteNames.razonEdit: (_) => RazonEdit(),
+        RouteNames.razonCreate: (_) => RazonCreate(),
         RouteNames.tintaIndex: (_) => TintasIndex(),
         RouteNames.tintaUpdate: (_) => TintaEdit(),
         RouteNames.tintaStore: (_) => TintaStore(),
@@ -132,6 +132,7 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.designIndex: (_) => DesignIndex(),
         RouteNames.designCreate: (_) => DesignCreate(),
         RouteNames.designEdit: (_) => DesignEdit(),
+        RouteNames.designImport: (_) => DesignImport(),
 
         // Ordenes de entrega
         RouteNames.oeIndex: (_) => OrdenesEntregaIndex(),

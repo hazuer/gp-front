@@ -282,7 +282,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     isLoading: false,
                                     onPressed: () =>
                                         Navigator.pushReplacementNamed(
-                                            context, RouteNames.paises),
+                                            context, RouteNames.paisesIndex),
                                   ),
                                   SizedBox(height: 15),
                                   CustomButton(
@@ -486,7 +486,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                             isLoading: false,
                                             onPressed: () =>
                                                 Navigator.pushReplacementNamed(
-                                                    context, RouteNames.paises),
+                                                    context,
+                                                    RouteNames.paisesIndex),
                                           ),
                                           SizedBox(width: 15),
                                           CustomButton(

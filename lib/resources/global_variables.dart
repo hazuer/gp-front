@@ -2,17 +2,18 @@ import 'package:general_products_web/models/catalogs/design/designsModel.dart';
 import 'package:general_products_web/models/cliente/list_clientes_model.dart';
 import 'package:general_products_web/models/customer_model.dart';
 import 'package:general_products_web/models/data_list_user_model.dart';
-import 'package:general_products_web/models/list_paises_model.dart';
+import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';
+import 'package:general_products_web/models/catalogs/pais/dtPaisModel.dart';
 import 'package:general_products_web/models/list_users_model.dart';
 import 'package:general_products_web/models/login_response.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/ordenesEntregaModel.dart';
 import 'package:general_products_web/models/plant_model.dart';
-import 'package:general_products_web/models/razon/dtRazonModel.dart';
-import 'package:general_products_web/models/razon/razonModel.dart';
-import 'package:general_products_web/models/razon/razonesModel.dart';
+import 'package:general_products_web/models/catalogs/razon/dtRazonModel.dart';
+import 'package:general_products_web/models/catalogs/razon/catRazonModel.dart';
 import 'package:general_products_web/models/search_user_response.dart';
 import 'package:general_products_web/models/settings/ParametrosModel.dart';
-import 'package:general_products_web/models/tinta/tintasModel.dart';
+import 'package:general_products_web/models/catalogs/tinta/catTintasModel.dart';
+import 'package:general_products_web/models/catalogs/tinta/dtTintasModel.dart';
 import 'package:rxdart/rxdart.dart';
 //Taras
 import 'package:general_products_web/models/tara/dtTaraModel.dart';
@@ -69,13 +70,9 @@ class RxVariables {
 
   // Razones
   static RazonModel gvRazonSelected = RazonModel();
-  static ReasonsList razonSelected = ReasonsList();
   static DtRazonesModel gvListRazones = DtRazonesModel(reasonsList: []);
   final gvBeSubListRazones = BehaviorSubject<List<RazonModel>>();
   Stream<List<RazonModel>> get listRazonesStream => gvBeSubListRazones.stream;
-
-  final listRazonesFilter = BehaviorSubject<List<ReasonsList>>();
-  Stream<List<ReasonsList>> get listRazonesStream2 => listRazonesFilter.stream;
 
   // Tintas
   final listTintasFilter = BehaviorSubject<List<InkList>>();
@@ -138,7 +135,6 @@ class RxVariables {
     listDesignsFilter.close();
     gvBeSubListTaras.close();
     gvBeSubListRazones.close();
-    listRazonesFilter.close();
     listTintasFilter.close();
     gvBeSubListMachines.close();
     gvBeSubListPlants.close();

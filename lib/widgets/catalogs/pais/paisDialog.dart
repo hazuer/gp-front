@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/tara/catTaraModel.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-
-class TaraDialog {
+import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';
+import 'package:general_products_web/provider/catalogs/pais/paisProvider.dart';
+class PaisDialog {
   Future showInfoDialog(
       BuildContext context, String title, String detail) async {
     return showDialog<void>(
@@ -55,9 +54,9 @@ class TaraDialog {
     );
   }
 
-  Future dialogChangeStatusTara(
+  Future dialogChangeStatusPais(
       BuildContext context,
-      CatTaraModel alertDialogTaraDisable,
+      CountriesList alertDialogPaisDisable,
       String accion,
       int idCatStatus) async {
     bool isLoading = false;
@@ -69,7 +68,7 @@ class TaraDialog {
             return AlertDialog(
               title: Center(
                   child: Text(
-                "¿Desea $accion la tara: ${alertDialogTaraDisable.nombreTara}?",
+                "¿Desea $accion el país: ${alertDialogPaisDisable.nombrePais}?",
                 textAlign: TextAlign.center,
               )),
               content: isLoading
@@ -133,19 +132,18 @@ class TaraDialog {
                             setState(() {
                               isLoading = true;
                             });
-                            await TarasProvider()
-                                .changeStatusTaraProvider(
-                                    alertDialogTaraDisable.idCatTara!,
+                            await ListPaisesProvider()
+                                .changeStatusPaisProvider(
+                                    alertDialogPaisDisable.idCatPais!,
                                     idCatStatus)
                                 .then((value) {
-                              //print(value.toString());
                               if (value == null) {
                                 setState(() {
                                   isLoading = false;
                                 });
                                 Navigator.pop(context);
                                 showInfoDialog(context, "¡Error!",
-                                    "Ocurrió un error al $accion la tara : ${RxVariables.errorMessage}");
+                                    "Ocurrió un error al $accion el país : ${RxVariables.errorMessage}");
                               } else {
                                 final typeAlert =
                                     (value["result"]) ? "¡Éxito!" : "¡Error!";

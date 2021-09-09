@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/catalogs/tinta/catTintasModel.dart';
-import 'package:general_products_web/provider/catalogs/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/catalogs/tinta/tinta_dialog.dart';
 
-class TableTinta extends StatefulWidget {
-  const TableTinta({Key? key}) : super(key: key);
+class TableTintaList extends StatefulWidget {
+  const TableTintaList({Key? key}) : super(key: key);
 
   @override
-  _TableTintaState createState() => _TableTintaState();
+  _TableTintaListState createState() => _TableTintaListState();
 }
 
-class _TableTintaState extends State<TableTinta> {
+class _TableTintaListState extends State<TableTintaList> {
   TintaDialog tintaDialog = TintaDialog();
-  TintasProvider tintasProvider = TintasProvider();
-
   bool isLoading = false;
-  late Future futureTintas;
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(

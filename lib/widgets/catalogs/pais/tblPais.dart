@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/catalogs/tinta/catTintasModel.dart';
-import 'package:general_products_web/provider/catalogs/tinta/tintasProvider.dart';
+import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/widgets/catalogs/tinta/tinta_dialog.dart';
+import 'package:general_products_web/widgets/catalogs/pais/paisDialog.dart';
 
-class TableTinta extends StatefulWidget {
-  const TableTinta({Key? key}) : super(key: key);
+class TablePaisesList extends StatefulWidget {
+  const TablePaisesList({Key? key}) : super(key: key);
 
   @override
-  _TableTintaState createState() => _TableTintaState();
+  _TablePaisesListState createState() => _TablePaisesListState();
 }
 
-class _TableTintaState extends State<TableTinta> {
-  TintaDialog tintaDialog = TintaDialog();
-  TintasProvider tintasProvider = TintasProvider();
-
+class _TablePaisesListState extends State<TablePaisesList> {
+  PaisDialog dialogs = PaisDialog();
   bool isLoading = false;
-  late Future futureTintas;
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.5,
       child: StreamBuilder(
-        stream: rxVariables.listTintasStream,
-        builder: (BuildContext context, AsyncSnapshot<List<InkList>> snapshot) {
+        stream: rxVariables.listPaisesStream,
+        builder: (BuildContext context,
+            AsyncSnapshot<List<CountriesList>> snapshot) {
           if (snapshot.hasError) {
             return Center(
                 child: Container(
@@ -37,12 +34,13 @@ class _TableTintaState extends State<TableTinta> {
                       valueColor:
                           AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),
                     )));
+            // return Text(RxVariables.errorMessage);
           }
           if (snapshot.hasData) {
             if (snapshot.data!.isEmpty) {
               return Text(
-                "No hay tintas por mostrar",
-                style: TextStyle(color: GPColors.PrimaryColor, fontSize: 18),
+                'No hay registros por mostrar',
+                style: TextStyle(color: GPColors.PrimaryColor, fontSize: 13),
                 textAlign: TextAlign.center,
               );
             } else {
@@ -59,42 +57,12 @@ class _TableTintaState extends State<TableTinta> {
                     columnSpacing: 30,
                     horizontalMargin: 0,
                     headingRowColor: MaterialStateColor.resolveWith(
-                      (states) {
-                        return GPColors.PrimaryColor;
-                      },
-                    ),
+                        (states) => GPColors.PrimaryColor),
                     columns: [
                       DataColumn(
                         label: Expanded(
                           child: Text(
-                            'Tinta',
-                            style: TextStyle(color: Colors.white, fontSize: 13),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Código GP',
-                            style: TextStyle(color: Colors.white, fontSize: 13),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Código SAP',
-                            style: TextStyle(color: Colors.white, fontSize: 13),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Planta',
+                            'Países',
                             style: TextStyle(color: Colors.white, fontSize: 13),
                             textAlign: TextAlign.center,
                           ),
@@ -121,46 +89,16 @@ class _TableTintaState extends State<TableTinta> {
                     ],
                     rows: List.generate(snapshot.data!.length, (index) {
                       return DataRow(
-                        color: MaterialStateColor.resolveWith(
-                          (states) {
-                            return index % 2 == 0
+                        color: MaterialStateColor.resolveWith((states) =>
+                            index % 2 == 0
                                 ? GPColors.PrimaryColor.withOpacity(0.06)
-                                : Colors.white;
-                          },
-                        ),
+                                : Colors.white),
                         cells: [
                           DataCell(
                             Align(
                               alignment: Alignment.center,
                               child: Text(
-                                snapshot.data![index].nombreTinta ?? '',
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ),
-                          ),
-                          DataCell(
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                snapshot.data![index].codigoGp ?? '',
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ),
-                          ),
-                          DataCell(
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                snapshot.data![index].codigoCliente ?? '',
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ),
-                          ),
-                          DataCell(
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                snapshot.data![index].nombrePlanta ?? '',
+                                snapshot.data![index].nombrePais ?? '',
                                 style: TextStyle(fontSize: 13),
                               ),
                             ),
@@ -182,54 +120,45 @@ class _TableTintaState extends State<TableTinta> {
                                 children: [
                                   IconButton(
                                     tooltip: 'Activar',
-                                    onPressed: () {
-                                      tintaDialog.dialogChangeStatusTinta(
-                                          context,
-                                          snapshot.data![index],
-                                          'activar',
-                                          1);
-                                    },
                                     icon: Icon(Icons.check_box_rounded,
                                         size: 18, color: GPColors.PrimaryColor),
+                                    onPressed: () {
+                                      dialogs.dialogChangeStatusPais(
+                                          context, snapshot.data![index],"activar",
+                                              1);
+                                    },
                                   ),
                                   IconButton(
                                     tooltip: 'Editar',
+                                    icon: Icon(Icons.edit,
+                                        size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      RxVariables.tintaSelected =
+                                      RxVariables.countrySelected =
                                           snapshot.data![index];
                                       Navigator.pushNamed(
                                         context,
-                                        RouteNames.tintaUpdate,
+                                        RouteNames.paisEdit,
                                       );
                                     },
-                                    icon: Icon(Icons.edit,
-                                        size: 18, color: GPColors.PrimaryColor),
                                   ),
                                   IconButton(
-                                    tooltip: "Desactivar",
+                                    tooltip: 'Desactivar',
+                                    icon: Icon(Icons.not_interested_outlined,
+                                        size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      tintaDialog.dialogChangeStatusTinta(
-                                          context,
-                                          snapshot.data![index],
-                                          'desactivar',
-                                          2);
+                                      dialogs.dialogChangeStatusPais(
+                                          context, snapshot.data![index],"desactivar",
+                                                2);
                                     },
-                                    icon: Icon(
-                                      Icons.not_interested_outlined,
-                                      size: 18,
-                                      color: GPColors.PrimaryColor,
-                                    ),
                                   ),
                                   IconButton(
                                     tooltip: 'Eliminar',
                                     icon: Icon(Icons.delete,
                                         size: 18, color: GPColors.PrimaryColor),
                                     onPressed: () {
-                                      tintaDialog.dialogChangeStatusTinta(
-                                          context,
-                                          snapshot.data![index],
-                                          'eliminar',
-                                          3);
+                                      dialogs.dialogChangeStatusPais(
+                                          context, snapshot.data![index], "eliminar",
+                                              3);
                                     },
                                   ),
                                 ],

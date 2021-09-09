@@ -1,48 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/provider/catalogs/pais/paisProvider.dart';
+import 'package:general_products_web/models/plant_model.dart';
+import 'package:general_products_web/models/status_model.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/provider/catalogs/razon/razonesProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
-
+import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/widgets/catalogs/pais/paisDialog.dart';
+import 'package:general_products_web/widgets/catalogs/razon/razonDialog.dart';
 
-class PaisEdit extends StatefulWidget {
+class RazonEdit extends StatefulWidget {
+  const RazonEdit({Key? key}) : super(key: key);
+
   @override
-  _PaisEditState createState() => _PaisEditState();
+  _RazonEditState createState() => _RazonEditState();
 }
 
-class _PaisEditState extends State<PaisEdit> {
-  ListPaisesProvider listPaisesProvider = ListPaisesProvider();
-  final paisController = TextEditingController();
-  PaisDialog dialogs = PaisDialog();
+class _RazonEditState extends State<RazonEdit> {
+  late Future futureFields;
   bool isLoading = false;
+  TextEditingController razonCtrl = TextEditingController();
+  RazonDialog dialogs = RazonDialog();
+  Plant plant = Plant();
+  StatusModel status = StatusModel();
+  RazonesProvider razonesProvider = RazonesProvider();
+  ListUsersProvider listProvider = ListUsersProvider();
+
+  final GlobalKey<AppExpansionTileState> plantKey = new GlobalKey();
+  final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
   @override
   void initState() {
-    paisController.text = RxVariables.countrySelected.nombrePais!;
+    futureFields = listProvider.listUsers();
+    razonCtrl.text = RxVariables.gvRazonSelected.razon!;
+    plant.idCatPlanta = RxVariables.gvRazonSelected.idCatPlanta!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final paisId = ModalRoute.of(context)!.settings.arguments;
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     return AppScaffold(
-      pageTitle: "Catálogos / Países / Editar",
+      pageTitle: 'Catálogos / Razones / Editar',
       backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
           child: Column(
-            children: [
+            children: <Widget>[
               Container(
-                  width: double.infinity,
-                  //height: MediaQuery.of(context).size.width*.8,
-                  margin:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                  child: Column(children: <Widget>[
+                width: double.infinity,
+                //height: MediaQuery.of(context).size.width*.8,
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                child: Column(
+                  children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width,
                       color: Color(0xffffffff),
@@ -60,18 +73,14 @@ class _PaisEditState extends State<PaisEdit> {
                           ),
                           Divider(),
                           SizedBox(height: 10),
-                          // __ __
-                          //|  \  \ ___  _ _
-                          //|     |/ . \| | |
-                          //|_|_|_|\___/|__/
                           displayMobileLayout
                               ? ListView(
                                   shrinkWrap: true,
                                   children: [
-                                    SizedBox(height: 15),
                                     CustomInput(
-                                        controller: paisController,
-                                        hint: "* Nombre País"),
+                                        hint: '* Razón', controller: razonCtrl),
+                                    SizedBox(height: 15),
+                                    listPlants(),
                                     SizedBox(height: 15),
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
@@ -79,17 +88,19 @@ class _PaisEditState extends State<PaisEdit> {
                                       title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
-                                        if (paisController.text == "") {
+                                        if (razonCtrl.text == "" ||
+                                            plant.idCatPlanta == null) {
                                           dialogs.showInfoDialog(
                                               context,
                                               "¡Atención!",
                                               "Favor de validar los campos marcados con asterisco (*)");
                                         } else {
-                                          await ListPaisesProvider()
-                                              .editPais(
-                                                  RxVariables.countrySelected
-                                                      .idCatPais!,
-                                                  paisController.text.trim())
+                                          await RazonesProvider()
+                                              .editarRazon(
+                                                  RxVariables.gvRazonSelected
+                                                      .idCatRazon!,
+                                                  razonCtrl.text.trim(),
+                                                  plant.idCatPlanta!)
                                               .then((value) {
                                             if (value == null) {
                                               setState(() {
@@ -99,7 +110,7 @@ class _PaisEditState extends State<PaisEdit> {
                                               dialogs.showInfoDialog(
                                                   context,
                                                   "¡Error!",
-                                                  "Ocurrió un error al editar el país : ${RxVariables.errorMessage}");
+                                                  "Ocurrió un error al editar la razón : ${RxVariables.errorMessage}");
                                             } else {
                                               final typeAlert =
                                                   (value["result"])
@@ -117,12 +128,11 @@ class _PaisEditState extends State<PaisEdit> {
                                         }
                                       },
                                     ),
+                                    SizedBox(
+                                      height: 30,
+                                    ),
                                   ],
                                 )
-                              // _ _ _       _
-                              //| | | | ___ | |_
-                              //| | | |/ ._>| . \
-                              //|__/_/ \___.|___/
                               : Container(
                                   height:
                                       MediaQuery.of(context).size.height * .7,
@@ -130,21 +140,17 @@ class _PaisEditState extends State<PaisEdit> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        SizedBox(height: 20.0),
                                         Row(
                                           children: [
                                             Flexible(
                                                 child: CustomInput(
-                                                    controller: paisController,
-                                                    hint: "* Nombre País")),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            Flexible(
-                                                child: CustomButton(
+                                              controller: razonCtrl,
+                                              hint: '* Razón',
+                                            )),
+                                            SizedBox(width: 15),
+                                            Flexible(child: listPlants()),
+                                            SizedBox(width: 15),
+                                            CustomButton(
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
@@ -152,18 +158,20 @@ class _PaisEditState extends State<PaisEdit> {
                                               title: 'Guardar',
                                               isLoading: false,
                                               onPressed: () async {
-                                                if (paisController.text == "") {
+                                                if (razonCtrl.text == "" ||
+                                                    plant.idCatPlanta == null) {
                                                   dialogs.showInfoDialog(
                                                       context,
                                                       "¡Atención!",
                                                       "Favor de validar los campos marcados con asterisco (*)");
                                                 } else {
-                                                  await ListPaisesProvider()
-                                                      .editPais(
-                                                    RxVariables.countrySelected
-                                                        .idCatPais!,
-                                                    paisController.text.trim(),
-                                                  )
+                                                  await RazonesProvider()
+                                                      .editarRazon(
+                                                          RxVariables
+                                                              .gvRazonSelected
+                                                              .idCatRazon!,
+                                                          razonCtrl.text.trim(),
+                                                          plant.idCatPlanta!)
                                                       .then((value) {
                                                     if (value == null) {
                                                       setState(() {
@@ -173,7 +181,7 @@ class _PaisEditState extends State<PaisEdit> {
                                                       dialogs.showInfoDialog(
                                                           context,
                                                           "¡Error!",
-                                                          "Ocurrió un error al editar el país : ${RxVariables.errorMessage}");
+                                                          "Ocurrió un error al editar la razón : ${RxVariables.errorMessage}");
                                                     } else {
                                                       final typeAlert =
                                                           (value["result"])
@@ -193,9 +201,6 @@ class _PaisEditState extends State<PaisEdit> {
                                                   });
                                                 }
                                               },
-                                            )),
-                                            SizedBox(
-                                              width: 15,
                                             ),
                                           ],
                                         ),
@@ -205,11 +210,79 @@ class _PaisEditState extends State<PaisEdit> {
                                 ),
                         ],
                       ),
-                    )
-                  ]))
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget listPlants() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      child: AppExpansionTile(
+        key: plantKey,
+        initiallyExpanded: false,
+        title: Text(
+          plant.nombrePlanta ?? RxVariables.gvRazonSelected.nombrePlanta!,
+          style: TextStyle(color: Colors.black54, fontSize: 13),
+        ),
+        children: [
+          Container(
+            //height: MediaQuery.of(context).size.height*.2,
+            child: FutureBuilder(
+              future: futureFields,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: RxVariables.dataFromUsers.listPlants!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            plant =
+                                RxVariables.dataFromUsers.listPlants![index];
+                            plantKey.currentState!.collapse();
+                          });
+                        },
+                        child: Container(
+                          color: Colors.grey[100],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                    RxVariables.dataFromUsers.listPlants![index]
+                                        .nombrePlanta!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: .5,
+                                color: Colors.grey[300],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

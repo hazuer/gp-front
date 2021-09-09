@@ -1,48 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/provider/catalogs/pais/paisProvider.dart';
+import 'package:general_products_web/models/plant_model.dart';
+import 'package:general_products_web/models/status_model.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/provider/catalogs/tinta/tintasProvider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
-
+import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/widgets/catalogs/pais/paisDialog.dart';
+import 'package:general_products_web/widgets/catalogs/tinta/tinta_dialog.dart';
 
-class PaisEdit extends StatefulWidget {
+class TintaEdit extends StatefulWidget {
+  const TintaEdit({Key? key}) : super(key: key);
+
   @override
-  _PaisEditState createState() => _PaisEditState();
+  _TintaEditState createState() => _TintaEditState();
 }
 
-class _PaisEditState extends State<PaisEdit> {
-  ListPaisesProvider listPaisesProvider = ListPaisesProvider();
-  final paisController = TextEditingController();
-  PaisDialog dialogs = PaisDialog();
+class _TintaEditState extends State<TintaEdit> {
+  late Future futureTintas;
+  late Future futureFields;
   bool isLoading = false;
+  TextEditingController tintaCtrl = TextEditingController();
+  TextEditingController codigoGpCtrl = TextEditingController();
+  TextEditingController codigoSapCtrl = TextEditingController();
+  Plant plant = Plant();
+  TintaDialog dialogs = TintaDialog();
+  StatusModel status = StatusModel();
+  TintasProvider tintasProvider = TintasProvider();
+  ListUsersProvider listProvider = ListUsersProvider();
+
+  final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
   @override
   void initState() {
-    paisController.text = RxVariables.countrySelected.nombrePais!;
+    futureTintas = tintasProvider.listTintas();
+    tintaCtrl.text = RxVariables.tintaSelected.nombreTinta!;
+    codigoGpCtrl.text = RxVariables.tintaSelected.codigoGp!;
+    codigoSapCtrl.text = RxVariables.tintaSelected.codigoCliente!;
+
+    futureFields = listProvider.listUsers();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final paisId = ModalRoute.of(context)!.settings.arguments;
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
+    final nombrePlanta = RxVariables.tintaSelected.nombrePlanta!;
+    final actualPlant = RxVariables.dataFromUsers.listPlants!
+        .where((element) => element.nombrePlanta == nombrePlanta);
+    int? idPlanta;
+    for (var item in actualPlant) {
+      idPlanta = item.idCatPlanta!;
+    }
 
     return AppScaffold(
-      pageTitle: "Catálogos / Países / Editar",
+      pageTitle: 'Catálogos / Tintas / Editar',
       backButton: true,
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffF5F6F5),
           child: Column(
-            children: [
+            children: <Widget>[
               Container(
-                  width: double.infinity,
-                  //height: MediaQuery.of(context).size.width*.8,
-                  margin:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                  child: Column(children: <Widget>[
+                width: double.infinity,
+                //height: MediaQuery.of(context).size.width*.8,
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                child: Column(
+                  children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width,
                       color: Color(0xffffffff),
@@ -60,18 +85,20 @@ class _PaisEditState extends State<PaisEdit> {
                           ),
                           Divider(),
                           SizedBox(height: 10),
-                          // __ __
-                          //|  \  \ ___  _ _
-                          //|     |/ . \| | |
-                          //|_|_|_|\___/|__/
                           displayMobileLayout
                               ? ListView(
                                   shrinkWrap: true,
                                   children: [
+                                    CustomInput(
+                                        hint: 'Tinta', controller: tintaCtrl),
                                     SizedBox(height: 15),
                                     CustomInput(
-                                        controller: paisController,
-                                        hint: "* Nombre País"),
+                                        hint: 'Código GP',
+                                        controller: codigoGpCtrl),
+                                    SizedBox(height: 15),
+                                    CustomInput(
+                                        hint: 'Código Cliente',
+                                        controller: codigoSapCtrl),
                                     SizedBox(height: 15),
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
@@ -79,17 +106,23 @@ class _PaisEditState extends State<PaisEdit> {
                                       title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
-                                        if (paisController.text == "") {
+                                        if (tintaCtrl.text == "" ||
+                                            codigoGpCtrl.text == "" ||
+                                            codigoSapCtrl.text == "") {
                                           dialogs.showInfoDialog(
                                               context,
                                               "¡Atención!",
                                               "Favor de validar los campos marcados con asterisco (*)");
                                         } else {
-                                          await ListPaisesProvider()
-                                              .editPais(
-                                                  RxVariables.countrySelected
-                                                      .idCatPais!,
-                                                  paisController.text.trim())
+                                          await TintasProvider()
+                                              .editarTinta(
+                                            RxVariables
+                                                .tintaSelected.idCatTinta!,
+                                            tintaCtrl.text.trim(),
+                                            codigoSapCtrl.text.trim(),
+                                            codigoGpCtrl.text.trim(),
+                                            idPlanta!,
+                                          )
                                               .then((value) {
                                             if (value == null) {
                                               setState(() {
@@ -99,7 +132,7 @@ class _PaisEditState extends State<PaisEdit> {
                                               dialogs.showInfoDialog(
                                                   context,
                                                   "¡Error!",
-                                                  "Ocurrió un error al editar el país : ${RxVariables.errorMessage}");
+                                                  "Ocurrió un error al editar la tinta : ${RxVariables.errorMessage}");
                                             } else {
                                               final typeAlert =
                                                   (value["result"])
@@ -115,14 +148,20 @@ class _PaisEditState extends State<PaisEdit> {
                                             }
                                           });
                                         }
+                                        // await tintasProvider.editarTinta(
+                                        //   RxVariables.tintaSelected.idCatTinta!,
+                                        //   tintaCtrl.text.trim(),
+                                        //   codigoSapCtrl.text.trim(),
+                                        //   codigoGpCtrl.text.trim(),
+                                        //   idPlanta!,
+                                        // );
                                       },
+                                    ),
+                                    SizedBox(
+                                      height: 30,
                                     ),
                                   ],
                                 )
-                              // _ _ _       _
-                              //| | | | ___ | |_
-                              //| | | |/ ._>| . \
-                              //|__/_/ \___.|___/
                               : Container(
                                   height:
                                       MediaQuery.of(context).size.height * .7,
@@ -130,21 +169,24 @@ class _PaisEditState extends State<PaisEdit> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        SizedBox(height: 20.0),
                                         Row(
                                           children: [
                                             Flexible(
                                                 child: CustomInput(
-                                                    controller: paisController,
-                                                    hint: "* Nombre País")),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
+                                                    hint: 'Tinta',
+                                                    controller: tintaCtrl)),
+                                            SizedBox(width: 15),
                                             Flexible(
-                                                child: CustomButton(
+                                                child: CustomInput(
+                                                    hint: 'Código GP',
+                                                    controller: codigoGpCtrl)),
+                                            SizedBox(width: 15),
+                                            Flexible(
+                                                child: CustomInput(
+                                                    hint: 'Código Cliente',
+                                                    controller: codigoSapCtrl)),
+                                            SizedBox(width: 15),
+                                            CustomButton(
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
@@ -152,17 +194,22 @@ class _PaisEditState extends State<PaisEdit> {
                                               title: 'Guardar',
                                               isLoading: false,
                                               onPressed: () async {
-                                                if (paisController.text == "") {
+                                                if (tintaCtrl.text == "" ||
+                                                    codigoGpCtrl.text == "" ||
+                                                    codigoSapCtrl.text == "") {
                                                   dialogs.showInfoDialog(
                                                       context,
                                                       "¡Atención!",
                                                       "Favor de validar los campos marcados con asterisco (*)");
                                                 } else {
-                                                  await ListPaisesProvider()
-                                                      .editPais(
-                                                    RxVariables.countrySelected
-                                                        .idCatPais!,
-                                                    paisController.text.trim(),
+                                                  await TintasProvider()
+                                                      .editarTinta(
+                                                    RxVariables.tintaSelected
+                                                        .idCatTinta!,
+                                                    tintaCtrl.text.trim(),
+                                                    codigoSapCtrl.text.trim(),
+                                                    codigoGpCtrl.text.trim(),
+                                                    idPlanta!,
                                                   )
                                                       .then((value) {
                                                     if (value == null) {
@@ -173,7 +220,7 @@ class _PaisEditState extends State<PaisEdit> {
                                                       dialogs.showInfoDialog(
                                                           context,
                                                           "¡Error!",
-                                                          "Ocurrió un error al editar el país : ${RxVariables.errorMessage}");
+                                                          "Ocurrió un error al editar la tinta : ${RxVariables.errorMessage}");
                                                     } else {
                                                       final typeAlert =
                                                           (value["result"])
@@ -193,9 +240,6 @@ class _PaisEditState extends State<PaisEdit> {
                                                   });
                                                 }
                                               },
-                                            )),
-                                            SizedBox(
-                                              width: 15,
                                             ),
                                           ],
                                         ),
@@ -205,8 +249,10 @@ class _PaisEditState extends State<PaisEdit> {
                                 ),
                         ],
                       ),
-                    )
-                  ]))
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

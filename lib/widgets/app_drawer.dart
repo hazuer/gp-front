@@ -202,10 +202,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                             )),
                                         onTap: () async {
                                           await _navigateTo(
-                                              context, RouteNames.paises);
+                                              context, RouteNames.paisesIndex);
                                         },
-                                        selected:
-                                            _selectedRoute == RouteNames.paises,
+                                        selected: _selectedRoute ==
+                                            RouteNames.paisesIndex,
                                       ),
                                       ListTile(
                                         contentPadding:

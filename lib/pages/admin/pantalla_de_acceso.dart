@@ -120,7 +120,7 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                     description: 'Ver catálogos',
                                     onPressed: () =>
                                         Navigator.pushReplacementNamed(
-                                            context, RouteNames.paises),
+                                            context, RouteNames.paisesIndex),
                                   )
                                 : Container(),
                             // Expanded(child: SizedBox()),
@@ -176,102 +176,6 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                       ],
                     ),
                   )
-                // ? ListView(
-                //     // crossAxisAlignment: CrossAxisAlignment.center,
-                //     // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [
-                //       Row(
-                //         children: [
-                //           Expanded(child: SizedBox()),
-                //           (currentUser.catProfile!.profileId == 1)
-                //               // Administrador
-                //               ? SelectionBox(
-                //                   size: size,
-                //                   icon: Icons.account_circle,
-                //                   buttonText: 'Administrar',
-                //                   description: 'Permisos de usuarios',
-                //                   onPressed: () {
-                //                     print(
-                //                         RxVariables.loginResponse.data!.token);
-                //                     // print(RxVariables.userById.user!.nombre);
-                //                     // print(RxVariables.userSelected.nombre);
-                //                     // print(LoginResponse().data!.catProfile!.profileId);
-                //                     // print(LoginResponse().data!.catProfile!.nameProfile);
-
-                //                     Navigator.pushReplacementNamed(
-                //                         context, RouteNames.home);
-                //                   },
-                //                 )
-                //               : Container(),
-                //           SizedBox(width: 20),
-                //           (currentUser.catProfile!.profileId == 1)
-                //               // Administrador
-                //               ? SelectionBox(
-                //                   size: size,
-                //                   icon: Icons.dashboard,
-                //                   buttonText: 'Catálogos',
-                //                   description: 'Ver catálogos',
-                //                   onPressed: () =>
-                //                       Navigator.pushReplacementNamed(
-                //                           context, RouteNames.paises),
-                //                 )
-                //               : Container(),
-                //           Expanded(child: SizedBox()),
-                //         ],
-                //       ),
-                //       SizedBox(height: 20),
-                //       Row(
-                //         children: [
-                //           Expanded(child: SizedBox()),
-
-                //           // SizedBox(width: 20),
-                //           (currentUser.catProfile!.profileId == 1)
-                //               // Administrador
-                //               ? SelectionBox(
-                //                   size: size,
-                //                   icon: Icons.settings,
-                //                   buttonText: 'Configurar',
-                //                   description: 'Parametrizar sistema',
-                //                   onPressed: () =>
-                //                       Navigator.pushReplacementNamed(
-                //                           context, RouteNames.settings),
-                //                 )
-                //               : Container(),
-                //           SizedBox(width: 20),
-                //           (currentUser.catProfile!.profileId == 1 ||
-                //                   currentUser.catProfile!.profileId == 4 ||
-                //                   currentUser.catProfile!.profileId == 5)
-                //               // Administrador, supervisor y consulta
-                //               ? SelectionBox(
-                //                   size: size,
-                //                   icon: Icons.description,
-                //                   buttonText: 'Generar',
-                //                   description: 'Reportes',
-                //                   onPressed: () =>
-                //                       Navigator.pushReplacementNamed(
-                //                           context, RouteNames.reports),
-                //                 )
-                //               : Container(),
-                //           SizedBox(width: 20),
-                //           (currentUser.catProfile!.profileId == 2 ||
-                //                   currentUser.catProfile!.profileId == 3 ||
-                //                   currentUser.catProfile!.profileId == 4)
-                //               // Operador, op. cliente y supervisor
-                //               ? SelectionBox(
-                //                   size: size,
-                //                   icon: Icons.assignment_turned_in,
-                //                   buttonText: 'Generar',
-                //                   description: 'Ordenes de entrega',
-                //                   onPressed: () =>
-                //                       Navigator.pushReplacementNamed(
-                //                           context, RouteNames.oeCreate),
-                //                 )
-                //               : Container(),
-                //           Expanded(child: SizedBox()),
-                //         ],
-                //       ),
-                //     ],
-                //   )
                 : Column(children: [
                     Container(
                       child: Row(
@@ -343,7 +247,7 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                 buttonText: 'Catálogos',
                                 description: 'Ver catálogos',
                                 onPressed: () => Navigator.pushReplacementNamed(
-                                    context, RouteNames.paises),
+                                    context, RouteNames.paisesIndex),
                               )
                             : Container(),
                         SizedBox(width: 20),

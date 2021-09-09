@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/models/catalogs/razon/catRazonModel.dart';
+import 'package:general_products_web/provider/catalogs/razon/razonesProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
-import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
-
-class MachineDialog {
+class RazonDialog {
   Future showInfoDialog(
       BuildContext context, String title, String detail) async {
     return showDialog<void>(
@@ -46,7 +44,7 @@ class MachineDialog {
                           onPressed: () {
                             Navigator.pop(context);
                             // Navigator.pushReplacementNamed(
-                            //     context, RouteNames.machineIndex);
+                            //     context, RouteNames.razonIndex);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,
@@ -62,9 +60,9 @@ class MachineDialog {
     );
   }
 
-  Future dialogChangeStatusMachine(
+  Future dialogChangeStatusRazon(
       BuildContext context,
-      CatMachineModel alertDialogMachineDisable,
+      RazonModel alertDialogRazonDisable,
       String accion,
       int idCatStatus) async {
     bool isLoading = false;
@@ -76,7 +74,7 @@ class MachineDialog {
             return AlertDialog(
               title: Center(
                   child: Text(
-                "¿Desea $accion la máquina: ${alertDialogMachineDisable.nombreMaquina}?",
+                "¿Desea $accion la razón: ${alertDialogRazonDisable.razon}?",
                 textAlign: TextAlign.center,
               )),
               content: isLoading
@@ -140,9 +138,9 @@ class MachineDialog {
                             setState(() {
                               isLoading = true;
                             });
-                            await MachinesProvider()
-                                .changeStatusMachineProvider(
-                                    alertDialogMachineDisable.idCatMaquina!,
+                            await RazonesProvider()
+                                .changeStatusRazonProvider(
+                                    alertDialogRazonDisable.idCatRazon!,
                                     idCatStatus)
                                 .then((value) {
                               if (value == null) {
@@ -151,7 +149,7 @@ class MachineDialog {
                                 });
                                 Navigator.pop(context);
                                 showInfoDialog(context, "¡Error!",
-                                    "Ocurrió un error al $accion la maquina : ${RxVariables.errorMessage}");
+                                    "Ocurrió un error al $accion la razón : ${RxVariables.errorMessage}");
                               } else {
                                 final typeAlert =
                                     (value["result"]) ? "¡Éxito!" : "¡Error!";
