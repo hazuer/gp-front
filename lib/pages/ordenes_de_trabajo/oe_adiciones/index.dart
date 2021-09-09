@@ -7,7 +7,7 @@ import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
 import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
+import 'package:general_products_web/provider/catalogs/tara/tarasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
