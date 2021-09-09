@@ -113,8 +113,8 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.razonEdit: (_) => RazonEdit(),
         RouteNames.razonCreate: (_) => RazonCreate(),
         RouteNames.tintaIndex: (_) => TintasIndex(),
-        RouteNames.tintaUpdate: (_) => TintaEdit(),
-        RouteNames.tintaStore: (_) => TintaStore(),
+        RouteNames.tintaEdit: (_) => TintaEdit(),
+        RouteNames.tintaCreate: (_) => TintaStore(),
         RouteNames.tintaImport: (_) => TintaImport(),
         //Plantas
         RouteNames.plantsIndex: (_) => PlantIndex(),

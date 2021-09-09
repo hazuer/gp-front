@@ -8,8 +8,8 @@ import 'package:general_products_web/widgets/inputFloat_custom.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
-import 'package:general_products_web/widgets/tara/tblTara.dart';
+import 'package:general_products_web/provider/catalogs/tara/tarasProvider.dart';
+import 'package:general_products_web/widgets/catalogs/tara/tblTara.dart';
 
 import '../../../widgets/app_scaffold.dart';
 

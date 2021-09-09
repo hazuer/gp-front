@@ -3,8 +3,6 @@ import 'package:general_products_web/models/catalogs/design/designsModel.dart';
 import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/tara/catTaraModel.dart';
-import 'package:general_products_web/provider/tara/tarasProvider.dart';
 
 class DesignDialog {
   Future showInfoDialog(

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/tara/catTaraModel.dart';
+import 'package:general_products_web/models/catalogs/tara/catTaraModel.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_trabajo_dialog.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
 
 class TableOrdenesEntrega extends StatefulWidget {
   const TableOrdenesEntrega({Key? key}) : super(key: key);
