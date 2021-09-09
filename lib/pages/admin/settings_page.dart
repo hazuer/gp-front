@@ -56,15 +56,15 @@ class _SettingsPageState extends State<SettingsPage> {
         '${RxVariables.initialParameters['systemParams']['porcentaje_variacion_aceptado']}';
     variacionMaximaCtrl.text =
         '${RxVariables.initialParameters['systemParams']['variacion_maxima']}';
-    campoLote = (RxVariables.initialParameters['systemParams']
-                ['cantidad_programada'] ==
-            1)
-        ? true
-        : false;
-    cantidadProgramada =
+    campoLote =
         (RxVariables.initialParameters['systemParams']['campo_lote'] == 1)
             ? true
             : false;
+    cantidadProgramada = (RxVariables.initialParameters['systemParams']
+                ['campo_cantidad_programada'] ==
+            1)
+        ? true
+        : false;
     utilizarTara =
         (RxVariables.initialParameters['systemParams']['utiliza_tara'] == 1)
             ? true
@@ -93,31 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
     catPlanta.idCatPlanta =
         RxVariables.initialParameters['systemParams']['id_cat_planta'];
     catPlanta.nombrePlanta = currentUser.catPlant!.plantName;
-    // print(RxVariables.initialParameters['systemParams']['id_cat_planta']);
     print(catPlanta.idCatPlanta);
-    // late String name = '';
-    // RxVariables.dataFromUsers.listPlants!.forEach((element) {
-    //   print(element.idCatPlanta);
-    //   print(catPlanta.idCatPlanta);
-    //   if (element.idCatPlanta == catPlanta.idCatPlanta) {
-    //     // name = element.nombrePlanta!;
-    //     // print(element.idCatPlanta);
-    //     // print('Nombre interno: $name');
-    //   }
-    // });
-    // RxVariables.dataFromUsers.listPlants!.where((element) {
-    //   print(element.idCatPlanta);
-    //   print(catPlanta.idCatPlanta);
-    //   if (element.idCatPlanta == catPlanta.idCatPlanta) {
-    //     name = element.nombrePlanta!;
-    //     print(element.idCatPlanta);
-    //     print('Nombre interno: $name');
-    //   }
-    //   return true;
-    // });
-    // print('Nombre de la planta: $name');
-    // catPlanta.nombrePlanta = RxVariables.initialParameters['systemParams']['id_cat_planta']
-
     super.initState();
   }
 
@@ -163,8 +139,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                       Switch(
                                         value: campoLote,
                                         onChanged: (value) {
-                                          // print(RxVariables
-                                          //     .initialParameters.campoLote);
                                           setState(() {
                                             campoLote = value;
                                           });
@@ -498,7 +472,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             title: 'Guardar',
                                             isLoading: false,
                                             onPressed: () async {
-                                              await ParametrosProvider()
+                                              await parametrosProvider
                                                   .changeParameters(
                                                       catPlanta.idCatPlanta!,
                                                       campoLote,
@@ -537,7 +511,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                                     setState(() {
                                                       isLoading = false;
                                                     });
-                                                    Navigator.pop(context);
+                                                    // Navigator.pop(context);
                                                     dialogs.showInfoDialog(
                                                         context,
                                                         typeAlert,
@@ -632,77 +606,4 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-
-  // listParameters() {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
-  //     child: AppExpansionTile(
-  //       key: catParamsKey,
-  //       initiallyExpanded: false,
-  //       title: Text(
-  //         catParameters.variacionMaxima.toString(),
-  //         // catPlanta.nombrePlanta ?? "Planta",
-  //         style: TextStyle(color: Colors.black54, fontSize: 13),
-  //       ),
-  //       children: [
-  //         Container(
-  //           //height: MediaQuery.of(context).size.height*.2,
-  //           child: FutureBuilder(
-  //             future: futureParams,
-  //             builder: (BuildContext context, AsyncSnapshot snapshot) {
-  //               if (snapshot.hasData) {
-  //                 return ListView.builder(
-  //                   //physics: NeverScrollableScrollPhysics(),
-  //                   shrinkWrap: true,
-  //                   itemCount: RxVariables.parametrosModel.systemParams.length,
-  //                   // itemCount: RxVariables.dataFromUsers.listPlants!.length,
-  //                   itemBuilder: (BuildContext context, int index) {
-  //                     return GestureDetector(
-  //                       onTap: () {
-  //                         setState(() {
-  //                           catParameters =
-  //                               RxVariables.parametrosModel.systemParams[index];
-  //                           // catPlanta =
-  //                           //     RxVariables.dataFromUsers.listPlants![index];
-  //                           catParamsKey.currentState!.collapse();
-  //                         });
-  //                       },
-  //                       child: Container(
-  //                         color: Colors.grey[100],
-  //                         child: Column(
-  //                           crossAxisAlignment: CrossAxisAlignment.start,
-  //                           children: [
-  //                             Padding(
-  //                               padding: EdgeInsets.all(12),
-  //                               child: Text(
-  //                                   RxVariables.parametrosModel
-  //                                       .systemParams[index].variacionMaxima
-  //                                       .toString(),
-  //                                   // RxVariables.dataFromUsers.listPlants![index]
-  //                                   //     .nombrePlanta!,
-  //                                   style: TextStyle(
-  //                                       color: Colors.black54, fontSize: 13)),
-  //                             ),
-  //                             Container(
-  //                               width: double.infinity,
-  //                               height: .5,
-  //                               color: Colors.grey[300],
-  //                             )
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     );
-  //                   },
-  //                 );
-  //               } else {
-  //                 return CircularProgressIndicator();
-  //               }
-  //             },
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

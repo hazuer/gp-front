@@ -88,7 +88,7 @@ class ParametrosProvider {
         'campo_linea': campoLinea,
         'requiere_turno': requiereTurno,
         'variacion_maxima': variacionMaxima,
-        'porcentaje_aceptacion': porcentajeAceptacion,
+        'porcentaje_variacion_aceptado': porcentajeAceptacion,
         'utiliza_ph': utilizaPH,
         'mide_viscosidad': mideViscosidad,
         'utiliza_filtro': utilizaFiltro

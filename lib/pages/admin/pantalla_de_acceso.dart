@@ -13,7 +13,7 @@ class PantallaDeAcceso extends StatefulWidget {
 
 class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
   final currentUser = RxVariables.loginResponse.data!;
-  late final params;
+  late Future params;
 
   @override
   void initState() {
@@ -23,8 +23,8 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
       print(currentUser.catPlant!.plantId ?? 'No hay nada');
       print(currentUser.catPlant!.plantName ?? 'No hay nada');
       print(currentUser.catProfile!.nameProfile ?? 'No hay nada');
-      params = ParametrosProvider()
-          .getAllParameters(currentUser.catPlant!.plantId ?? 8);
+      params =
+          ParametrosProvider().getAllParameters(currentUser.catPlant!.plantId!);
     }
     super.initState();
   }
