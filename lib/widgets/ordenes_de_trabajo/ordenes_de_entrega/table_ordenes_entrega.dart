@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/ordenesEntregaModel.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/models/tara/catTaraModel.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_trabajo_dialog.dart';
-import 'package:general_products_web/widgets/tara/taraDialog.dart';
 
 class TableOrdenesEntrega extends StatefulWidget {
   const TableOrdenesEntrega({Key? key}) : super(key: key);
@@ -23,9 +22,9 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
       width: double.infinity,
       height: MediaQuery.of(context).size.height * .5,
       child: StreamBuilder(
-        stream: rxVariables.lsTarasFiltrosStream,
-        builder:
-            (BuildContext context, AsyncSnapshot<List<CatTaraModel>> snapshot) {
+        stream: rxVariables.listOrdersStream,
+        builder: (BuildContext context,
+            AsyncSnapshot<List<DeliveryOrdersList>> snapshot) {
           if (snapshot.hasError) {
             return Center(
                 child: Container(
@@ -63,7 +62,7 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                       DataColumn(
                         label: Expanded(
                           child: Text(
-                            'Orden de Fabricación',
+                            'Orden de\nFabricación',
                             style: TextStyle(color: Colors.white, fontSize: 13),
                             textAlign: TextAlign.center,
                           ),
@@ -108,16 +107,7 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                       DataColumn(
                         label: Expanded(
                           child: Text(
-                            'Maquina',
-                            style: TextStyle(color: Colors.white, fontSize: 13),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Text(
-                            'Adiciones',
+                            'Máquina',
                             style: TextStyle(color: Colors.white, fontSize: 13),
                             textAlign: TextAlign.center,
                           ),
@@ -154,7 +144,7 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  snapshot.data![index].nombreTara ?? "",
+                                  snapshot.data![index].ordenTrabajoOf ?? '',
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
@@ -163,7 +153,8 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  snapshot.data![index].nombreTara ?? "",
+                                  snapshot.data![index].fechaCreacion!
+                                      .toIso8601String(),
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
@@ -172,7 +163,9 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  snapshot.data![index].nombreTara ?? "",
+                                  snapshot.data![index]
+                                          .nombreOperadorResponsable ??
+                                      '',
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
@@ -181,7 +174,7 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  snapshot.data![index].nombreTara ?? "",
+                                  snapshot.data![index].nombreCliente ?? '',
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
@@ -190,7 +183,7 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  snapshot.data![index].nombreTara ?? "",
+                                  snapshot.data![index].estatusOt ?? '',
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
@@ -199,7 +192,7 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  snapshot.data![index].capacidad ?? "",
+                                  snapshot.data![index].nombreMaquina ?? '',
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
@@ -208,16 +201,7 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  snapshot.data![index].nombrePlanta ?? "",
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  snapshot.data![index].estatus ?? "",
+                                  snapshot.data![index].nombreDiseno ?? '',
                                   style: TextStyle(fontSize: 13),
                                 ),
                               ),
@@ -234,22 +218,22 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                                             size: 18,
                                             color: GPColors.PrimaryColor),
                                         onPressed: () {
-                                          dialogs
-                                              .dialogChangeStatusOrdenTrabajo(
-                                                  context,
-                                                  snapshot.data![index],
-                                                  "activar",
-                                                  1);
+                                          // dialogs
+                                          //     .dialogChangeStatusOrdenTrabajo(
+                                          //         context,
+                                          //         snapshot.data![index],
+                                          //         "activar",
+                                          //         1);
                                         },
                                       ),
                                       IconButton(
                                           tooltip: "Editar",
                                           //padding: EdgeInsets.zero,
                                           onPressed: () {
-                                            RxVariables.gvTaraSelectedById =
-                                                snapshot.data![index];
-                                            Navigator.pushNamed(
-                                                context, RouteNames.taraEdit);
+                                            // RxVariables.gvTaraSelectedById =
+                                            //     snapshot.data![index];
+                                            // Navigator.pushNamed(
+                                            //     context, RouteNames.taraEdit);
                                           },
                                           icon: Icon(Icons.edit,
                                               size: 18,
@@ -258,12 +242,12 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                                           tooltip: "Desactivar",
                                           //padding: EdgeInsets.zero,
                                           onPressed: () {
-                                            dialogs
-                                                .dialogChangeStatusOrdenTrabajo(
-                                                    context,
-                                                    snapshot.data![index],
-                                                    "desactivar",
-                                                    2);
+                                            // dialogs
+                                            //     .dialogChangeStatusOrdenTrabajo(
+                                            //         context,
+                                            //         snapshot.data![index],
+                                            //         "desactivar",
+                                            //         2);
                                           },
                                           icon: Icon(
                                             Icons.not_interested_outlined,
@@ -276,12 +260,12 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                                             size: 18,
                                             color: GPColors.PrimaryColor),
                                         onPressed: () {
-                                          dialogs
-                                              .dialogChangeStatusOrdenTrabajo(
-                                                  context,
-                                                  snapshot.data![index],
-                                                  "eliminar",
-                                                  3);
+                                          // dialogs
+                                          //     .dialogChangeStatusOrdenTrabajo(
+                                          //         context,
+                                          //         snapshot.data![index],
+                                          //         "eliminar",
+                                          //         3);
                                         },
                                       ),
                                     ]),

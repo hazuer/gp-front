@@ -61,9 +61,21 @@ class ParametrosProvider {
       int variacionMaxima,
       int porcentajeAceptacion,
       bool utilizaPH,
-      bool viscocidad,
+      bool mideViscosidad,
       bool utilizaFiltro) async {
     RxVariables.errorMessage = '';
+
+    print(idPlanta);
+    print(campoLote);
+    print(cantidadProgramada);
+    print(utilizaTara);
+    print(campoLinea);
+    print(requiereTurno);
+    print(variacionMaxima);
+    print(porcentajeAceptacion);
+    print(utilizaPH);
+    print(mideViscosidad);
+    print(utilizaFiltro);
 
     String url = routes.urlBase + routes.changeParameters;
     try {
@@ -78,13 +90,19 @@ class ParametrosProvider {
         'variacion_maxima': variacionMaxima,
         'porcentaje_aceptacion': porcentajeAceptacion,
         'utiliza_ph': utilizaPH,
-        'mide_viscosidad': viscocidad,
+        'mide_viscosidad': mideViscosidad,
         'utiliza_filtro': utilizaFiltro
       };
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
-
+      print(resp.data);
       await getAllParameters(idPlanta);
+      RxVariables.errorMessage = resp.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
       return resp.data;
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]

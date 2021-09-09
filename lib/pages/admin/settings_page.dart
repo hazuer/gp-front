@@ -47,6 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late bool utilizaFiltro;
   late bool utilizaPH;
   late bool mideViscocidad;
+  late int viscocidad;
 
   @override
   void initState() {
@@ -84,6 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
         (RxVariables.initialParameters['systemParams']['mide_viscosidad'] == 1)
             ? true
             : false;
+
     utilizaFiltro =
         (RxVariables.initialParameters['systemParams']['utiliza_filtro'] == 1)
             ? true
@@ -439,7 +441,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       Row(
                                         children: [
                                           Expanded(child: SizedBox()),
-                                          Text('Variación Máxima'),
+                                          Text('Variación Aceptada'),
                                           SizedBox(width: 10),
                                           Flexible(
                                             child: CustomInput(
@@ -495,7 +497,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             title: 'Guardar',
                                             isLoading: false,
                                             onPressed: () async {
-                                              await parametrosProvider
+                                              await ParametrosProvider()
                                                   .changeParameters(
                                                       catPlanta.idCatPlanta!,
                                                       campoLote,

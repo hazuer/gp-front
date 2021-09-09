@@ -5,6 +5,7 @@ import 'package:general_products_web/models/data_list_user_model.dart';
 import 'package:general_products_web/models/list_paises_model.dart';
 import 'package:general_products_web/models/list_users_model.dart';
 import 'package:general_products_web/models/login_response.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/ordenesEntregaModel.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/razon/dtRazonModel.dart';
 import 'package:general_products_web/models/razon/razonModel.dart';
@@ -111,13 +112,16 @@ class RxVariables {
 
   // Parametrizar sistema
   static Map<String, dynamic> initialParameters = Map<String, dynamic>();
-  // final listParametersFilter = BehaviorSubject<ParametrosModel>();
-  // static ParametrosModel initialParameters = ParametrosModel();
-  // static ParametrosModel parametrosModel = ParametrosModel(systemParams: []);
-  // static SystemParams initialParameters = SystemParams();
   final listParametersFilter = BehaviorSubject<List<SystemParams>>();
   Stream<List<SystemParams>> get listParametersStream =>
       listParametersFilter.stream;
+
+  static DeliveryOrdersList orderSelected = DeliveryOrdersList();
+  static OrdenesDeEntregaModel listOrdenesEntrega =
+      OrdenesDeEntregaModel(deliveryOrdersList: []);
+  final listOrdersFilter = BehaviorSubject<List<DeliveryOrdersList>>();
+  Stream<List<DeliveryOrdersList>> get listOrdersStream =>
+      listOrdersFilter.stream;
 
   static final RxVariables _bloc = new RxVariables._internal();
 
@@ -140,6 +144,7 @@ class RxVariables {
     gvBeSubListPlants.close();
     gvBeSubListCatPais.close();
     listParametersFilter.close();
+    listOrdersFilter.close();
   }
 }
 

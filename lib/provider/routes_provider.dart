@@ -82,4 +82,7 @@ class RoutesProvider {
   String editarPlants = "catalogo/editar-plantas";
   String changeEstatusPlants = "catalogo/editar-estatus-planta";
   String paisesEstatusListas = "catalogo/paises-estatus-listas";
+
+  // Ordenes de trabajo
+  String listarOE = 'orden-de-entrega/listar';
 }
