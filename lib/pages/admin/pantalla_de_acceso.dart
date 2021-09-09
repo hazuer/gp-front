@@ -17,12 +17,7 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
 
   @override
   void initState() {
-    // final plant =
-    //     RxVariables.initialParameters['systemParams']['id_cat_planta'];
     if (currentUser.catProfile!.profileId == 1) {
-      print(currentUser.catPlant!.plantId ?? 'No hay nada');
-      print(currentUser.catPlant!.plantName ?? 'No hay nada');
-      print(currentUser.catProfile!.nameProfile ?? 'No hay nada');
       params =
           ParametrosProvider().getAllParameters(currentUser.catPlant!.plantId!);
     }
@@ -98,13 +93,6 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                     buttonText: 'Administrar',
                                     description: 'Permisos de usuarios',
                                     onPressed: () {
-                                      print(RxVariables
-                                          .loginResponse.data!.token);
-                                      // print(RxVariables.userById.user!.nombre);
-                                      // print(RxVariables.userSelected.nombre);
-                                      // print(LoginResponse().data!.catProfile!.profileId);
-                                      // print(LoginResponse().data!.catProfile!.nameProfile);
-
                                       Navigator.pushReplacementNamed(
                                           context, RouteNames.home);
                                     },
@@ -169,6 +157,21 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                             context, RouteNames.oeCreate),
                                   )
                                 : Container(),
+                            SizedBox(height: 20),
+                            (currentUser.catProfile!.profileId == 2 ||
+                                    currentUser.catProfile!.profileId == 3 ||
+                                    currentUser.catProfile!.profileId == 4)
+                                // Operador, op. cliente y supervisor
+                                ? SelectionBox(
+                                    size: size,
+                                    icon: Icons.post_add,
+                                    buttonText: 'Aditivos',
+                                    description: 'OE Adiciones',
+                                    onPressed: () =>
+                                        Navigator.pushReplacementNamed(context,
+                                            RouteNames.oeAdicionesIndex),
+                                  )
+                                : Container(),
                           ],
                         ),
                         // Expanded(child: SizedBox()),
@@ -227,12 +230,6 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                 buttonText: 'Administrar',
                                 description: 'Permisos de usuarios',
                                 onPressed: () {
-                                  print(RxVariables.loginResponse.data!.token);
-                                  // print(RxVariables.userById.user!.nombre);
-                                  // print(RxVariables.userSelected.nombre);
-                                  // print(LoginResponse().data!.catProfile!.profileId);
-                                  // print(LoginResponse().data!.catProfile!.nameProfile);
-
                                   Navigator.pushReplacementNamed(
                                       context, RouteNames.home);
                                 },
@@ -291,6 +288,20 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                 description: 'Ordenes de entrega',
                                 onPressed: () => Navigator.pushReplacementNamed(
                                     context, RouteNames.oeCreate),
+                              )
+                            : Container(),
+                        SizedBox(width: 20),
+                        (currentUser.catProfile!.profileId == 2 ||
+                                currentUser.catProfile!.profileId == 3 ||
+                                currentUser.catProfile!.profileId == 4)
+                            // Operador, op. cliente y supervisor
+                            ? SelectionBox(
+                                size: size,
+                                icon: Icons.post_add,
+                                buttonText: 'Aditivos',
+                                description: 'OE Adiciones',
+                                onPressed: () => Navigator.pushReplacementNamed(
+                                    context, RouteNames.oeAdicionesIndex),
                               )
                             : Container(),
                         Expanded(child: SizedBox()),

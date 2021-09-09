@@ -93,7 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
     catPlanta.idCatPlanta =
         RxVariables.initialParameters['systemParams']['id_cat_planta'];
     catPlanta.nombrePlanta = currentUser.catPlant!.plantName;
-    print(catPlanta.idCatPlanta);
+    // print(catPlanta.idCatPlanta);
     super.initState();
   }
 

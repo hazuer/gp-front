@@ -59,4 +59,9 @@ class RouteNames {
   static const String oeIndex = '/ordenes-de-trabajo/orden-de-entrega';
   static const String oeCreate = '/ordenes-de-trabajo/orden-de-entrega/create';
   static const String oeEdit = '/ordenes-de-trabajo/orden-de-entrega/edit';
+
+  //CRUD Ordenes de entrga Adiciones
+  //Actualizar a la orden correspondiente en cuanto esté el endpoint
+  static const String oeAdicionesIndex =
+      '/ordenes-de-trabajo/orden-de-entrega/adiciones';
 }
