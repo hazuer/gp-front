@@ -12,9 +12,9 @@ import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
 import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/create.dart';
 import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/index.dart';
-import 'package:general_products_web/pages/razon/edit.dart';
-import 'package:general_products_web/pages/razon/index.dart';
-import 'package:general_products_web/pages/razon/store.dart';
+import 'package:general_products_web/pages/catalogs/razon/edit.dart';
+import 'package:general_products_web/pages/catalogs/razon/index.dart';
+import 'package:general_products_web/pages/catalogs/razon/create.dart';
 import 'package:general_products_web/pages/catalogs/tintas/edit.dart';
 import 'package:general_products_web/pages/catalogs/tintas/import.dart';
 import 'package:general_products_web/pages/catalogs/tintas/index.dart';
@@ -110,8 +110,8 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.clienteUpdate: (_) => ClienteEdit(),
         RouteNames.clienteStore: (_) => ClienteStore(),
         RouteNames.razonIndex: (_) => RazonesIndex(),
-        RouteNames.razonUpdate: (_) => RazonEdit(),
-        RouteNames.razonStore: (_) => RazonStore(),
+        RouteNames.razonEdit: (_) => RazonEdit(),
+        RouteNames.razonCreate: (_) => RazonCreate(),
         RouteNames.tintaIndex: (_) => TintasIndex(),
         RouteNames.tintaUpdate: (_) => TintaEdit(),
         RouteNames.tintaStore: (_) => TintaStore(),

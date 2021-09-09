@@ -1,4 +1,3 @@
-
 /*
 Clase para la definición de los atributos de la entidad de tintas
 */

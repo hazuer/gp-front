@@ -7,9 +7,8 @@ import 'package:general_products_web/models/catalogs/pais/dtPaisModel.dart';
 import 'package:general_products_web/models/list_users_model.dart';
 import 'package:general_products_web/models/login_response.dart';
 import 'package:general_products_web/models/plant_model.dart';
-import 'package:general_products_web/models/razon/dtRazonModel.dart';
-import 'package:general_products_web/models/razon/razonModel.dart';
-import 'package:general_products_web/models/razon/razonesModel.dart';
+import 'package:general_products_web/models/catalogs/razon/dtRazonModel.dart';
+import 'package:general_products_web/models/catalogs/razon/catRazonModel.dart';
 import 'package:general_products_web/models/search_user_response.dart';
 import 'package:general_products_web/models/catalogs/tinta/catTintasModel.dart';
 import 'package:general_products_web/models/catalogs/tinta/dtTintasModel.dart';
@@ -45,7 +44,7 @@ class RxVariables {
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
   static String token = "";
-  //static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjBmMzkwN2RhZmEzNzRhMDk2MmNiMjAwZDI2MTQ0M2M5ZGU3YTExOGE1MjZhOWU1ZWUwOWM3YjdkZTlmMGE3Y2QyMzIzZjVmNWZhY2FjZWMiLCJpYXQiOjE2MzExMzQ5MTIsIm5iZiI6MTYzMTEzNDkxMiwiZXhwIjoxNjMxMTM4NTEyLCJzdWIiOiIxNiIsInNjb3BlcyI6W119.e7txO1DPY4_hF0eQHJ7sdLRSktTl-nZqCDjyiYJpi2IvaCQZCC5DbocGwZ3u_btLvpCKyKspLZI5Io68FZKVNY1bNrffCHWyzhGAonFiRrjRq2wciTNYE0hf86Ll87YMx4bbVuC3K4IYygFBUeTvjrg_bkCuEf9y0nnbeWidx19qE6NpDzaNJCn2omXKbDXQQ2XPdmfius2av3djPfDz04rgG-yEQMGkxzG5btLo_W6YxEjLtIifGlce-F_JeJtrvw-I-R2UX3Z_bY-0pwxsqyNkdxkTkazEU-rMXV1KBraXtaRZS_dul-7YwYUsu-uSgQrKu8RiqNNzVHrKIgVXzrE-LDLMphluzgq98K2htt2HAzkM8P0cNYbHUbxD0VqVjbwqLvmm4E7hNCN68J4j7_96_AG--WGHDxAF7B2qFj6ZDmpW8lhUpIDo3ug2-B058wHLR97khYR6btdmaaBkdN-WhOFklp2VDkmzSLFvgg3zjLYbMWPs7aoSFv1YZnkoqWYIu5VCXAuo_kMSUddvo0lqwEVCFjYqjL60iOR8nFIrHzr2fvFnpIyarqf5oc6OUJY-SKbS_3dZ4B2WwT-GAcIptY_W0h4byJWl8mUYrEqtk5gYXhnDQcgJmlIxZPr5Qc26tBSdHDuFOqb0sduSHuHzuqrFMTs9gdZJG1TCARU";
+  //static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZGNiNzhhZDEzZDBiOTlmOWViODIzZTM5NDExNjcwNjgyY2Y4MTQwMWFhY2Y2ZjBmNzUwZjBhMzlhMTA5NWJiOGYxODU4YTM1M2I2OTQzYTkiLCJpYXQiOjE2MzExNTcyMzcsIm5iZiI6MTYzMTE1NzIzNywiZXhwIjoxNjMxMTYwODM3LCJzdWIiOiIxNiIsInNjb3BlcyI6W119.mrrjZgK1iGzidCjvXeaxX3muxeHFgmIkWMwnTdHLns6I5lFNJrV3eqwmnrg_lbH1u9I5svouJtFP_4Dki5LBQwgVHdvOgWwiweOq3KJMkVWIbN_KJshnZNlrKmUXAMFcI-o4jkXiIt2CrdfT6Jt004meHr6lv8ma3FRmibP579scB74DWTjjUmlHaCMLd1CIjxkdAyOMB9RKYbnCeMhOPFPImlbAPP1G0h3gtlmk1CqhuOgaZ5FzEcY-JcAaiL1i0Un-RKVVKj5TTqtMkyIsUvld56b8ZcrS0uNFVYoYHI6U34hhqj9_NUtjb9pF96b-m_hvN2x3YmhKg-ZXTjmHcg2uDmmtzUPL15e8znpop09jhfOwdJmTpbEIbHEPzGviGpgie9Ut57tGx3t0suwUGSNRJSONY90mYVY85fi6BYw-KXF-RE3_BtsP_L7Exnf7OP9v023EI6sxFusiTTUU30O4tgCZuHVfDD2GxCO6hWhQCOUWsniFfhmplKnt8e4tbjofkrru2zPYcx4POeLYR0STlx0ExirEWIzIEZjjniyycV072Tc6wLfc3Ta_1dgyTxnM2wihGuKYBHKkEvRKWOycTUBreOfPWqW-ncjrhjjVRZ9m84afEG1iIecfBMltls3FMj-uCuDTluvSL6Ya7lFPgr-5nUYJELOp41ZJZqU";
 
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
@@ -68,13 +67,9 @@ class RxVariables {
 
   // Razones
   static RazonModel gvRazonSelected = RazonModel();
-  static ReasonsList razonSelected = ReasonsList();
   static DtRazonesModel gvListRazones = DtRazonesModel(reasonsList: []);
   final gvBeSubListRazones = BehaviorSubject<List<RazonModel>>();
   Stream<List<RazonModel>> get listRazonesStream => gvBeSubListRazones.stream;
-
-  final listRazonesFilter = BehaviorSubject<List<ReasonsList>>();
-  Stream<List<ReasonsList>> get listRazonesStream2 => listRazonesFilter.stream;
 
   // Tintas
   final listTintasFilter = BehaviorSubject<List<InkList>>();
@@ -124,7 +119,6 @@ class RxVariables {
     listDesignsFilter.close();
     gvBeSubListTaras.close();
     gvBeSubListRazones.close();
-    listRazonesFilter.close();
     listTintasFilter.close();
     gvBeSubListMachines.close();
     gvBeSubListPlants.close();

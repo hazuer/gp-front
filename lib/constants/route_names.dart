@@ -27,8 +27,8 @@ class RouteNames {
 
   // CRUD Razones
   static const String razonIndex = '/catalog/razones';
-  static const String razonUpdate = '/catalog/razones/edit';
-  static const String razonStore = '/catalog/razones/create';
+  static const String razonEdit = '/catalog/razones/edit';
+  static const String razonCreate = '/catalog/razones/create';
 
   // CRUD Tintas
   static const String tintaIndex = '/catalog/tintas';
