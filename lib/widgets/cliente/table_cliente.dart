@@ -162,7 +162,7 @@ class _TableClienteListState extends State<TableClienteList> {
                                           RxVariables.clienteSelected =
                                               snapshot.data![index];
                                           Navigator.pushNamed(context,
-                                              RouteNames.clienteUpdate);
+                                              RouteNames.clienteEdit);
                                         },
                                         icon: Icon(Icons.edit,
                                             size: 18,

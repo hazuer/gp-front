@@ -21,8 +21,8 @@ class RouteNames {
 
   //CRUD Clientes
   static const String clienteIndex = '/catalog/clientes';
-  static const String clienteUpdate = '/catalog/clientes/edit';
-  static const String clienteStore = '/catalog/clientes/create';
+  static const String clienteEdit = '/catalog/clientes/edit';
+  static const String clienteCreate = '/catalog/clientes/create';
 
   // CRUD Razones
   static const String razonIndex = '/catalog/razones';
