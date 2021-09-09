@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
+import 'package:general_products_web/pages/admin/pantalla_de_acceso.dart';
 import 'package:general_products_web/pages/authorize_user.dart';
 import 'pages/catalogs/pais/create.dart';
 import 'pages/catalogs/pais/edit.dart';
@@ -24,7 +25,7 @@ import 'app/auth/login.dart';
 import 'constants/route_names.dart';
 import 'pages/order_work_page.dart';
 import 'pages/home_page.dart';
-import 'pages/settings_page.dart';
+import 'pages/admin/settings_page.dart';
 import 'pages/slideshow_page.dart';
 import 'widgets/app_route_observer.dart';
 import 'pages/catalogs/tara/index.dart';
@@ -99,6 +100,8 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.register: (_) => RegisterPage(),
         RouteNames.authorizeUser: (_) => AuthorizeUserPage(),
         RouteNames.editUser: (_) => EditUserPage(),
+        // Acceso
+        RouteNames.access: (_) => PantallaDeAcceso(),
         // Paises
         RouteNames.paisesIndex: (_) => PaisesIndex(),
         RouteNames.paisCreate: (_) => PaisCreate(),

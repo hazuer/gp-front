@@ -6,10 +6,12 @@ import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';
 import 'package:general_products_web/models/catalogs/pais/dtPaisModel.dart';
 import 'package:general_products_web/models/list_users_model.dart';
 import 'package:general_products_web/models/login_response.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/ordenesEntregaModel.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/catalogs/razon/dtRazonModel.dart';
 import 'package:general_products_web/models/catalogs/razon/catRazonModel.dart';
 import 'package:general_products_web/models/search_user_response.dart';
+import 'package:general_products_web/models/settings/ParametrosModel.dart';
 import 'package:general_products_web/models/catalogs/tinta/catTintasModel.dart';
 import 'package:general_products_web/models/catalogs/tinta/dtTintasModel.dart';
 import 'package:rxdart/rxdart.dart';
@@ -104,6 +106,19 @@ class RxVariables {
   Stream<List<CatPaisModel>> get lsCatPaisFiltrosStream =>
       gvBeSubListCatPais.stream;
 
+  // Parametrizar sistema
+  static Map<String, dynamic> initialParameters = Map<String, dynamic>();
+  final listParametersFilter = BehaviorSubject<List<SystemParams>>();
+  Stream<List<SystemParams>> get listParametersStream =>
+      listParametersFilter.stream;
+
+  static DeliveryOrdersList orderSelected = DeliveryOrdersList();
+  static OrdenesDeEntregaModel listOrdenesEntrega =
+      OrdenesDeEntregaModel(deliveryOrdersList: []);
+  final listOrdersFilter = BehaviorSubject<List<DeliveryOrdersList>>();
+  Stream<List<DeliveryOrdersList>> get listOrdersStream =>
+      listOrdersFilter.stream;
+
   static final RxVariables _bloc = new RxVariables._internal();
 
   factory RxVariables() {
@@ -123,6 +138,8 @@ class RxVariables {
     gvBeSubListMachines.close();
     gvBeSubListPlants.close();
     gvBeSubListCatPais.close();
+    listParametersFilter.close();
+    listOrdersFilter.close();
   }
 }
 

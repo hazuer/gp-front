@@ -6,6 +6,7 @@ import 'package:general_products_web/models/catalogs/machine/catMachineModel.dar
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
 import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
 import 'package:general_products_web/provider/catalogs/tara/tarasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -21,13 +22,16 @@ class OrdenesEntregaIndex extends StatefulWidget {
 }
 
 class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
+  late Future futureOrdenEntrega;
   late Future futureMachines;
   late Future futureDesigns;
-  late Future futureTaras;
+  // late Future futureTaras;
   bool isLoading = false;
+  String headerFilter = '?porPagina = 20';
   StatusModel catEstatus = StatusModel();
 
-  TarasProvider tarasProvider = TarasProvider();
+  OrdenEntregaProvider ordenEntregaProvider = OrdenEntregaProvider();
+  // TarasProvider tarasProvider = TarasProvider();
   MachinesProvider machinesProvider = MachinesProvider();
   CatMachineModel catMachines = CatMachineModel();
 
@@ -42,15 +46,17 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
   TextEditingController clienteCtrl = TextEditingController();
   TextEditingController tintaCtrl = TextEditingController();
 
+  final GlobalKey<AppExpansionTileState> catOrdenEntregaKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catMachineKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catDesignKey = new GlobalKey();
 
   @override
   void initState() {
+    futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntrega();
     futureMachines = machinesProvider.getAllMachines();
     futureDesigns = designsProvider.getAllDesigns();
-    futureTaras = tarasProvider.getAllTaras();
+    // futureTaras = tarasProvider.getAllTaras();
     super.initState();
   }
 
@@ -110,6 +116,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                     CustomInput(
                                         controller: folioCtrl, hint: "Folio"),
                                     SizedBox(height: 15),
+                                    // Pendiente implementación del DateTime Picker
                                     CustomInput(
                                         controller: fechaCreacionCtrl,
                                         hint: "Fecha de Creación"),
@@ -128,10 +135,10 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                     SizedBox(height: 15),
                                     listDesigns(),
                                     SizedBox(height: 15),
-                                    CustomInput(
-                                        controller: fechaCierreCtrl,
-                                        hint: "Fecha Cierre OE"),
-                                    SizedBox(height: 15),
+                                    // CustomInput(
+                                    //     controller: fechaCierreCtrl,
+                                    //     hint: "Fecha Cierre OE"),
+                                    // SizedBox(height: 15),
                                     CustomInput(
                                         controller: tintaCtrl, hint: "Tinta"),
                                     SizedBox(height: 15),
@@ -141,7 +148,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                       title: "Buscar",
                                       isLoading: false,
                                       onPressed: () async {
-                                        // await applyFilter();
+                                        await applyFilter();
                                       },
                                     ),
                                     SizedBox(height: 15),
@@ -151,7 +158,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                       title: "Limpiar",
                                       isLoading: false,
                                       onPressed: () async {
-                                        // await clearFilters();
+                                        await clearFilters();
                                       },
                                     ),
                                     SizedBox(height: 30),
@@ -209,6 +216,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                               hint: 'Folio',
                                             )),
                                             SizedBox(width: 15),
+                                            // Pendiente implementación del DateTime Picker
                                             Flexible(
                                                 child: CustomInput(
                                               controller: fechaCreacionCtrl,
@@ -249,24 +257,24 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                           children: [
                                             Flexible(child: listDesigns()),
                                             SizedBox(width: 15),
-                                            Flexible(
-                                              child: CustomInput(
-                                                controller: fechaCierreCtrl,
-                                                hint: 'Fecha Cierre OE',
-                                              ),
-                                            ),
-                                            SizedBox(width: 15),
+                                            // Flexible(
+                                            //   child: CustomInput(
+                                            //     controller: fechaCierreCtrl,
+                                            //     hint: 'Fecha Cierre OE',
+                                            //   ),
+                                            // ),
+                                            // SizedBox(width: 15),
                                             IconButton(
                                               tooltip: "Buscar",
                                               onPressed: () async {
-                                                // await applyFilter();
+                                                await applyFilter();
                                               },
                                               icon: Icon(Icons.filter_alt),
                                             ),
                                             IconButton(
                                               tooltip: "Limpiar",
                                               onPressed: () async {
-                                                // await clearFilters();
+                                                await clearFilters();
                                               },
                                               icon: Icon(Icons.clear),
                                             ),
@@ -502,5 +510,67 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
         ],
       ),
     );
+  }
+
+  applyFilter() async {
+    headerFilter = '?porPagina=20';
+    if (ordenFabicacionCtrl.text.isNotEmpty) {
+      headerFilter =
+          headerFilter + "&orden_trabajo_of=${ordenFabicacionCtrl.text.trim()}";
+    }
+    if (folioCtrl.text.isNotEmpty) {
+      headerFilter =
+          headerFilter + "&id_orden_trabajo=${folioCtrl.text.trim()}";
+    }
+    if (fechaCreacionCtrl.text.isNotEmpty) {
+      headerFilter =
+          headerFilter + "&fecha_creacion=${fechaCreacionCtrl.text.trim()}";
+    }
+    if (operadorCtrl.text.isNotEmpty) {
+      headerFilter = headerFilter +
+          "&nombre_operador_responsable=${operadorCtrl.text.trim()}";
+    }
+    if (clienteCtrl.text.isNotEmpty) {
+      headerFilter =
+          headerFilter + "&nombre_cliente=${clienteCtrl.text.trim()}";
+    }
+    if (tintaCtrl.text.isNotEmpty) {
+      headerFilter = headerFilter + "&tintas=${tintaCtrl.text.trim()}";
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+    await ordenEntregaProvider
+        .getOrdenesDeEntregaWithFilters(headerFilter)
+        .then((value) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  clearFilters() async {
+    setState(() {
+      isLoading = false;
+    });
+    headerFilter = '?porPagina = 100';
+    ordenFabicacionCtrl.clear();
+    folioCtrl.clear();
+    fechaCreacionCtrl.clear();
+    operadorCtrl.clear();
+    clienteCtrl.clear();
+    tintaCtrl.clear();
+
+    setState(() {
+      isLoading = true;
+    });
+    await ordenEntregaProvider
+        .getOrdenesDeEntregaWithFilters(headerFilter)
+        .then((value) {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 }

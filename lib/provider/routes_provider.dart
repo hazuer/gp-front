@@ -14,6 +14,10 @@ class RoutesProvider {
   String recoverPwd = "recuperar-contraseña";
   String logOut = "cerrar-sesion";
 
+  // Settings
+  String listParameters = "administracion/parametrizar-sistema";
+  String changeParameters = "administracion/parametrizar-sistema-crear-editar";
+
   //Services
   String dataListUser = "datos-listar-usuarios";
   String listUsers =
@@ -79,4 +83,7 @@ class RoutesProvider {
   String editarPlants = "catalogo/editar-plantas";
   String changeEstatusPlants = "catalogo/editar-estatus-planta";
   String paisesEstatusListas = "catalogo/paises-estatus-listas";
+
+  // Ordenes de trabajo
+  String listarOE = 'orden-de-entrega/listar';
 }
