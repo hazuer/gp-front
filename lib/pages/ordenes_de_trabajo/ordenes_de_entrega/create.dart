@@ -13,6 +13,7 @@ import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_nueva_orden_entrega.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_ordenes_entrega.dart';
 
 class OrdenesEntregaCreate extends StatefulWidget {
@@ -82,7 +83,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Listado de Ordenes de Entrega',
+                            'Nueva Orden de Entrega',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 13.00,
@@ -94,16 +95,6 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                               ? ListView(
                                   shrinkWrap: true,
                                   children: [
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Crear Orden de entrega",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        // Navigator.pushNamed(context, RouteNames.oeCreate);
-                                      },
-                                    ),
-                                    SizedBox(height: 15),
                                     CustomInput(
                                         controller: ordenFabicacionCtrl,
                                         hint: "Orden de Fabricación"),
@@ -127,12 +118,6 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                     SizedBox(height: 15),
                                     listMachines(),
                                     SizedBox(height: 15),
-                                    listDesigns(),
-                                    SizedBox(height: 15),
-                                    CustomInput(
-                                        controller: fechaCierreCtrl,
-                                        hint: "Fecha Cierre OE"),
-                                    SizedBox(height: 15),
                                     CustomInput(
                                         controller: lineaCtrl, hint: "Linea"),
                                     SizedBox(height: 15),
@@ -146,6 +131,12 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                     CustomInput(
                                         controller: cantidadProgramadaCtrl,
                                         hint: "Cantidad Programada"),
+                                    SizedBox(height: 15),
+                                    CustomInput(
+                                        controller: fechaCierreCtrl,
+                                        hint: "Fecha Cierre OE"),
+                                    SizedBox(height: 15),
+                                    listDesigns(),
                                     SizedBox(height: 15),
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
@@ -178,8 +169,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                       GPColors.PrimaryColor),
                                             ),
                                           )
-                                        : Container(),
-                                    // TableTaraList()
+                                        : TableNuevaOrdenEntrega(),
                                   ],
                                 )
                               : Container(
@@ -188,25 +178,6 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                              child: CustomButton(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .2,
-                                                title: "Crear Orden de Entrega",
-                                                isLoading: false,
-                                                onPressed: () async {
-                                                  // Navigator.pushNamed(context,
-                                                  //   RouteNames.oeCreate);
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 20.0),
                                         Row(
                                           children: [
                                             Flexible(
@@ -242,6 +213,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                 controller: clienteCtrl,
                                                 hint: 'Cliente',
                                               ),
+                                              // listCliente(),
                                             ),
                                             SizedBox(width: 15),
                                             Flexible(child: listStatus()),
@@ -254,7 +226,11 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                 hint: 'Liena',
                                               ),
                                             ),
-                                            SizedBox(width: 15),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
                                             Flexible(
                                               child: CustomInput(
                                                 controller: turnoCtrl,
@@ -277,11 +253,6 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                               ),
                                             ),
                                             SizedBox(width: 15),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10),
-                                        Row(
-                                          children: [
                                             Flexible(child: listDesigns()),
                                             SizedBox(width: 15),
                                             Flexible(
@@ -323,7 +294,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                               .PrimaryColor),
                                                 ),
                                               )
-                                            : TableOrdenesEntrega(),
+                                            : TableNuevaOrdenEntrega(),
                                       ],
                                     ),
                                   ),

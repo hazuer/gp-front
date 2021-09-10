@@ -25,16 +25,16 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
   late Future futureOrdenEntrega;
   late Future futureMachines;
   late Future futureDesigns;
-  // late Future futureTaras;
+  late Future futureTaras;
   bool isLoading = false;
   String headerFilter = '?porPagina = 20';
   StatusModel catEstatus = StatusModel();
 
   OrdenEntregaProvider ordenEntregaProvider = OrdenEntregaProvider();
-  // TarasProvider tarasProvider = TarasProvider();
   MachinesProvider machinesProvider = MachinesProvider();
   CatMachineModel catMachines = CatMachineModel();
 
+  TarasProvider tarasProvider = TarasProvider();
   DesignsProvider designsProvider = DesignsProvider();
   DesignsList catDesigns = DesignsList();
 
@@ -53,10 +53,10 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
 
   @override
   void initState() {
+    futureTaras = tarasProvider.getAllTaras();
     futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntrega();
-    futureMachines = machinesProvider.getAllMachines();
-    futureDesigns = designsProvider.getAllDesigns();
-    // futureTaras = tarasProvider.getAllTaras();
+    // futureMachines = machinesProvider.getAllMachines();
+    // futureDesigns = designsProvider.getAllDesigns();
     super.initState();
   }
 
@@ -314,6 +314,71 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
     );
   }
 
+  // Widget listStatus() {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+  //     child: AppExpansionTile(
+  //       key: catEstatusKey,
+  //       initiallyExpanded: false,
+  //       title: Text(
+  //         catEstatus.estatus ?? "Estatus",
+  //         style: TextStyle(color: Colors.black54, fontSize: 13),
+  //       ),
+  //       children: [
+  //         Container(
+  //           //height: MediaQuery.of(context).size.height*.2,
+  //           child: FutureBuilder(
+  //             future: futureMachines,
+  //             builder: (BuildContext context, AsyncSnapshot snapshot) {
+  //               if (snapshot.hasData) {
+  //                 return ListView.builder(
+  //                   //physics: NeverScrollableScrollPhysics(),
+  //                   shrinkWrap: true,
+  //                   itemCount: RxVariables.dataFromUsers.listStatus!.length,
+  //                   itemBuilder: (BuildContext context, int index) {
+  //                     return GestureDetector(
+  //                       onTap: () {
+  //                         setState(() {
+  //                           catEstatus =
+  //                               RxVariables.dataFromUsers.listStatus![index];
+  //                           catEstatusKey.currentState!.collapse();
+  //                         });
+  //                       },
+  //                       child: Container(
+  //                         color: Colors.grey[100],
+  //                         child: Column(
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                           children: [
+  //                             Padding(
+  //                               padding: EdgeInsets.all(12),
+  //                               child: Text(
+  //                                   RxVariables.dataFromUsers.listStatus![index]
+  //                                       .estatus!,
+  //                                   style: TextStyle(
+  //                                       color: Colors.black54, fontSize: 13)),
+  //                             ),
+  //                             Container(
+  //                               width: double.infinity,
+  //                               height: .5,
+  //                               color: Colors.grey[300],
+  //                             )
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     );
+  //                   },
+  //                 );
+  //               } else {
+  //                 return CircularProgressIndicator();
+  //               }
+  //             },
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
   Widget listStatus() {
     return Container(
       decoration: BoxDecoration(
@@ -329,7 +394,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureMachines,
+              future: futureTaras,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -395,7 +460,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureMachines,
+              future: futureOrdenEntrega,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -461,7 +526,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureDesigns,
+              future: futureOrdenEntrega,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(

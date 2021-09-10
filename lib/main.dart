@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/app/auth/loading_page.dart';
 import 'package:general_products_web/app/auth/recovery_password.dart';
 import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/admin/pantalla_de_acceso.dart';
@@ -103,6 +104,7 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.editUser: (_) => EditUserPage(),
         // Acceso
         RouteNames.access: (_) => PantallaDeAcceso(),
+        RouteNames.loading: (_) => LoadingPage(),
         // Paises
         RouteNames.paisesIndex: (_) => PaisesIndex(),
         RouteNames.paisCreate: (_) => PaisCreate(),
