@@ -39,6 +39,7 @@ class AppScaffold extends StatelessWidget {
                         IconButton(
                           onPressed: () => Navigator.pop(context),
                           icon: Icon(Icons.arrow_back),
+                          tooltip: 'Regresar',
                         ),
                         SizedBox(width: 10.0),
                       ]

@@ -42,15 +42,20 @@ class _RegisterPageState extends State<RegisterPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      //appBar: AppBar(backgroundColor: GPColors.BreadcrumBackgroud, automaticallyImplyLeading: false,),
       appBar: AppBar(
-              // when the app isn't displaying the mobile version of app, hide the menu button that is used to open the navigation drawer
-              automaticallyImplyLeading: false,
-              title: Text("Registro de Usuario", style: TextStyle(color: GPColors.BreadcrumTitle, fontSize: 16.08, fontWeight: FontWeight.w100,)),
-              iconTheme: IconThemeData(color: Color(0xff313945)),
-              centerTitle: true,
-              
-            ),
+      actions: [
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back),
+          tooltip: 'Regresar',
+        ),
+        SizedBox(width: 10.0),
+      ],
+      automaticallyImplyLeading: false,
+      title: Text("Registro de Usuario", style: TextStyle(color: GPColors.BreadcrumTitle, fontSize: 16.08, fontWeight: FontWeight.w100,)),
+      iconTheme: IconThemeData(color: Color(0xff313945)),
+      centerTitle: true,
+    ),
       body: Container(
         width: width,
         height: height,
@@ -63,9 +68,6 @@ class _RegisterPageState extends State<RegisterPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 15,
-                  ),
                   Container(
                     width: double.infinity,
                     margin:
@@ -73,8 +75,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        //Text("Registrar Usuario", style: TextStyle(color: GPColors.PrimaryColor, fontSize: 22, fontWeight: FontWeight.bold),),
-                        
                         displayMobileLayout?
                         Column(
                           children: [
@@ -131,25 +131,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                     print("Correcto");
                                   }
                                 });
-                                  
                                 }
                               }
                             ),
-                            SizedBox(height: 15,),
-                            CustomButton(
-                              isLoading: false,
-                              title: "Salir", 
-                              onPressed: (){
-                                Navigator.pop(context);
-                                //Navigator.pushReplacementNamed(context, '/');
-                              }
-                            )
-
                           ],
                         )
                         : Container(
                           width: !displayMobileLayout
-                              ? MediaQuery.of(context).size.width
+                              ? MediaQuery.of(context).size.width / 1.5
                               : MediaQuery.of(context).size.width / 2,
                           padding: EdgeInsets.symmetric(
                                horizontal: 35.0),
@@ -186,16 +175,17 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                                Row(
                                 children: [
-                                  Flexible(child: listCustomers()),
+                                  Flexible(child: listPlants()),
                                   SizedBox(width: 35,),
-                                  Flexible(child: listPlants())
+                                  Flexible(child: listCustomers()),
                                 ],
                               ),
                               SizedBox(
                                 height: 15,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.center,//Center Row contents horizontally,
+                                crossAxisAlignment: CrossAxisAlignment.center,//Center Row contents vertically,
                                 children: [
                                   Flexible(
                                     child: CustomButton(
@@ -226,26 +216,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       }
                                     ),
                                   ),
-                                  SizedBox(width: 15,),
-                                  Flexible(
-                                    child: CustomButton(
-                                      isLoading: false,
-                                      title: "Salir", 
-                                      onPressed: (){
-                                        Navigator.pop(context);
-                                        //Navigator.pushReplacementNamed(context, '/');
-                                      }
-                                    ),
-                                  )
-
                                 ],
                               ),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              
-
-                              
                             ],
                           ),
                         )
@@ -295,7 +267,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text(RxVariables.customerAvailables[index].nombreCliente!, style: TextStyle(color: Colors.black54, fontSize: 17),),
+                            child: Text(RxVariables.customerAvailables[index].nombreCliente!, 
+                            style: TextStyle(color: Colors.black54, fontSize: 13),),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
@@ -352,7 +325,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(12),
-                            child: Text(RxVariables.plantsAvailables[index].nombrePlanta!, style:  TextStyle(color: Colors.black54, fontSize: 17)),
+                            child: Text(RxVariables.plantsAvailables[index].nombrePlanta!, 
+                            style:  TextStyle(color: Colors.black54, fontSize: 13)),
                           ),
                           Container(width: double.infinity, height: .5, color: Colors.grey[300],)
                         ],
