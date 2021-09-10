@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/models/cliente/list_clientes_model.dart';
-import 'package:general_products_web/provider/cliente/clientes_provider.dart';
+import 'package:general_products_web/models/catalogs/cliente/list_clientes_model.dart';
+import 'package:general_products_web/provider/catalogs/cliente/clientes_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 

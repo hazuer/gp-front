@@ -1,5 +1,5 @@
 import 'package:general_products_web/models/catalogs/design/designsModel.dart';
-import 'package:general_products_web/models/cliente/list_clientes_model.dart';
+import 'package:general_products_web/models/catalogs/cliente/list_clientes_model.dart';
 import 'package:general_products_web/models/customer_model.dart';
 import 'package:general_products_web/models/data_list_user_model.dart';
 import 'package:general_products_web/models/catalogs/pais/catPaisesModel.dart';

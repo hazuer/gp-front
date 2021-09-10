@@ -8,9 +8,9 @@ import 'package:general_products_web/pages/ordenes_de_trabajo/oe_adiciones/index
 import 'pages/catalogs/pais/create.dart';
 import 'pages/catalogs/pais/edit.dart';
 import 'pages/catalogs/pais/index.dart';
-import 'package:general_products_web/pages/cliente/edit.dart';
-import 'package:general_products_web/pages/cliente/index.dart';
-import 'package:general_products_web/pages/cliente/store.dart';
+import 'package:general_products_web/pages/catalogs/cliente/edit.dart';
+import 'package:general_products_web/pages/catalogs/cliente/index.dart';
+import 'package:general_products_web/pages/catalogs/cliente/store.dart';
 import 'package:general_products_web/pages/edit_user.dart';
 import 'package:general_products_web/pages/forms_page.dart';
 import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/create.dart';
@@ -114,7 +114,7 @@ class GeneralProductsApp extends StatelessWidget {
         RouteNames.taraEdit: (_) => TaraEdit(),
         RouteNames.clienteIndex: (_) => ClientesIndex(),
         RouteNames.clienteEdit: (_) => ClienteEdit(),
-        RouteNames.clienteCreate: (_) => ClienteStore(),
+        RouteNames.clienteCreate: (_) => ClienteCreate(),
         RouteNames.razonIndex: (_) => RazonesIndex(),
         RouteNames.razonEdit: (_) => RazonEdit(),
         RouteNames.razonCreate: (_) => RazonCreate(),

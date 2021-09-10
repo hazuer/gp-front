@@ -1,15 +1,3 @@
-// To parse this JSON data, do
-//
-//     final listClientesModel = listClientesModelFromJson(jsonString);
-
-import 'dart:convert';
-
-ListClientesModel listClientesModelFromJson(String str) =>
-    ListClientesModel.fromJson(json.decode(str));
-
-String listClientesModelToJson(ListClientesModel data) =>
-    json.encode(data.toJson());
-
 class ListClientesModel {
   ListClientesModel({
     this.result,
@@ -33,7 +21,6 @@ class ListClientesModel {
         lastPage: json["lastPage"],
         customersList: List<CustomersList>.from(
             json["customersList"].map((x) => CustomersList.fromJson(x))),
-        // customersList: CustomersList.fromJson(json["customersList"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,7 +30,6 @@ class ListClientesModel {
         "lastPage": lastPage,
         "customersList":
             List<dynamic>.from(customersList.map((e) => e.toJson())),
-        // "customersList": customersList.toJson(),
       };
 }
 
