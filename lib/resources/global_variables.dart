@@ -28,8 +28,17 @@ import 'package:general_products_web/models/catalogs/plant/catPlantModel.dart';
 import 'package:general_products_web/models/catalogs/plant/dtPaisModel.dart';
 import 'package:general_products_web/models/catalogs/plant/catPaisModel.dart';
 
+import 'package:general_products_web/constants/setLoginAautomatic.dart';
+
+
 class RxVariables {
-  static LoginResponse loginResponse = LoginResponse();
+
+  //static LoginResponse loginResponse = LoginResponse();
+  //static String token = "";
+
+  static LoginResponse loginResponse = LoginResponse.fromJson(SetLoginAautomatic.json);
+  static String? token = loginResponse.data!.token;
+
   static List<Plant> plantsAvailables = [];
   static List<Customer> customerAvailables = [];
   static List<UserList> listFilter = [];
@@ -45,9 +54,7 @@ class RxVariables {
   static SearchUserResponse userById = SearchUserResponse();
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
-  static String token = "";
-  //static String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZDE5N2ZiOGI4MWRlNmJiZjA0YTkwYmU3NWE4NWEzMjU1OTg3N2VjNzdmNTAxMjQ2NTc4Mjg1MDBkNGQ3ODNlNTViNTQzMWI4N2E1MGZjMjEiLCJpYXQiOjE2MzExOTMwNDgsIm5iZiI6MTYzMTE5MzA0OCwiZXhwIjoxNjMxMTk2NjQ4LCJzdWIiOiIxNiIsInNjb3BlcyI6W119.ernZZO78zhjrg1VFAtp7L6xoYpJDcY-5SwumX6And3HowITIyw7rxfHxGqCH6y_hd9IjreVvLoX7rLjYYF9-Ww3l8S4vIKO0i3VYPI1iDY2gXywv-gVQzBw6gUD1q9oXfda9i7YNNb_lW6i2yykNx9IHUbZBBwPZ3sgIFSZL5VlcZR0AH3vxLnx_0emiz8_lfKKIFEH1z0q3YAtqrkIRqA7MBXJWkVOrcCLlgez7uI3Wj_gtRKR8Uxv2JFEMQv6trNl7kCqVkO_ZYOXWtB_7Fc35y-aB2Ow_Gv4khWj5LKHZleU4n3kWbs7aWdKc7B_tl6I-G9QRUCcRuwKPvu9KSNDnRKM9Fc2Zb6DlstSwRpj6H6Y_mIHaVX4JEwubL3UT4bvQz4UzJM-4OMUSOXiJd32pJmsh1i2SSU-POyZDRQKzvtePOG8lR0QPjQDh8hZYfGzITavbTaHmiDv0yycKoju6dbsMJ02NuyCDivJOLZvieG06bJ7yQvUvtCJnZ9e9J58gDPeKtmcNlrksargskUO71iOj93WHlrvW_-c1d8g6zg4V5xmLtBdPkZIodoHLZBLOaOiRrXJdAhv1jDd0amIDqGyy821gZK6Q1nlWbTfWHWk2mgbq8Jw3ay-WHffS-1CQhN8yljENTiPBgqf_4YUDrD7xs9l1fLw7AXnHT1s";
-
+  
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
       listUsersFilter.stream;
