@@ -199,7 +199,7 @@ class _TableTintaState extends State<TableTinta> {
                                           snapshot.data![index];
                                       Navigator.pushNamed(
                                         context,
-                                        RouteNames.tintaUpdate,
+                                        RouteNames.tintaEdit,
                                       );
                                     },
                                     icon: Icon(Icons.edit,

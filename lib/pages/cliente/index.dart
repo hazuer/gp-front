@@ -87,7 +87,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                       isLoading: false,
                                       onPressed: () async {
                                         Navigator.pushNamed(
-                                            context, RouteNames.clienteStore);
+                                            context, RouteNames.clienteCreate);
                                       },
                                     ),
                                     SizedBox(height: 20.0),
@@ -156,7 +156,7 @@ class _ClientesIndexState extends State<ClientesIndex> {
                                           isLoading: false,
                                           onPressed: () async {
                                             Navigator.pushNamed(context,
-                                                RouteNames.clienteStore);
+                                                RouteNames.clienteCreate);
                                           },
                                         ),
                                         SizedBox(height: 20.0),

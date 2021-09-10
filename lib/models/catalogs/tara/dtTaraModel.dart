@@ -1,4 +1,4 @@
- import 'package:general_products_web/models/tara/catTaraModel.dart';
+ import 'package:general_products_web/models/catalogs/tara/catTaraModel.dart';
  /*
  * Clase que define los atributos de la tabla cat_tara
  */

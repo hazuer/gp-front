@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
-import 'package:general_products_web/models/tara/catTaraModel.dart';
-import 'package:general_products_web/models/tara/dtTaraModel.dart';
+import 'package:general_products_web/models/catalogs/tara/catTaraModel.dart';
+import 'package:general_products_web/models/catalogs/tara/dtTaraModel.dart';
 
 class TarasProvider {
   RoutesProvider routes = RoutesProvider();

@@ -84,7 +84,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                       isLoading: false,
                                       onPressed: () async {
                                         Navigator.pushNamed(
-                                            context, RouteNames.tintaStore);
+                                            context, RouteNames.tintaCreate);
                                       },
                                     ),
                                     SizedBox(height: 20.0),
@@ -171,7 +171,7 @@ class _TintasIndexState extends State<TintasIndex> {
                                                 isLoading: false,
                                                 onPressed: () async {
                                                   Navigator.pushNamed(context,
-                                                      RouteNames.tintaStore);
+                                                      RouteNames.tintaCreate);
                                                 },
                                               ),
                                             ),
