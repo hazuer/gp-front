@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/catalogs/design/designsDataModel.dart';
-import 'package:general_products_web/models/catalogs/design/designsModel.dart';
-import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
-import 'package:general_products_web/models/status_model.dart';
-import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
-import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catDesignsOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
-import 'package:general_products_web/provider/catalogs/tara/tarasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
@@ -23,20 +19,15 @@ class OrdenesEntregaIndex extends StatefulWidget {
 
 class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
   late Future futureOrdenEntrega;
-  late Future futureMachines;
-  late Future futureDesigns;
-  late Future futureTaras;
+  late Future futureFields;
   bool isLoading = false;
   String headerFilter = '?porPagina = 20';
-  StatusModel catEstatus = StatusModel();
 
   OrdenEntregaProvider ordenEntregaProvider = OrdenEntregaProvider();
-  MachinesProvider machinesProvider = MachinesProvider();
-  CatMachineModel catMachines = CatMachineModel();
 
-  TarasProvider tarasProvider = TarasProvider();
-  DesignsProvider designsProvider = DesignsProvider();
-  DesignsList catDesigns = DesignsList();
+  CatStatusOEModel catStatus = CatStatusOEModel();
+  CatMachinesOEModel catMachines = CatMachinesOEModel();
+  CatDesignsOEModel catDesigns = CatDesignsOEModel();
 
   TextEditingController ordenFabicacionCtrl = TextEditingController();
   TextEditingController folioCtrl = TextEditingController();
@@ -53,10 +44,8 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
 
   @override
   void initState() {
-    futureTaras = tarasProvider.getAllTaras();
     futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntrega();
-    // futureMachines = machinesProvider.getAllMachines();
-    // futureDesigns = designsProvider.getAllDesigns();
+    futureFields = ordenEntregaProvider.getFields();
     super.initState();
   }
 
@@ -314,71 +303,6 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
     );
   }
 
-  // Widget listStatus() {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
-  //     child: AppExpansionTile(
-  //       key: catEstatusKey,
-  //       initiallyExpanded: false,
-  //       title: Text(
-  //         catEstatus.estatus ?? "Estatus",
-  //         style: TextStyle(color: Colors.black54, fontSize: 13),
-  //       ),
-  //       children: [
-  //         Container(
-  //           //height: MediaQuery.of(context).size.height*.2,
-  //           child: FutureBuilder(
-  //             future: futureMachines,
-  //             builder: (BuildContext context, AsyncSnapshot snapshot) {
-  //               if (snapshot.hasData) {
-  //                 return ListView.builder(
-  //                   //physics: NeverScrollableScrollPhysics(),
-  //                   shrinkWrap: true,
-  //                   itemCount: RxVariables.dataFromUsers.listStatus!.length,
-  //                   itemBuilder: (BuildContext context, int index) {
-  //                     return GestureDetector(
-  //                       onTap: () {
-  //                         setState(() {
-  //                           catEstatus =
-  //                               RxVariables.dataFromUsers.listStatus![index];
-  //                           catEstatusKey.currentState!.collapse();
-  //                         });
-  //                       },
-  //                       child: Container(
-  //                         color: Colors.grey[100],
-  //                         child: Column(
-  //                           crossAxisAlignment: CrossAxisAlignment.start,
-  //                           children: [
-  //                             Padding(
-  //                               padding: EdgeInsets.all(12),
-  //                               child: Text(
-  //                                   RxVariables.dataFromUsers.listStatus![index]
-  //                                       .estatus!,
-  //                                   style: TextStyle(
-  //                                       color: Colors.black54, fontSize: 13)),
-  //                             ),
-  //                             Container(
-  //                               width: double.infinity,
-  //                               height: .5,
-  //                               color: Colors.grey[300],
-  //                             )
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     );
-  //                   },
-  //                 );
-  //               } else {
-  //                 return CircularProgressIndicator();
-  //               }
-  //             },
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
   Widget listStatus() {
     return Container(
       decoration: BoxDecoration(
@@ -387,26 +311,28 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
         key: catEstatusKey,
         initiallyExpanded: false,
         title: Text(
-          catEstatus.estatus ?? "Estatus",
+          catStatus.estatusOt ?? "Estatus",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureTaras,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listStatus!.length,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.statusOwList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catEstatus =
-                                RxVariables.dataFromUsers.listStatus![index];
+                            catStatus = RxVariables
+                                .gvListCatalogsFields.statusOwList[index];
+                            // RxVariables.dataFromUsers.listStatus![index];
                             catEstatusKey.currentState!.collapse();
                           });
                         },
@@ -418,8 +344,8 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.dataFromUsers.listStatus![index]
-                                        .estatus!,
+                                    RxVariables.gvListCatalogsFields
+                                        .statusOwList[index].estatusOt!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),
@@ -460,19 +386,20 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureOrdenEntrega,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.gvListMachines.machinesList.length,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.machinesList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catMachines =
-                                RxVariables.gvListMachines.machinesList[index];
+                            catMachines = RxVariables
+                                .gvListCatalogsFields.machinesList[index];
                             catMachineKey.currentState!.collapse();
                           });
                         },
@@ -484,7 +411,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.gvListMachines
+                                    RxVariables.gvListCatalogsFields
                                         .machinesList[index].nombreMaquina!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
@@ -526,19 +453,20 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureOrdenEntrega,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.listDesign.designsList.length,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.designsList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catDesigns =
-                                RxVariables.listDesign.designsList[index];
+                            catDesigns = RxVariables
+                                .gvListCatalogsFields.designsList[index];
                             catDesignKey.currentState!.collapse();
                           });
                         },
@@ -550,8 +478,8 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.listDesign.designsList[index]
-                                        .nombreDiseno!,
+                                    RxVariables.gvListCatalogsFields
+                                        .designsList[index].nombreDiseno!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),

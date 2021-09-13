@@ -86,4 +86,5 @@ class RoutesProvider {
 
   // Ordenes de trabajo
   String listarOE = 'orden-de-entrega/listar';
+  String listarCatalogosOE = 'orden-de-entrega/listas-busqueda-oe';
 }
