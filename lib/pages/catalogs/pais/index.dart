@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/catalogs/pais/paisProvider.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
@@ -26,6 +28,8 @@ class _PaisesIndexState extends State<PaisesIndex> {
   ListPaisesProvider listPaisesProvider = ListPaisesProvider();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
+  final currentUser = RxVariables.loginResponse.data!;
+
   @override
   void initState() {
     futurePaises = listPaisesProvider.listPaises();
@@ -36,180 +40,192 @@ class _PaisesIndexState extends State<PaisesIndex> {
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
-    return AppScaffold(
-      pageTitle: 'Catálogos / Países',
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color(0xffF5F6F5),
-          child: Column(
-            children: [
-              SizedBox(height: 10.0),
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 26.0),
-                child: Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Color(0xffffffff),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 30.0, horizontal: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            'Listado de Países',
-                            style: TextStyle(
-                                color: Color(0xff313945),
-                                fontSize: 14.08,
-                                fontWeight: FontWeight.w200),
-                          ),
-                          Divider(),
-                          SizedBox(height: 10),
-                          displayMobileLayout
-                              ? ListView(
-                                  shrinkWrap: true,
-                                  children: [
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Crear País",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        Navigator.pushNamed(
-                                            context, RouteNames.paisCreate);
-                                      },
-                                    ),
-                                    SizedBox(height: 15),
-                                    CustomInput(
-                                      controller: paisController,
-                                      hint: 'País',
-                                    ),
-                                    SizedBox(height: 15),
-                                    listStatus(),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Buscar",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        await applyFilter();
-                                      },
-                                    ),
-                                    SizedBox(height: 15),
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Limpiar",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        await clearFilters();
-                                      },
-                                    ),
-                                    SizedBox(height: 15),
-                                    isLoading
-                                        ? Container(
-                                            margin: EdgeInsets.only(top: 50),
-                                            width: 44,
-                                            height: 44,
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      GPColors.PrimaryColor),
-                                            ),
-                                          )
-                                        : TablePaisesList()
-                                  ],
-                                )
-                              : Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .7,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                              child: CustomButton(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .2,
-                                                title: "Crear País",
-                                                isLoading: false,
-                                                onPressed: () async {
-                                                  Navigator.pushNamed(context,
-                                                      RouteNames.paisCreate);
-                                                },
+    if (currentUser.catProfile!.profileId != 1) {
+      ListUsersProvider().logOut();
+
+      return LoginPage();
+    } else {
+      return AppScaffold(
+        pageTitle: 'Catálogos / Países',
+        body: SingleChildScrollView(
+          child: Container(
+            color: Color(0xffF5F6F5),
+            child: Column(
+              children: [
+                SizedBox(height: 10.0),
+                Container(
+                  width: double.infinity,
+                  margin:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 26.0),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Color(0xffffffff),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 30.0, horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              'Listado de Países',
+                              style: TextStyle(
+                                  color: Color(0xff313945),
+                                  fontSize: 14.08,
+                                  fontWeight: FontWeight.w200),
+                            ),
+                            Divider(),
+                            SizedBox(height: 10),
+                            displayMobileLayout
+                                ? ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Crear País",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          Navigator.pushNamed(
+                                              context, RouteNames.paisCreate);
+                                        },
+                                      ),
+                                      SizedBox(height: 15),
+                                      CustomInput(
+                                        controller: paisController,
+                                        hint: 'País',
+                                      ),
+                                      SizedBox(height: 15),
+                                      listStatus(),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Buscar",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          await applyFilter();
+                                        },
+                                      ),
+                                      SizedBox(height: 15),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Limpiar",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          await clearFilters();
+                                        },
+                                      ),
+                                      SizedBox(height: 15),
+                                      isLoading
+                                          ? Container(
+                                              margin: EdgeInsets.only(top: 50),
+                                              width: 44,
+                                              height: 44,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                            Color>(
+                                                        GPColors.PrimaryColor),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 20.0),
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                                child: CustomInput(
-                                                    controller: paisController,
-                                                    hint: "País")),
-                                            SizedBox(width: 15),
-                                            Flexible(child: listStatus()),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
-                                            IconButton(
-                                              tooltip: "Buscar",
-                                              onPressed: () async {
-                                                await applyFilter();
-                                              },
-                                              icon: Icon(Icons.filter_alt),
-                                            ),
-                                            IconButton(
-                                              tooltip: "Limpiar",
-                                              onPressed: () async {
-                                                await clearFilters();
-                                              },
-                                              icon: Icon(Icons.clear),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 30,
-                                        ),
-                                        isLoading
-                                            ? Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 50),
-                                                width: 44,
-                                                height: 44,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                              Color>(
-                                                          GPColors
-                                                              .PrimaryColor),
+                                            )
+                                          : TablePaisesList()
+                                    ],
+                                  )
+                                : Container(
+                                    height:
+                                        MediaQuery.of(context).size.height * .7,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                child: CustomButton(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .2,
+                                                  title: "Crear País",
+                                                  isLoading: false,
+                                                  onPressed: () async {
+                                                    Navigator.pushNamed(context,
+                                                        RouteNames.paisCreate);
+                                                  },
                                                 ),
-                                              )
-                                            : TablePaisesList()
-                                      ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 20.0),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                  child: CustomInput(
+                                                      controller:
+                                                          paisController,
+                                                      hint: "País")),
+                                              SizedBox(width: 15),
+                                              Flexible(child: listStatus()),
+                                              SizedBox(
+                                                width: 15,
+                                              ),
+                                              IconButton(
+                                                tooltip: "Buscar",
+                                                onPressed: () async {
+                                                  await applyFilter();
+                                                },
+                                                icon: Icon(Icons.filter_alt),
+                                              ),
+                                              IconButton(
+                                                tooltip: "Limpiar",
+                                                onPressed: () async {
+                                                  await clearFilters();
+                                                },
+                                                icon: Icon(Icons.clear),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          isLoading
+                                              ? Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 50),
+                                                  width: 44,
+                                                  height: 44,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            GPColors
+                                                                .PrimaryColor),
+                                                  ),
+                                                )
+                                              : TablePaisesList()
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget listStatus() {

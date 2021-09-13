@@ -154,7 +154,7 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                     description: 'Ordenes de entrega',
                                     onPressed: () =>
                                         Navigator.pushReplacementNamed(
-                                            context, RouteNames.oeCreate),
+                                            context, RouteNames.oeIndex),
                                   )
                                 : Container(),
                             SizedBox(height: 20),
@@ -287,7 +287,7 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                 buttonText: 'Generar',
                                 description: 'Ordenes de entrega',
                                 onPressed: () => Navigator.pushReplacementNamed(
-                                    context, RouteNames.oeCreate),
+                                    context, RouteNames.oeIndex),
                               )
                             : Container(),
                         SizedBox(width: 20),

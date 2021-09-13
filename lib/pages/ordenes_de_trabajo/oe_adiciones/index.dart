@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/catalogs/design/designsDataModel.dart';
 import 'package:general_products_web/models/catalogs/design/designsModel.dart';
@@ -6,6 +7,7 @@ import 'package:general_products_web/models/catalogs/machine/catMachineModel.dar
 import 'package:general_products_web/models/status_model.dart';
 import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
 import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
 import 'package:general_products_web/provider/catalogs/tara/tarasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
@@ -18,10 +20,12 @@ import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entre
 
 class OrdenesEntregaAdicionesIndex extends StatefulWidget {
   @override
-  _OrdenesEntregaAdicionesIndexState createState() => _OrdenesEntregaAdicionesIndexState();
+  _OrdenesEntregaAdicionesIndexState createState() =>
+      _OrdenesEntregaAdicionesIndexState();
 }
 
-class _OrdenesEntregaAdicionesIndexState extends State<OrdenesEntregaAdicionesIndex> {
+class _OrdenesEntregaAdicionesIndexState
+    extends State<OrdenesEntregaAdicionesIndex> {
   late Future futureOrdenEntrega;
   late Future futureMachines;
   late Future futureDesigns;
@@ -51,6 +55,8 @@ class _OrdenesEntregaAdicionesIndexState extends State<OrdenesEntregaAdicionesIn
   final GlobalKey<AppExpansionTileState> catMachineKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catDesignKey = new GlobalKey();
 
+  final currentUser = RxVariables.loginResponse.data!;
+
   @override
   void initState() {
     futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntrega();
@@ -64,254 +70,267 @@ class _OrdenesEntregaAdicionesIndexState extends State<OrdenesEntregaAdicionesIn
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
-    return AppScaffold(
-      pageTitle: 'Orden de fabricación / Ordenes de entrega / Adiciones',
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color(0xffF5F6F5),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                //height: MediaQuery.of(context).size.width*.8,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Color(0xffffffff),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 30.0, horizontal: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Text(
-                            'Listado de Ordenes de Entrega',
-                            style: TextStyle(
-                                color: Color(0xff313945),
-                                fontSize: 13.00,
-                                fontWeight: FontWeight.w200),
-                          ),
-                          Divider(),
-                          SizedBox(height: 10),
-                          displayMobileLayout
-                              ? ListView(
-                                  shrinkWrap: true,
-                                  children: [
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Crear Orden de entrega",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        Navigator.pushNamed(
-                                            context, RouteNames.oeCreate);
-                                      },
-                                    ),
-                                    SizedBox(height: 15),
-                                    CustomInput(
-                                        controller: ordenFabicacionCtrl,
-                                        hint: "Orden de Fabricación"),
-                                    SizedBox(height: 15),
-                                    CustomInput(
-                                        controller: folioCtrl, hint: "Folio"),
-                                    SizedBox(height: 15),
-                                    // Pendiente implementación del DateTime Picker
-                                    CustomInput(
-                                        controller: fechaCreacionCtrl,
-                                        hint: "Fecha de Creación"),
-                                    SizedBox(height: 15),
-                                    CustomInput(
-                                        controller: operadorCtrl,
-                                        hint: "Operador Responsable"),
-                                    SizedBox(height: 15),
-                                    CustomInput(
-                                        controller: clienteCtrl,
-                                        hint: "Cliente"),
-                                    SizedBox(height: 15),
-                                    listStatus(),
-                                    SizedBox(height: 15),
-                                    listMachines(),
-                                    SizedBox(height: 15),
-                                    listDesigns(),
-                                    SizedBox(height: 15),
-                                    // CustomInput(
-                                    //     controller: fechaCierreCtrl,
-                                    //     hint: "Fecha Cierre OE"),
-                                    // SizedBox(height: 15),
-                                    CustomInput(
-                                        controller: tintaCtrl, hint: "Tinta"),
-                                    SizedBox(height: 15),
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Buscar",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        await applyFilter();
-                                      },
-                                    ),
-                                    SizedBox(height: 15),
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Limpiar",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        await clearFilters();
-                                      },
-                                    ),
-                                    SizedBox(height: 30),
-                                    isLoading
-                                        ? Container(
-                                            margin: EdgeInsets.only(top: 50),
-                                            width: 44,
-                                            height: 44,
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      GPColors.PrimaryColor),
-                                            ),
-                                          )
-                                        : TableOrdenesEntrega(),
-                                    // TableTaraList()
-                                  ],
-                                )
-                              : Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .7,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                              child: CustomButton(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .2,
-                                                title: "Crear Orden de Entrega",
-                                                isLoading: false,
-                                                onPressed: () async {
-                                                  Navigator.pushNamed(context,
-                                                      RouteNames.oeCreate);
-                                                },
+    if (currentUser.catProfile!.profileId != 2 &&
+        currentUser.catProfile!.profileId != 4) {
+      ListUsersProvider().logOut();
+
+      return LoginPage();
+    } else {
+      return AppScaffold(
+        pageTitle: 'Orden de fabricación / Ordenes de entrega / Adiciones',
+        body: SingleChildScrollView(
+          child: Container(
+            color: Color(0xffF5F6F5),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  //height: MediaQuery.of(context).size.width*.8,
+                  margin:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Color(0xffffffff),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 30.0, horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Text(
+                              'Listado de Ordenes de Entrega',
+                              style: TextStyle(
+                                  color: Color(0xff313945),
+                                  fontSize: 13.00,
+                                  fontWeight: FontWeight.w200),
+                            ),
+                            Divider(),
+                            SizedBox(height: 10),
+                            displayMobileLayout
+                                ? ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Crear Orden de entrega",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          Navigator.pushNamed(
+                                              context, RouteNames.oeCreate);
+                                        },
+                                      ),
+                                      SizedBox(height: 15),
+                                      CustomInput(
+                                          controller: ordenFabicacionCtrl,
+                                          hint: "Orden de Fabricación"),
+                                      SizedBox(height: 15),
+                                      CustomInput(
+                                          controller: folioCtrl, hint: "Folio"),
+                                      SizedBox(height: 15),
+                                      // Pendiente implementación del DateTime Picker
+                                      CustomInput(
+                                          controller: fechaCreacionCtrl,
+                                          hint: "Fecha de Creación"),
+                                      SizedBox(height: 15),
+                                      CustomInput(
+                                          controller: operadorCtrl,
+                                          hint: "Operador Responsable"),
+                                      SizedBox(height: 15),
+                                      CustomInput(
+                                          controller: clienteCtrl,
+                                          hint: "Cliente"),
+                                      SizedBox(height: 15),
+                                      listStatus(),
+                                      SizedBox(height: 15),
+                                      listMachines(),
+                                      SizedBox(height: 15),
+                                      listDesigns(),
+                                      SizedBox(height: 15),
+                                      // CustomInput(
+                                      //     controller: fechaCierreCtrl,
+                                      //     hint: "Fecha Cierre OE"),
+                                      // SizedBox(height: 15),
+                                      CustomInput(
+                                          controller: tintaCtrl, hint: "Tinta"),
+                                      SizedBox(height: 15),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Buscar",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          await applyFilter();
+                                        },
+                                      ),
+                                      SizedBox(height: 15),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Limpiar",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          await clearFilters();
+                                        },
+                                      ),
+                                      SizedBox(height: 30),
+                                      isLoading
+                                          ? Container(
+                                              margin: EdgeInsets.only(top: 50),
+                                              width: 44,
+                                              height: 44,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                            Color>(
+                                                        GPColors.PrimaryColor),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 20.0),
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                                child: CustomInput(
-                                              controller: ordenFabicacionCtrl,
-                                              hint: 'Orden de fabricación',
-                                            )),
-                                            SizedBox(width: 15),
-                                            Flexible(
-                                                child: CustomInput(
-                                              controller: folioCtrl,
-                                              hint: 'Folio',
-                                            )),
-                                            SizedBox(width: 15),
-                                            // Pendiente implementación del DateTime Picker
-                                            Flexible(
-                                                child: CustomInput(
-                                              controller: fechaCreacionCtrl,
-                                              hint: 'Fecha de Creación',
-                                            )),
-                                            SizedBox(width: 15),
-                                            Flexible(
-                                                child: CustomInput(
-                                              controller: operadorCtrl,
-                                              hint: 'Operador Responsable',
-                                            )),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                              child: CustomInput(
-                                                controller: clienteCtrl,
-                                                hint: 'Cliente',
-                                              ),
-                                            ),
-                                            SizedBox(width: 15),
-                                            Flexible(child: listStatus()),
-                                            SizedBox(width: 15),
-                                            Flexible(child: listMachines()),
-                                            SizedBox(width: 15),
-                                            Flexible(
-                                              child: CustomInput(
-                                                controller: tintaCtrl,
-                                                hint: 'Tinta',
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Flexible(child: listDesigns()),
-                                            SizedBox(width: 15),
-                                            // Flexible(
-                                            //   child: CustomInput(
-                                            //     controller: fechaCierreCtrl,
-                                            //     hint: 'Fecha Cierre OE',
-                                            //   ),
-                                            // ),
-                                            // SizedBox(width: 15),
-                                            IconButton(
-                                              tooltip: "Buscar",
-                                              onPressed: () async {
-                                                await applyFilter();
-                                              },
-                                              icon: Icon(Icons.filter_alt),
-                                            ),
-                                            IconButton(
-                                              tooltip: "Limpiar",
-                                              onPressed: () async {
-                                                await clearFilters();
-                                              },
-                                              icon: Icon(Icons.clear),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 30),
-                                        isLoading
-                                            ? Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 50),
-                                                width: 44,
-                                                height: 44,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                              Color>(
-                                                          GPColors
-                                                              .PrimaryColor),
+                                            )
+                                          : TableOrdenesEntrega(),
+                                      // TableTaraList()
+                                    ],
+                                  )
+                                : Container(
+                                    height:
+                                        MediaQuery.of(context).size.height * .7,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                child: CustomButton(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .2,
+                                                  title:
+                                                      "Crear Orden de Entrega",
+                                                  isLoading: false,
+                                                  onPressed: () async {
+                                                    Navigator.pushNamed(context,
+                                                        RouteNames.oeCreate);
+                                                  },
                                                 ),
-                                              )
-                                            : TableOrdenesEntrega(),
-                                      ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 20.0),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                  child: CustomInput(
+                                                controller: ordenFabicacionCtrl,
+                                                hint: 'Orden de fabricación',
+                                              )),
+                                              SizedBox(width: 15),
+                                              Flexible(
+                                                  child: CustomInput(
+                                                controller: folioCtrl,
+                                                hint: 'Folio',
+                                              )),
+                                              SizedBox(width: 15),
+                                              // Pendiente implementación del DateTime Picker
+                                              Flexible(
+                                                  child: CustomInput(
+                                                controller: fechaCreacionCtrl,
+                                                hint: 'Fecha de Creación',
+                                              )),
+                                              SizedBox(width: 15),
+                                              Flexible(
+                                                  child: CustomInput(
+                                                controller: operadorCtrl,
+                                                hint: 'Operador Responsable',
+                                              )),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                child: CustomInput(
+                                                  controller: clienteCtrl,
+                                                  hint: 'Cliente',
+                                                ),
+                                              ),
+                                              SizedBox(width: 15),
+                                              Flexible(child: listStatus()),
+                                              SizedBox(width: 15),
+                                              Flexible(child: listMachines()),
+                                              SizedBox(width: 15),
+                                              Flexible(
+                                                child: CustomInput(
+                                                  controller: tintaCtrl,
+                                                  hint: 'Tinta',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              Flexible(child: listDesigns()),
+                                              SizedBox(width: 15),
+                                              // Flexible(
+                                              //   child: CustomInput(
+                                              //     controller: fechaCierreCtrl,
+                                              //     hint: 'Fecha Cierre OE',
+                                              //   ),
+                                              // ),
+                                              // SizedBox(width: 15),
+                                              IconButton(
+                                                tooltip: "Buscar",
+                                                onPressed: () async {
+                                                  await applyFilter();
+                                                },
+                                                icon: Icon(Icons.filter_alt),
+                                              ),
+                                              IconButton(
+                                                tooltip: "Limpiar",
+                                                onPressed: () async {
+                                                  await clearFilters();
+                                                },
+                                                icon: Icon(Icons.clear),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 30),
+                                          isLoading
+                                              ? Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 50),
+                                                  width: 44,
+                                                  height: 44,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            GPColors
+                                                                .PrimaryColor),
+                                                  ),
+                                                )
+                                              : TableOrdenesEntrega(),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget listStatus() {

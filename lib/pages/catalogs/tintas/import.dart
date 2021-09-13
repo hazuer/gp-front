@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -23,7 +24,7 @@ class TintaImport extends StatefulWidget {
 
 class _TintaImportState extends State<TintaImport> {
   TintaDialog dialogs = TintaDialog();
-  RoutesProvider routes   = RoutesProvider();
+  RoutesProvider routes = RoutesProvider();
 
   late Future futureFields;
   bool isLoading = false;
@@ -34,6 +35,8 @@ class _TintaImportState extends State<TintaImport> {
   late List<int> _selectedFile;
   late Uint8List _bytesData;
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
+  final currentUser = RxVariables.loginResponse.data!;
 
   startWebFilePicker() async {
     html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
@@ -63,32 +66,27 @@ class _TintaImportState extends State<TintaImport> {
   Future<String> makeRequest(String idCatPlanta) async {
     var url = Uri.parse(routes.urlBase + routes.importarTintas);
     var request = new http.MultipartRequest("POST", url);
-    request.headers.addAll({
-          "Authorization": "Bearer ${RxVariables.token}"
-      });
+    request.headers.addAll({"Authorization": "Bearer ${RxVariables.token}"});
 
-      request.fields['_method'] = "PUT";
-      request.fields['id_cat_planta'] = idCatPlanta;
-      request.files.add(await http.MultipartFile.fromBytes(
-          'file', _selectedFile,
-          contentType: new MediaType('application', 'text/csv'),
-          filename: "file_up"
-        )
-      );
+    request.fields['_method'] = "PUT";
+    request.fields['id_cat_planta'] = idCatPlanta;
+    request.files.add(await http.MultipartFile.fromBytes('file', _selectedFile,
+        contentType: new MediaType('application', 'text/csv'),
+        filename: "file_up"));
 
     request.send().then((response) async {
       final rstBack = await response.stream.bytesToString();
       final rst = json.decode(rstBack);
-      final typeAlert = (response.statusCode==201) ? "¡Éxito!" : "¡Error!";
+      final typeAlert = (response.statusCode == 201) ? "¡Éxito!" : "¡Error!";
       final message = rst["message"];
       var errors = "";
-      if((response.statusCode==201)){
-        errors="";
-      }else{
-        errors = ": "+rst["errors"][0].toString();
+      if ((response.statusCode == 201)) {
+        errors = "";
+      } else {
+        errors = ": " + rst["errors"][0].toString();
       }
       Navigator.pop(context);
-      dialogs.showInfoDialog(context,typeAlert,message +""+ errors);
+      dialogs.showInfoDialog(context, typeAlert, message + "" + errors);
     });
     return "";
   }
@@ -103,124 +101,148 @@ class _TintaImportState extends State<TintaImport> {
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
-    return AppScaffold(
-      pageTitle: 'Catálogos / Tintas / Importar',
-      backButton: true,
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color(0xffF5F6F5),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                //height: MediaQuery.of(context).size.width*.8,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Color(0xffffffff),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 30.0, horizontal: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Text(
-                            'Importar Tintas Mediante Archivo .CSV',
-                            style: TextStyle(
-                                color: Color(0xff313945),
-                                fontSize: 13.00,
-                                fontWeight: FontWeight.w200),
-                          ),
-                           Divider(),
-                          SizedBox(height: 10),
-                          displayMobileLayout
-                              ? ListView(
-                                  shrinkWrap: true,
-                                  children: [
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *.2,
-                                      title: '* Selecciona un archivo',
-                                      isLoading: false,
-                                      onPressed: () {
-                                        startWebFilePicker();
-                                      },
-                                    ),
-                                    SizedBox(height: 15),
-                                    listPlants(),
-                                    SizedBox(height: 15),
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *.2,
-                                      title: 'Importar',
-                                      isLoading: false,
-                                      onPressed: () {
-                                          if (plant.idCatPlanta == null || _selectedFile.length==0) {
-                                          dialogs.showInfoDialog(
-                                              context,
-                                              "¡Atención!",
-                                              "Favor de validar los campos marcados con asterisco (*)");
-                                        }else{
-                                          makeRequest(plant.idCatPlanta.toString());
-                                        }
-                                      },
-                                    )
-                                  ],
-                                )
-                              : Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .7,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                                child:
-                                            CustomButton(
-                                              width: MediaQuery.of(context).size.width *.2,
-                                              title: '* Selecciona un archivo',
-                                              isLoading: false,
-                                              onPressed: () {
-                                                startWebFilePicker();
-                                              },
-                                            ),),
-                                            SizedBox(width: 15),
-                                            Flexible(child: listPlants()),
-                                             SizedBox(width: 15),
-                                            CustomButton(
-                                              width: MediaQuery.of(context).size.width *.2,
-                                              title: 'Importar',
-                                              isLoading: false,
-                                              onPressed: () {
-                                                 if (plant.idCatPlanta == null || _selectedFile.length==0) {
-                                                  dialogs.showInfoDialog(
-                                                      context,
-                                                      "¡Atención!",
-                                                      "Favor de validar los campos marcados con asterisco (*)");
-                                                }else{
-                                                  makeRequest(plant.idCatPlanta.toString());
-                                                }
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+    if (currentUser.catProfile!.profileId != 1) {
+      ListUsersProvider().logOut();
+
+      return LoginPage();
+    } else {
+      return AppScaffold(
+        pageTitle: 'Catálogos / Tintas / Importar',
+        backButton: true,
+        body: SingleChildScrollView(
+          child: Container(
+            color: Color(0xffF5F6F5),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  //height: MediaQuery.of(context).size.width*.8,
+                  margin:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Color(0xffffffff),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 30.0, horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Text(
+                              'Importar Tintas Mediante Archivo .CSV',
+                              style: TextStyle(
+                                  color: Color(0xff313945),
+                                  fontSize: 13.00,
+                                  fontWeight: FontWeight.w200),
+                            ),
+                            Divider(),
+                            SizedBox(height: 10),
+                            displayMobileLayout
+                                ? ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: '* Selecciona un archivo',
+                                        isLoading: false,
+                                        onPressed: () {
+                                          startWebFilePicker();
+                                        },
+                                      ),
+                                      SizedBox(height: 15),
+                                      listPlants(),
+                                      SizedBox(height: 15),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: 'Importar',
+                                        isLoading: false,
+                                        onPressed: () {
+                                          if (plant.idCatPlanta == null ||
+                                              _selectedFile.length == 0) {
+                                            dialogs.showInfoDialog(
+                                                context,
+                                                "¡Atención!",
+                                                "Favor de validar los campos marcados con asterisco (*)");
+                                          } else {
+                                            makeRequest(
+                                                plant.idCatPlanta.toString());
+                                          }
+                                        },
+                                      )
+                                    ],
+                                  )
+                                : Container(
+                                    height:
+                                        MediaQuery.of(context).size.height * .7,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                child: CustomButton(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .2,
+                                                  title:
+                                                      '* Selecciona un archivo',
+                                                  isLoading: false,
+                                                  onPressed: () {
+                                                    startWebFilePicker();
+                                                  },
+                                                ),
+                                              ),
+                                              SizedBox(width: 15),
+                                              Flexible(child: listPlants()),
+                                              SizedBox(width: 15),
+                                              CustomButton(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .2,
+                                                title: 'Importar',
+                                                isLoading: false,
+                                                onPressed: () {
+                                                  if (plant.idCatPlanta ==
+                                                          null ||
+                                                      _selectedFile.length ==
+                                                          0) {
+                                                    dialogs.showInfoDialog(
+                                                        context,
+                                                        "¡Atención!",
+                                                        "Favor de validar los campos marcados con asterisco (*)");
+                                                  } else {
+                                                    makeRequest(plant
+                                                        .idCatPlanta
+                                                        .toString());
+                                                  }
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-
-                        ],
+                          ],
                         ),
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
             ),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget listPlants() {
@@ -249,7 +271,8 @@ class _TintaImportState extends State<TintaImport> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            plant =RxVariables.dataFromUsers.listPlants![index];
+                            plant =
+                                RxVariables.dataFromUsers.listPlants![index];
                             plantsKey.currentState!.collapse();
                           });
                         },

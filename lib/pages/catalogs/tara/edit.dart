@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/inputFloat_custom.dart';
@@ -32,6 +34,8 @@ class _TaraEditState extends State<TaraEdit> {
   final GlobalKey<AppExpansionTileState> catPlanKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
 
+  final currentUser = RxVariables.loginResponse.data!;
+
   @override
   void initState() {
     futureTara = tarasProvider.getAllTaras();
@@ -45,225 +49,243 @@ class _TaraEditState extends State<TaraEdit> {
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
-    return AppScaffold(
-        pageTitle: "Catálogos / Taras / Editar",
-        backButton: true,
-        body: SingleChildScrollView(
-          child: Container(
-            color: Color(0xffF5F6F5),
-            child: Column(
-              children: <Widget>[
-                Container(
-                    width: double.infinity,
-                    //height: MediaQuery.of(context).size.width*.8,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    child: Column(children: <Widget>[
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: Color(0xffffffff),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 30.0, horizontal: 30.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Text(
-                              'Editar',
-                              style: TextStyle(
-                                  color: Color(0xff313945),
-                                  fontSize: 13.00,
-                                  fontWeight: FontWeight.w200),
-                            ),
-                            Divider(),
-                            SizedBox(height: 10),
-                            // __ __
-                            //|  \  \ ___  _ _
-                            //|     |/ . \| | |
-                            //|_|_|_|\___/|__/
-                            displayMobileLayout
-                                ? ListView(
-                                    shrinkWrap: true,
-                                    children: [
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      CustomInput(
-                                          controller: taraEditCtrl,
-                                          hint: "* Tara"),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      CustomInputFloat(
-                                          controller: capacidadEditCtrl,
-                                          hint: "* Peso Tara Kg"),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      listPlants(),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        title: 'Guardar',
-                                        isLoading: false,
-                                        onPressed: () async {
-                                          //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
-                                          if (taraEditCtrl.text == "" ||
-                                              capacidadEditCtrl.text == "") {
-                                            dialogs.showInfoDialog(
-                                                context,
-                                                "¡Atención!",
-                                                "Favor de validar los campos marcados con asterisco (*)");
-                                          } else {
-                                            await TarasProvider()
-                                                .editTara(
-                                              RxVariables.gvTaraSelectedById
-                                                  .idCatTara!,
-                                              taraEditCtrl.text.trim(),
-                                              capacidadEditCtrl.text.trim(),
-                                              catPlanta.idCatPlanta!,
-                                            )
-                                                .then((value) {
-                                              if (value == null) {
-                                                setState(() {
-                                                  isLoading = false;
-                                                });
-                                                Navigator.pop(context);
-                                                dialogs.showInfoDialog(
-                                                    context,
-                                                    "¡Error!",
-                                                    "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
-                                              } else {
-                                                final typeAlert =
-                                                    (value["result"])
-                                                        ? "¡Éxito!"
-                                                        : "¡Error!";
-                                                final message =
-                                                    value["message"];
-                                                setState(() {
-                                                  isLoading = false;
-                                                });
-                                                Navigator.pop(context);
-                                                dialogs.showInfoDialog(context,
-                                                    typeAlert, message);
-                                              }
-                                            });
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                // _ _ _       _
-                                //| | | | ___ | |_
-                                //| | | |/ ._>| . \
-                                //|__/_/ \___.|___/
-                                : Container(
-                                    height:
-                                        MediaQuery.of(context).size.height * .7,
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(height: 20.0),
-                                          Row(
-                                            children: [
-                                              Flexible(
-                                                  child: CustomInput(
-                                                      controller: taraEditCtrl,
-                                                      hint: "* Tara")),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
-                                              Flexible(
-                                                  child: CustomInputFloat(
-                                                      controller:
-                                                          capacidadEditCtrl,
-                                                      hint: "* Peso Tara Kg")),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
-                                              Flexible(child: listPlants()),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
-                                              Flexible(
-                                                  child: CustomButton(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .2,
-                                                title: 'Guardar',
-                                                isLoading: false,
-                                                onPressed: () async {
-                                                  //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
-                                                  if (taraEditCtrl.text == "" ||
-                                                      capacidadEditCtrl.text ==
-                                                          "") {
-                                                    dialogs.showInfoDialog(
-                                                        context,
-                                                        "¡Atención!",
-                                                        "Favor de validar los campos marcados con asterisco (*)");
-                                                  } else {
-                                                    await TarasProvider()
-                                                        .editTara(
-                                                      RxVariables
-                                                          .gvTaraSelectedById
-                                                          .idCatTara!,
-                                                      taraEditCtrl.text.trim(),
-                                                      capacidadEditCtrl.text
-                                                          .trim(),
-                                                      catPlanta.idCatPlanta!,
-                                                    )
-                                                        .then((value) {
-                                                      if (value == null) {
-                                                        setState(() {
-                                                          isLoading = false;
-                                                        });
-                                                        Navigator.pop(context);
-                                                        dialogs.showInfoDialog(
-                                                            context,
-                                                            "¡Error!",
-                                                            "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
-                                                      } else {
-                                                        final typeAlert =
-                                                            (value["result"])
-                                                                ? "¡Éxito!"
-                                                                : "¡Error!";
-                                                        final message =
-                                                            value["message"];
-                                                        setState(() {
-                                                          isLoading = false;
-                                                        });
-                                                        Navigator.pop(context);
-                                                        dialogs.showInfoDialog(
-                                                            context,
-                                                            typeAlert,
-                                                            message);
-                                                      }
-                                                    });
-                                                  }
-                                                },
-                                              )),
-                                              SizedBox(
-                                                width: 15,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+    if (currentUser.catProfile!.profileId != 1) {
+      ListUsersProvider().logOut();
+
+      return LoginPage();
+    } else {
+      return AppScaffold(
+          pageTitle: "Catálogos / Taras / Editar",
+          backButton: true,
+          body: SingleChildScrollView(
+            child: Container(
+              color: Color(0xffF5F6F5),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: double.infinity,
+                      //height: MediaQuery.of(context).size.width*.8,
+                      margin: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0),
+                      child: Column(children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Color(0xffffffff),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 30.0, horizontal: 30.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Text(
+                                'Editar',
+                                style: TextStyle(
+                                    color: Color(0xff313945),
+                                    fontSize: 13.00,
+                                    fontWeight: FontWeight.w200),
+                              ),
+                              Divider(),
+                              SizedBox(height: 10),
+                              // __ __
+                              //|  \  \ ___  _ _
+                              //|     |/ . \| | |
+                              //|_|_|_|\___/|__/
+                              displayMobileLayout
+                                  ? ListView(
+                                      shrinkWrap: true,
+                                      children: [
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomInput(
+                                            controller: taraEditCtrl,
+                                            hint: "* Tara"),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomInputFloat(
+                                            controller: capacidadEditCtrl,
+                                            hint: "* Peso Tara Kg"),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        listPlants(),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomButton(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .2,
+                                          title: 'Guardar',
+                                          isLoading: false,
+                                          onPressed: () async {
+                                            //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
+                                            if (taraEditCtrl.text == "" ||
+                                                capacidadEditCtrl.text == "") {
+                                              dialogs.showInfoDialog(
+                                                  context,
+                                                  "¡Atención!",
+                                                  "Favor de validar los campos marcados con asterisco (*)");
+                                            } else {
+                                              await TarasProvider()
+                                                  .editTara(
+                                                RxVariables.gvTaraSelectedById
+                                                    .idCatTara!,
+                                                taraEditCtrl.text.trim(),
+                                                capacidadEditCtrl.text.trim(),
+                                                catPlanta.idCatPlanta!,
+                                              )
+                                                  .then((value) {
+                                                if (value == null) {
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                  Navigator.pop(context);
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      "¡Error!",
+                                                      "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                                } else {
+                                                  final typeAlert =
+                                                      (value["result"])
+                                                          ? "¡Éxito!"
+                                                          : "¡Error!";
+                                                  final message =
+                                                      value["message"];
+                                                  setState(() {
+                                                    isLoading = false;
+                                                  });
+                                                  Navigator.pop(context);
+                                                  dialogs.showInfoDialog(
+                                                      context,
+                                                      typeAlert,
+                                                      message);
+                                                }
+                                              });
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  // _ _ _       _
+                                  //| | | | ___ | |_
+                                  //| | | |/ ._>| . \
+                                  //|__/_/ \___.|___/
+                                  : Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .7,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(height: 20.0),
+                                            Row(
+                                              children: [
+                                                Flexible(
+                                                    child: CustomInput(
+                                                        controller:
+                                                            taraEditCtrl,
+                                                        hint: "* Tara")),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Flexible(
+                                                    child: CustomInputFloat(
+                                                        controller:
+                                                            capacidadEditCtrl,
+                                                        hint:
+                                                            "* Peso Tara Kg")),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Flexible(child: listPlants()),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Flexible(
+                                                    child: CustomButton(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .2,
+                                                  title: 'Guardar',
+                                                  isLoading: false,
+                                                  onPressed: () async {
+                                                    //TODO:Recordar que el idCatPlanta se retorne desde el endpoint listar-taras
+                                                    if (taraEditCtrl.text ==
+                                                            "" ||
+                                                        capacidadEditCtrl
+                                                                .text ==
+                                                            "") {
+                                                      dialogs.showInfoDialog(
+                                                          context,
+                                                          "¡Atención!",
+                                                          "Favor de validar los campos marcados con asterisco (*)");
+                                                    } else {
+                                                      await TarasProvider()
+                                                          .editTara(
+                                                        RxVariables
+                                                            .gvTaraSelectedById
+                                                            .idCatTara!,
+                                                        taraEditCtrl.text
+                                                            .trim(),
+                                                        capacidadEditCtrl.text
+                                                            .trim(),
+                                                        catPlanta.idCatPlanta!,
+                                                      )
+                                                          .then((value) {
+                                                        if (value == null) {
+                                                          setState(() {
+                                                            isLoading = false;
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                          dialogs.showInfoDialog(
+                                                              context,
+                                                              "¡Error!",
+                                                              "Ocurrió un error al editar la tara : ${RxVariables.errorMessage}");
+                                                        } else {
+                                                          final typeAlert =
+                                                              (value["result"])
+                                                                  ? "¡Éxito!"
+                                                                  : "¡Error!";
+                                                          final message =
+                                                              value["message"];
+                                                          setState(() {
+                                                            isLoading = false;
+                                                          });
+                                                          Navigator.pop(
+                                                              context);
+                                                          dialogs
+                                                              .showInfoDialog(
+                                                                  context,
+                                                                  typeAlert,
+                                                                  message);
+                                                        }
+                                                      });
+                                                    }
+                                                  },
+                                                )),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                          ],
-                        ),
-                      )
-                    ]))
-              ],
+                            ],
+                          ),
+                        )
+                      ]))
+                ],
+              ),
             ),
-          ),
-        ));
+          ));
+    }
   }
 
   Widget listPlants() {

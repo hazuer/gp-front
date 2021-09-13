@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
@@ -35,6 +36,8 @@ class _RazonesIndexState extends State<RazonesIndex> {
   final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
+  final currentUser = RxVariables.loginResponse.data!;
+
   @override
   void initState() {
     futureRazones = razonesProvider.listRazones();
@@ -46,180 +49,191 @@ class _RazonesIndexState extends State<RazonesIndex> {
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
-    return AppScaffold(
-      pageTitle: 'Catálogos / Razones',
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color(0xffF5F6F5),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                //height: MediaQuery.of(context).size.width*.8,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Color(0xffffffff),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 30.0, horizontal: 30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Text(
-                            'Listado de Razones',
-                            style: TextStyle(
-                                color: Color(0xff313945),
-                                fontSize: 13.00,
-                                fontWeight: FontWeight.w200),
-                          ),
-                          Divider(),
-                          SizedBox(height: 10.0),
-                          displayMobileLayout
-                              ? ListView(
-                                  shrinkWrap: true,
-                                  children: [
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Crear Razón",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        Navigator.pushNamed(
-                                            context, RouteNames.razonCreate);
-                                      },
-                                    ),
-                                    SizedBox(height: 20.0),
-                                    CustomInput(
-                                        hint: 'Razón', controller: razonCtrl),
-                                    SizedBox(height: 15),
-                                    listPlants(),
-                                    SizedBox(height: 15),
-                                    listStatus(),
-                                    SizedBox(height: 15.0),
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Buscar",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        await _applyFilter();
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    CustomButton(
-                                      width: MediaQuery.of(context).size.width *
-                                          .2,
-                                      title: "Limpiar",
-                                      isLoading: false,
-                                      onPressed: () async {
-                                        await clearFilters();
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 30,
-                                    ),
-                                    isLoading
-                                        ? Container(
-                                            margin: EdgeInsets.only(top: 50),
-                                            width: 44,
-                                            height: 44,
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                      GPColors.PrimaryColor),
-                                            ),
-                                          )
-                                        : TableRazonList(),
-                                    // : TableClienteList(),
-                                  ],
-                                )
-                              : Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.7,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomButton(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .2,
-                                          title: "Crear Razón",
-                                          isLoading: false,
-                                          onPressed: () async {
-                                            Navigator.pushNamed(
-                                                context, RouteNames.razonCreate);
-                                          },
-                                        ),
-                                        SizedBox(height: 20.0),
-                                        Row(
-                                          children: [
-                                            Flexible(
-                                              child: CustomInput(
-                                                  hint: 'Razón',
-                                                  controller: razonCtrl),
-                                            ),
-                                            SizedBox(width: 15.0),
-                                            Flexible(child: listPlants()),
-                                            SizedBox(width: 15.0),
-                                            Flexible(child: listStatus()),
-                                            SizedBox(width: 15.0),
-                                            IconButton(
-                                              tooltip: 'Buscar',
-                                              onPressed: () async {
-                                                await _applyFilter();
-                                              },
-                                              icon: Icon(Icons.filter_alt),
-                                            ),
-                                            IconButton(
-                                              tooltip: 'Limpiar',
-                                              onPressed: () async {
-                                                await clearFilters();
-                                              },
-                                              icon: Icon(Icons.clear),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10.0),
-                                        isLoading
-                                            ? Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 50),
-                                                width: 44,
-                                                height: 44,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                              Color>(
-                                                          GPColors
-                                                              .PrimaryColor),
-                                                ),
-                                              )
-                                            : TableRazonList(),
-                                        // : TableClienteList(),
-                                      ],
+    if (currentUser.catProfile!.profileId != 1) {
+      ListUsersProvider().logOut();
+
+      return LoginPage();
+    } else {
+      return AppScaffold(
+        pageTitle: 'Catálogos / Razones',
+        body: SingleChildScrollView(
+          child: Container(
+            color: Color(0xffF5F6F5),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  //height: MediaQuery.of(context).size.width*.8,
+                  margin:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Color(0xffffffff),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 30.0, horizontal: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Text(
+                              'Listado de Razones',
+                              style: TextStyle(
+                                  color: Color(0xff313945),
+                                  fontSize: 13.00,
+                                  fontWeight: FontWeight.w200),
+                            ),
+                            Divider(),
+                            SizedBox(height: 10.0),
+                            displayMobileLayout
+                                ? ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Crear Razón",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          Navigator.pushNamed(
+                                              context, RouteNames.razonCreate);
+                                        },
+                                      ),
+                                      SizedBox(height: 20.0),
+                                      CustomInput(
+                                          hint: 'Razón', controller: razonCtrl),
+                                      SizedBox(height: 15),
+                                      listPlants(),
+                                      SizedBox(height: 15),
+                                      listStatus(),
+                                      SizedBox(height: 15.0),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Buscar",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          await _applyFilter();
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      CustomButton(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .2,
+                                        title: "Limpiar",
+                                        isLoading: false,
+                                        onPressed: () async {
+                                          await clearFilters();
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height: 30,
+                                      ),
+                                      isLoading
+                                          ? Container(
+                                              margin: EdgeInsets.only(top: 50),
+                                              width: 44,
+                                              height: 44,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                            Color>(
+                                                        GPColors.PrimaryColor),
+                                              ),
+                                            )
+                                          : TableRazonList(),
+                                      // : TableClienteList(),
+                                    ],
+                                  )
+                                : Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.7,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CustomButton(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .2,
+                                            title: "Crear Razón",
+                                            isLoading: false,
+                                            onPressed: () async {
+                                              Navigator.pushNamed(context,
+                                                  RouteNames.razonCreate);
+                                            },
+                                          ),
+                                          SizedBox(height: 20.0),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                child: CustomInput(
+                                                    hint: 'Razón',
+                                                    controller: razonCtrl),
+                                              ),
+                                              SizedBox(width: 15.0),
+                                              Flexible(child: listPlants()),
+                                              SizedBox(width: 15.0),
+                                              Flexible(child: listStatus()),
+                                              SizedBox(width: 15.0),
+                                              IconButton(
+                                                tooltip: 'Buscar',
+                                                onPressed: () async {
+                                                  await _applyFilter();
+                                                },
+                                                icon: Icon(Icons.filter_alt),
+                                              ),
+                                              IconButton(
+                                                tooltip: 'Limpiar',
+                                                onPressed: () async {
+                                                  await clearFilters();
+                                                },
+                                                icon: Icon(Icons.clear),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10.0),
+                                          isLoading
+                                              ? Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 50),
+                                                  width: 44,
+                                                  height: 44,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            GPColors
+                                                                .PrimaryColor),
+                                                  ),
+                                                )
+                                              : TableRazonList(),
+                                          // : TableClienteList(),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget listPlants() {

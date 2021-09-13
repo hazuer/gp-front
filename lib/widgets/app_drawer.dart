@@ -329,7 +329,6 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                             )
                           : Container(),
                       (currentUser.catProfile!.profileId == 2 ||
-                              currentUser.catProfile!.profileId == 3 ||
                               currentUser.catProfile!.profileId == 4)
                           // Operador, op. cliente y supervisor
                           ? ListTileTheme(

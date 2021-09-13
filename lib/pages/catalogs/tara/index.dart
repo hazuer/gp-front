@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
+import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
@@ -22,15 +24,17 @@ class TaraIndex extends StatefulWidget {
 
 class _TaraIndexState extends State<TaraIndex> {
   late Future futureTara;
-  bool isLoading                                       = false;
-  String headerFilter                                  = "?porPagina = 20";
-  TextEditingController taraCtrl                       = TextEditingController();
-  TextEditingController capacidadCtrl                  = TextEditingController();
-  Plant catPlanta                                      = Plant();
-  StatusModel catEstatus                               = StatusModel();
-  TarasProvider tarasProvider                          = TarasProvider();
-  final GlobalKey<AppExpansionTileState> catPlanKey    = new GlobalKey();
+  bool isLoading = false;
+  String headerFilter = "?porPagina = 20";
+  TextEditingController taraCtrl = TextEditingController();
+  TextEditingController capacidadCtrl = TextEditingController();
+  Plant catPlanta = Plant();
+  StatusModel catEstatus = StatusModel();
+  TarasProvider tarasProvider = TarasProvider();
+  final GlobalKey<AppExpansionTileState> catPlanKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
+
+  final currentUser = RxVariables.loginResponse.data!;
 
   @override
   void initState() {
@@ -42,182 +46,237 @@ class _TaraIndexState extends State<TaraIndex> {
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
-    return AppScaffold(
-      pageTitle: "Catálogos / Taras",
-      body: SingleChildScrollView(
-        child: Container(
-          color: Color(0xffF5F6F5),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                //height: MediaQuery.of(context).size.width*.8,
-                margin:EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child:Column(children: <Widget>[
+    if (currentUser.catProfile!.profileId != 1) {
+      ListUsersProvider().logOut();
+
+      return LoginPage();
+    } else {
+      return AppScaffold(
+          pageTitle: "Catálogos / Taras",
+          body: SingleChildScrollView(
+            child: Container(
+              color: Color(0xffF5F6F5),
+              child: Column(
+                children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Color(0xffffffff),
-                    padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Text('Listado de Taras', style:
-                          TextStyle(
-                            color: Color(0xff313945),
-                            fontSize: 13.00,
-                            fontWeight: FontWeight.w200
-                          ),
-                        ),
-                        Divider(),
-                        SizedBox(height: 10),
-                        // __ __
-                        //|  \  \ ___  _ _
-                        //|     |/ . \| | |
-                        //|_|_|_|\___/|__/
-                        displayMobileLayout ? 
-                        ListView(
-                          shrinkWrap: true,
-                          children: [
-                            CustomButton(
-                              width: MediaQuery.of(context).size.width *.2,
-                              title: "Crear Tara",
-                              isLoading: false,
-                              onPressed: () async {
-                                Navigator.pushNamed(context, RouteNames.taraCreate);
-                              },
-                            ),
-                            SizedBox(height: 15,),
-                            CustomInput(controller: taraCtrl, hint: "Tara"),
-                            SizedBox(height: 15,),
-                            CustomInputFloat(controller: capacidadCtrl,hint: "Peso Tara Kg"),
-                            SizedBox(height: 15,),
-                            listPlants(),
-                            SizedBox(height: 15,),
-                            listStatus(),
-                            SizedBox(height: 15,),
-                            CustomButton(
-                              width: MediaQuery.of(context).size.width * .2,
-                              title: "Buscar",
-                              isLoading: false,
-                              onPressed: () async {
-                                await applyFilter();
-                              },
-                            ),
-                            SizedBox(height: 15,),
-                            CustomButton(
-                              width: MediaQuery.of(context).size.width * .2,
-                              title: "Limpiar",
-                              isLoading: false,
-                              onPressed: () async {
-                                await clearFilters();
-                              },
-                            ),
-                            SizedBox(height: 30,),
-                            isLoading ? 
-                            Container(
-                              margin: EdgeInsets.only(top: 50),
-                              width: 44,
-                              height: 44,
-                              child: CircularProgressIndicator(
-                                valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),
-                              ),
-                            )
-                            : 
-                            TableTaraList()
-                          ],
-                        )
-                        // _ _ _       _
-                        //| | | | ___ | |_
-                        //| | | |/ ._>| . \
-                        //|__/_/ \___.|___/
-                        : 
+                      width: double.infinity,
+                      //height: MediaQuery.of(context).size.width*.8,
+                      margin: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0),
+                      child: Column(children: <Widget>[
                         Container(
-                          height:MediaQuery.of(context).size.height * .7,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child:CustomButton(
-                                        width: MediaQuery.of(context).size.width *.2,
-                                        title: "Crear Tara",
-                                        isLoading: false,
-                                        onPressed: () async {
-                                          Navigator.pushNamed(context,
-                                            RouteNames.taraCreate);
-                                        },
+                          width: MediaQuery.of(context).size.width,
+                          color: Color(0xffffffff),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 30.0, horizontal: 30.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Text(
+                                'Listado de Taras',
+                                style: TextStyle(
+                                    color: Color(0xff313945),
+                                    fontSize: 13.00,
+                                    fontWeight: FontWeight.w200),
+                              ),
+                              Divider(),
+                              SizedBox(height: 10),
+                              // __ __
+                              //|  \  \ ___  _ _
+                              //|     |/ . \| | |
+                              //|_|_|_|\___/|__/
+                              displayMobileLayout
+                                  ? ListView(
+                                      shrinkWrap: true,
+                                      children: [
+                                        CustomButton(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .2,
+                                          title: "Crear Tara",
+                                          isLoading: false,
+                                          onPressed: () async {
+                                            Navigator.pushNamed(
+                                                context, RouteNames.taraCreate);
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomInput(
+                                            controller: taraCtrl, hint: "Tara"),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomInputFloat(
+                                            controller: capacidadCtrl,
+                                            hint: "Peso Tara Kg"),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        listPlants(),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        listStatus(),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomButton(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .2,
+                                          title: "Buscar",
+                                          isLoading: false,
+                                          onPressed: () async {
+                                            await applyFilter();
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        CustomButton(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .2,
+                                          title: "Limpiar",
+                                          isLoading: false,
+                                          onPressed: () async {
+                                            await clearFilters();
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        isLoading
+                                            ? Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 50),
+                                                width: 44,
+                                                height: 44,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                              Color>(
+                                                          GPColors
+                                                              .PrimaryColor),
+                                                ),
+                                              )
+                                            : TableTaraList()
+                                      ],
+                                    )
+                                  // _ _ _       _
+                                  //| | | | ___ | |_
+                                  //| | | |/ ._>| . \
+                                  //|__/_/ \___.|___/
+                                  : Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .7,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Row(children: [
+                                              Flexible(
+                                                child: CustomButton(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .2,
+                                                  title: "Crear Tara",
+                                                  isLoading: false,
+                                                  onPressed: () async {
+                                                    Navigator.pushNamed(context,
+                                                        RouteNames.taraCreate);
+                                                  },
+                                                ),
+                                              ),
+                                            ]),
+                                            SizedBox(height: 20.0),
+                                            Row(
+                                              children: [
+                                                Flexible(
+                                                    child: CustomInput(
+                                                        controller: taraCtrl,
+                                                        hint: "Tara")),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Flexible(
+                                                    child: CustomInputFloat(
+                                                        controller:
+                                                            capacidadCtrl,
+                                                        hint: "Peso Tara Kg")),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Flexible(child: listPlants()),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                Flexible(child: listStatus()),
+                                                SizedBox(
+                                                  width: 15,
+                                                ),
+                                                IconButton(
+                                                  tooltip: "Buscar",
+                                                  onPressed: () async {
+                                                    await applyFilter();
+                                                  },
+                                                  icon: Icon(Icons.filter_alt),
+                                                ),
+                                                IconButton(
+                                                  tooltip: "Limpiar",
+                                                  onPressed: () async {
+                                                    await clearFilters();
+                                                  },
+                                                  icon: Icon(Icons.clear),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 30,
+                                            ),
+                                            isLoading
+                                                ? Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 50),
+                                                    width: 44,
+                                                    height: 44,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                                  Color>(
+                                                              GPColors
+                                                                  .PrimaryColor),
+                                                    ),
+                                                  )
+                                                : TableTaraList()
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ]
-                                ),
-                                SizedBox(height: 20.0),
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: CustomInput(
-                                        controller:taraCtrl,
-                                        hint: "Tara"
-                                      )
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Flexible(
-                                      child: CustomInputFloat(
-                                        controller:capacidadCtrl,
-                                        hint: "Peso Tara Kg"
-                                      )
-                                    ),
-                                    SizedBox(width: 15,),
-                                    Flexible(child: listPlants()),
-                                    SizedBox(width: 15,),
-                                    Flexible(child: listStatus()),
-                                    SizedBox(width: 15,),
-                                    IconButton(  
-                                      tooltip: "Buscar",
-                                      onPressed: () async {
-                                        await applyFilter();
-                                      },
-                                      icon: Icon(Icons.filter_alt),
-                                    ),
-                                    IconButton(
-                                      tooltip: "Limpiar",
-                                      onPressed: () async {
-                                        await clearFilters();
-                                      },
-                                      icon: Icon(Icons.clear),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 30,),
-                                isLoading ?
-                                Container(
-                                  margin:EdgeInsets.only(top: 50),
-                                  width: 44,
-                                  height:44,
-                                  child:CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(GPColors.PrimaryColor),),
-                                )
-                                : 
-                                TableTaraList()
-                              ],
-                            ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                ])
-              )
-            ],
-          ),
-        ),
-      )
-    );
+                        )
+                      ]))
+                ],
+              ),
+            ),
+          ));
+    }
   }
 
   Widget listPlants() {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
         key: catPlanKey,
         initiallyExpanded: false,
@@ -240,7 +299,8 @@ class _TaraIndexState extends State<TaraIndex> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catPlanta = RxVariables.dataFromUsers.listPlants![index];
+                            catPlanta =
+                                RxVariables.dataFromUsers.listPlants![index];
                             catPlanKey.currentState!.collapse();
                           });
                         },
@@ -252,9 +312,10 @@ class _TaraIndexState extends State<TaraIndex> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                  RxVariables.dataFromUsers.listPlants![index].nombrePlanta!,
-                                  style: TextStyle(color: Colors.black54, fontSize: 13)
-                                ),
+                                    RxVariables.dataFromUsers.listPlants![index]
+                                        .nombrePlanta!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
                               ),
                               Container(
                                 width: double.infinity,
@@ -280,7 +341,8 @@ class _TaraIndexState extends State<TaraIndex> {
 
   Widget listStatus() {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
         key: catEstatusKey,
         initiallyExpanded: false,
@@ -303,7 +365,8 @@ class _TaraIndexState extends State<TaraIndex> {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catEstatus = RxVariables.dataFromUsers.listStatus![index];
+                            catEstatus =
+                                RxVariables.dataFromUsers.listStatus![index];
                             catEstatusKey.currentState!.collapse();
                           });
                         },
@@ -315,10 +378,10 @@ class _TaraIndexState extends State<TaraIndex> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.dataFromUsers.listStatus![index].estatus!,
-                                    style: TextStyle(color: Colors.black54, fontSize: 13
-                                  )
-                                ),
+                                    RxVariables.dataFromUsers.listStatus![index]
+                                        .estatus!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
                               ),
                               Container(
                                 width: double.infinity,
@@ -356,7 +419,8 @@ class _TaraIndexState extends State<TaraIndex> {
     }
 
     if (catEstatus.idCatEstatus != null) {
-      headerFilter = headerFilter + "&id_cat_estatus=${catEstatus.idCatEstatus}";
+      headerFilter =
+          headerFilter + "&id_cat_estatus=${catEstatus.idCatEstatus}";
     }
 
     setState(() {
@@ -374,8 +438,8 @@ class _TaraIndexState extends State<TaraIndex> {
       isLoading = true;
     });
     headerFilter = "?porPagina = 30";
-    catPlanta    = Plant();
-    catEstatus   = StatusModel();
+    catPlanta = Plant();
+    catEstatus = StatusModel();
     taraCtrl.clear();
     capacidadCtrl.clear();
 

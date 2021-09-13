@@ -36,14 +36,15 @@ import 'package:general_products_web/models/catalogs/plant/catPaisModel.dart';
 
 import 'package:general_products_web/constants/setLoginAautomatic.dart';
 
-
 class RxVariables {
+  // Login response normal
+  static LoginResponse loginResponse = LoginResponse();
+  static String token = "";
 
-  //static LoginResponse loginResponse = LoginResponse();
-  //static String token = "";
-
-  static LoginResponse loginResponse = LoginResponse.fromJson(SetLoginAautomatic.json);
-  static String? token = loginResponse.data!.token;
+  // Login response de pruebas
+  // static LoginResponse loginResponse =
+  //     LoginResponse.fromJson(SetLoginAautomatic.json);
+  // static String? token = loginResponse.data!.token;
 
   static List<Plant> plantsAvailables = [];
   static List<Customer> customerAvailables = [];
@@ -60,7 +61,7 @@ class RxVariables {
   static SearchUserResponse userById = SearchUserResponse();
   static CountriesList countryById = CountriesList();
   //static bool isEdition = false;
-  
+
   final listUsersFilter = BehaviorSubject<List<UserList>>();
   Stream<List<UserList>> get listWorkZonesSelectedStream =>
       listUsersFilter.stream;

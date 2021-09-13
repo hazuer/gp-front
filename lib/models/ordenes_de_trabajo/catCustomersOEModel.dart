@@ -7,7 +7,8 @@ class CatCustomersOEModel {
   int? idCatCliente;
   String? nombreCliente;
 
-  factory CatCustomersOEModel.fromJson(Map<String, dynamic> json) => CatCustomersOEModel(
+  factory CatCustomersOEModel.fromJson(Map<String, dynamic> json) =>
+      CatCustomersOEModel(
         idCatCliente: json["id_cat_cliente"],
         nombreCliente: json["nombre_cliente"],
       );
