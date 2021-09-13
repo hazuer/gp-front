@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/status_model.dart';
-import 'package:general_products_web/provider/cliente/clientes_provider.dart';
+import 'package:general_products_web/provider/catalogs/cliente/clientes_provider.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
-import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
-import 'package:general_products_web/widgets/cliente/clienteDialog.dart';
+import 'package:general_products_web/widgets/catalogs/cliente/clienteDialog.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 
-class ClienteStore extends StatefulWidget {
-  const ClienteStore({Key? key}) : super(key: key);
+class ClienteEdit extends StatefulWidget {
+  const ClienteEdit({Key? key}) : super(key: key);
 
   @override
-  _ClienteStoreState createState() => _ClienteStoreState();
+  _ClienteEditState createState() => _ClienteEditState();
 }
 
-class _ClienteStoreState extends State<ClienteStore> {
+class _ClienteEditState extends State<ClienteEdit> {
   late Future futureClients;
   late Future futureFields;
   bool isLoading = false;
@@ -30,24 +28,25 @@ class _ClienteStoreState extends State<ClienteStore> {
   ClienteDialog dialogs = ClienteDialog();
   ClientesProvider clientesProvider = ClientesProvider();
   ListUsersProvider listProvider = ListUsersProvider();
-  final GlobalKey<AppExpansionTileState> plantsKey = new GlobalKey();
+
+  final GlobalKey<AppExpansionTileState> plantKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> statusKey = new GlobalKey();
 
   @override
   void initState() {
+    clienteCtrl.text = RxVariables.clienteSelected.nombreCliente!;
     futureClients = clientesProvider.listClientes();
     futureFields = listProvider.listUsers();
+    plant.idCatPlanta = RxVariables.clienteSelected.idCatPlanta!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
-    // final clienteInfo =
-    //     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     return AppScaffold(
-      pageTitle: 'Catálogos / Clientes / Crear',
+      pageTitle: 'Catálogos / Clientes / Editar',
       backButton: true,
       body: SingleChildScrollView(
         child: Container(
@@ -69,7 +68,7 @@ class _ClienteStoreState extends State<ClienteStore> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Text(
-                            'Crear',
+                            'Editar',
                             style: TextStyle(
                                 color: Color(0xff313945),
                                 fontSize: 13.00,
@@ -82,7 +81,7 @@ class _ClienteStoreState extends State<ClienteStore> {
                                   shrinkWrap: true,
                                   children: [
                                     CustomInput(
-                                        hint: '* Cliente',
+                                        hint: '* Cliente ',
                                         controller: clienteCtrl),
                                     SizedBox(height: 15),
                                     listPlants(),
@@ -90,10 +89,10 @@ class _ClienteStoreState extends State<ClienteStore> {
                                     CustomButton(
                                       width: MediaQuery.of(context).size.width *
                                           .2,
-                                      title: 'Crear',
+                                      title: 'Guardar',
                                       isLoading: false,
                                       onPressed: () async {
-                                        if (clienteCtrl.text.isEmpty ||
+                                        if (clienteCtrl.text == '' ||
                                             plant.idCatPlanta == null) {
                                           dialogs.showInfoDialog(
                                               context,
@@ -101,20 +100,21 @@ class _ClienteStoreState extends State<ClienteStore> {
                                               "Favor de validar los campos marcados con asterisco (*)");
                                         } else {
                                           await ClientesProvider()
-                                              .crearCliente(
-                                            clienteCtrl.text.trim(),
-                                            plant.idCatPlanta!,
-                                          )
+                                              .editCliente(
+                                                  RxVariables.clienteSelected
+                                                      .idCatCliente!,
+                                                  clienteCtrl.text.trim(),
+                                                  plant.idCatPlanta!)
                                               .then((value) {
                                             if (value == null) {
                                               setState(() {
                                                 isLoading = false;
                                               });
-                                              // Navigator.pop(context);
+                                              Navigator.pop(context);
                                               dialogs.showInfoDialog(
                                                   context,
                                                   "¡Error!",
-                                                  "Ocurrió un error al crear al cliente : ${RxVariables.errorMessage}");
+                                                  "Ocurrió un error al editar al cliente: ${RxVariables.errorMessage}");
                                             } else {
                                               final typeAlert =
                                                   (value["result"])
@@ -159,10 +159,10 @@ class _ClienteStoreState extends State<ClienteStore> {
                                                       .size
                                                       .width *
                                                   .2,
-                                              title: 'Crear',
+                                              title: 'Guardar',
                                               isLoading: false,
                                               onPressed: () async {
-                                                if (clienteCtrl.text.isEmpty ||
+                                                if (clienteCtrl.text == '' ||
                                                     plant.idCatPlanta == null) {
                                                   dialogs.showInfoDialog(
                                                       context,
@@ -170,10 +170,13 @@ class _ClienteStoreState extends State<ClienteStore> {
                                                       "Favor de validar los campos marcados con asterisco (*)");
                                                 } else {
                                                   await ClientesProvider()
-                                                      .crearCliente(
-                                                    clienteCtrl.text.trim(),
-                                                    plant.idCatPlanta!,
-                                                  )
+                                                      .editCliente(
+                                                          RxVariables
+                                                              .clienteSelected
+                                                              .idCatCliente!,
+                                                          clienteCtrl.text
+                                                              .trim(),
+                                                          plant.idCatPlanta!)
                                                       .then((value) {
                                                     if (value == null) {
                                                       setState(() {
@@ -183,7 +186,7 @@ class _ClienteStoreState extends State<ClienteStore> {
                                                       dialogs.showInfoDialog(
                                                           context,
                                                           "¡Error!",
-                                                          "Ocurrió un error al crear al cliente : ${RxVariables.errorMessage}");
+                                                          "Ocurrió un error al editar al cliente : ${RxVariables.errorMessage}");
                                                     } else {
                                                       final typeAlert =
                                                           (value["result"])
@@ -228,10 +231,10 @@ class _ClienteStoreState extends State<ClienteStore> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: plantsKey,
+        key: plantKey,
         initiallyExpanded: false,
         title: Text(
-          plant.nombrePlanta ?? '* Planta',
+          plant.nombrePlanta ?? RxVariables.clienteSelected.nombrePlanta!,
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -251,7 +254,7 @@ class _ClienteStoreState extends State<ClienteStore> {
                           setState(() {
                             plant =
                                 RxVariables.dataFromUsers.listPlants![index];
-                            plantsKey.currentState!.collapse();
+                            plantKey.currentState!.collapse();
                           });
                         },
                         child: Container(

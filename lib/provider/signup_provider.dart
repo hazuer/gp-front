@@ -22,13 +22,13 @@ class SignupProvider {
 
       final resp = await dio.post(url,
           data: data, options: RoutesProvider().headerOptions);
-      print(resp.data);
+          print("Login:");
+          print(resp.data.toString());
       SharedPreferences prefs = await SharedPreferences.getInstance();
       LoginResponse? loginReponse = LoginResponse.fromJson(resp.data);
       RxVariables.loginResponse = loginReponse;
       String? token = loginReponse.data!.token;
       await prefs.setString('token', token!);
-      print(loginReponse.data!.user!.name);
       RxVariables.token = loginReponse.data!.token!;
 
       return resp.data;
@@ -55,7 +55,6 @@ class SignupProvider {
 
       final resp = await dio.post(url,
           data: data, options: RoutesProvider().headerOptions);
-      print(resp.data);
       RxVariables.errorMessage = resp.data["message"]
           .toString()
           .replaceAll("{", "")
@@ -94,7 +93,6 @@ class SignupProvider {
       final resp = await dio.post(url,
           data: data, options: RoutesProvider().headerOptions);
 
-      print(resp.data);
 
       //message
       RxVariables.errorMessage = resp.data["message"].toString();
@@ -127,7 +125,6 @@ class SignupProvider {
         final tempResponse = Plant.fromJson(item);
         listPlants.add(tempResponse);
       });
-      print(listPlants.length);
       RxVariables.plantsAvailables = listPlants;
 
       final decodedDataCustomer = resp.data["customers"];
@@ -136,7 +133,6 @@ class SignupProvider {
         final tempResponse = Customer.fromJson(item);
         listCustomer.add(tempResponse);
       });
-      print(listCustomer.length);
       RxVariables.customerAvailables = listCustomer;
 
       return resp.data;

@@ -25,8 +25,6 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    //final bool displayMobileLayout = MediaQuery.of(context).size.width < 900;
-    //print(MediaQuery.of(context).size.width);
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -165,24 +163,6 @@ class _LoginPageState extends State<LoginPage> {
                                                   "¡Atención!",
                                                   "Favor de validar los campos marcados con asterisco (*)");
                                             },
-                                      /* onPressed: ()async{
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      await SignupProvider().login(userController.text, passwordController.text).then((value) {
-                                        if(value == null){
-                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(RxVariables.errorMessage), backgroundColor: Colors.red,));
-                                          setState(() {
-                                           isLoading = false;
-                                          });
-                                        }else{
-                                          setState(() {
-                                           isLoading = false;
-                                          });
-                                          Navigator.pushReplacementNamed(context, '/');
-                                        }
-                                      });
-                                    }*/
                                     );
                                   }),
                               SizedBox(

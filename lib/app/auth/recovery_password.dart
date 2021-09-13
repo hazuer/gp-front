@@ -128,24 +128,12 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                                     GeneralDialog().showInfoDialog(context, "¡Atención!", "Ingrese un correo válido");
 
                                   }
-                                  
-
-                                 // Navigator.pushReplacementNamed(context, '/');
                                 }
                               ),
                               SizedBox(
                                 height: 30,
                               ),
 
-                              //CustomButton(
-                                //isLoading: false,
-                                //title: "Salir", 
-                                //onPressed: (){
-                                  //print("onpressed");
-//                                  
-                                 //Navigator.pop(context);
-                                //}
-                              //),
                               TextButton(
                                      onPressed: (){
                                       print("onpressed");
