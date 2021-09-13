@@ -51,14 +51,12 @@ class CatalogsFieldsModel {
   Map<String, dynamic> toJson() => {
         "result": result,
         "operatorsList":
-            List<dynamic>.from(operatorsList!.map((x) => x.toJson())),
+            List<dynamic>.from(operatorsList.map((x) => x.toJson())),
         "customersList":
-            List<dynamic>.from(customersList!.map((x) => x.toJson())),
-        "statusOWList":
-            List<dynamic>.from(statusOwList!.map((x) => x.toJson())),
-        "machinesList":
-            List<dynamic>.from(machinesList!.map((x) => x.toJson())),
-        "designsList": List<dynamic>.from(designsList!.map((x) => x.toJson())),
+            List<dynamic>.from(customersList.map((x) => x.toJson())),
+        "statusOWList": List<dynamic>.from(statusOwList.map((x) => x.toJson())),
+        "machinesList": List<dynamic>.from(machinesList.map((x) => x.toJson())),
+        "designsList": List<dynamic>.from(designsList.map((x) => x.toJson())),
       };
 }
 
