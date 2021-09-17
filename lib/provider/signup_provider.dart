@@ -22,10 +22,10 @@ class SignupProvider {
 
       final resp = await dio.post(url,
           data: data, options: RoutesProvider().headerOptions);
-          print("Login:");
-          print(resp.data.toString());
+      print("Login:");
+      print(resp.data.toString());
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      LoginResponse? loginReponse = LoginResponse.fromJson(resp.data);
+      LoginResponse loginReponse = LoginResponse.fromJson(resp.data);
       RxVariables.loginResponse = loginReponse;
       String? token = loginReponse.data!.token;
       await prefs.setString('token', token!);
@@ -92,7 +92,6 @@ class SignupProvider {
 
       final resp = await dio.post(url,
           data: data, options: RoutesProvider().headerOptions);
-
 
       //message
       RxVariables.errorMessage = resp.data["message"].toString();

@@ -7,12 +7,13 @@ import 'package:general_products_web/models/catalogs/pais/dtPaisModel.dart';
 import 'package:general_products_web/models/list_users_model.dart';
 import 'package:general_products_web/models/login_response.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catCustomersOEModel.dart';
-import 'package:general_products_web/models/ordenes_de_trabajo/catDesignsOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catInksOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/dtDesignsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catOperatorsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catalogsFieldsModel.dart';
-import 'package:general_products_web/models/ordenes_de_trabajo/ordenesEntregaModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/listOrdenesEntregaModel.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/catalogs/razon/dtRazonModel.dart';
 import 'package:general_products_web/models/catalogs/razon/catRazonModel.dart';
@@ -128,11 +129,16 @@ class RxVariables {
 
   // Ordenes de entrega
   static DeliveryOrdersList orderSelected = DeliveryOrdersList();
-  static OrdenesDeEntregaModel listOrdenesEntrega =
-      OrdenesDeEntregaModel(deliveryOrdersList: []);
+  static ListOrdenesDeEntregaModel listOrdenesEntrega =
+      ListOrdenesDeEntregaModel(deliveryOrdersList: []);
   final listOrdersFilter = BehaviorSubject<List<DeliveryOrdersList>>();
   Stream<List<DeliveryOrdersList>> get listOrdersStream =>
       listOrdersFilter.stream;
+
+  //Tintas en Ordenes de entrega
+  static CatInksOEModel listInksOEModel = CatInksOEModel(inksList: []);
+  final listInksFilter = BehaviorSubject<List<InksList>>();
+  Stream<List<InksList>> get listInksStream => listInksFilter.stream;
 
   // Catalogos en las ordenes de entrega, tienen modelos propios para
   // manejar el tema de las validaciónes por perfil desde el back
@@ -147,7 +153,7 @@ class RxVariables {
   final gvSubListCustomers = BehaviorSubject<List<CatCustomersOEModel>>();
   final gvSubListStatus = BehaviorSubject<List<CatStatusOEModel>>();
   final gvSubListMachines = BehaviorSubject<List<CatMachinesOEModel>>();
-  final gvSubListDesigns = BehaviorSubject<List<CatDesignsOEModel>>();
+  final gvSubListDesigns = BehaviorSubject<List<DtDesignsOEModel>>();
   Stream<List<CatOperatorsOEModel>> get lsOperatorsOEFiltrosStream =>
       gvSubListOperators.stream;
   Stream<List<CatCustomersOEModel>> get lsCustomersOEFiltrosStream =>
@@ -156,7 +162,7 @@ class RxVariables {
       gvSubListStatus.stream;
   Stream<List<CatMachinesOEModel>> get lsMachinesOEFiltrosStream =>
       gvSubListMachines.stream;
-  Stream<List<CatDesignsOEModel>> get lsDesignsOEFiltrosStream =>
+  Stream<List<DtDesignsOEModel>> get lsDesignsOEFiltrosStream =>
       gvSubListDesigns.stream;
 
   static final RxVariables _bloc = new RxVariables._internal();
@@ -185,6 +191,7 @@ class RxVariables {
     gvSubListStatus.close();
     gvSubListMachines.close();
     gvSubListDesigns.close();
+    listInksFilter.close();
   }
 }
 

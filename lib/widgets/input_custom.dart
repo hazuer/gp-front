@@ -8,6 +8,8 @@ class CustomInput extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final String? errorText;
   final bool isPassword;
+  final bool enabled;
+
   CustomInput({
     Key? key,
     required this.hint,
@@ -16,6 +18,7 @@ class CustomInput extends StatelessWidget {
     this.onChanged,
     this.errorText,
     this.isPassword = false,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -25,6 +28,7 @@ class CustomInput extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: TextField(
+        enabled: enabled,
         keyboardType: keyboardType,
         onChanged: onChanged,
         controller: controller,

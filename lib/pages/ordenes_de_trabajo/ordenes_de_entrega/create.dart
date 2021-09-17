@@ -1,12 +1,11 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:general_products_web/app/auth/login.dart';
-import 'package:general_products_web/models/catalogs/design/designsModel.dart';
-import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
-import 'package:general_products_web/models/status_model.dart';
-import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
-import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/dtDesignsOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
@@ -14,7 +13,6 @@ import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_nueva_orden_entrega.dart';
-import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_ordenes_entrega.dart';
 
 class OrdenesEntregaCreate extends StatefulWidget {
   @override
@@ -22,16 +20,15 @@ class OrdenesEntregaCreate extends StatefulWidget {
 }
 
 class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
-  late Future futureMachines;
-  late Future futureDesigns;
+  late Future futureFields;
+  late Future futureTintas;
   bool isLoading = false;
-  StatusModel catEstatus = StatusModel();
 
-  MachinesProvider machinesProvider = MachinesProvider();
-  CatMachineModel catMachines = CatMachineModel();
+  OrdenEntregaProvider ordenEntregaProvider = OrdenEntregaProvider();
 
-  DesignsProvider designsProvider = DesignsProvider();
-  DesignsList catDesigns = DesignsList();
+  CatStatusOEModel catStatus = CatStatusOEModel();
+  CatMachinesOEModel catMachines = CatMachinesOEModel();
+  DtDesignsOEModel catDesigns = DtDesignsOEModel();
 
   TextEditingController ordenFabicacionCtrl = TextEditingController();
   TextEditingController folioCtrl = TextEditingController();
@@ -44,17 +41,23 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
   TextEditingController turnoCtrl = TextEditingController();
   TextEditingController pesoTotalCtrl = TextEditingController();
   TextEditingController cantidadProgramadaCtrl = TextEditingController();
+  TextEditingController estatusCtrl = TextEditingController();
 
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catMachineKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catDesignKey = new GlobalKey();
 
   final currentUser = RxVariables.loginResponse.data!;
+  final operador = RxVariables.loginResponse.data!.user;
+  final cliente = RxVariables.loginResponse.data!.catCustomer!.nombreCliente;
 
   @override
   void initState() {
-    futureMachines = machinesProvider.getAllMachines();
-    futureDesigns = designsProvider.getAllDesigns();
+    futureFields = ordenEntregaProvider.getFields();
+    clienteCtrl.text = cliente ?? 'Cliente';
+    operadorCtrl.text = '${operador!.name} ${operador!.lastName}';
+    catStatus.idCatEstatusOt = 1;
+    estatusCtrl.text = 'Nuevo';
     super.initState();
   }
 
@@ -131,10 +134,10 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                           hint: "Operador Responsable"),
                                       SizedBox(height: 15),
                                       CustomInput(
-                                          controller: clienteCtrl,
-                                          hint: "Cliente"),
-                                      SizedBox(height: 15),
-                                      listStatus(),
+                                          enabled: false,
+                                          controller: estatusCtrl,
+                                          hint: "Estatus"),
+                                      // listStatus(),
                                       SizedBox(height: 15),
                                       listMachines(),
                                       SizedBox(height: 15),
@@ -173,18 +176,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 .2,
-                                        title: "Buscar",
-                                        isLoading: false,
-                                        onPressed: () async {
-                                          // await applyFilter();
-                                        },
-                                      ),
-                                      SizedBox(height: 15),
-                                      CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        title: "Limpiar",
+                                        title: 'Guardar',
                                         isLoading: false,
                                         onPressed: () async {
                                           // await clearFilters();
@@ -249,20 +241,18 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                           Row(
                                             children: [
                                               Flexible(
-                                                  child: CustomInput(
-                                                controller: operadorCtrl,
-                                                hint: 'Operador Responsable',
-                                              )),
+                                                child: CustomInput(
+                                                  controller: operadorCtrl,
+                                                  hint: 'Operador Responsable',
+                                                ),
+                                              ),
                                               SizedBox(width: 15),
                                               Flexible(
                                                 child: CustomInput(
-                                                  controller: clienteCtrl,
-                                                  hint: 'Cliente',
-                                                ),
-                                                // listCliente(),
+                                                    controller: estatusCtrl,
+                                                    hint: "Estatus"),
                                               ),
-                                              SizedBox(width: 15),
-                                              Flexible(child: listStatus()),
+                                              // Flexible(child: listStatus()),
                                               SizedBox(width: 15),
                                               Flexible(child: listMachines()),
                                               SizedBox(width: 15),
@@ -325,21 +315,60 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                 ),
                                               ),
                                               SizedBox(width: 15),
-                                              IconButton(
-                                                tooltip: "Buscar",
-                                                onPressed: () async {
-                                                  // await applyFilter();
-                                                },
-                                                icon: Icon(Icons.filter_alt),
-                                              ),
-                                              IconButton(
-                                                tooltip: "Limpiar",
-                                                onPressed: () async {
-                                                  // await clearFilters();
-                                                },
-                                                icon: Icon(Icons.clear),
-                                              ),
                                             ],
+                                          ),
+                                          SizedBox(height: 15),
+                                          CustomButton(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .2,
+                                            title: 'Guardar',
+                                            isLoading: false,
+                                            onPressed: () async {
+                                              // if (razonCtrl.text.isEmpty ||
+                                              //     plant.idCatPlanta ==
+                                              //         null) {
+                                              //   dialogs.showInfoDialog(
+                                              //       context,
+                                              //       "¡Atención!",
+                                              //       "Favor de validar los campos marcados con asterisco (*)");
+                                              // } else {
+                                              //   await razonesProvider
+                                              //       .crearRazon(
+                                              //     razonCtrl.text.trim(),
+                                              //     plant.idCatPlanta!,
+                                              //   )
+                                              //       .then((value) {
+                                              //     if (value == null) {
+                                              //       setState(() {
+                                              //         isLoading = false;
+                                              //       });
+                                              //       Navigator.pop(context);
+                                              //       dialogs.showInfoDialog(
+                                              //           context,
+                                              //           "¡Error!",
+                                              //           "Ocurrió un error al crear la razón : ${RxVariables.errorMessage}");
+                                              //     } else {
+                                              //       final typeAlert =
+                                              //           (value["result"])
+                                              //               ? "¡Éxito!"
+                                              //               : "¡Error!";
+                                              //       final message =
+                                              //           value["message"];
+                                              //       setState(() {
+                                              //         isLoading = false;
+                                              //       });
+                                              //       Navigator.pop(context);
+                                              //       dialogs.showInfoDialog(
+                                              //           context,
+                                              //           typeAlert,
+                                              //           message);
+                                              //       //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                              //     }
+                                              //   });
+                                              // }
+                                            },
                                           ),
                                           SizedBox(height: 30),
                                           isLoading
@@ -415,26 +444,30 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
         key: catEstatusKey,
         initiallyExpanded: false,
         title: Text(
-          catEstatus.estatus ?? "Estatus",
+          'Nuevo',
+          // catStatus.estatusOt ?? "Estatus",
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureMachines,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listStatus!.length,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.statusOwList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catEstatus =
-                                RxVariables.dataFromUsers.listStatus![index];
+                            catStatus = RxVariables
+                                .gvListCatalogsFields.statusOwList[index];
+                            print(catStatus);
+                            // RxVariables.dataFromUsers.listStatus![index];
                             catEstatusKey.currentState!.collapse();
                           });
                         },
@@ -446,8 +479,8 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.dataFromUsers.listStatus![index]
-                                        .estatus!,
+                                    RxVariables.gvListCatalogsFields
+                                        .statusOwList[index].estatusOt!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),
@@ -488,19 +521,20 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureMachines,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.gvListMachines.machinesList.length,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.machinesList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catMachines =
-                                RxVariables.gvListMachines.machinesList[index];
+                            catMachines = RxVariables
+                                .gvListCatalogsFields.machinesList[index];
                             catMachineKey.currentState!.collapse();
                           });
                         },
@@ -512,7 +546,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.gvListMachines
+                                    RxVariables.gvListCatalogsFields
                                         .machinesList[index].nombreMaquina!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
@@ -554,19 +588,22 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureDesigns,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.listDesign.designsList.length,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.designsList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catDesigns =
-                                RxVariables.listDesign.designsList[index];
+                            catDesigns = RxVariables
+                                .gvListCatalogsFields.designsList[index];
+                            futureTintas = ordenEntregaProvider
+                                .getTintas(catDesigns.idCatDiseno!);
                             catDesignKey.currentState!.collapse();
                           });
                         },
@@ -578,8 +615,8 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.listDesign.designsList[index]
-                                        .nombreDiseno!,
+                                    RxVariables.gvListCatalogsFields
+                                        .designsList[index].nombreDiseno!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),

@@ -5,7 +5,7 @@
 import 'dart:convert';
 
 import 'package:general_products_web/models/ordenes_de_trabajo/catCustomersOEModel.dart';
-import 'package:general_products_web/models/ordenes_de_trabajo/catDesignsOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/dtDesignsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catOperatorsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
@@ -31,7 +31,7 @@ class CatalogsFieldsModel {
   List<CatCustomersOEModel> customersList;
   List<CatStatusOEModel> statusOwList;
   List<CatMachinesOEModel> machinesList;
-  List<CatDesignsOEModel> designsList;
+  List<DtDesignsOEModel> designsList;
 
   factory CatalogsFieldsModel.fromJson(Map<String, dynamic> json) =>
       CatalogsFieldsModel(
@@ -44,8 +44,8 @@ class CatalogsFieldsModel {
             json["statusOWList"].map((x) => CatStatusOEModel.fromJson(x))),
         machinesList: List<CatMachinesOEModel>.from(
             json["machinesList"].map((x) => CatMachinesOEModel.fromJson(x))),
-        designsList: List<CatDesignsOEModel>.from(
-            json["designsList"].map((x) => CatDesignsOEModel.fromJson(x))),
+        designsList: List<DtDesignsOEModel>.from(
+            json["designsList"].map((x) => DtDesignsOEModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

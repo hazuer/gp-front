@@ -5,6 +5,7 @@ import 'package:general_products_web/app/auth/register_page.dart';
 import 'package:general_products_web/pages/admin/pantalla_de_acceso.dart';
 import 'package:general_products_web/pages/authorize_user.dart';
 import 'package:general_products_web/pages/ordenes_de_trabajo/oe_adiciones/index.dart';
+import 'package:general_products_web/pages/ordenes_de_trabajo/ordenes_de_entrega/edit.dart';
 import 'pages/catalogs/pais/create.dart';
 import 'pages/catalogs/pais/edit.dart';
 import 'pages/catalogs/pais/index.dart';
@@ -140,6 +141,7 @@ class GeneralProductsApp extends StatelessWidget {
         // Ordenes de entrega
         RouteNames.oeIndex: (_) => OrdenesEntregaIndex(),
         RouteNames.oeCreate: (_) => OrdenesEntregaCreate(),
+        RouteNames.oeEdit: (_) => OrdenesEntregaEdit(),
 
         // OE Adiciones
         RouteNames.oeAdicionesIndex: (_) => OrdenesEntregaAdicionesIndex(),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/ordenes_de_trabajo/catDesignsOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/dtDesignsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
@@ -31,7 +31,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
 
   CatStatusOEModel catStatus = CatStatusOEModel();
   CatMachinesOEModel catMachines = CatMachinesOEModel();
-  CatDesignsOEModel catDesigns = CatDesignsOEModel();
+  DtDesignsOEModel catDesigns = DtDesignsOEModel();
 
   TextEditingController ordenFabicacionCtrl = TextEditingController();
   TextEditingController folioCtrl = TextEditingController();
