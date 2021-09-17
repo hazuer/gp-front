@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 
 class RoutesProvider {
-  final String urlBase = "http://api-dev.generalproducts.com.mx:880/api/";
+  final String urlBase = "http://api-dev.generalproducts.com.mx:880/api/"; //DEV
+  //final String urlBase = "http://api-qa.generalproducts.com.mx/api/"; //QA
 
   final Options headerOptions = new Options(headers: {
     'Content-Type': 'application/json',
