@@ -230,10 +230,10 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                                           tooltip: "Editar",
                                           //padding: EdgeInsets.zero,
                                           onPressed: () {
-                                            // RxVariables.gvTaraSelectedById =
-                                            //     snapshot.data![index];
+                                            // RXVariables.gvTintaSelected =
+                                            // snapshot.data![index];
                                             // Navigator.pushNamed(
-                                            //     context, RouteNames.taraEdit);
+                                            //     context, RouteNames.oeEdit);
                                           },
                                           icon: Icon(Icons.edit,
                                               size: 18,

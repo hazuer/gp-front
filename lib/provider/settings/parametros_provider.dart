@@ -17,7 +17,6 @@ class ParametrosProvider {
   Future getAllParameters(int idPlanta) async {
     List<SystemParams> listParametros = [];
     RxVariables.errorMessage = '';
-    // ParametrosModel listParametrosModel = ParametrosModel(systemParams: []);
 
     String url =
         routes.urlBase + routes.listParameters + '?id_cat_planta=$idPlanta';
@@ -26,17 +25,8 @@ class ParametrosProvider {
       final dio = Dio();
 
       final resp = await dio.get(url, options: headerWithToken);
-      // listParametrosModel = ParametrosModel.fromJson(resp.data);
-      // listParametrosModel.systemParams.forEach((element) {
-      //   listParametros.add(element);
-      // });
       rxVariables.listParametersFilter.sink.add(listParametros);
       RxVariables.initialParameters = resp.data;
-      // RxVariables.initialParameters = listParametros.first;
-      print('RxVariables: ${RxVariables.initialParameters}');
-      print('Resp.data: ${resp.data}');
-      // final Map<String, dynamic> parametersMap = jsonDecode(resp.data);
-      // RxVariables.initialParameters = parametersMap;
       return resp.data;
     } on DioError catch (e) {
       RxVariables.errorMessage = e.response!.data["message"]
@@ -65,18 +55,6 @@ class ParametrosProvider {
       bool utilizaFiltro) async {
     RxVariables.errorMessage = '';
 
-    print(idPlanta);
-    print(campoLote);
-    print(cantidadProgramada);
-    print(utilizaTara);
-    print(campoLinea);
-    print(requiereTurno);
-    print(variacionMaxima);
-    print(porcentajeAceptacion);
-    print(utilizaPH);
-    print(mideViscosidad);
-    print(utilizaFiltro);
-
     String url = routes.urlBase + routes.changeParameters;
     try {
       final dio = Dio();
@@ -95,7 +73,6 @@ class ParametrosProvider {
       };
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
-      print(resp.data);
       await getAllParameters(idPlanta);
       RxVariables.errorMessage = resp.data["message"]
           .toString()

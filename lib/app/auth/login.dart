@@ -25,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(

@@ -14,6 +14,7 @@ import 'package:general_products_web/models/ordenes_de_trabajo/catOperatorsOEMod
 import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catalogsFieldsModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/listOrdenesEntregaModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/registrar_recursos/registrarRecursosModel.dart';
 import 'package:general_products_web/models/plant_model.dart';
 import 'package:general_products_web/models/catalogs/razon/dtRazonModel.dart';
 import 'package:general_products_web/models/catalogs/razon/catRazonModel.dart';
@@ -39,13 +40,13 @@ import 'package:general_products_web/constants/setLoginAautomatic.dart';
 
 class RxVariables {
   // Login response normal
-  static LoginResponse loginResponse = LoginResponse();
-  static String token = "";
+  // static LoginResponse loginResponse = LoginResponse();
+  // static String token = "";
 
   // Login response de pruebas
-  // static LoginResponse loginResponse =
-  //     LoginResponse.fromJson(SetLoginAautomatic.json);
-  // static String? token = loginResponse.data!.token;
+  static LoginResponse loginResponse =
+      LoginResponse.fromJson(SetLoginAautomatic.json);
+  static String? token = loginResponse.data!.token;
 
   static List<Plant> plantsAvailables = [];
   static List<Customer> customerAvailables = [];
@@ -142,6 +143,13 @@ class RxVariables {
 
   // Catalogos en las ordenes de entrega, tienen modelos propios para
   // manejar el tema de las validaciónes por perfil desde el back
+  static RegistrarRecursosModel gvListRecursosFields = RegistrarRecursosModel(
+    reasonsList: [],
+    shiftsList: [],
+  );
+  final gvSubListReasons = BehaviorSubject<List<ReasonsList>>();
+  final gvSubListShifts = BehaviorSubject<List<ShiftsList>>();
+
   static CatalogsFieldsModel gvListCatalogsFields = CatalogsFieldsModel(
     operatorsList: [],
     customersList: [],
@@ -164,6 +172,10 @@ class RxVariables {
       gvSubListMachines.stream;
   Stream<List<DtDesignsOEModel>> get lsDesignsOEFiltrosStream =>
       gvSubListDesigns.stream;
+
+  final peso = BehaviorSubject<double>();
+  Stream<double> get pesoTotalStream => peso.stream;
+  static double pesoTotal = 0.0;
 
   static final RxVariables _bloc = new RxVariables._internal();
 
@@ -192,6 +204,8 @@ class RxVariables {
     gvSubListMachines.close();
     gvSubListDesigns.close();
     listInksFilter.close();
+    gvSubListReasons.close();
+    gvSubListShifts.close();
   }
 }
 

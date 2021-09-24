@@ -13,8 +13,8 @@ import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
+import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_edit_orden_entrega.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_nueva_orden_entrega.dart';
-import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_ordenes_entrega.dart';
 
 class OrdenesEntregaEdit extends StatefulWidget {
   @override
@@ -24,7 +24,10 @@ class OrdenesEntregaEdit extends StatefulWidget {
 class _OrdenesEntregaEditState extends State<OrdenesEntregaEdit> {
   late Future futureMachines;
   late Future futureDesigns;
+  late Future futureFields;
   bool isLoading = false;
+  double pesoTotal = 0.0;
+
   StatusModel catEstatus = StatusModel();
 
   MachinesProvider machinesProvider = MachinesProvider();
@@ -56,6 +59,7 @@ class _OrdenesEntregaEditState extends State<OrdenesEntregaEdit> {
   void initState() {
     futureMachines = machinesProvider.getAllMachines();
     futureDesigns = designsProvider.getAllDesigns();
+    // futureFields = RxVariables..gvTintaSelected;
     super.initState();
   }
 
@@ -196,7 +200,7 @@ class _OrdenesEntregaEditState extends State<OrdenesEntregaEdit> {
                                                         GPColors.PrimaryColor),
                                               ),
                                             )
-                                          : TableNuevaOrdenEntrega(),
+                                          : TableEditOrdenEntrega(),
                                     ],
                                   )
                                 : Container(
@@ -327,7 +331,7 @@ class _OrdenesEntregaEditState extends State<OrdenesEntregaEdit> {
                                                                 .PrimaryColor),
                                                   ),
                                                 )
-                                              : TableNuevaOrdenEntrega(),
+                                              : TableEditOrdenEntrega(),
                                         ],
                                       ),
                                     ),

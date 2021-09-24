@@ -7,6 +7,7 @@ import 'package:general_products_web/models/ordenes_de_trabajo/catOperatorsOEMod
 import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catalogsFieldsModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/listOrdenesEntregaModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/registrar_recursos/registrarRecursosModel.dart';
 import 'package:general_products_web/provider/routes_provider.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 
@@ -25,7 +26,7 @@ class OrdenEntregaProvider {
     ListOrdenesDeEntregaModel listOEModel =
         ListOrdenesDeEntregaModel(deliveryOrdersList: []);
 
-    String url = routes.urlBase + routes.listarOE + '?porPagina = 100';
+    String url = routes.urlBase + routes.listarOE;
 
     try {
       final dio = Dio();
@@ -170,40 +171,79 @@ class OrdenEntregaProvider {
     }
   }
 
-  // Actualizar a los datos del endpoint
+  Future getFieldsRegistros() async {
+    RxVariables.errorMessage = '';
+    String url = routes.urlBase + routes.listarCatalogosOE;
+
+    List<ShiftsList> listShifts = [];
+    List<ReasonsList> listReasons = [];
+
+    RegistrarRecursosModel listRecursosModel = RegistrarRecursosModel(
+      shiftsList: [],
+      reasonsList: [],
+    );
+
+    try {
+      final dio = Dio();
+
+      final resp = await dio.get(url, options: headerWithToken);
+      listRecursosModel = RegistrarRecursosModel.fromJson(resp.data);
+      RxVariables.gvListRecursosFields = listRecursosModel;
+      listRecursosModel.reasonsList.forEach((element) {
+        listReasons.add(element);
+      });
+      listRecursosModel.shiftsList.forEach((element) {
+        listShifts.add(element);
+      });
+
+      rxVariables.gvSubListReasons.sink.add(listReasons);
+      rxVariables.gvSubListShifts.sink.add(listShifts);
+
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      rxVariables.listOrdersFilter.sink.addError(RxVariables.errorMessage +
+          " Por favor contacta con el administrador");
+      return null;
+    }
+  }
+
   Future createOrdenEntrega(
-      String ordenFabricacion,
-      String fechaCreacion,
-      int idOpResponsable,
-      int idCliente,
-      int idStatus,
-      int idMaquina,
-      String linea,
-      String turno,
-      double pesoTotal,
-      String folio,
-      int cantidadProgramada,
-      String fechaCierre,
-      int idDesign) async {
+    String ordenFabricacion,
+    // int idOpResponsable,
+    // int idCliente,
+    // int idStatus,
+    int idMaquina,
+    int idDesign,
+    int cantidadProgramada,
+    double pesoTotal,
+    int turno, // Debe ser un Id
+    int linea, // Debe ser un int
+    // String folio,
+    String fechaCierre,
+    List<dynamic> tintas,
+  ) async {
     RxVariables.errorMessage = '';
     String url = routes.urlBase + routes.crearOE;
 
     try {
       final dio = Dio();
       final data = {
-        'orden_de_fabricacion': ordenFabricacion,
-        'fecha_creacion': fechaCreacion,
-        'id_cat_op_responsable': idOpResponsable,
-        'id_cat_cliente': idCliente,
-        'id_cat_status': idStatus,
+        'orden_trabajo_of': ordenFabricacion,
+        // 'fecha_creacion': fechaCreacion,
         'id_cat_maquina': idMaquina,
-        'linea': linea,
-        'turno': turno,
+        'id_cat_diseno': idDesign,
+        'cantidad_programado': cantidadProgramada,
         'peso_total': pesoTotal,
-        'folio': folio,
-        'cantidad_programada': cantidadProgramada,
+        'id_cat_turno': turno,
+        'linea': linea,
         'fecha_cierre': fechaCierre,
-        'diseno': idDesign,
+        'tintas': tintas,
       };
 
       final resp = await dio.post(url, data: data, options: headerWithToken);
@@ -222,7 +262,6 @@ class OrdenEntregaProvider {
     }
   }
 
-  // Actualizar a los datos del endpoint
   Future editOrdenEntrega(
       String ordenFabricacion,
       String fechaCreacion,

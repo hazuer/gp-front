@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:general_products_web/resources/colors.dart';
 
 class CustomInput extends StatelessWidget {
@@ -9,6 +10,7 @@ class CustomInput extends StatelessWidget {
   final String? errorText;
   final bool isPassword;
   final bool enabled;
+  final List<TextInputFormatter>? inputFormatters;
 
   CustomInput({
     Key? key,
@@ -19,6 +21,7 @@ class CustomInput extends StatelessWidget {
     this.errorText,
     this.isPassword = false,
     this.enabled = true,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -33,6 +36,7 @@ class CustomInput extends StatelessWidget {
         onChanged: onChanged,
         controller: controller,
         obscureText: isPassword,
+        inputFormatters: inputFormatters,
         style: TextStyle(color: GPColors.Input, fontSize: 13),
         decoration: InputDecoration(
             border: OutlineInputBorder(

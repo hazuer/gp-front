@@ -79,10 +79,11 @@ class Tinta {
   int? idCatTinta;
   int? lote;
   int? idCatTara;
-  int? pesoIndividual;
-  dynamic? utilizaPh;
-  dynamic? mideViscosidad;
-  dynamic? utilizaFiltro;
+  double?
+      pesoIndividual; // En postman venia int, pero es un peso, debe ser double
+  bool? utilizaPh;
+  bool? mideViscosidad;
+  bool? utilizaFiltro;
   int? porcentajeVariacion;
   int? pesoIndividualGp;
   int? idCatLecturaGp;

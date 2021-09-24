@@ -27,7 +27,7 @@ class CatInksOEModel {
 
   Map<String, dynamic> toJson() => {
         "result": result,
-        "inksList": List<dynamic>.from(inksList!.map((x) => x.toJson())),
+        "inksList": List<dynamic>.from(inksList.map((x) => x.toJson())),
       };
 }
 

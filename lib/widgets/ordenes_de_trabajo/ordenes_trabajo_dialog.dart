@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/createOrdenesEntregaModel.dart';
+import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/models/catalogs/tara/catTaraModel.dart';
@@ -45,7 +47,7 @@ class OrdenesDeTrabajoDialog {
                           ),
                           onPressed: () {
                             Navigator.pushReplacementNamed(
-                                context, RouteNames.taraIndex);
+                                context, RouteNames.oeIndex);
                             // Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
@@ -65,7 +67,7 @@ class OrdenesDeTrabajoDialog {
   Future dialogChangeStatusOrdenTrabajo(
       BuildContext context,
       // TODO: Actualizar con el modelo de Ordenes de trabajo
-      CatTaraModel alertDialogTaraDisable,
+      CreateOrdenesEntregaModel alertDialogOEDisable,
       String accion,
       int idCatStatus) async {
     bool isLoading = false;
@@ -77,7 +79,7 @@ class OrdenesDeTrabajoDialog {
             return AlertDialog(
               title: Center(
                   child: Text(
-                "¿Desea $accion la orden de trabajo : ${alertDialogTaraDisable.nombreTara}?",
+                "¿Desea $accion la orden de trabajo : ${alertDialogOEDisable.ordenTrabajoOf}?",
                 textAlign: TextAlign.center,
               )),
               content: isLoading
@@ -141,9 +143,12 @@ class OrdenesDeTrabajoDialog {
                             setState(() {
                               isLoading = true;
                             });
+                            // await OrdenEntregaProvider()
+                            //     .
+                            // Modificar acorde a OE
                             await TarasProvider()
                                 .changeStatusTaraProvider(
-                                    alertDialogTaraDisable.idCatTara!,
+                                    alertDialogOEDisable.idCatDiseno!,
                                     idCatStatus)
                                 .then((value) {
                               //print(value.toString());
