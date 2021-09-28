@@ -396,65 +396,63 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                                     },
                                     //selected: _selectedRoute == RouteNames.taraIndex,
                                   ),
-                                  ListTileTheme(
-                                    iconColor: Color(0xffE7E7E7),
-                                    child: AppExpansionTile(
-                                      backgroundColor: Colors.white10,
-                                      title: ListTile(
-                                        contentPadding: EdgeInsets.zero,
-                                        leading: const Icon(Icons.assignment,
-                                            size: 27),
-                                        title: const Text(
-                                          'Recepción Ordenes de Trabajo',
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                          ),
-                                        ),
-                                        onTap: () async {
-                                          await _navigateTo(
-                                              context, RouteNames.ordersWork);
-                                        },
-                                        selected: _selectedRoute ==
-                                            RouteNames.ordersWork,
-                                      ),
-                                      children: [
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 16.0),
-                                          leading: const Icon(
-                                              Icons.delivery_dining,
-                                              size: 27),
-                                          title: const Text(
-                                              "OE - Recepción Listado",
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                              )),
-                                          onTap: () async {
-                                            await _navigateTo(context,
-                                                RouteNames.oeRecepcionIndex);
-                                          },
-                                          selected: _selectedRoute ==
-                                              RouteNames.oeRecepcionIndex,
-                                        ),
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.only(left: 16.0),
-                                          leading: const Icon(
-                                              Icons.delivery_dining,
-                                              size: 27),
-                                          title: const Text("OE - Recepción",
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                              )),
-                                          onTap: () async {
-                                            await _navigateTo(context,
-                                                RouteNames.oeRecepcionRecibir);
-                                          },
-                                          selected: _selectedRoute ==
-                                              RouteNames.oeRecepcionRecibir,
-                                        ),
-                                      ],
+                                ],
+                              ),
+                            )
+                          : Container(),
+                      (currentUser.catProfile!.profileId == 3 ||
+                              currentUser.catProfile!.profileId == 6)
+                          ? ListTileTheme(
+                              iconColor: Color(0xffE7E7E7),
+                              child: AppExpansionTile(
+                                backgroundColor: Colors.white10,
+                                title: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading:
+                                      const Icon(Icons.assignment, size: 27),
+                                  title: const Text(
+                                    'Recepción Ordenes de Trabajo',
+                                    style: TextStyle(
+                                      fontSize: 13,
                                     ),
+                                  ),
+                                  onTap: () async {
+                                    await _navigateTo(
+                                        context, RouteNames.ordersWork);
+                                  },
+                                  selected:
+                                      _selectedRoute == RouteNames.ordersWork,
+                                ),
+                                children: [
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: 16.0),
+                                    leading: const Icon(Icons.delivery_dining,
+                                        size: 27),
+                                    title: const Text("OE - Recepción Listado",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                        )),
+                                    onTap: () async {
+                                      await _navigateTo(
+                                          context, RouteNames.oeRecepcionIndex);
+                                    },
+                                    selected: _selectedRoute ==
+                                        RouteNames.oeRecepcionIndex,
+                                  ),
+                                  ListTile(
+                                    contentPadding: EdgeInsets.only(left: 16.0),
+                                    leading: const Icon(Icons.delivery_dining,
+                                        size: 27),
+                                    title: const Text("OE - Recepción",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                        )),
+                                    onTap: () async {
+                                      await _navigateTo(context,
+                                          RouteNames.oeRecepcionRecibir);
+                                    },
+                                    selected: _selectedRoute ==
+                                        RouteNames.oeRecepcionRecibir,
                                   ),
                                 ],
                               ),

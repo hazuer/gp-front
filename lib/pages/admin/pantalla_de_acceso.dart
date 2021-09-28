@@ -172,6 +172,18 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                             RouteNames.oeAdicionesIndex),
                                   )
                                 : Container(),
+                            (currentUser.catProfile!.profileId == 3 ||
+                                    currentUser.catProfile!.profileId == 6)
+                                ? SelectionBox(
+                                    size: size,
+                                    icon: Icons.assignment_return,
+                                    buttonText: 'Listar ',
+                                    description: 'OE Recepción',
+                                    onPressed: () =>
+                                        Navigator.pushReplacementNamed(context,
+                                            RouteNames.oeRecepcionIndex),
+                                  )
+                                : Container(),
                           ],
                         ),
                         // Expanded(child: SizedBox()),
@@ -302,6 +314,17 @@ class _PantallaDeAccesoState extends State<PantallaDeAcceso> {
                                 description: 'OE Adiciones',
                                 onPressed: () => Navigator.pushReplacementNamed(
                                     context, RouteNames.oeAdicionesIndex),
+                              )
+                            : Container(),
+                        (currentUser.catProfile!.profileId == 3 ||
+                                currentUser.catProfile!.profileId == 6)
+                            ? SelectionBox(
+                                size: size,
+                                icon: Icons.assignment_return,
+                                buttonText: 'Listar ',
+                                description: 'OE Recepción',
+                                onPressed: () => Navigator.pushReplacementNamed(
+                                    context, RouteNames.oeRecepcionIndex),
                               )
                             : Container(),
                         Expanded(child: SizedBox()),

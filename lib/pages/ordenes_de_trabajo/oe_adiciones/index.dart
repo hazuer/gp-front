@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/catalogs/design/designsDataModel.dart';
 import 'package:general_products_web/models/catalogs/design/designsModel.dart';
 import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
 import 'package:general_products_web/models/status_model.dart';
@@ -9,14 +10,13 @@ import 'package:general_products_web/provider/catalogs/design/designsProvider.da
 import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
-import 'package:general_products_web/provider/catalogs/tara/tarasProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_ordenes_entrega.dart';
+import 'package:general_products_web/widgets/ordenes_de_trabajo/adiciones/table_orden_entrega_adicion.dart';
 
 class OrdenesEntregaAdicionesIndex extends StatefulWidget {
   @override
@@ -49,6 +49,11 @@ class _OrdenesEntregaAdicionesIndexState
   TextEditingController operadorCtrl = TextEditingController();
   TextEditingController clienteCtrl = TextEditingController();
   TextEditingController tintaCtrl = TextEditingController();
+  TextEditingController estatusCtrl = TextEditingController();
+  TextEditingController pesoTotalCtrl = TextEditingController();
+  TextEditingController turnoCtrl = TextEditingController();
+  TextEditingController lineaCtrl = TextEditingController();
+  TextEditingController cantidadProgramadaCtrl = TextEditingController();
 
   final GlobalKey<AppExpansionTileState> catOrdenEntregaKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
@@ -62,6 +67,9 @@ class _OrdenesEntregaAdicionesIndexState
     futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntrega();
     futureMachines = machinesProvider.getAllMachines();
     futureDesigns = designsProvider.getAllDesigns();
+    catEstatus.estatus = 'Nuevo';
+    catEstatus.idCatEstatus = 1;
+    estatusCtrl.text = 'Nuevo';
     // futureTaras = tarasProvider.getAllTaras();
     super.initState();
   }
@@ -125,57 +133,84 @@ class _OrdenesEntregaAdicionesIndexState
                                       SizedBox(height: 15),
                                       CustomInput(
                                           controller: ordenFabicacionCtrl,
-                                          hint: "Orden de Fabricación"),
+                                          hint: "* Orden de Fabricación"),
                                       SizedBox(height: 15),
-                                      CustomInput(
-                                          controller: folioCtrl, hint: "Folio"),
-                                      SizedBox(height: 15),
-                                      // Pendiente implementación del DateTime Picker
-                                      CustomInput(
-                                          controller: fechaCreacionCtrl,
-                                          hint: "Fecha de Creación"),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '* Fecha de Creación',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 13),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Flexible(
+                                            child: selectDateTime(
+                                                fechaCreacionCtrl),
+                                          ),
+                                        ],
+                                      ),
                                       SizedBox(height: 15),
                                       CustomInput(
                                           controller: operadorCtrl,
-                                          hint: "Operador Responsable"),
+                                          hint: "* Operador Responsable"),
                                       SizedBox(height: 15),
                                       CustomInput(
                                           controller: clienteCtrl,
-                                          hint: "Cliente"),
+                                          hint: "* Cliente"),
                                       SizedBox(height: 15),
                                       listStatus(),
                                       SizedBox(height: 15),
                                       listMachines(),
                                       SizedBox(height: 15),
-                                      listDesigns(),
-                                      SizedBox(height: 15),
-                                      // CustomInput(
-                                      //     controller: fechaCierreCtrl,
-                                      //     hint: "Fecha Cierre OE"),
-                                      // SizedBox(height: 15),
                                       CustomInput(
-                                          controller: tintaCtrl, hint: "Tinta"),
+                                          controller: lineaCtrl, hint: 'Linea'),
                                       SizedBox(height: 15),
-                                      CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        title: "Buscar",
-                                        isLoading: false,
-                                        onPressed: () async {
-                                          await applyFilter();
-                                        },
+                                      CustomInput(
+                                          controller: turnoCtrl, hint: 'Turno'),
+                                      SizedBox(height: 15),
+                                      CustomInput(
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(r'^\d*\.?\d{0,2}'),
+                                            ),
+                                          ],
+                                          // FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                                          enabled: false,
+                                          controller: pesoTotalCtrl,
+                                          hint: "Peso Total"),
+                                      CustomInput(
+                                          controller: cantidadProgramadaCtrl,
+                                          hint: '* Candidad programada'),
+                                      SizedBox(height: 15),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '* Fecha de Cierre',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 13),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Flexible(
+                                            child:
+                                                selectDateTime(fechaCierreCtrl),
+                                          ),
+                                        ],
                                       ),
                                       SizedBox(height: 15),
+                                      listDesigns(),
+                                      SizedBox(height: 15),
                                       CustomButton(
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 .2,
-                                        title: "Limpiar",
+                                        title: 'Crear',
                                         isLoading: false,
-                                        onPressed: () async {
-                                          await clearFilters();
-                                        },
+                                        onPressed: () async {},
                                       ),
                                       SizedBox(height: 30),
                                       isLoading
@@ -190,7 +225,7 @@ class _OrdenesEntregaAdicionesIndexState
                                                         GPColors.PrimaryColor),
                                               ),
                                             )
-                                          : TableOrdenesEntrega(),
+                                          : TableOrdenEntregaAdiciones(),
                                       // TableTaraList()
                                     ],
                                   )
@@ -225,26 +260,32 @@ class _OrdenesEntregaAdicionesIndexState
                                               Flexible(
                                                   child: CustomInput(
                                                 controller: ordenFabicacionCtrl,
-                                                hint: 'Orden de fabricación',
+                                                hint: '* Orden de fabricación',
                                               )),
                                               SizedBox(width: 15),
                                               Flexible(
-                                                  child: CustomInput(
-                                                controller: folioCtrl,
-                                                hint: 'Folio',
-                                              )),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      '* Fecha de Creación',
+                                                      style: TextStyle(
+                                                          color: Colors.black54,
+                                                          fontSize: 13),
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Flexible(
+                                                      child: selectDateTime(
+                                                          fechaCreacionCtrl),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                               SizedBox(width: 15),
-                                              // Pendiente implementación del DateTime Picker
-                                              Flexible(
-                                                  child: CustomInput(
-                                                controller: fechaCreacionCtrl,
-                                                hint: 'Fecha de Creación',
-                                              )),
                                               SizedBox(width: 15),
                                               Flexible(
                                                   child: CustomInput(
                                                 controller: operadorCtrl,
-                                                hint: 'Operador Responsable',
+                                                hint: '* Operador Responsable',
                                               )),
                                             ],
                                           ),
@@ -254,18 +295,24 @@ class _OrdenesEntregaAdicionesIndexState
                                               Flexible(
                                                 child: CustomInput(
                                                   controller: clienteCtrl,
-                                                  hint: 'Cliente',
+                                                  hint: '* Cliente',
                                                 ),
                                               ),
                                               SizedBox(width: 15),
-                                              Flexible(child: listStatus()),
+                                              Flexible(
+                                                child: CustomInput(
+                                                  enabled: false,
+                                                  controller: estatusCtrl,
+                                                  hint: 'Estatus',
+                                                ),
+                                              ),
                                               SizedBox(width: 15),
                                               Flexible(child: listMachines()),
                                               SizedBox(width: 15),
                                               Flexible(
                                                 child: CustomInput(
-                                                  controller: tintaCtrl,
-                                                  hint: 'Tinta',
+                                                  controller: lineaCtrl,
+                                                  hint: 'Linea',
                                                 ),
                                               ),
                                             ],
@@ -273,30 +320,71 @@ class _OrdenesEntregaAdicionesIndexState
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Flexible(child: listDesigns()),
-                                              SizedBox(width: 15),
-                                              // Flexible(
-                                              //   child: CustomInput(
-                                              //     controller: fechaCierreCtrl,
-                                              //     hint: 'Fecha Cierre OE',
-                                              //   ),
-                                              // ),
-                                              // SizedBox(width: 15),
-                                              IconButton(
-                                                tooltip: "Buscar",
-                                                onPressed: () async {
-                                                  await applyFilter();
-                                                },
-                                                icon: Icon(Icons.filter_alt),
+                                              Flexible(
+                                                child: CustomInput(
+                                                  controller: turnoCtrl,
+                                                  hint: 'Turno',
+                                                ),
                                               ),
-                                              IconButton(
-                                                tooltip: "Limpiar",
-                                                onPressed: () async {
-                                                  await clearFilters();
-                                                },
-                                                icon: Icon(Icons.clear),
+                                              SizedBox(width: 15),
+                                              Flexible(
+                                                child: CustomInput(
+                                                    keyboardType: TextInputType
+                                                        .numberWithOptions(
+                                                            decimal: true),
+                                                    inputFormatters: [
+                                                      FilteringTextInputFormatter
+                                                          .allow(RegExp(
+                                                              r'^\d*\.?\d{0,2}')),
+                                                    ],
+                                                    // FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                                                    enabled: false,
+                                                    controller: pesoTotalCtrl,
+                                                    hint: "Peso Total"),
+                                              ),
+                                              SizedBox(width: 15),
+                                              Flexible(child: listDesigns()),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                child: CustomInput(
+                                                  controller:
+                                                      cantidadProgramadaCtrl,
+                                                  hint: '* Cantidad programada',
+                                                ),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Flexible(
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      '* Fecha de Cierre',
+                                                      style: TextStyle(
+                                                          color: Colors.black54,
+                                                          fontSize: 13),
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Flexible(
+                                                      child: selectDateTime(
+                                                          fechaCierreCtrl),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          CustomButton(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .2,
+                                            title: 'Crear',
+                                            isLoading: false,
+                                            onPressed: () async {},
                                           ),
                                           SizedBox(height: 30),
                                           isLoading
@@ -314,7 +402,7 @@ class _OrdenesEntregaAdicionesIndexState
                                                                 .PrimaryColor),
                                                   ),
                                                 )
-                                              : TableOrdenesEntrega(),
+                                              : TableOrdenEntregaAdiciones(),
                                         ],
                                       ),
                                     ),
@@ -331,6 +419,37 @@ class _OrdenesEntregaAdicionesIndexState
         ),
       );
     }
+  }
+
+  DateTimePicker selectDateTime(TextEditingController controller) {
+    return DateTimePicker(
+      type: DateTimePickerType.dateTimeSeparate,
+      dateMask: 'd MMM, yyyy',
+      initialValue: DateTime.now().toString(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      icon: Icon(Icons.event),
+      dateLabelText: 'Fecha',
+      timeLabelText: 'Hora',
+      selectableDayPredicate: (date) {
+        // Deshabilita fines de semana
+        // if (date.weekday == 6 ||
+        //     date.weekday == 7) {
+        //   return false;
+        // }
+
+        return true;
+      },
+      // onChanged: (val) => print(val),
+      validator: (val) {
+        // print(val);
+        return null;
+      },
+      onSaved: (val) {
+        controller.text = val!;
+        // print(val);
+      },
+    );
   }
 
   Widget listStatus() {
@@ -407,7 +526,7 @@ class _OrdenesEntregaAdicionesIndexState
         key: catMachineKey,
         initiallyExpanded: false,
         title: Text(
-          catMachines.nombreMaquina ?? 'Maquina',
+          catMachines.nombreMaquina ?? '* Maquina',
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -473,7 +592,7 @@ class _OrdenesEntregaAdicionesIndexState
         key: catDesignKey,
         initiallyExpanded: false,
         title: Text(
-          catDesigns.nombreDiseno ?? 'Diseño',
+          catDesigns.nombreDiseno ?? '* Diseño',
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
@@ -529,67 +648,5 @@ class _OrdenesEntregaAdicionesIndexState
         ],
       ),
     );
-  }
-
-  applyFilter() async {
-    headerFilter = '?porPagina=20';
-    if (ordenFabicacionCtrl.text.isNotEmpty) {
-      headerFilter =
-          headerFilter + "&orden_trabajo_of=${ordenFabicacionCtrl.text.trim()}";
-    }
-    if (folioCtrl.text.isNotEmpty) {
-      headerFilter =
-          headerFilter + "&id_orden_trabajo=${folioCtrl.text.trim()}";
-    }
-    if (fechaCreacionCtrl.text.isNotEmpty) {
-      headerFilter =
-          headerFilter + "&fecha_creacion=${fechaCreacionCtrl.text.trim()}";
-    }
-    if (operadorCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter +
-          "&nombre_operador_responsable=${operadorCtrl.text.trim()}";
-    }
-    if (clienteCtrl.text.isNotEmpty) {
-      headerFilter =
-          headerFilter + "&nombre_cliente=${clienteCtrl.text.trim()}";
-    }
-    if (tintaCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&tintas=${tintaCtrl.text.trim()}";
-    }
-
-    setState(() {
-      isLoading = true;
-    });
-    await ordenEntregaProvider
-        .getOrdenesDeEntregaWithFilters(headerFilter)
-        .then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
-  }
-
-  clearFilters() async {
-    setState(() {
-      isLoading = false;
-    });
-    headerFilter = '?porPagina = 100';
-    ordenFabicacionCtrl.clear();
-    folioCtrl.clear();
-    fechaCreacionCtrl.clear();
-    operadorCtrl.clear();
-    clienteCtrl.clear();
-    tintaCtrl.clear();
-
-    setState(() {
-      isLoading = true;
-    });
-    await ordenEntregaProvider
-        .getOrdenesDeEntregaWithFilters(headerFilter)
-        .then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
   }
 }

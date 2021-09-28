@@ -91,4 +91,9 @@ class RoutesProvider {
   String editarOE = 'orden-de-entrega/editar-oe';
   String listarTintasOE = 'orden-de-entrega/diseno-tintas';
   String listarRecursosOE = 'orden-de-entrega/registrar-oe-recursos';
+
+  // Ordenes de trabajo Recepción
+  String listOERecepcion = 'orden-de-entrega-recepcion/listar';
+  String listarCatalogosOERecepcion =
+      'orden-de-entrega-recepcion/listas-recursos-recepciones';
 }

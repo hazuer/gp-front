@@ -302,4 +302,127 @@ class OrdenEntregaProvider {
       return null;
     }
   }
+
+  // Ordenes de entrega Recepción
+
+  Future getOrdenesDeEntregaRecepcion() async {
+    List<DeliveryOrdersList> listOE = [];
+    RxVariables.errorMessage = '';
+    ListOrdenesDeEntregaModel listOEModel =
+        ListOrdenesDeEntregaModel(deliveryOrdersList: []);
+
+    String url = routes.urlBase + routes.listOERecepcion;
+
+    try {
+      final dio = Dio();
+
+      final resp = await dio.get(url, options: headerWithToken);
+      listOEModel = ListOrdenesDeEntregaModel.fromJson(resp.data);
+      listOEModel.deliveryOrdersList.forEach((element) {
+        listOE.add(element);
+      });
+      rxVariables.listOrdersFilter.sink.add(listOE);
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      rxVariables.listOrdersFilter.sink.addError(RxVariables.errorMessage +
+          " Por favor contacta con el administrador");
+      return null;
+    }
+  }
+
+  Future getOrdenesDeEntregaRecepcionWithFilters(String path) async {
+    List<DeliveryOrdersList> listOE = [];
+    RxVariables.errorMessage = '';
+    ListOrdenesDeEntregaModel listOEModel =
+        ListOrdenesDeEntregaModel(deliveryOrdersList: []);
+
+    String url = routes.urlBase + routes.listOERecepcion + path;
+
+    try {
+      final dio = Dio();
+
+      final resp = await dio.get(url, options: headerWithToken);
+      listOEModel = ListOrdenesDeEntregaModel.fromJson(resp.data);
+      listOEModel.deliveryOrdersList.forEach((element) {
+        listOE.add(element);
+      });
+      rxVariables.listOrdersFilter.sink.add(listOE);
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      rxVariables.listOrdersFilter.sink.addError(RxVariables.errorMessage +
+          " Por favor contacta con el administrador");
+      return null;
+    }
+  }
+
+  // Este hay que actualizarlo con los campos del postman final de Ernesto
+  Future getFieldsRecepcion() async {
+    List<CatOperatorsOEModel> listOperators = [];
+    List<CatCustomersOEModel> listCustomers = [];
+    List<CatStatusOEModel> listStatus = [];
+    List<CatMachinesOEModel> listMachines = [];
+    List<DtDesignsOEModel> listDesings = [];
+    RxVariables.errorMessage = '';
+    CatalogsFieldsModel listCatalogsModel = CatalogsFieldsModel(
+      operatorsList: [],
+      customersList: [],
+      statusOwList: [],
+      machinesList: [],
+      designsList: [],
+    );
+    String url = routes.urlBase + routes.listarCatalogosOERecepcion;
+
+    try {
+      final dio = Dio();
+
+      final resp = await dio.get(url, options: headerWithToken);
+      listCatalogsModel = CatalogsFieldsModel.fromJson(resp.data);
+      RxVariables.gvListCatalogsFields = listCatalogsModel;
+      listCatalogsModel.operatorsList.forEach((element) {
+        listOperators.add(element);
+      });
+      listCatalogsModel.customersList.forEach((element) {
+        listCustomers.add(element);
+      });
+      listCatalogsModel.statusOwList.forEach((element) {
+        listStatus.add(element);
+      });
+      listCatalogsModel.machinesList.forEach((element) {
+        listMachines.add(element);
+      });
+      listCatalogsModel.designsList.forEach((element) {
+        listDesings.add(element);
+      });
+
+      rxVariables.gvSubListOperators.sink.add(listOperators);
+      rxVariables.gvSubListCustomers.sink.add(listCustomers);
+      rxVariables.gvSubListStatus.sink.add(listStatus);
+      rxVariables.gvSubListMachines.sink.add(listMachines);
+      rxVariables.gvSubListDesigns.sink.add(listDesings);
+
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      rxVariables.listOrdersFilter.sink.addError(RxVariables.errorMessage +
+          " Por favor contacta con el administrador");
+      return null;
+    }
+  }
 }

@@ -7,8 +7,6 @@ import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaPro
 import 'package:general_products_web/provider/settings/parametros_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
-import 'package:general_products_web/widgets/custom_button.dart';
-import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_trabajo_dialog.dart';
 import 'dart:math';
 
@@ -24,12 +22,6 @@ class TableNuevaOrdenEntrega extends StatefulWidget {
 }
 
 class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
-  // Actualizar modelo en el dialogo al de las ordenes de trabajo
-  // TextEditingController loteCtrl = TextEditingController();
-
-  // final GlobalKey<AppExpansionTileState> catTarasKey = new GlobalKey();
-  // CatMachinesOEModel catTaras = CatMachinesOEModel();
-
   double pesoCalculado = 0.0;
 
   final currentUser = RxVariables.loginResponse.data!;

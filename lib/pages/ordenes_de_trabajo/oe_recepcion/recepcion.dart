@@ -1,8 +1,8 @@
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
+import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:general_products_web/app/auth/login.dart';
-import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catCustomersOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/dtDesignsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
@@ -15,7 +15,8 @@ import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
-import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_ordenes_entrega.dart';
+import 'package:general_products_web/widgets/ordenes_de_trabajo/recepcion/table_recepcion_orden_entrega.dart';
+import 'package:general_products_web/widgets/ordenes_de_trabajo/recepcion/table_recepcion_orden_entrega_movil.dart';
 
 class OrdenesEntregaRecepcionRecibir extends StatefulWidget {
   @override
@@ -41,7 +42,8 @@ class _OrdenesEntregaRecepcionRecibirState
   TextEditingController fechaCreacionCtrl = TextEditingController();
   TextEditingController operadorCtrl = TextEditingController();
   TextEditingController tintasCtrl = TextEditingController();
-  TextEditingController fechaCierreCtrl = TextEditingController();
+  TextEditingController fechaEntregaCtrl = TextEditingController();
+  TextEditingController pesoTotalCtrl = TextEditingController();
 
   final GlobalKey<AppExpansionTileState> catOrdenEntregaKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catClienteKey = new GlobalKey();
@@ -49,12 +51,16 @@ class _OrdenesEntregaRecepcionRecibirState
   final GlobalKey<AppExpansionTileState> catMachineKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catDesignKey = new GlobalKey();
 
+  final regexp = RegExp(r'^[0-9]+\.?([0-9]+)?$');
+
   final currentUser = RxVariables.loginResponse.data!;
 
   @override
   void initState() {
     futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntrega();
     futureFields = ordenEntregaProvider.getFields();
+    catStatus.idCatEstatusOt = 2;
+    catStatus.estatusOt = 'En proceso de impresión';
     // fechaCreacion = DateTime.now();
     super.initState();
   }
@@ -63,8 +69,8 @@ class _OrdenesEntregaRecepcionRecibirState
   Widget build(BuildContext context) {
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
-    if (currentUser.catProfile!.profileId != 2 &&
-        currentUser.catProfile!.profileId != 4) {
+    if (currentUser.catProfile!.profileId != 3 &&
+        currentUser.catProfile!.profileId != 6) {
       ListUsersProvider().logOut();
 
       return LoginPage();
@@ -101,104 +107,83 @@ class _OrdenesEntregaRecepcionRecibirState
                             Divider(),
                             SizedBox(height: 10),
                             displayMobileLayout
-                                ? ListView(
-                                    shrinkWrap: true,
-                                    children: [
-                                      CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        title: "Nuevo",
-                                        isLoading: false,
-                                        onPressed: () async {
-                                          // Navigator.pushNamed(
-                                          //     context, RouteNames.oeCreate);
-                                        },
-                                      ),
-                                      SizedBox(height: 15),
-                                      CustomInput(
-                                          controller: ordenFabicacionCtrl,
-                                          hint: "Orden de Fabricación"),
-                                      SizedBox(height: 15),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Fecha de Creación',
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
+                                ? Container(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          child: ListView(
+                                            shrinkWrap: true,
+                                            children: [
+                                              SizedBox(height: 15),
+                                              CustomInput(
+                                                  controller:
+                                                      ordenFabicacionCtrl,
+                                                  hint: 'Folio'),
+                                              SizedBox(height: 15),
+                                              CustomInput(
+                                                  controller:
+                                                      ordenFabicacionCtrl,
+                                                  hint: "Orden de Fabricación"),
+                                              SizedBox(height: 15),
+                                              listDesigns(),
+                                              SizedBox(height: 15),
+                                              CustomInput(
+                                                  controller: tintasCtrl,
+                                                  hint: 'Razón'),
+                                              SizedBox(height: 30),
+                                              isLoading
+                                                  ? Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 50),
+                                                      width: 44,
+                                                      height: 44,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                GPColors
+                                                                    .PrimaryColor),
+                                                      ),
+                                                    )
+                                                  : TableOERecepcionMovil(),
+                                              // TableTaraList()
+                                            ],
                                           ),
-                                          SizedBox(width: 10),
-                                          Flexible(child: selectDateTime()),
-                                        ],
-                                      ),
-                                      SizedBox(height: 15),
-                                      CustomInput(
-                                          controller: operadorCtrl,
-                                          hint: "Operador Responsable"),
-                                      SizedBox(height: 15),
-                                      CustomInput(hint: "Cliente"),
-                                      SizedBox(height: 15),
-                                      listStatus(),
-                                      SizedBox(height: 15),
-                                      listMachines(),
-                                      SizedBox(height: 15),
-                                      CustomInput(
-                                          controller: tintasCtrl,
-                                          hint: "Tintas"),
-                                      SizedBox(height: 15),
-                                      listDesigns(),
-                                      SizedBox(height: 15),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Fecha de Cierre',
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 20.0),
+                                          child: Flexible(
+                                            child: Column(
+                                              children: [
+                                                ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary:
+                                                        GPColors.PrimaryColor,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.qr_code_scanner,
+                                                    size: 100,
+                                                    color: Colors.white,
+                                                  ),
+                                                  onPressed: () {},
+                                                ),
+                                                SizedBox(height: 10.0),
+                                                Text(
+                                                  'Escanear QR',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                          SizedBox(width: 10),
-                                          Flexible(child: selectDateTime()),
-                                        ],
-                                      ),
-                                      SizedBox(height: 15),
-                                      CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        title: "Buscar",
-                                        isLoading: false,
-                                        onPressed: () async {
-                                          await applyFilter();
-                                        },
-                                      ),
-                                      SizedBox(height: 15),
-                                      CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        title: "Limpiar",
-                                        isLoading: false,
-                                        onPressed: () async {
-                                          await clearFilters();
-                                        },
-                                      ),
-                                      SizedBox(height: 30),
-                                      isLoading
-                                          ? Container(
-                                              margin: EdgeInsets.only(top: 50),
-                                              width: 44,
-                                              height: 44,
-                                              child: CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                            Color>(
-                                                        GPColors.PrimaryColor),
-                                              ),
-                                            )
-                                          : TableOrdenesEntrega(),
-                                      // TableTaraList()
-                                    ],
+                                        ),
+                                      ],
+                                    ),
                                   )
                                 : Container(
                                     height:
@@ -214,12 +199,9 @@ class _OrdenesEntregaRecepcionRecibirState
                                                           .size
                                                           .width *
                                                       .2,
-                                                  title: "Nuevo",
+                                                  title: 'Escanear etiqueta',
                                                   isLoading: false,
-                                                  onPressed: () async {
-                                                    // Navigator.pushNamed(context,
-                                                    //     RouteNames.oeCreate);
-                                                  },
+                                                  onPressed: () async {},
                                                 ),
                                               ),
                                             ],
@@ -246,16 +228,18 @@ class _OrdenesEntregaRecepcionRecibirState
                                               ),
                                               SizedBox(width: 15),
                                               Flexible(
+                                                  child: CustomInput(
+                                                controller: operadorCtrl,
+                                                // Operador GP
+                                                hint: 'Operador Responsable',
+                                              )),
+                                              SizedBox(width: 15),
+                                              Flexible(
                                                 child: CustomInput(
                                                   // controller: clienteCtrl,
                                                   hint: 'Cliente',
                                                 ),
                                               ),
-                                              Flexible(
-                                                  child: CustomInput(
-                                                controller: operadorCtrl,
-                                                hint: 'Operador Responsable',
-                                              )),
                                             ],
                                           ),
                                           SizedBox(height: 10),
@@ -264,7 +248,8 @@ class _OrdenesEntregaRecepcionRecibirState
                                               Flexible(
                                                 child: CustomInput(
                                                   // controller: clienteCtrl,
-                                                  hint: 'Cliente',
+                                                  // OP. Cliente
+                                                  hint: 'Cliente Autoriza',
                                                 ),
                                               ),
                                               SizedBox(width: 15),
@@ -286,7 +271,21 @@ class _OrdenesEntregaRecepcionRecibirState
                                               Flexible(child: listDesigns()),
                                               SizedBox(width: 10),
                                               Flexible(
-                                                child: Text('Fecha de Creación',
+                                                child: CustomInput(
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter
+                                                        .allow(regexp),
+                                                  ],
+                                                  enabled: false,
+                                                  controller: pesoTotalCtrl,
+                                                  hint: 'Peso Total',
+                                                ),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Flexible(
+                                                child: Text('Fecha de Entrega',
                                                     style: TextStyle(
                                                       color: Colors.black54,
                                                       fontSize: 13,
@@ -294,29 +293,22 @@ class _OrdenesEntregaRecepcionRecibirState
                                               ),
                                               SizedBox(width: 10),
                                               Flexible(
-                                                child: selectDateTime(),
+                                                child: selectDateTimeNow(),
                                               ),
                                               SizedBox(width: 15),
-                                              // Flexible(
-                                              //   child: CustomInput(
-                                              //     controller: fechaCierreCtrl,
-                                              //     hint: 'Fecha Cierre OE',
-                                              //   ),
-                                              // ),
-                                              // SizedBox(width: 15),
-                                              IconButton(
-                                                tooltip: "Buscar",
-                                                onPressed: () async {
-                                                  await applyFilter();
-                                                },
-                                                icon: Icon(Icons.filter_alt),
-                                              ),
-                                              IconButton(
-                                                tooltip: "Limpiar",
-                                                onPressed: () async {
-                                                  await clearFilters();
-                                                },
-                                                icon: Icon(Icons.clear),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              CustomButton(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .2,
+                                                title: 'Guardar',
+                                                isLoading: false,
+                                                onPressed: () {},
                                               ),
                                             ],
                                           ),
@@ -336,7 +328,7 @@ class _OrdenesEntregaRecepcionRecibirState
                                                                 .PrimaryColor),
                                                   ),
                                                 )
-                                              : TableOrdenesEntrega(),
+                                              : TableOERecepcion(),
                                         ],
                                       ),
                                     ),
@@ -381,6 +373,40 @@ class _OrdenesEntregaRecepcionRecibirState
       },
       onSaved: (val) {
         fechaCreacionCtrl.text = val!;
+        // print(val);
+      },
+    );
+  }
+
+  DateTimePicker selectDateTimeNow() {
+    return DateTimePicker(
+      type: DateTimePickerType.dateTimeSeparate,
+      dateMask: 'd MMM, yyyy',
+      initialValue: DateTime.now().toString(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      icon: Icon(Icons.event),
+      dateLabelText: 'Fecha',
+      timeLabelText: 'Hora',
+      enabled: false,
+      enableInteractiveSelection: false,
+      selectableDayPredicate: (date) {
+        // Deshabilita fines de semana
+        // if (date.weekday == 6 ||
+        //     date.weekday == 7) {
+        //   return false;
+        // }
+
+        return true;
+      },
+      // onChanged: (val) => print(val),
+      validator: (val) {
+        // print(val);
+        return null;
+      },
+      onSaved: (val) {
+        setState(() {});
+        fechaEntregaCtrl.text = DateTime.now().toString();
         // print(val);
       },
     );
@@ -652,5 +678,61 @@ class _OrdenesEntregaRecepcionRecibirState
         isLoading = false;
       });
     });
+  }
+}
+
+class _SelectionBox extends StatelessWidget {
+  IconData icon;
+  void Function()? onPressed;
+  String buttonText;
+  String description;
+
+  _SelectionBox({
+    Key? key,
+    required this.size,
+    required this.icon,
+    required this.onPressed,
+    required this.buttonText,
+    required this.description,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: size.height * 0.25,
+      width: size.height * 0.25,
+      decoration: BoxDecoration(
+        border: Border.all(color: GPColors.AccentColor),
+      ),
+      child: Column(
+        children: [
+          SizedBox(height: 20),
+          Icon(icon, color: GPColors.PrimaryColor, size: 50),
+          SizedBox(height: 5),
+          ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero,
+                side: BorderSide(color: Colors.white),
+              ),
+              primary: Color(0xff2b3e54),
+            ),
+            child: Text(
+              buttonText,
+              style: TextStyle(color: Colors.white, fontSize: 17),
+            ),
+          ),
+          SizedBox(height: 20),
+          Text(
+            description,
+            style: TextStyle(color: Colors.white),
+          ),
+          SizedBox(height: 10),
+        ],
+      ),
+    );
   }
 }
