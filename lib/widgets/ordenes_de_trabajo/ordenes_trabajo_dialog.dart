@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:general_products_web/constants/route_names.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/createOrdenesEntregaModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/listOrdenesEntregaModel.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -67,7 +68,7 @@ class OrdenesDeTrabajoDialog {
   Future dialogChangeStatusOrdenTrabajo(
       BuildContext context,
       // TODO: Actualizar con el modelo de Ordenes de trabajo
-      CreateOrdenesEntregaModel alertDialogOEDisable,
+      DeliveryOrdersList alertDialogOEDisable,
       String accion,
       int idCatStatus) async {
     bool isLoading = false;
@@ -146,10 +147,11 @@ class OrdenesDeTrabajoDialog {
                             // await OrdenEntregaProvider()
                             //     .
                             // Modificar acorde a OE
-                            await TarasProvider()
-                                .changeStatusTaraProvider(
-                                    alertDialogOEDisable.idCatDiseno!,
-                                    idCatStatus)
+                            await OrdenEntregaProvider()
+                                .changeStatusOEProvider(
+                              alertDialogOEDisable.idOrdenTrabajo!,
+                              idCatStatus,
+                            )
                                 .then((value) {
                               //print(value.toString());
                               if (value == null) {

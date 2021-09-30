@@ -35,7 +35,9 @@ class OrdenEntregaProvider {
       listOEModel = ListOrdenesDeEntregaModel.fromJson(resp.data);
       RxVariables.listOrdenesEntrega = listOEModel;
       listOEModel.deliveryOrdersList.forEach((element) {
-        listOE.add(element);
+        if (element.estatusOt!.toLowerCase() == 'nuevo') {
+          listOE.add(element);
+        }
       });
       rxVariables.listOrdersFilter.sink.add(listOE);
       return resp.data;
@@ -305,13 +307,16 @@ class OrdenEntregaProvider {
     }
   }
 
-  Future changeStatusOEProvider(int idCatTara, int idCatStatus) async {
+  Future changeStatusOEProvider(int idOrdenTrabajo, int idCatEstatus) async {
     RxVariables.errorMessage = '';
-    String url = routes.urlBase + routes.changeEstatusTaras;
+    String url = routes.urlBase + routes.changeEstatusOE;
 
     try {
       final dio = Dio();
-      final data = {'id_cat_tara': idCatTara, 'id_cat_estatus': idCatStatus};
+      final data = {
+        'id_orden_trabajo': idOrdenTrabajo,
+        'id_cat_estatus_ot': idCatEstatus
+      };
       final resp = await dio.post(url, data: data, options: headerWithToken);
       await getFields();
       RxVariables.errorMessage = resp.data["message"]

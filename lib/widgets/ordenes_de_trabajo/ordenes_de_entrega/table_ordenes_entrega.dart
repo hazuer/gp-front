@@ -230,12 +230,12 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                                             size: 18,
                                             color: GPColors.PrimaryColor),
                                         onPressed: () {
-                                          // dialogs
-                                          //     .dialogChangeStatusOrdenTrabajo(
-                                          //         context,
-                                          //         snapshot.data![index],
-                                          //         "eliminar",
-                                          //         3);
+                                          dialogs
+                                              .dialogChangeStatusOrdenTrabajo(
+                                                  context,
+                                                  snapshot.data![index],
+                                                  "eliminar",
+                                                  4);
                                         },
                                       ),
                                     ]),
