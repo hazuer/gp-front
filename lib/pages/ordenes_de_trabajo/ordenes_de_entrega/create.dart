@@ -278,7 +278,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                     1,
                                                     // lineaCtrl.text.trim(),
                                                     1,
-                                                    fechaCierreCtrl.text.trim(),
+                                                    // fechaCierreCtrl.text.trim(),
                                                     listaLeida
                                                     // operador!.userId!,
                                                     // cliente.idCatCliente!,
@@ -575,8 +575,8 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                             1,
                                                             // lineaCtrl.text.trim(),
                                                             1,
-                                                            fechaCierreCtrl.text
-                                                                .trim(),
+                                                            // fechaCierreCtrl.text
+                                                            //     .trim(),
                                                             listaLeida
                                                             // operador!.userId!,
                                                             // cliente.idCatCliente!,

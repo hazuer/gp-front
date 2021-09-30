@@ -59,6 +59,7 @@ class _OrdenesEntregaEditState extends State<OrdenesEntregaEdit> {
   void initState() {
     futureMachines = machinesProvider.getAllMachines();
     futureDesigns = designsProvider.getAllDesigns();
+    ordenFabicacionCtrl.text = RxVariables.orderSelected.ordenTrabajoOf!;
     // futureFields = RxVariables..gvTintaSelected;
     super.initState();
   }

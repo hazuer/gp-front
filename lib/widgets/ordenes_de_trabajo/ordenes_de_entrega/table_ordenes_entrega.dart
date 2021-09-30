@@ -213,47 +213,17 @@ class _TableOrdenesEntregaState extends State<TableOrdenesEntrega> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        tooltip: 'Activar',
-                                        icon: Icon(Icons.check_box_rounded,
-                                            size: 18,
-                                            color: GPColors.PrimaryColor),
-                                        onPressed: () {
-                                          // dialogs
-                                          //     .dialogChangeStatusOrdenTrabajo(
-                                          //         context,
-                                          //         snapshot.data![index],
-                                          //         "activar",
-                                          //         1);
-                                        },
-                                      ),
-                                      IconButton(
                                           tooltip: "Editar",
                                           //padding: EdgeInsets.zero,
                                           onPressed: () {
-                                            // RXVariables.gvTintaSelected =
-                                            // snapshot.data![index];
-                                            // Navigator.pushNamed(
-                                            //     context, RouteNames.oeEdit);
+                                            RxVariables.orderSelected =
+                                                snapshot.data![index];
+                                            Navigator.pushNamed(
+                                                context, RouteNames.oeEdit);
                                           },
                                           icon: Icon(Icons.edit,
                                               size: 18,
                                               color: GPColors.PrimaryColor)),
-                                      IconButton(
-                                          tooltip: "Desactivar",
-                                          //padding: EdgeInsets.zero,
-                                          onPressed: () {
-                                            // dialogs
-                                            //     .dialogChangeStatusOrdenTrabajo(
-                                            //         context,
-                                            //         snapshot.data![index],
-                                            //         "desactivar",
-                                            //         2);
-                                          },
-                                          icon: Icon(
-                                            Icons.not_interested_outlined,
-                                            size: 18,
-                                            color: GPColors.PrimaryColor,
-                                          )),
                                       IconButton(
                                         tooltip: 'Eliminar',
                                         icon: Icon(Icons.delete,

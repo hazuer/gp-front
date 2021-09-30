@@ -227,7 +227,7 @@ class OrdenEntregaProvider {
     int turno, // Debe ser un Id
     int linea, // Debe ser un int
     // String folio,
-    String fechaCierre,
+    // String fechaCierre,
     List<dynamic> tintas,
   ) async {
     RxVariables.errorMessage = '';
@@ -244,7 +244,7 @@ class OrdenEntregaProvider {
         'peso_total': pesoTotal,
         'id_cat_turno': turno,
         'linea': linea,
-        'fecha_cierre': fechaCierre,
+        // 'fecha_cierre': fechaCierre,
         'tintas': tintas,
       };
 
@@ -301,6 +301,33 @@ class OrdenEntregaProvider {
           .replaceAll("]", "");
       rxVariables.listOrdersFilter.sink.addError(
           "Ocurrio un error, intenta más tarde " + RxVariables.errorMessage);
+      return null;
+    }
+  }
+
+  Future changeStatusOEProvider(int idCatTara, int idCatStatus) async {
+    RxVariables.errorMessage = '';
+    String url = routes.urlBase + routes.changeEstatusTaras;
+
+    try {
+      final dio = Dio();
+      final data = {'id_cat_tara': idCatTara, 'id_cat_estatus': idCatStatus};
+      final resp = await dio.post(url, data: data, options: headerWithToken);
+      await getFields();
+      RxVariables.errorMessage = resp.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
       return null;
     }
   }

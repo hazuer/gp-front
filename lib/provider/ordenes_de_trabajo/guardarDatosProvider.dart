@@ -157,31 +157,31 @@ class GuardarDatos with ChangeNotifier {
     int idTinta,
     int lote,
     int idTara,
-    double pesos,
     bool ph,
     bool viscosidad,
     bool filtro,
-    int porcentajeVariacion,
-    int pesoIndividualGp,
+    double pesos,
     int idLectura,
     int idRazon,
     String aditivoTinta,
     int aditivo,
+    // int porcentajeVariacion,
+    // int pesoIndividualGp,
   ) {
     final data = {
       'id_cat_tinta': idTinta,
       'lote': lote,
       'id_cat_tara': idTara,
-      'peso_individual': pesos,
       'utiliza_ph': ph,
       'mide_viscosidad': viscosidad,
       'utiliza_filtro': filtro,
-      'porcentaje_variacion': porcentajeVariacion,
-      'peso_individual_gp': pesoIndividualGp,
+      'peso_individual': pesos,
       'id_cat_lectura_gp': idLectura,
       'id_cat_razpn': idRazon,
       'aditivo_tinta': aditivoTinta,
       'aditivo': aditivo,
+      // 'porcentaje_variacion': porcentajeVariacion,
+      // 'peso_individual_gp': pesoIndividualGp,
     };
 
     _tintas = Tinta.fromJson(data);
@@ -207,8 +207,8 @@ class GuardarDatos with ChangeNotifier {
   // Este es el getter que se utiliza para el listado de las tintas
   // en la creación de las OE
   get listaDeTintas {
-    return _tintas;
-    // return _listaDeTintas;
+    // return _tintas;
+    return _listaDeTintas;
   }
 
   // get tintas {

@@ -410,16 +410,16 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                                                 .text
                                                                 .trim()),
                                                         1, //Id cat tara -> pte implementar
-                                                        pesos[index],
                                                         false, // Utiliza ph
                                                         false, // Mide viscocidad
                                                         false, // UtilizaFiltro
-                                                        2, // Porcentaje de variación
-                                                        100, // Peso individual GP
+                                                        pesos[index],
                                                         100, // Id cat lectura
                                                         1, // Id cat razon
                                                         '1', // Adivito tinta
                                                         0, // Aditivo
+                                                        // 2, // Porcentaje de variación
+                                                        // 100, // Peso individual GP
                                                       );
                                                       // datosProvider
                                                       //     .obtenerDatosComoCampos(
