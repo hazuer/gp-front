@@ -49,11 +49,12 @@ class ListOrdenesDeEntregaModel {
 class DeliveryOrdersList {
   DeliveryOrdersList({
     this.idOrdenTrabajo,
+    this.folioEntrega,
     this.ordenTrabajoOf,
     this.fechaCreacion,
     this.idOperadorResponsable,
     this.nombreOperadorResponsable,
-    this.idClienteAutoriza,
+    this.idCatCliente,
     this.nombreCliente,
     this.idCatEstatusOt,
     this.estatusOt,
@@ -61,16 +62,16 @@ class DeliveryOrdersList {
     this.nombreMaquina,
     this.idCatDiseno,
     this.nombreDiseno,
-    this.tintas,
     this.adiciones,
   });
 
   int? idOrdenTrabajo;
+  dynamic? folioEntrega;
   String? ordenTrabajoOf;
   DateTime? fechaCreacion;
   int? idOperadorResponsable;
   String? nombreOperadorResponsable;
-  int? idClienteAutoriza;
+  int? idCatCliente;
   String? nombreCliente;
   int? idCatEstatusOt;
   String? estatusOt;
@@ -78,17 +79,17 @@ class DeliveryOrdersList {
   String? nombreMaquina;
   int? idCatDiseno;
   String? nombreDiseno;
-  List<Tinta>? tintas;
-  dynamic adiciones;
+  dynamic? adiciones;
 
   factory DeliveryOrdersList.fromJson(Map<String, dynamic> json) =>
       DeliveryOrdersList(
         idOrdenTrabajo: json["id_orden_trabajo"],
+        folioEntrega: json["folio_entrega"],
         ordenTrabajoOf: json["orden_trabajo_of"],
         fechaCreacion: DateTime.parse(json["fecha_creacion"]),
         idOperadorResponsable: json["id_operador_responsable"],
         nombreOperadorResponsable: json["nombre_operador_responsable"],
-        idClienteAutoriza: json["id_cliente_autoriza"],
+        idCatCliente: json["id_cat_cliente"],
         nombreCliente: json["nombre_cliente"],
         idCatEstatusOt: json["id_cat_estatus_ot"],
         estatusOt: json["estatus_ot"],
@@ -96,17 +97,17 @@ class DeliveryOrdersList {
         nombreMaquina: json["nombre_maquina"],
         idCatDiseno: json["id_cat_diseno"],
         nombreDiseno: json["nombre_diseno"],
-        tintas: List<Tinta>.from(json["tintas"].map((x) => Tinta.fromJson(x))),
         adiciones: json["adiciones"],
       );
 
   Map<String, dynamic> toJson() => {
         "id_orden_trabajo": idOrdenTrabajo,
+        "folio_entrega": folioEntrega,
         "orden_trabajo_of": ordenTrabajoOf,
         "fecha_creacion": fechaCreacion!.toIso8601String(),
         "id_operador_responsable": idOperadorResponsable,
         "nombre_operador_responsable": nombreOperadorResponsable,
-        "id_cliente_autoriza": idClienteAutoriza,
+        "id_cat_cliente": idCatCliente,
         "nombre_cliente": nombreCliente,
         "id_cat_estatus_ot": idCatEstatusOt,
         "estatus_ot": estatusOt,
@@ -114,7 +115,6 @@ class DeliveryOrdersList {
         "nombre_maquina": nombreMaquina,
         "id_cat_diseno": idCatDiseno,
         "nombre_diseno": nombreDiseno,
-        "tintas": List<dynamic>.from(tintas!.map((x) => x.toJson())),
         "adiciones": adiciones,
       };
 }

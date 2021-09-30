@@ -3,16 +3,16 @@ class SetLoginAautomatic {
     "result": true,
     "data": {
       "token":
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiY2YxMWQ0MmVkMjBkYzRhZjNjYzc5NDM2ZWY3ZjVjZGVjZTIzMTVmYzVjNTkwYzU4OTlmYTk1NGViOWZkMDRjYjMxZTQwZTFhYzE2OWZlZjciLCJpYXQiOjE2MzI4NTcxMTcsIm5iZiI6MTYzMjg1NzExNywiZXhwIjoxNjMyODYwNzE3LCJzdWIiOiI1NCIsInNjb3BlcyI6W119.NnOhMJCqnzqa_keoeCPMyJvGLaju5_8QKTa0mfkqsfy9Io3lZ7NaQ6Jcxl2A908H9bLZmHkyAuJCsYrLvJDjZP_WuXQhA2mWOoUzUHl4R2bIgcLEQupAQGA1duyfXnW9G0qngw1R_JfqKwW5kIVJcUmLtgPW1LSbxg2ObnF45r4lJzxL6tcBaTWimXLzlzFA0D1-LRhH32WNvqgQ6NAAgoJAAhG74s2RXB491PXC_w43obixl2c37UhIMUsk1QAUQOSPIrZMspllGTXh5QYvC3j_ad2ytMgxKE-_iXk86doWxC_YAHYY6W78Lpbx6Mxm5Af6nE5SOppBjxmDN_zHqj-Uo5OiJ6m3fv6WUYFjqlI-qFoLTz343LXLEriKXD8-ULGzyzyiaepTZ0Vf9YqBIzxPCMnD40CykmwyNJ11iO_Az-MZGRq6-m1FegtbrcXOx2z0VD650iMmbu0VasBw_ryjCFaYJShW3z1vhrHljfF8nNeVO765QV78W4x-WgTS-tfK2E3G_7kC0_2SyBsnb0VyjZ2K0WphjbIgrYUxFZ4b5B8fdDECRFLu98Ou0t_UHuE1GCoTL8WpYRwRJgpA2VYVU5-dc5fhjO3MtK_QLjHZbLZ-lrVYJYo17J6IRHyIpEubJYvb1NN_s_efOl06V-xDYl8cZrDexdZQDNQ76zE",
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMjA1Yzk5YzllMDJiN2Q1MzM3MmM4MjE1MjI3M2FhNzRjZGU2ZDU5NDA2OWFhZTM3ZmE2NzFjZWYzODQxYTAzYmE4OGJlN2YzN2Q0YTFjMjAiLCJpYXQiOjE2MzI5NzkzMzUsIm5iZiI6MTYzMjk3OTMzNSwiZXhwIjoxNjMyOTgyOTM1LCJzdWIiOiIxOCIsInNjb3BlcyI6W119.ldb3L_LKgAKlCY_fbgPfNWazC0dlPU-ZeVYBure1TAJtM0Qr0S5qpd6lIDaCJL5ajLVmOCBuYH7BBKQHUNyHfhvPd6rYUCpA16Qt99i87gV6m0YhJTH7iWk3wDXTtzIvtjYTAdwP1vy9kd3mpD-X_IX_xyX8EZnwAzVNtodM5PiTZ4FmIurbKoeppevoREG6QerGahY5MnyjFAYuwzO9Hr1MHAzThUT-MNLZve8JoPFVGZD2ZIsOGJLUprXJ9Mb-N1ovOn2un49Rywn3McAwt25ii8EZ5DD3Ht53ChFxYC65QYs2fbvYEqJf5Nm3oeWdY5Xb-rgmi_cF74Afp_tYL5VxlzN7AsqNMmSiQzoS9KJSWoibvzLRTteGRC8qGmtvIHRfly5GELY7rNtJztWXyvKgntSIpdJq_lbqy0DQofhNiyUZzNSC2wKGS1L_glusps6MsDeVbhqjErJfU4-Cri6K_Q9M-pkHRZrPkdD69uFnD0Jxc_K4eqLOwNY21FgdKTVy3aledyumb2yHBNmkx8oqM3hvi6XS-1dmzI6G9jTFJH296ZYfC0qw6br0c9AMJNKiKjluXgEbptkLJ_2Y6qlcGHMUSnpjHHMb_GQYb0iRBWaAuxMRSPpz6uibHskalBsNKmO80xxs1Mn-3hF1M9Rklu66zoRa3SKoj-zjqNI",
       "user": {
-        "userId": 54,
-        "name": "Sup_osorno_cliente",
-        "last_name": "Sup_osorno_Cliente",
-        "secondary_last_name": "Osorno"
+        "userId": 18,
+        "name": "Karen",
+        "last_name": "Aranda",
+        "secondary_last_name": "Carreño"
       },
-      "catPlant": {"plantId": 20, "plantName": "Santiago de Chile"},
-      "catProfile": {"profileId": 6, "nameProfile": "Supervisor_Cliente"},
-      "catCustomer": {"customerId": 18, "customerName": "Taller Estrella"}
+      "catPlant": {"plantId": 3, "plantName": "Peruvian"},
+      "catProfile": {"profileId": 4, "nameProfile": "Supervisor_GP"},
+      "catCustomer": {"customerId": 27, "customerName": "Latas"}
     },
     "message": "Login Success"
   };

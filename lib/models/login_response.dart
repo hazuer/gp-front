@@ -49,14 +49,14 @@ class Data {
   User? user;
   CatPlant? catPlant;
   CatProfile? catProfile;
-  Customer? catCustomer;
+  CatCustomer? catCustomer;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         token: json["token"],
         user: User.fromJson(json["user"]),
         catPlant: CatPlant.fromJson(json["catPlant"]),
         catProfile: CatProfile.fromJson(json["catProfile"]),
-        catCustomer: Customer.fromJson(json["catCustomer"]),
+        catCustomer: CatCustomer.fromJson(json["catCustomer"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -105,6 +105,26 @@ class CatPlant {
   Map<String, dynamic> toJson() => {
         "plantId": plantId,
         "plantName": plantName,
+      };
+}
+
+class CatCustomer {
+  CatCustomer({
+    this.customerId,
+    this.customerName,
+  });
+
+  int? customerId;
+  String? customerName;
+
+  factory CatCustomer.fromJson(Map<String, dynamic> json) => CatCustomer(
+        customerId: json["customerId"],
+        customerName: json["customerName"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "customerId": customerId,
+        "customerName": customerName,
       };
 }
 

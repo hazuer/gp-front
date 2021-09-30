@@ -207,7 +207,8 @@ class GuardarDatos with ChangeNotifier {
   // Este es el getter que se utiliza para el listado de las tintas
   // en la creación de las OE
   get listaDeTintas {
-    return _listaDeTintas;
+    return _tintas;
+    // return _listaDeTintas;
   }
 
   // get tintas {

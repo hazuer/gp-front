@@ -78,7 +78,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
   void initState() {
     futureFields = ordenEntregaProvider.getFields();
     futureRecursos = ordenEntregaProvider.getFieldsRegistros();
-    clienteCtrl.text = cliente.nombreCliente ?? 'Cliente';
+    clienteCtrl.text = cliente.customerName ?? 'Cliente';
     operadorCtrl.text = '${operador!.name} ${operador!.lastName}';
     catStatus.idCatEstatusOt = 1;
     estatusCtrl.text = 'Nuevo';

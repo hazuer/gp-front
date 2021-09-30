@@ -33,6 +33,7 @@ class OrdenEntregaProvider {
 
       final resp = await dio.get(url, options: headerWithToken);
       listOEModel = ListOrdenesDeEntregaModel.fromJson(resp.data);
+      RxVariables.listOrdenesEntrega = listOEModel;
       listOEModel.deliveryOrdersList.forEach((element) {
         listOE.add(element);
       });
@@ -64,6 +65,7 @@ class OrdenEntregaProvider {
 
       final resp = await dio.get(url, options: headerWithToken);
       listOEModel = ListOrdenesDeEntregaModel.fromJson(resp.data);
+      RxVariables.listOrdenesEntrega = listOEModel;
       listOEModel.deliveryOrdersList.forEach((element) {
         listOE.add(element);
       });

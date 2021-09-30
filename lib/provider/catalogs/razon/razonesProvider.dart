@@ -13,7 +13,6 @@ class RazonesProvider {
     "Authorization": "Bearer ${RxVariables.token}"
   });
 
-
   Future listRazones() async {
     List<RazonModel> listActives = [];
     RxVariables.errorMessage = '';

@@ -1,8 +1,8 @@
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:general_products_web/app/auth/login.dart';
 import 'package:general_products_web/constants/route_names.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catOperatorsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/dtDesignsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
@@ -32,10 +32,12 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
   CatStatusOEModel catStatus = CatStatusOEModel();
   CatMachinesOEModel catMachines = CatMachinesOEModel();
   DtDesignsOEModel catDesigns = DtDesignsOEModel();
+  CatOperatorsOEModel catOperators = CatOperatorsOEModel();
 
   TextEditingController ordenFabicacionCtrl = TextEditingController();
   TextEditingController folioCtrl = TextEditingController();
   TextEditingController fechaCreacionCtrl = TextEditingController();
+  TextEditingController fechaFinCtrl = TextEditingController();
   TextEditingController operadorCtrl = TextEditingController();
   TextEditingController clienteCtrl = TextEditingController();
   TextEditingController tintaCtrl = TextEditingController();
@@ -44,13 +46,18 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catMachineKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catDesignKey = new GlobalKey();
+  final GlobalKey<AppExpansionTileState> catOperatorKey = new GlobalKey();
 
   final currentUser = RxVariables.loginResponse.data!;
+  final cliente = RxVariables.loginResponse.data!.catCustomer;
 
   @override
   void initState() {
     futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntrega();
     futureFields = ordenEntregaProvider.getFields();
+    clienteCtrl.text = '${cliente!.customerName}';
+    operadorCtrl.text =
+        '${currentUser.user!.name} ${currentUser.user!.lastName} ${currentUser.user!.secondaryLastName}';
     // fechaCreacion = DateTime.now();
     super.initState();
   }
@@ -122,21 +129,41 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                       Row(
                                         children: [
                                           Text(
-                                            'Fecha de Creación',
+                                            'Fecha de Inicio',
                                             style: TextStyle(
                                                 color: Colors.black54,
                                                 fontSize: 13),
                                           ),
                                           SizedBox(width: 10),
-                                          Flexible(child: selectDateTime()),
+                                          Flexible(
+                                              child: selectDateTime(
+                                                  fechaCreacionCtrl)),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Fecha de Fin',
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 13),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Flexible(
+                                              child:
+                                                  selectDateTime(fechaFinCtrl)),
                                         ],
                                       ),
                                       SizedBox(height: 15),
+                                      // (currentUser.catProfile!.profileId == 4)
+                                      // listOperators(),
                                       CustomInput(
+                                          enabled: false,
                                           controller: operadorCtrl,
                                           hint: "Operador Responsable"),
                                       SizedBox(height: 15),
                                       CustomInput(
+                                          enabled: false,
                                           controller: clienteCtrl,
                                           hint: "Cliente"),
                                       SizedBox(height: 15),
@@ -184,7 +211,6 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                               ),
                                             )
                                           : TableOrdenesEntrega(),
-                                      // TableTaraList()
                                     ],
                                   )
                                 : Container(
@@ -222,34 +248,37 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                               )),
                                               SizedBox(width: 15),
                                               Flexible(
-                                                  child: CustomInput(
-                                                controller: folioCtrl,
-                                                hint: 'Folio',
-                                              )),
-                                              SizedBox(width: 15),
-                                              // Flexible(
-                                              //     child: CustomInput(
-                                              //   controller: fechaCreacionCtrl,
-                                              //   hint: 'Fecha de Creación',
-                                              // )),
+                                                child: CustomInput(
+                                                  controller: folioCtrl,
+                                                  hint: 'Folio',
+                                                ),
+                                              ),
                                               SizedBox(width: 15),
                                               Flexible(
-                                                  child: CustomInput(
-                                                controller: operadorCtrl,
-                                                hint: 'Operador Responsable',
-                                              )),
-                                            ],
-                                          ),
-                                          SizedBox(height: 10),
-                                          Row(
-                                            children: [
+                                                // child: (currentUser.catProfile!
+                                                //             .profileId ==
+                                                //         4)
+                                                // listOperators(),
+                                                child: CustomInput(
+                                                  enabled: false,
+                                                  controller: operadorCtrl,
+                                                  hint: 'Operador Responsable',
+                                                ),
+                                              ),
+                                              SizedBox(width: 15),
                                               Flexible(
                                                 child: CustomInput(
+                                                  enabled: false,
                                                   controller: clienteCtrl,
                                                   hint: 'Cliente',
                                                 ),
                                               ),
                                               SizedBox(width: 15),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            children: [
                                               Flexible(child: listStatus()),
                                               SizedBox(width: 15),
                                               Flexible(child: listMachines()),
@@ -260,15 +289,16 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                                   hint: 'Tinta',
                                                 ),
                                               ),
+                                              SizedBox(width: 15),
+                                              Flexible(child: listDesigns()),
+                                              SizedBox(width: 10),
                                             ],
                                           ),
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Flexible(child: listDesigns()),
-                                              SizedBox(width: 10),
                                               Flexible(
-                                                child: Text('Fecha de Creación',
+                                                child: Text('Fecha de Inicio',
                                                     style: TextStyle(
                                                       color: Colors.black54,
                                                       fontSize: 13,
@@ -276,16 +306,23 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
                                               ),
                                               SizedBox(width: 10),
                                               Flexible(
-                                                child: selectDateTime(),
+                                                child: selectDateTime(
+                                                    fechaCreacionCtrl),
                                               ),
                                               SizedBox(width: 15),
-                                              // Flexible(
-                                              //   child: CustomInput(
-                                              //     controller: fechaCierreCtrl,
-                                              //     hint: 'Fecha Cierre OE',
-                                              //   ),
-                                              // ),
-                                              // SizedBox(width: 15),
+                                              Flexible(
+                                                child: Text('Fecha de Fin',
+                                                    style: TextStyle(
+                                                      color: Colors.black54,
+                                                      fontSize: 13,
+                                                    )),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Flexible(
+                                                child: selectDateTime(
+                                                    fechaFinCtrl),
+                                              ),
+                                              SizedBox(width: 15),
                                               IconButton(
                                                 tooltip: "Buscar",
                                                 onPressed: () async {
@@ -337,7 +374,7 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
     }
   }
 
-  DateTimePicker selectDateTime() {
+  DateTimePicker selectDateTime(TextEditingController controller) {
     return DateTimePicker(
       type: DateTimePickerType.dateTimeSeparate,
       dateMask: 'd MMM, yyyy',
@@ -356,15 +393,91 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
 
         return true;
       },
-      // onChanged: (val) => print(val),
+      onChanged: (val) {
+        // print(val);
+
+        String onChanged = val;
+        // print(onChanged.substring(0, 10));
+        controller.text = onChanged.substring(0, 10);
+        // print('Controller: ${controller.text}');
+      },
       validator: (val) {
         // print(val);
         return null;
       },
       onSaved: (val) {
-        fechaCreacionCtrl.text = val!;
-        // print(val);
+        controller.text = val!;
       },
+    );
+  }
+
+  Widget listOperators() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      child: AppExpansionTile(
+        key: catOperatorKey,
+        initiallyExpanded: false,
+        title: Text(
+          catOperators.nombreOperadorResponsable ?? 'Operador Responsable',
+          style: TextStyle(color: Colors.black54, fontSize: 13),
+        ),
+        children: [
+          Container(
+            //height: MediaQuery.of(context).size.height*.2,
+            child: FutureBuilder(
+              future: futureFields,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.operatorsList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            catOperators = RxVariables
+                                .gvListCatalogsFields.operatorsList[index];
+                            // RxVariables.dataFromUsers.listStatus![index];
+                            catOperatorKey.currentState!.collapse();
+                          });
+                        },
+                        child: Container(
+                          color: Colors.grey[100],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                    RxVariables
+                                        .gvListCatalogsFields
+                                        .operatorsList[index]
+                                        .nombreOperadorResponsable!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: .5,
+                                color: Colors.grey[300],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -577,26 +690,32 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
           headerFilter + "&orden_trabajo_of=${ordenFabicacionCtrl.text.trim()}";
     }
     if (folioCtrl.text.isNotEmpty) {
-      headerFilter =
-          headerFilter + "&id_orden_trabajo=${folioCtrl.text.trim()}";
+      headerFilter = headerFilter + "&folio_entrega=${folioCtrl.text.trim()}";
     }
     if (fechaCreacionCtrl.text.isNotEmpty) {
       headerFilter =
-          headerFilter + "&fecha_creacion=${fechaCreacionCtrl.text.trim()}";
+          headerFilter + "&fecha_inicio=${fechaCreacionCtrl.text.trim()}";
     }
-    // if (fechaCreacion.isUtc) {
-    //   headerFilter = headerFilter + "&fecha_creacion=$fechaCreacion";
-    // }
+    if (fechaFinCtrl.text.isNotEmpty) {
+      headerFilter = headerFilter + "&fecha_fin=${fechaFinCtrl.text.trim()}";
+    }
     if (operadorCtrl.text.isNotEmpty) {
       headerFilter = headerFilter +
           "&nombre_operador_responsable=${operadorCtrl.text.trim()}";
     }
-    if (clienteCtrl.text.isNotEmpty) {
-      headerFilter =
-          headerFilter + "&nombre_cliente=${clienteCtrl.text.trim()}";
-    }
     if (tintaCtrl.text.isNotEmpty) {
-      headerFilter = headerFilter + "&tintas=${tintaCtrl.text.trim()}";
+      headerFilter = headerFilter + "&nombre_tinta=${tintaCtrl.text.trim()}";
+    }
+    if (catStatus.idCatEstatusOt != null) {
+      headerFilter =
+          headerFilter + "&id_cat_estatus_ot=${catStatus.idCatEstatusOt}";
+    }
+    if (catDesigns.idCatDiseno != null) {
+      headerFilter = headerFilter + "&id_cat_diseno=${catDesigns.idCatDiseno}";
+    }
+    if (catMachines.idCatMaquina != null) {
+      headerFilter =
+          headerFilter + "&id_cat_maquina=${catMachines.idCatMaquina}";
     }
 
     setState(() {
@@ -615,14 +734,17 @@ class _OrdenesEntregaIndexState extends State<OrdenesEntregaIndex> {
     setState(() {
       isLoading = false;
     });
-    headerFilter = '?porPagina = 100';
+    headerFilter = '?porPagina=10';
     ordenFabicacionCtrl.clear();
     folioCtrl.clear();
     fechaCreacionCtrl.clear();
+    fechaFinCtrl.clear();
     // fechaCreacion = DateTime.now();
-    operadorCtrl.clear();
-    clienteCtrl.clear();
+    // operadorCtrl.clear();
     tintaCtrl.clear();
+    catStatus = CatStatusOEModel();
+    catDesigns = DtDesignsOEModel();
+    catMachines = CatMachinesOEModel();
 
     setState(() {
       isLoading = true;
