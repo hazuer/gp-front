@@ -367,6 +367,9 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                     alignment: Alignment.center,
                                     child: Row(
                                       children: [
+                                        // Aquí se realizan validaciónes para leer los campos de cada tinta
+                                        // Como se cargan a la lista de uno por uno, es necesario validar para que
+                                        // No se cargue dos veces el mismo registro
                                         (puedeGuardar[index] == false)
                                             ? IconButton(
                                                 tooltip: 'Guardar',
@@ -394,12 +397,9 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                                 : IconButton(
                                                     tooltip: 'Guardar',
                                                     onPressed: () {
-                                                      // snapshot.data!
-                                                      //     .forEach((element)  {
-
-                                                      //     });
-                                                      // // snapshot.data.length
-                                                      // snapshot.data![index].
+                                                      // Aquí se realiza la obtención de los campos de esa tinta en particular
+                                                      // Se hace la carga de tinta de una por una para ir agregandola a la lista
+                                                      // de tintas
                                                       datosProvider
                                                           .obtenerDatosComoCampos(
                                                         snapshot.data![index]
@@ -421,30 +421,6 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                                         // 2, // Porcentaje de variación
                                                         // 100, // Peso individual GP
                                                       );
-                                                      // datosProvider
-                                                      //     .obtenerDatosComoCampos(
-                                                      //   snapshot.data![index]
-                                                      //       .idCatTinta!,
-                                                      //   int.parse(
-                                                      //       loteControllers[
-                                                      //               index]
-                                                      //           .text
-                                                      //           .trim()),
-                                                      //   1, //Id cat tara -> pte implementar
-                                                      //   pesos[index],
-                                                      //   false, // Utiliza ph
-                                                      //   false, // Mide viscocidad
-                                                      //   false, // UtilizaFiltro
-                                                      //   2, // Porcentaje de variación
-                                                      //   snapshot.data![index]
-                                                      //       .codigoGp, // Peso individual GP
-                                                      //   snapshot.data![index]
-                                                      //       .codigoCliente, // Id cat lectura
-                                                      //   1, // Id cat razon
-                                                      //   snapshot.data![index]
-                                                      //       .aditivo, // Adivito tinta
-                                                      //   0, // Aditivo
-                                                      // );
 
                                                       puedeGuardar[index] =
                                                           false;
@@ -468,6 +444,7 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                             : IconButton(
                                                 tooltip: 'Imprimir',
                                                 onPressed: () {
+                                                  // Aquí irá la funcionalidad para imprimir
                                                   puedeImprimir[index] = false;
 
                                                   setState(() {});
@@ -497,6 +474,7 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                         IconButton(
                                           tooltip: 'Leer',
                                           onPressed: () {
+                                            // Esta es una simulación de la obtencion de los pesos en la báscula
                                             lecturaAutomatica[index] = true;
                                             pesos[index] =
                                                 Random.secure().nextDouble() *

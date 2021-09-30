@@ -19,7 +19,6 @@ import 'package:general_products_web/resources/global_variables.dart';
 import 'package:general_products_web/widgets/app_scaffold.dart';
 import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
-import 'package:general_products_web/widgets/inputFloat_custom.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_nueva_orden_entrega.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_trabajo_dialog.dart';
@@ -44,6 +43,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
   CatMachinesOEModel catMachines = CatMachinesOEModel();
   DtDesignsOEModel catDesigns = DtDesignsOEModel();
   ShiftsList catTurno = ShiftsList();
+  SystemParamsOE catSystemParams = SystemParamsOE();
 
   TextEditingController ordenFabicacionCtrl = TextEditingController();
   // TextEditingController fechaCreacionCtrl = TextEditingController();
@@ -174,8 +174,11 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                       SizedBox(height: 15),
                                       listMachines(),
                                       SizedBox(height: 15),
+                                      // (catSystemParams.requiereTurno == 0)
+                                      // ?
                                       CustomInput(
                                           controller: lineaCtrl, hint: "Linea"),
+                                      // : Container(),
                                       SizedBox(height: 15),
                                       CustomInput(
                                         controller: turnoCtrl,
@@ -229,7 +232,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                         title: 'Guardar',
                                         isLoading: false,
                                         onPressed: () {
-                                          print(listFields);
+                                          // print(listFields);
                                         },
                                       ),
                                       SizedBox(height: 15),
@@ -240,20 +243,16 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                         title: 'Crear',
                                         isLoading: false,
                                         onPressed: () async {
-                                          if (ordenFabicacionCtrl
-                                                  .text.isEmpty ||
-                                              fechaCierreCtrl.text.isEmpty ||
-                                              operadorCtrl.text.isEmpty ||
-                                              // clienteCtrl.text.isEmpty ||
-                                              tintaCtrl.text.isEmpty ||
-                                              lineaCtrl.text.isEmpty ||
-                                              turnoCtrl.text.isEmpty ||
+                                          listaLeida =
+                                              datosProvider.listaDeTintas;
+                                          if (ordenFabicacionCtrl.text.isEmpty ||
+                                              catStatus.idCatEstatusOt ==
+                                                  null ||
+                                              catMachines.idCatMaquina ==
+                                                  null ||
                                               pesoTotalCtrl.text.isEmpty ||
                                               cantidadProgramadaCtrl
                                                   .text.isEmpty ||
-                                              estatusCtrl.text.isEmpty ||
-                                              catMachines.idCatMaquina ==
-                                                  null ||
                                               catDesigns.idCatDiseno == null) {
                                             dialogs.showInfoDialog(
                                                 context,
@@ -274,36 +273,9 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                     double.parse(pesoTotalCtrl
                                                         .text
                                                         .trim()),
-                                                    // turnoCtrl.text.trim(),
                                                     1,
-                                                    // lineaCtrl.text.trim(),
                                                     1,
-                                                    // fechaCierreCtrl.text.trim(),
-                                                    listaLeida
-                                                    // operador!.userId!,
-                                                    // cliente.idCatCliente!,
-                                                    // catStatus.idCatEstatusOt!,
-                                                    // tintaCtrl.text.trim(),
-
-                                                    )
-                                                // await ordenEntregaProvider
-                                                //     .createOrdenEntrega(
-                                                //   ordenFabicacionCtrl.text.trim(),
-                                                //   operador!.userId!,
-                                                //   cliente.idCatCliente!,
-                                                //   catStatus.idCatEstatusOt!,
-                                                //   catMachines.idCatMaquina!,
-                                                //   lineaCtrl.text.trim(),
-                                                //   turnoCtrl.text.trim(),
-                                                //   double.parse(
-                                                //       pesoTotalCtrl.text.trim()),
-                                                //   int.parse(cantidadProgramadaCtrl
-                                                //       .text
-                                                //       .trim()),
-                                                //   fechaCierreCtrl.text.trim(),
-                                                //   catDesigns.idCatDiseno!,
-                                                //   // tintaCtrl.text.trim(),
-                                                // )
+                                                    listaLeida)
                                                 .then((value) {
                                               if (value == null) {
                                                 setState(() {
@@ -502,9 +474,9 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                 title: 'Guardar',
                                                 isLoading: false,
                                                 onPressed: () {
-                                                  print(listFields);
+                                                  // print(listFields);
                                                   listFields.forEach((element) {
-                                                    print('Lista numero x');
+                                                    // print('Lista numero x');
                                                   });
                                                 },
                                               ),
@@ -517,42 +489,34 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                 title: 'Crear',
                                                 isLoading: false,
                                                 onPressed: () async {
-                                                  // listaLeida = datosProvider
-                                                  //     .listaDeListas;
+                                                  // Aquí se realiza la creación de la OE,
+                                                  // Primero se lee la lista de tintas desde datosProvider, llamando el
+                                                  // getter listaDeTintas
                                                   listaLeida = datosProvider
                                                       .listaDeTintas;
+                                                  // Aquí se realiza la validación para comprobar que los datos no sean
+                                                  // nulos
                                                   if (ordenFabicacionCtrl
-                                                              .text.isEmpty ||
-                                                          // operador!.userId ==
-                                                          //     null ||
-                                                          // cliente.idCatCliente ==
-                                                          //     null ||
-                                                          catStatus
-                                                                  .idCatEstatusOt ==
-                                                              null ||
-                                                          catMachines
-                                                                  .idCatMaquina ==
-                                                              null ||
-                                                          // lineaCtrl
-                                                          //     .text.isEmpty ||
-                                                          // turnoCtrl
-                                                          //     .text.isEmpty ||
-                                                          pesoTotalCtrl
-                                                              .text.isEmpty ||
-                                                          cantidadProgramadaCtrl
-                                                              .text.isEmpty ||
-                                                          // fechaCierreCtrl
-                                                          //     .text.isEmpty ||
-                                                          catDesigns
-                                                                  .idCatDiseno ==
-                                                              null
-                                                      // tintaCtrl.text.isEmpty ||
-                                                      ) {
+                                                          .text.isEmpty ||
+                                                      catStatus
+                                                              .idCatEstatusOt ==
+                                                          null ||
+                                                      catMachines
+                                                              .idCatMaquina ==
+                                                          null ||
+                                                      pesoTotalCtrl
+                                                          .text.isEmpty ||
+                                                      cantidadProgramadaCtrl
+                                                          .text.isEmpty ||
+                                                      catDesigns.idCatDiseno ==
+                                                          null) {
                                                     dialogs.showInfoDialog(
                                                         context,
                                                         "¡Atención!",
                                                         "Favor de validar los campos marcados con asterisco (*)");
                                                   } else {
+                                                    // Aquí se mandan los datos posicionalmente para realizar la creación en el provider
+                                                    // el dato de lista ya contiene la lista de tintas previamente cargada
                                                     await ordenEntregaProvider
                                                         .createOrdenEntrega(
                                                             // int linea y turno
@@ -571,19 +535,9 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                                 pesoTotalCtrl
                                                                     .text
                                                                     .trim()),
-                                                            // turnoCtrl.text.trim(),
                                                             1,
-                                                            // lineaCtrl.text.trim(),
                                                             1,
-                                                            // fechaCierreCtrl.text
-                                                            //     .trim(),
-                                                            listaLeida
-                                                            // operador!.userId!,
-                                                            // cliente.idCatCliente!,
-                                                            // catStatus.idCatEstatusOt!,
-                                                            // tintaCtrl.text.trim(),
-
-                                                            )
+                                                            listaLeida)
                                                         .then((value) {
                                                       if (value == null) {
                                                         setState(() {
