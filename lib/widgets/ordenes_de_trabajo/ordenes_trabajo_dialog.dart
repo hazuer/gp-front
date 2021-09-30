@@ -67,7 +67,6 @@ class OrdenesDeTrabajoDialog {
 
   Future dialogChangeStatusOrdenTrabajo(
       BuildContext context,
-      // TODO: Actualizar con el modelo de Ordenes de trabajo
       DeliveryOrdersList alertDialogOEDisable,
       String accion,
       int idCatStatus) async {
