@@ -13,6 +13,7 @@ import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEMode
 import 'package:general_products_web/models/ordenes_de_trabajo/catOperatorsOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catalogsFieldsModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/editOrdenesEntregaModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/listOrdenesEntregaModel.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/registrar_recursos/registrarRecursosModel.dart';
 import 'package:general_products_web/models/plant_model.dart';
@@ -130,11 +131,15 @@ class RxVariables {
 
   // Ordenes de entrega
   static DeliveryOrdersList orderSelected = DeliveryOrdersList();
+  // static DeliveryOrder orderSelected = DeliveryOrder();
   static ListOrdenesDeEntregaModel listOrdenesEntrega =
       ListOrdenesDeEntregaModel(deliveryOrdersList: []);
   final listOrdersFilter = BehaviorSubject<List<DeliveryOrdersList>>();
   Stream<List<DeliveryOrdersList>> get listOrdersStream =>
       listOrdersFilter.stream;
+  // final listOrdersSelectedFilter = BehaviorSubject<List<DeliveryOrder>>();
+  // Stream<List<DeliveryOrder>> get listOrderSelectedStrem =>
+  //     listOrdersSelectedFilter.stream;
 
   //Tintas en Ordenes de entrega
   static CatInksOEModel listInksOEModel = CatInksOEModel(inksList: []);
@@ -206,6 +211,7 @@ class RxVariables {
     listInksFilter.close();
     gvSubListReasons.close();
     gvSubListShifts.close();
+    // listOrdersSelectedFilter.close();
   }
 }
 

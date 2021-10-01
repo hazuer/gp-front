@@ -51,7 +51,7 @@ class _OrdenesEntregaRecepcionIndexState
   @override
   void initState() {
     estatusCtrl.text = 'Nuevo';
-    futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntregaRecepcion();
+    // futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntregaRecepcion();
     // Aqui hay que modificar para que sea getFieldsRecepción en cuanto
     // esten listos los campos correspondientes
     futureFields = ordenEntregaProvider.getFields();
@@ -201,7 +201,8 @@ class _OrdenesEntregaRecepcionIndexState
                                                         GPColors.PrimaryColor),
                                               ),
                                             )
-                                          : TableListOERecepcion(),
+                                          // : TableListOERecepcion(),
+                                          : Container(),
                                     ],
                                   )
                                 : Container(
@@ -348,7 +349,8 @@ class _OrdenesEntregaRecepcionIndexState
                                                                 .PrimaryColor),
                                                   ),
                                                 )
-                                              : TableListOERecepcion(),
+                                              // : TableListOERecepcion(),
+                                              : Container(),
                                         ],
                                       ),
                                     ),
@@ -592,16 +594,16 @@ class _OrdenesEntregaRecepcionIndexState
           "&nombre_operador_responsable=${operadorCtrl.text.trim()}";
     }
 
-    setState(() {
-      isLoading = true;
-    });
-    await ordenEntregaProvider
-        .getOrdenesDeEntregaRecepcionWithFilters(headerFilter)
-        .then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
+    // setState(() {
+    //   isLoading = true;
+    // });
+    // await ordenEntregaProvider
+    //     .getOrdenesDeEntregaRecepcionWithFilters(headerFilter)
+    //     .then((value) {
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // });
   }
 
   clearFilters() async {
@@ -617,15 +619,15 @@ class _OrdenesEntregaRecepcionIndexState
     catDesigns = DtDesignsOEModel();
     catMachines = CatMachinesOEModel();
 
-    setState(() {
-      isLoading = true;
-    });
-    await ordenEntregaProvider
-        .getOrdenesDeEntregaRecepcionWithFilters(headerFilter)
-        .then((value) {
-      setState(() {
-        isLoading = false;
-      });
-    });
+    // setState(() {
+    //   isLoading = true;
+    // });
+    // await ordenEntregaProvider
+    //     .getOrdenesDeEntregaRecepcionWithFilters(headerFilter)
+    //     .then((value) {
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    // });
   }
 }

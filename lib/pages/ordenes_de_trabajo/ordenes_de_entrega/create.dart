@@ -80,10 +80,17 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
     futureRecursos = ordenEntregaProvider.getFieldsRegistros();
     clienteCtrl.text = cliente.customerName ?? 'Cliente';
     operadorCtrl.text = '${operador!.name} ${operador!.lastName}';
+    lineaCtrl.text = '${params.campoLinea}';
+    // (catSystemParams.campoLinea == null)
+    //     ? lineaCtrl.text = 'No aplica'
+    //     : lineaCtrl.text = '${catSystemParams.campoLinea}';
     catStatus.idCatEstatusOt = 1;
+    turnoCtrl.text = 'No requiere turno';
     estatusCtrl.text = 'Nuevo';
     super.initState();
   }
+
+  final SystemParamsOE params = RxVariables.gvListRecursosFields.systemParams!;
 
   @override
   Widget build(BuildContext context) {
@@ -146,20 +153,6 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                           controller: ordenFabicacionCtrl,
                                           hint: "* Orden de Fabricación"),
                                       SizedBox(height: 15),
-                                      // Row(
-                                      //   children: [
-                                      //     Text(
-                                      //       'Fecha de Creación',
-                                      //       style: TextStyle(
-                                      //           color: Colors.black54,
-                                      //           fontSize: 13),
-                                      //     ),
-                                      //     SizedBox(width: 10),
-                                      //     // Flexible(
-                                      //     //     child: selectDateTime(
-                                      //     //         fechaCreacionCtrl)),
-                                      //   ],
-                                      // ),
                                       SizedBox(height: 15),
                                       CustomInput(
                                           enabled: false,
@@ -174,17 +167,24 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                       SizedBox(height: 15),
                                       listMachines(),
                                       SizedBox(height: 15),
-                                      // (catSystemParams.requiereTurno == 0)
-                                      // ?
-                                      CustomInput(
-                                          controller: lineaCtrl, hint: "Linea"),
-                                      // : Container(),
+                                      (params.campoLinea == null)
+                                          ? CustomInput(
+                                              enabled: false,
+                                              controller: lineaCtrl,
+                                              hint: 'Linea',
+                                            )
+                                          : CustomInput(
+                                              controller: lineaCtrl,
+                                              hint: 'Linea',
+                                            ),
                                       SizedBox(height: 15),
-                                      CustomInput(
-                                        controller: turnoCtrl,
-                                        hint: 'Turno',
-                                      ),
-                                      // listTurnos(),
+                                      (params.requiereTurno == null)
+                                          ? CustomInput(
+                                              enabled: false,
+                                              controller: turnoCtrl,
+                                              hint: 'Turno',
+                                            )
+                                          : listTurnos(),
                                       SizedBox(height: 15),
                                       CustomInput(
                                           keyboardType:
@@ -208,34 +208,34 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                           controller: cantidadProgramadaCtrl,
                                           hint: "* Cantidad Programada"),
                                       SizedBox(height: 15),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            '* Fecha de Cierre',
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
-                                          ),
-                                          SizedBox(width: 10),
-                                          Flexible(
-                                              child: selectDateTime(
-                                                  fechaCierreCtrl)),
-                                        ],
-                                      ),
-                                      SizedBox(height: 15),
+                                      // Row(
+                                      //   children: [
+                                      //     Text(
+                                      //       '* Fecha de Cierre',
+                                      //       style: TextStyle(
+                                      //           color: Colors.black54,
+                                      //           fontSize: 13),
+                                      //     ),
+                                      //     SizedBox(width: 10),
+                                      //     Flexible(
+                                      //         child: selectDateTime(
+                                      //             fechaCierreCtrl)),
+                                      //   ],
+                                      // ),
+                                      // SizedBox(height: 15),
                                       listDesigns(),
                                       SizedBox(height: 15),
-                                      CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        title: 'Guardar',
-                                        isLoading: false,
-                                        onPressed: () {
-                                          // print(listFields);
-                                        },
-                                      ),
-                                      SizedBox(height: 15),
+                                      // CustomButton(
+                                      //   width:
+                                      //       MediaQuery.of(context).size.width *
+                                      //           .2,
+                                      //   title: 'Guardar',
+                                      //   isLoading: false,
+                                      //   onPressed: () {
+                                      //     // print(listFields);
+                                      //   },
+                                      // ),
+                                      // SizedBox(height: 15),
                                       CustomButton(
                                         width:
                                             MediaQuery.of(context).size.width *
@@ -273,7 +273,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                     double.parse(pesoTotalCtrl
                                                         .text
                                                         .trim()),
-                                                    1,
+                                                    catTurno.idCatTurno ?? null,
                                                     1,
                                                     listaLeida)
                                                 .then((value) {
@@ -343,24 +343,6 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                       '* Orden de fabricación',
                                                 ),
                                               ),
-                                              // SizedBox(width: 15),
-                                              // Flexible(
-                                              //   child: Row(
-                                              //     children: [
-                                              //       Text(
-                                              //         'Fecha de Creación',
-                                              //         style: TextStyle(
-                                              //             color: Colors.black54,
-                                              //             fontSize: 13),
-                                              //       ),
-                                              //       SizedBox(width: 10),
-                                              //       // Flexible(
-                                              //       //   child: selectDateTime(
-                                              //       //       fechaCreacionCtrl),
-                                              //       // ),
-                                              //     ],
-                                              //   ),
-                                              // ),
                                             ],
                                           ),
                                           SizedBox(height: 10),
@@ -390,18 +372,28 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                           Row(
                                             children: [
                                               Flexible(
-                                                child: CustomInput(
-                                                  controller: lineaCtrl,
-                                                  hint: 'Linea',
-                                                ),
+                                                child: (params.campoLinea ==
+                                                        null)
+                                                    ? CustomInput(
+                                                        enabled: false,
+                                                        controller: lineaCtrl,
+                                                        hint: 'Linea',
+                                                      )
+                                                    : CustomInput(
+                                                        controller: lineaCtrl,
+                                                        hint: 'Linea',
+                                                      ),
                                               ),
                                               SizedBox(width: 15),
                                               Flexible(
-                                                child: CustomInput(
-                                                  controller: turnoCtrl,
-                                                  hint: 'Turno',
-                                                ),
-                                                // child: listTurnos(),
+                                                child: (params.requiereTurno ==
+                                                        0)
+                                                    ? CustomInput(
+                                                        enabled: false,
+                                                        controller: turnoCtrl,
+                                                        hint: 'Turno',
+                                                      )
+                                                    : listTurnos(),
                                               ),
                                               SizedBox(width: 15),
                                               Flexible(
@@ -441,24 +433,24 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                             children: [
                                               Flexible(child: listDesigns()),
                                               SizedBox(width: 15),
-                                              Flexible(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '* Fecha de Cierre',
-                                                      style: TextStyle(
-                                                          color: Colors.black54,
-                                                          fontSize: 13),
-                                                    ),
-                                                    SizedBox(width: 10),
-                                                    Flexible(
-                                                      child: selectDateTime(
-                                                          fechaCierreCtrl),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(width: 15),
+                                              // Flexible(
+                                              //   child: Row(
+                                              //     children: [
+                                              //       Text(
+                                              //         '* Fecha de Cierre',
+                                              //         style: TextStyle(
+                                              //             color: Colors.black54,
+                                              //             fontSize: 13),
+                                              //       ),
+                                              //       SizedBox(width: 10),
+                                              //       Flexible(
+                                              //         child: selectDateTime(
+                                              //             fechaCierreCtrl),
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // ),
+                                              // SizedBox(width: 15),
                                             ],
                                           ),
                                           SizedBox(height: 15),
@@ -474,6 +466,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                 title: 'Guardar',
                                                 isLoading: false,
                                                 onPressed: () {
+                                                  // print(params.campoLinea);
                                                   // print(listFields);
                                                   listFields.forEach((element) {
                                                     // print('Lista numero x');
@@ -535,7 +528,8 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                                                 pesoTotalCtrl
                                                                     .text
                                                                     .trim()),
-                                                            1,
+                                                            catTurno.idCatTurno ??
+                                                                null,
                                                             1,
                                                             listaLeida)
                                                         .then((value) {
@@ -809,7 +803,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                             // print(list);
 
                             // listFields = RxVariables.listInksOEModel.inksList;
-                            print(listFields);
+                            // print(listFields);
                             futureTintas.asStream().forEach((element) {
                               // listFields.add(element['inksList']);
                               listFields.add(element['inksList']);

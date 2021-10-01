@@ -177,7 +177,7 @@ class OrdenEntregaProvider {
 
   Future getFieldsRegistros() async {
     RxVariables.errorMessage = '';
-    String url = routes.urlBase + routes.listarCatalogosOE;
+    String url = routes.urlBase + routes.listarRecursosOE;
 
     List<ShiftsList> listShifts = [];
     List<ReasonsList> listReasons = [];
@@ -226,7 +226,7 @@ class OrdenEntregaProvider {
     int idDesign,
     int cantidadProgramada,
     double pesoTotal,
-    int turno, // Debe ser un Id
+    int? turno, // Debe ser un Id
     int linea, // Debe ser un int
     // String folio,
     // String fechaCierre,
@@ -267,6 +267,48 @@ class OrdenEntregaProvider {
   }
 
   Future editOrdenEntrega(
+    int idOrdenFabricacion,
+    String ordenFabricacion,
+    int idMaquina,
+    int idDesign,
+    int cantidadProgramada,
+    int? turno, // Debe ser un Id
+    int linea, // Debe ser un int
+    List<dynamic> tintas,
+  ) async {
+    RxVariables.errorMessage = '';
+    String url = routes.urlBase + routes.editarOE;
+
+    try {
+      final dio = Dio();
+      final data = {
+        'id_orden_trabajo': idOrdenFabricacion,
+        'orden_trabajo_of': ordenFabricacion,
+        'id_cat_maquina': idMaquina,
+        'id_cat_diseno': idDesign,
+        'cantidad_programado': cantidadProgramada,
+        'id_cat_turno': turno,
+        'linea': linea,
+        'tintas': tintas,
+      };
+
+      final resp = await dio.post(url, data: data, options: headerWithToken);
+      await getOrdenesDeEntrega();
+      return resp.data;
+    } on DioError catch (e) {
+      RxVariables.errorMessage = e.response!.data["message"]
+          .toString()
+          .replaceAll("{", "")
+          .replaceAll("[", "")
+          .replaceAll("}", "")
+          .replaceAll("]", "");
+      rxVariables.listOrdersFilter.sink.addError(
+          "Ocurrio un error, intenta más tarde " + RxVariables.errorMessage);
+      return null;
+    }
+  }
+
+  Future editOrdenEntrega2(
       String ordenFabricacion,
       String fechaCreacion,
       int idOpResponsable,

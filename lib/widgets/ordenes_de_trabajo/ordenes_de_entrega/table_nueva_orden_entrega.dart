@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:general_products_web/models/ordenes_de_trabajo/catInksOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/registrar_recursos/registrarRecursosModel.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/calcularPesoProvider.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/guardarDatosProvider.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
 import 'package:general_products_web/provider/settings/parametros_provider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
+import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_trabajo_dialog.dart';
 import 'dart:math';
 
@@ -28,17 +31,30 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
 
   ParametrosProvider parametrosProvider = ParametrosProvider();
   OrdenEntregaProvider ordenEntregaProvider = OrdenEntregaProvider();
+
+  ReasonsList catReason = ReasonsList();
+  List<ReasonsList> listCatReasons = [];
+
   late Future params;
   late Future futureRecursos;
+
+  CatMachinesOEModel catMachines = CatMachinesOEModel();
+
+  List<ValueKey<AppExpansionTileState>> list = [];
+  List<GlobalKey<AppExpansionTileState>> listCatReasonKeys = [];
+  List<GlobalKey<AppExpansionTileState>> catMachineKey = [];
+  late Future futureFields;
+
+  final SystemParamsOE systemParamsOE =
+      RxVariables.gvListRecursosFields.systemParams!;
 
   @override
   void initState() {
     params =
         parametrosProvider.getAllParameters(currentUser.catPlant!.plantId!);
-    // Aplicar los campos que traen los parametros
     futureRecursos = ordenEntregaProvider.getFieldsRegistros();
-    // futureRecursos  = // // Este es para idRazon, idTara (que no trae nada)
-    //y turno. El turno va en Create
+    futureFields = ordenEntregaProvider.getFields();
+
     super.initState();
   }
 
@@ -46,6 +62,7 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
   bool isLoading = false;
   late double pesoTotal = 0.0;
   List<double> pesos = [];
+  // final GlobalKey<AppExpansionTileState> catReason2Key = new GlobalKey();
   List<TextEditingController> loteControllers = [];
   List<TextEditingController> razonControllers = [];
   List<TextEditingController> pesoControllers = [];
@@ -88,6 +105,9 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
             } else {
               snapshot.data!.forEach((element) {
                 pesos.add(0);
+                catMachineKey.add(GlobalKey<AppExpansionTileState>());
+                listCatReasonKeys.add(GlobalKey<AppExpansionTileState>());
+                listCatReasons.add(ReasonsList());
                 loteControllers.add(TextEditingController());
                 razonControllers.add(TextEditingController());
                 pesoControllers.add(TextEditingController());
@@ -337,13 +357,133 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                 ),
                                 DataCell(
                                   Align(
-                                    alignment: Alignment.center,
-                                    child: TextField(
-                                      controller: razonControllers[index],
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 13),
-                                    ),
-                                  ),
+                                      alignment: Alignment.center,
+                                      child: (catReason.idCatRazon == null)
+                                          ? ElevatedButton(
+                                              child: Icon(Icons.add),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text('Dialog'),
+                                                        content:
+                                                            SingleChildScrollView(
+                                                          child: listMachines(
+                                                              catMachineKey[
+                                                                  index]),
+                                                          // Container(
+                                                          //   decoration: BoxDecoration(
+                                                          //       borderRadius:
+                                                          //           BorderRadius
+                                                          //               .circular(
+                                                          //                   4),
+                                                          //       color: Colors
+                                                          //           .black45),
+                                                          //   child:
+                                                          //       AppExpansionTile(
+                                                          //     key:
+                                                          //         listCatReasonKeys[
+                                                          //             index],
+                                                          //     initiallyExpanded:
+                                                          //         false,
+                                                          //     title: Text(
+                                                          //       listCatReasons[
+                                                          //                   index]
+                                                          //               .razon ??
+                                                          //           'Razón',
+                                                          //       style: TextStyle(
+                                                          //           color: Colors
+                                                          //               .black54,
+                                                          //           fontSize:
+                                                          //               13),
+                                                          //     ),
+                                                          //     children: [
+                                                          //       Container(
+                                                          //         //height: MediaQuery.of(context).size.height*.2,
+                                                          //         child:
+                                                          //             FutureBuilder(
+                                                          //           future:
+                                                          //               futureRecursos,
+                                                          //           builder: (BuildContext
+                                                          //                   context,
+                                                          //               AsyncSnapshot
+                                                          //                   snapshot) {
+                                                          //             if (snapshot
+                                                          //                 .hasData) {
+                                                          //               return ListView
+                                                          //                   .builder(
+                                                          //                 //physics: NeverScrollableScrollPhysics(),
+                                                          //                 shrinkWrap:
+                                                          //                     true,
+                                                          //                 itemCount: RxVariables
+                                                          //                     .gvListRecursosFields
+                                                          //                     .reasonsList
+                                                          //                     .length,
+                                                          //                 itemBuilder:
+                                                          //                     (BuildContext context, int index) {
+                                                          //                   return GestureDetector(
+                                                          //                     onTap: () {
+                                                          //                       setState(() {
+                                                          //                         listCatReasons[index] = RxVariables.gvListRecursosFields.reasonsList[index];
+                                                          //                         listCatReasonKeys[index].currentState!.collapse();
+                                                          //                       });
+                                                          //                     },
+                                                          //                     child: Container(
+                                                          //                       color: Colors.redAccent,
+                                                          //                       child: Column(
+                                                          //                         crossAxisAlignment: CrossAxisAlignment.start,
+                                                          //                         children: [
+                                                          //                           Padding(
+                                                          //                             padding: EdgeInsets.all(12),
+                                                          //                             child: Text(RxVariables.gvListRecursosFields.reasonsList[index].razon!, style: TextStyle(color: Colors.black54, fontSize: 13)),
+                                                          //                           ),
+                                                          //                           Container(
+                                                          //                             width: double.infinity,
+                                                          //                             height: .5,
+                                                          //                             color: Colors.grey[300],
+                                                          //                           )
+                                                          //                         ],
+                                                          //                       ),
+                                                          //                     ),
+                                                          //                   );
+                                                          //                 },
+                                                          //               );
+                                                          //             } else {
+                                                          //               return CircularProgressIndicator();
+                                                          //             }
+                                                          //           },
+                                                          //         ),
+                                                          //       ),
+                                                          //     ],
+                                                          //   ),
+                                                          // ),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                            )
+                                          : ElevatedButton(
+                                              child: Icon(Icons.home),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text('Dialog'),
+                                                      );
+                                                    });
+                                              },
+                                            )
+                                      // listRazones(listCatReasonKeys[index]),
+                                      // child: TextField(
+                                      //   controller: razonControllers[index],
+                                      //   style: TextStyle(
+                                      //       color: Colors.black, fontSize: 13),
+                                      // ),
+                                      ),
                                 ),
                                 DataCell(
                                   Align(
@@ -410,9 +550,21 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                                                 .text
                                                                 .trim()),
                                                         1, //Id cat tara -> pte implementar
-                                                        false, // Utiliza ph
-                                                        false, // Mide viscocidad
-                                                        false, // UtilizaFiltro
+                                                        (systemParamsOE
+                                                                    .utilizaPh ==
+                                                                0)
+                                                            ? false
+                                                            : true, // Utiliza ph
+                                                        (systemParamsOE
+                                                                    .mideViscosidad ==
+                                                                0)
+                                                            ? false
+                                                            : true, // Mide viscocidad
+                                                        (systemParamsOE
+                                                                    .utilizaFiltro ==
+                                                                0)
+                                                            ? false
+                                                            : true, // UtilizaFiltro
                                                         pesos[index],
                                                         100, // Id cat lectura
                                                         1, // Id cat razon
@@ -508,6 +660,140 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
             return Text('Seleccione un diseño para mostrar la tabla');
           }
         },
+      ),
+    );
+  }
+
+  Widget listRazones(GlobalKey<AppExpansionTileState> key) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.redAccent),
+      child: AppExpansionTile(
+        key: key,
+        initiallyExpanded: false,
+        title: Text(
+          catReason.razon ?? 'Razón',
+          style: TextStyle(color: Colors.black54, fontSize: 13),
+        ),
+        children: [
+          Container(
+            //height: MediaQuery.of(context).size.height*.2,
+            child: FutureBuilder(
+              future: futureRecursos,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount:
+                        RxVariables.gvListRecursosFields.reasonsList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            catReason = RxVariables
+                                .gvListRecursosFields.reasonsList[index];
+                            key.currentState!.collapse();
+                          });
+                        },
+                        child: Container(
+                          color: Colors.redAccent,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                    RxVariables.gvListRecursosFields
+                                        .reasonsList[index].razon!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: .5,
+                                color: Colors.grey[300],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget listMachines(GlobalKey<AppExpansionTileState> key) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
+      child: AppExpansionTile(
+        key: key,
+        initiallyExpanded: false,
+        title: Text(
+          catMachines.nombreMaquina ?? '* Maquina',
+          style: TextStyle(color: Colors.black54, fontSize: 13),
+        ),
+        children: [
+          Container(
+            //height: MediaQuery.of(context).size.height*.2,
+            child: FutureBuilder(
+              future: futureFields,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.machinesList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            catMachines = RxVariables
+                                .gvListCatalogsFields.machinesList[index];
+                            key.currentState!.collapse();
+                          });
+                        },
+                        child: Container(
+                          color: Colors.grey[100],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                    RxVariables.gvListCatalogsFields
+                                        .machinesList[index].nombreMaquina!,
+                                    style: TextStyle(
+                                        color: Colors.black54, fontSize: 13)),
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: .5,
+                                color: Colors.grey[300],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
