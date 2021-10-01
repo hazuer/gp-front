@@ -80,7 +80,8 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
     futureRecursos = ordenEntregaProvider.getFieldsRegistros();
     clienteCtrl.text = cliente.customerName ?? 'Cliente';
     operadorCtrl.text = '${operador!.name} ${operador!.lastName}';
-    lineaCtrl.text = '${params.campoLinea}';
+    lineaCtrl.text = '0';
+    // lineaCtrl.text = '${params.campoLinea}';
     // (catSystemParams.campoLinea == null)
     //     ? lineaCtrl.text = 'No aplica'
     //     : lineaCtrl.text = '${catSystemParams.campoLinea}';
@@ -90,7 +91,7 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
     super.initState();
   }
 
-  final SystemParamsOE params = RxVariables.gvListRecursosFields.systemParams!;
+  // final SystemParamsOE params = RxVariables.gvListRecursosFields.systemParams!;
 
   @override
   Widget build(BuildContext context) {
@@ -167,24 +168,26 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                       SizedBox(height: 15),
                                       listMachines(),
                                       SizedBox(height: 15),
-                                      (params.campoLinea == null)
-                                          ? CustomInput(
-                                              enabled: false,
-                                              controller: lineaCtrl,
-                                              hint: 'Linea',
-                                            )
-                                          : CustomInput(
-                                              controller: lineaCtrl,
-                                              hint: 'Linea',
-                                            ),
+                                      // (params.campoLinea == null)
+                                      //     ? CustomInput(
+                                      //         enabled: false,
+                                      //         controller: lineaCtrl,
+                                      //         hint: 'Linea',
+                                      //       )
+                                      //     :
+                                      CustomInput(
+                                        controller: lineaCtrl,
+                                        hint: 'Linea',
+                                      ),
                                       SizedBox(height: 15),
-                                      (params.requiereTurno == null)
-                                          ? CustomInput(
-                                              enabled: false,
-                                              controller: turnoCtrl,
-                                              hint: 'Turno',
-                                            )
-                                          : listTurnos(),
+                                      // (params.requiereTurno == null)
+                                      //     ?
+                                      CustomInput(
+                                        enabled: false,
+                                        controller: turnoCtrl,
+                                        hint: 'Turno',
+                                      ),
+                                      // : listTurnos(),
                                       SizedBox(height: 15),
                                       CustomInput(
                                           keyboardType:
@@ -372,28 +375,30 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                           Row(
                                             children: [
                                               Flexible(
-                                                child: (params.campoLinea ==
-                                                        null)
-                                                    ? CustomInput(
-                                                        enabled: false,
-                                                        controller: lineaCtrl,
-                                                        hint: 'Linea',
-                                                      )
-                                                    : CustomInput(
-                                                        controller: lineaCtrl,
-                                                        hint: 'Linea',
-                                                      ),
-                                              ),
+                                                  // child: (params.campoLinea ==
+                                                  //         null)
+                                                  //     ?
+                                                  child: CustomInput(
+                                                enabled: false,
+                                                controller: lineaCtrl,
+                                                hint: 'Linea',
+                                              )
+                                                  // : CustomInput(
+                                                  //     controller: lineaCtrl,
+                                                  //     hint: 'Linea',
+                                                  //   ),
+                                                  ),
                                               SizedBox(width: 15),
                                               Flexible(
-                                                child: (params.requiereTurno ==
-                                                        0)
-                                                    ? CustomInput(
-                                                        enabled: false,
-                                                        controller: turnoCtrl,
-                                                        hint: 'Turno',
-                                                      )
-                                                    : listTurnos(),
+                                                // child: (params.requiereTurno ==
+                                                //         0)
+                                                //     ?
+                                                child: CustomInput(
+                                                  enabled: false,
+                                                  controller: turnoCtrl,
+                                                  hint: 'Turno',
+                                                ),
+                                                // : listTurnos(),
                                               ),
                                               SizedBox(width: 15),
                                               Flexible(
