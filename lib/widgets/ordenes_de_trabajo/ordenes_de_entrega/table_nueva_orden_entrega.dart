@@ -357,133 +357,133 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                 ),
                                 DataCell(
                                   Align(
-                                      alignment: Alignment.center,
-                                      child: (catReason.idCatRazon == null)
-                                          ? ElevatedButton(
-                                              child: Icon(Icons.add),
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        title: Text('Dialog'),
-                                                        content:
-                                                            SingleChildScrollView(
-                                                          child: listMachines(
-                                                              catMachineKey[
-                                                                  index]),
-                                                          // Container(
-                                                          //   decoration: BoxDecoration(
-                                                          //       borderRadius:
-                                                          //           BorderRadius
-                                                          //               .circular(
-                                                          //                   4),
-                                                          //       color: Colors
-                                                          //           .black45),
-                                                          //   child:
-                                                          //       AppExpansionTile(
-                                                          //     key:
-                                                          //         listCatReasonKeys[
-                                                          //             index],
-                                                          //     initiallyExpanded:
-                                                          //         false,
-                                                          //     title: Text(
-                                                          //       listCatReasons[
-                                                          //                   index]
-                                                          //               .razon ??
-                                                          //           'Razón',
-                                                          //       style: TextStyle(
-                                                          //           color: Colors
-                                                          //               .black54,
-                                                          //           fontSize:
-                                                          //               13),
-                                                          //     ),
-                                                          //     children: [
-                                                          //       Container(
-                                                          //         //height: MediaQuery.of(context).size.height*.2,
-                                                          //         child:
-                                                          //             FutureBuilder(
-                                                          //           future:
-                                                          //               futureRecursos,
-                                                          //           builder: (BuildContext
-                                                          //                   context,
-                                                          //               AsyncSnapshot
-                                                          //                   snapshot) {
-                                                          //             if (snapshot
-                                                          //                 .hasData) {
-                                                          //               return ListView
-                                                          //                   .builder(
-                                                          //                 //physics: NeverScrollableScrollPhysics(),
-                                                          //                 shrinkWrap:
-                                                          //                     true,
-                                                          //                 itemCount: RxVariables
-                                                          //                     .gvListRecursosFields
-                                                          //                     .reasonsList
-                                                          //                     .length,
-                                                          //                 itemBuilder:
-                                                          //                     (BuildContext context, int index) {
-                                                          //                   return GestureDetector(
-                                                          //                     onTap: () {
-                                                          //                       setState(() {
-                                                          //                         listCatReasons[index] = RxVariables.gvListRecursosFields.reasonsList[index];
-                                                          //                         listCatReasonKeys[index].currentState!.collapse();
-                                                          //                       });
-                                                          //                     },
-                                                          //                     child: Container(
-                                                          //                       color: Colors.redAccent,
-                                                          //                       child: Column(
-                                                          //                         crossAxisAlignment: CrossAxisAlignment.start,
-                                                          //                         children: [
-                                                          //                           Padding(
-                                                          //                             padding: EdgeInsets.all(12),
-                                                          //                             child: Text(RxVariables.gvListRecursosFields.reasonsList[index].razon!, style: TextStyle(color: Colors.black54, fontSize: 13)),
-                                                          //                           ),
-                                                          //                           Container(
-                                                          //                             width: double.infinity,
-                                                          //                             height: .5,
-                                                          //                             color: Colors.grey[300],
-                                                          //                           )
-                                                          //                         ],
-                                                          //                       ),
-                                                          //                     ),
-                                                          //                   );
-                                                          //                 },
-                                                          //               );
-                                                          //             } else {
-                                                          //               return CircularProgressIndicator();
-                                                          //             }
-                                                          //           },
-                                                          //         ),
-                                                          //       ),
-                                                          //     ],
-                                                          //   ),
-                                                          // ),
-                                                        ),
-                                                      );
-                                                    });
-                                              },
-                                            )
-                                          : ElevatedButton(
-                                              child: Icon(Icons.home),
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return AlertDialog(
-                                                        title: Text('Dialog'),
-                                                      );
-                                                    });
-                                              },
-                                            )
-                                      // listRazones(listCatReasonKeys[index]),
-                                      // child: TextField(
-                                      //   controller: razonControllers[index],
-                                      //   style: TextStyle(
-                                      //       color: Colors.black, fontSize: 13),
-                                      // ),
-                                      ),
+                                    alignment: Alignment.center,
+                                    // (catReason.idCatRazon == null)
+                                    //     ? ElevatedButton(
+                                    //         child: Icon(Icons.add),
+                                    //         onPressed: () {
+                                    //           showDialog(
+                                    //               context: context,
+                                    //               builder:
+                                    //                   (BuildContext context) {
+                                    //                 return AlertDialog(
+                                    //                   title: Text('Dialog'),
+                                    //                   content:
+                                    //                       SingleChildScrollView(
+                                    //                     child: listMachines(
+                                    //                         catMachineKey[
+                                    //                             index]),
+                                    //                     // Container(
+                                    //                     //   decoration: BoxDecoration(
+                                    //                     //       borderRadius:
+                                    //                     //           BorderRadius
+                                    //                     //               .circular(
+                                    //                     //                   4),
+                                    //                     //       color: Colors
+                                    //                     //           .black45),
+                                    //                     //   child:
+                                    //                     //       AppExpansionTile(
+                                    //                     //     key:
+                                    //                     //         listCatReasonKeys[
+                                    //                     //             index],
+                                    //                     //     initiallyExpanded:
+                                    //                     //         false,
+                                    //                     //     title: Text(
+                                    //                     //       listCatReasons[
+                                    //                     //                   index]
+                                    //                     //               .razon ??
+                                    //                     //           'Razón',
+                                    //                     //       style: TextStyle(
+                                    //                     //           color: Colors
+                                    //                     //               .black54,
+                                    //                     //           fontSize:
+                                    //                     //               13),
+                                    //                     //     ),
+                                    //                     //     children: [
+                                    //                     //       Container(
+                                    //                     //         //height: MediaQuery.of(context).size.height*.2,
+                                    //                     //         child:
+                                    //                     //             FutureBuilder(
+                                    //                     //           future:
+                                    //                     //               futureRecursos,
+                                    //                     //           builder: (BuildContext
+                                    //                     //                   context,
+                                    //                     //               AsyncSnapshot
+                                    //                     //                   snapshot) {
+                                    //                     //             if (snapshot
+                                    //                     //                 .hasData) {
+                                    //                     //               return ListView
+                                    //                     //                   .builder(
+                                    //                     //                 //physics: NeverScrollableScrollPhysics(),
+                                    //                     //                 shrinkWrap:
+                                    //                     //                     true,
+                                    //                     //                 itemCount: RxVariables
+                                    //                     //                     .gvListRecursosFields
+                                    //                     //                     .reasonsList
+                                    //                     //                     .length,
+                                    //                     //                 itemBuilder:
+                                    //                     //                     (BuildContext context, int index) {
+                                    //                     //                   return GestureDetector(
+                                    //                     //                     onTap: () {
+                                    //                     //                       setState(() {
+                                    //                     //                         listCatReasons[index] = RxVariables.gvListRecursosFields.reasonsList[index];
+                                    //                     //                         listCatReasonKeys[index].currentState!.collapse();
+                                    //                     //                       });
+                                    //                     //                     },
+                                    //                     //                     child: Container(
+                                    //                     //                       color: Colors.redAccent,
+                                    //                     //                       child: Column(
+                                    //                     //                         crossAxisAlignment: CrossAxisAlignment.start,
+                                    //                     //                         children: [
+                                    //                     //                           Padding(
+                                    //                     //                             padding: EdgeInsets.all(12),
+                                    //                     //                             child: Text(RxVariables.gvListRecursosFields.reasonsList[index].razon!, style: TextStyle(color: Colors.black54, fontSize: 13)),
+                                    //                     //                           ),
+                                    //                     //                           Container(
+                                    //                     //                             width: double.infinity,
+                                    //                     //                             height: .5,
+                                    //                     //                             color: Colors.grey[300],
+                                    //                     //                           )
+                                    //                     //                         ],
+                                    //                     //                       ),
+                                    //                     //                     ),
+                                    //                     //                   );
+                                    //                     //                 },
+                                    //                     //               );
+                                    //                     //             } else {
+                                    //                     //               return CircularProgressIndicator();
+                                    //                     //             }
+                                    //                     //           },
+                                    //                     //         ),
+                                    //                     //       ),
+                                    //                     //     ],
+                                    //                     //   ),
+                                    //                     // ),
+                                    //                   ),
+                                    //                 );
+                                    //               });
+                                    //         },
+                                    //       )
+                                    //     : ElevatedButton(
+                                    //         child: Icon(Icons.home),
+                                    //         onPressed: () {
+                                    //           showDialog(
+                                    //               context: context,
+                                    //               builder:
+                                    //                   (BuildContext context) {
+                                    //                 return AlertDialog(
+                                    //                   title: Text('Dialog'),
+                                    //                 );
+                                    //               });
+                                    //         },
+                                    //       )
+                                    // listRazones(listCatReasonKeys[index]),
+                                    child: TextField(
+                                      controller: razonControllers[index],
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 13),
+                                    ),
+                                  ),
                                 ),
                                 DataCell(
                                   Align(
