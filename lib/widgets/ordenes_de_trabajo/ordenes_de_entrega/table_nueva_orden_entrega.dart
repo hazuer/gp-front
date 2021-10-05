@@ -327,6 +327,14 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                   Align(
                                     alignment: Alignment.center,
                                     child: TextField(
+                                      onChanged: (value) {
+                                        lecturaAutomatica[index] = false;
+                                        // List<double> peso = [];
+                                        pesos[index] = double.parse(
+                                            pesoControllers[index].text);
+                                        pesoTotalService.calcularPeso(pesos);
+                                        setState(() {});
+                                      },
                                       keyboardType: TextInputType.number,
                                       enabled:
                                           (currentUser.catProfile!.profileId ==
