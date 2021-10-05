@@ -45,8 +45,8 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
   List<GlobalKey<AppExpansionTileState>> catMachineKey = [];
   late Future futureFields;
 
-  final SystemParamsOE systemParamsOE =
-      RxVariables.gvListRecursosFields.systemParams!;
+  // final SystemParamsOE systemParamsOE =
+  //     RxVariables.gvListRecursosFields.systemParams!;
 
   @override
   void initState() {
@@ -64,7 +64,6 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
   List<double> pesos = [];
   // final GlobalKey<AppExpansionTileState> catReason2Key = new GlobalKey();
   List<TextEditingController> loteControllers = [];
-  List<TextEditingController> razonControllers = [];
   List<TextEditingController> pesoControllers = [];
   List<bool> lecturaAutomatica = [];
 
@@ -109,9 +108,10 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                 listCatReasonKeys.add(GlobalKey<AppExpansionTileState>());
                 listCatReasons.add(ReasonsList());
                 loteControllers.add(TextEditingController());
-                razonControllers.add(TextEditingController());
                 pesoControllers.add(TextEditingController());
-                lecturaAutomatica.add(false);
+                (currentUser.catProfile!.profileId != 4)
+                    ? lecturaAutomatica.add(true)
+                    : lecturaAutomatica.add(false);
                 puedeGuardar.add(true);
                 puedeImprimir.add(false);
               });
@@ -358,131 +358,54 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                 DataCell(
                                   Align(
                                     alignment: Alignment.center,
-                                    // (catReason.idCatRazon == null)
-                                    //     ? ElevatedButton(
-                                    //         child: Icon(Icons.add),
-                                    //         onPressed: () {
-                                    //           showDialog(
-                                    //               context: context,
-                                    //               builder:
-                                    //                   (BuildContext context) {
-                                    //                 return AlertDialog(
-                                    //                   title: Text('Dialog'),
-                                    //                   content:
-                                    //                       SingleChildScrollView(
-                                    //                     child: listMachines(
-                                    //                         catMachineKey[
-                                    //                             index]),
-                                    //                     // Container(
-                                    //                     //   decoration: BoxDecoration(
-                                    //                     //       borderRadius:
-                                    //                     //           BorderRadius
-                                    //                     //               .circular(
-                                    //                     //                   4),
-                                    //                     //       color: Colors
-                                    //                     //           .black45),
-                                    //                     //   child:
-                                    //                     //       AppExpansionTile(
-                                    //                     //     key:
-                                    //                     //         listCatReasonKeys[
-                                    //                     //             index],
-                                    //                     //     initiallyExpanded:
-                                    //                     //         false,
-                                    //                     //     title: Text(
-                                    //                     //       listCatReasons[
-                                    //                     //                   index]
-                                    //                     //               .razon ??
-                                    //                     //           'Razón',
-                                    //                     //       style: TextStyle(
-                                    //                     //           color: Colors
-                                    //                     //               .black54,
-                                    //                     //           fontSize:
-                                    //                     //               13),
-                                    //                     //     ),
-                                    //                     //     children: [
-                                    //                     //       Container(
-                                    //                     //         //height: MediaQuery.of(context).size.height*.2,
-                                    //                     //         child:
-                                    //                     //             FutureBuilder(
-                                    //                     //           future:
-                                    //                     //               futureRecursos,
-                                    //                     //           builder: (BuildContext
-                                    //                     //                   context,
-                                    //                     //               AsyncSnapshot
-                                    //                     //                   snapshot) {
-                                    //                     //             if (snapshot
-                                    //                     //                 .hasData) {
-                                    //                     //               return ListView
-                                    //                     //                   .builder(
-                                    //                     //                 //physics: NeverScrollableScrollPhysics(),
-                                    //                     //                 shrinkWrap:
-                                    //                     //                     true,
-                                    //                     //                 itemCount: RxVariables
-                                    //                     //                     .gvListRecursosFields
-                                    //                     //                     .reasonsList
-                                    //                     //                     .length,
-                                    //                     //                 itemBuilder:
-                                    //                     //                     (BuildContext context, int index) {
-                                    //                     //                   return GestureDetector(
-                                    //                     //                     onTap: () {
-                                    //                     //                       setState(() {
-                                    //                     //                         listCatReasons[index] = RxVariables.gvListRecursosFields.reasonsList[index];
-                                    //                     //                         listCatReasonKeys[index].currentState!.collapse();
-                                    //                     //                       });
-                                    //                     //                     },
-                                    //                     //                     child: Container(
-                                    //                     //                       color: Colors.redAccent,
-                                    //                     //                       child: Column(
-                                    //                     //                         crossAxisAlignment: CrossAxisAlignment.start,
-                                    //                     //                         children: [
-                                    //                     //                           Padding(
-                                    //                     //                             padding: EdgeInsets.all(12),
-                                    //                     //                             child: Text(RxVariables.gvListRecursosFields.reasonsList[index].razon!, style: TextStyle(color: Colors.black54, fontSize: 13)),
-                                    //                     //                           ),
-                                    //                     //                           Container(
-                                    //                     //                             width: double.infinity,
-                                    //                     //                             height: .5,
-                                    //                     //                             color: Colors.grey[300],
-                                    //                     //                           )
-                                    //                     //                         ],
-                                    //                     //                       ),
-                                    //                     //                     ),
-                                    //                     //                   );
-                                    //                     //                 },
-                                    //                     //               );
-                                    //                     //             } else {
-                                    //                     //               return CircularProgressIndicator();
-                                    //                     //             }
-                                    //                     //           },
-                                    //                     //         ),
-                                    //                     //       ),
-                                    //                     //     ],
-                                    //                     //   ),
-                                    //                     // ),
-                                    //                   ),
-                                    //                 );
-                                    //               });
-                                    //         },
-                                    //       )
-                                    //     : ElevatedButton(
-                                    //         child: Icon(Icons.home),
-                                    //         onPressed: () {
-                                    //           showDialog(
-                                    //               context: context,
-                                    //               builder:
-                                    //                   (BuildContext context) {
-                                    //                 return AlertDialog(
-                                    //                   title: Text('Dialog'),
-                                    //                 );
-                                    //               });
-                                    //         },
-                                    //       )
-                                    // listRazones(listCatReasonKeys[index]),
-                                    child: TextField(
-                                      controller: razonControllers[index],
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 13),
-                                    ),
+                                    child: (listCatReasons[index].idCatRazon !=
+                                            null)
+                                        ? GestureDetector(
+                                            child: Text(
+                                                '${listCatReasons[index].razon}'),
+                                            onTap: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text('Dialog'),
+                                                      content: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 10),
+                                                        width: 500,
+                                                        child: razones(
+                                                            listCatReasons[
+                                                                index]),
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                          )
+                                        : IconButton(
+                                            icon: Icon(Icons.add_circle_sharp,
+                                                color: GPColors.PrimaryColor),
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text('Razones'),
+                                                      content: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 10),
+                                                        width: 500,
+                                                        child: razones(
+                                                            listCatReasons[
+                                                                index]),
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                          ),
                                   ),
                                 ),
                                 DataCell(
@@ -524,9 +447,9 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                                     pesoControllers[index]
                                                         .text
                                                         .isEmpty ||
-                                                    razonControllers[index]
-                                                            .text ==
-                                                        '')
+                                                    listCatReasons[index]
+                                                            .idCatRazon ==
+                                                        null)
                                                 ? IconButton(
                                                     tooltip: 'Guardar',
                                                     onPressed: null,
@@ -550,24 +473,33 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                                                 .text
                                                                 .trim()),
                                                         1, //Id cat tara -> pte implementar
-                                                        (systemParamsOE
-                                                                    .utilizaPh ==
-                                                                0)
-                                                            ? false
-                                                            : true, // Utiliza ph
-                                                        (systemParamsOE
-                                                                    .mideViscosidad ==
-                                                                0)
-                                                            ? false
-                                                            : true, // Mide viscocidad
-                                                        (systemParamsOE
-                                                                    .utilizaFiltro ==
-                                                                0)
-                                                            ? false
-                                                            : true, // UtilizaFiltro
+                                                        false,
+                                                        false,
+                                                        false,
+                                                        // (systemParamsOE
+                                                        //             .utilizaPh ==
+                                                        //         0)
+                                                        //     ? false
+                                                        //     : true, // Utiliza ph
+                                                        // (systemParamsOE
+                                                        //             .mideViscosidad ==
+                                                        //         0)
+                                                        //     ? false
+                                                        //     : true, // Mide viscocidad
+                                                        // (systemParamsOE
+                                                        //             .utilizaFiltro ==
+                                                        //         0)
+                                                        //     ? false
+                                                        //     : true, // UtilizaFiltro
                                                         pesos[index],
-                                                        100, // Id cat lectura
-                                                        1, // Id cat razon
+                                                        // Id cat lectura
+                                                        (lecturaAutomatica[
+                                                                    index] ==
+                                                                true)
+                                                            ? 2
+                                                            : 1,
+                                                        listCatReasons[index]
+                                                            .idCatRazon!,
                                                         '1', // Adivito tinta
                                                         0, // Aditivo
                                                         // 2, // Porcentaje de variación
@@ -600,23 +532,6 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
                                                   puedeImprimir[index] = false;
 
                                                   setState(() {});
-                                                  // datosProvider.gurardarDatos(
-                                                  //   snapshot.data![index].idCatTinta!,
-                                                  //   int.parse(loteControllers[index]
-                                                  //       .text
-                                                  //       .trim()),
-                                                  //   1, //Id cat tara -> pte implementar
-                                                  //   pesos[index],
-                                                  //   false, // Utiliza ph
-                                                  //   false, // Mide viscocidad
-                                                  //   false, // UtilizaFiltro
-                                                  //   2, // Porcentaje de variación
-                                                  //   100.00, // Peso individual GP
-                                                  //   100, // Id cat lectura
-                                                  //   1, // Id cat razon
-                                                  //   "aditivo tinta", // Adivito tinta
-                                                  //   0, // Aditivo
-                                                  // );
                                                 },
                                                 icon: Icon(Icons.print,
                                                     size: 18,
@@ -664,69 +579,58 @@ class _TableNuevaOrdenEntregaState extends State<TableNuevaOrdenEntrega> {
     );
   }
 
-  Widget listRazones(GlobalKey<AppExpansionTileState> key) {
+  Widget razones(ReasonsList razon) {
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4), color: Colors.redAccent),
-      child: AppExpansionTile(
-        key: key,
-        initiallyExpanded: false,
-        title: Text(
-          catReason.razon ?? 'Razón',
-          style: TextStyle(color: Colors.black54, fontSize: 13),
-        ),
-        children: [
-          Container(
-            //height: MediaQuery.of(context).size.height*.2,
-            child: FutureBuilder(
-              future: futureRecursos,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    //physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                        RxVariables.gvListRecursosFields.reasonsList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            catReason = RxVariables
-                                .gvListRecursosFields.reasonsList[index];
-                            key.currentState!.collapse();
-                          });
-                        },
-                        child: Container(
-                          color: Colors.redAccent,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                    RxVariables.gvListRecursosFields
-                                        .reasonsList[index].razon!,
-                                    style: TextStyle(
-                                        color: Colors.black54, fontSize: 13)),
-                              ),
-                              Container(
-                                width: double.infinity,
-                                height: .5,
-                                color: Colors.grey[300],
-                              )
-                            ],
-                          ),
+      //height: MediaQuery.of(context).size.height*.2,
+      child: FutureBuilder(
+        future: futureRecursos,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              //physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: RxVariables.gvListRecursosFields.reasonsList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      catReason =
+                          RxVariables.gvListRecursosFields.reasonsList[index];
+                      razon.idCatRazon = catReason.idCatRazon;
+                      razon.razon = catReason.razon;
+                      // catMachineKey[index].currentState!.collapse();
+                    });
+                    // print('Click');
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    color: Colors.grey[100],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Text(
+                              RxVariables.gvListRecursosFields
+                                  .reasonsList[index].razon!,
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 13)),
                         ),
-                      );
-                    },
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
+                        Container(
+                          width: double.infinity,
+                          height: .5,
+                          color: Colors.grey[300],
+                        )
+                      ],
+                    ),
+                  ),
+                );
               },
-            ),
-          ),
-        ],
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
       ),
     );
   }

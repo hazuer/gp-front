@@ -41,9 +41,9 @@ class GuardarDatos with ChangeNotifier {
       'utiliza_ph': ph,
       'mide_viscosidad': viscosidad,
       'utiliza_filtro': filtro,
-      'peso_individual': pesos,
+      'peso_individual_gp': pesos,
       'id_cat_lectura_gp': idLectura,
-      'id_cat_razpn': idRazon,
+      'id_cat_razon': idRazon,
       'aditivo_tinta': aditivoTinta,
       'aditivo': aditivo,
     };

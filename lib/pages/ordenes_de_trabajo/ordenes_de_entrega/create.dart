@@ -146,11 +146,11 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                     shrinkWrap: true,
                                     children: [
                                       CustomInput(
-                                          keyboardType: TextInputType.number,
-                                          inputFormatters: [
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                          ],
+                                          // keyboardType: TextInputType.number,
+                                          // inputFormatters: [
+                                          //   FilteringTextInputFormatter
+                                          //       .digitsOnly,
+                                          // ],
                                           controller: ordenFabicacionCtrl,
                                           hint: "* Orden de Fabricación"),
                                       SizedBox(height: 15),
@@ -334,12 +334,12 @@ class _OrdenesEntregaCreateState extends State<OrdenesEntregaCreate> {
                                             children: [
                                               Flexible(
                                                 child: CustomInput(
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly,
-                                                  ],
+                                                  // keyboardType:
+                                                  //     TextInputType.number,
+                                                  // inputFormatters: [
+                                                  //   FilteringTextInputFormatter
+                                                  //       .digitsOnly,
+                                                  // ],
                                                   controller:
                                                       ordenFabicacionCtrl,
                                                   hint:

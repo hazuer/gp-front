@@ -1,14 +1,18 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
+
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:general_products_web/app/auth/login.dart';
-import 'package:general_products_web/constants/route_names.dart';
-import 'package:general_products_web/models/catalogs/design/designsModel.dart';
-import 'package:general_products_web/models/catalogs/machine/catMachineModel.dart';
-import 'package:general_products_web/models/status_model.dart';
-import 'package:general_products_web/provider/catalogs/design/designsProvider.dart';
-import 'package:general_products_web/provider/catalogs/machine/machinesProvider.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catInksOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/createOrdenesEntregaModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/dtDesignsOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catMachinesOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/catStatusOEModel.dart';
+import 'package:general_products_web/models/ordenes_de_trabajo/registrar_recursos/registrarRecursosModel.dart';
 import 'package:general_products_web/provider/list_user_provider.dart';
+import 'package:general_products_web/provider/ordenes_de_trabajo/calcularPesoProvider.dart';
+import 'package:general_products_web/provider/ordenes_de_trabajo/guardarDatosProvider.dart';
 import 'package:general_products_web/provider/ordenes_de_trabajo/ordenEntregaProvider.dart';
 import 'package:general_products_web/resources/colors.dart';
 import 'package:general_products_web/resources/global_variables.dart';
@@ -17,6 +21,9 @@ import 'package:general_products_web/widgets/custom_button.dart';
 import 'package:general_products_web/widgets/custom_expansio_tile.dart';
 import 'package:general_products_web/widgets/input_custom.dart';
 import 'package:general_products_web/widgets/ordenes_de_trabajo/adiciones/table_orden_entrega_adicion.dart';
+import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_de_entrega/table_nueva_orden_entrega.dart';
+import 'package:general_products_web/widgets/ordenes_de_trabajo/ordenes_trabajo_dialog.dart';
+import 'package:provider/provider.dart';
 
 class OrdenesEntregaAdicionesIndex extends StatefulWidget {
   @override
@@ -26,56 +33,75 @@ class OrdenesEntregaAdicionesIndex extends StatefulWidget {
 
 class _OrdenesEntregaAdicionesIndexState
     extends State<OrdenesEntregaAdicionesIndex> {
-  late Future futureOrdenEntrega;
-  late Future futureMachines;
-  late Future futureDesigns;
-  // late Future futureTaras;
+  late Future futureFields;
+  late Future futureTintas;
   bool isLoading = false;
-  String headerFilter = '?porPagina = 20';
-  StatusModel catEstatus = StatusModel();
+  double pesoTotal = 0.0;
+
+  OrdenesDeTrabajoDialog dialogs = OrdenesDeTrabajoDialog();
 
   OrdenEntregaProvider ordenEntregaProvider = OrdenEntregaProvider();
-  // TarasProvider tarasProvider = TarasProvider();
-  MachinesProvider machinesProvider = MachinesProvider();
-  CatMachineModel catMachines = CatMachineModel();
 
-  DesignsProvider designsProvider = DesignsProvider();
-  DesignsList catDesigns = DesignsList();
+  CatStatusOEModel catStatus = CatStatusOEModel();
+  CatMachinesOEModel catMachines = CatMachinesOEModel();
+  DtDesignsOEModel catDesigns = DtDesignsOEModel();
+  ShiftsList catTurno = ShiftsList();
+  SystemParamsOE catSystemParams = SystemParamsOE();
 
   TextEditingController ordenFabicacionCtrl = TextEditingController();
-  TextEditingController folioCtrl = TextEditingController();
-  TextEditingController fechaCreacionCtrl = TextEditingController();
+  // TextEditingController fechaCreacionCtrl = TextEditingController();
   TextEditingController fechaCierreCtrl = TextEditingController();
   TextEditingController operadorCtrl = TextEditingController();
   TextEditingController clienteCtrl = TextEditingController();
   TextEditingController tintaCtrl = TextEditingController();
-  TextEditingController estatusCtrl = TextEditingController();
-  TextEditingController pesoTotalCtrl = TextEditingController();
-  TextEditingController turnoCtrl = TextEditingController();
   TextEditingController lineaCtrl = TextEditingController();
+  TextEditingController turnoCtrl = TextEditingController();
+  TextEditingController pesoTotalCtrl = TextEditingController();
   TextEditingController cantidadProgramadaCtrl = TextEditingController();
+  TextEditingController estatusCtrl = TextEditingController();
 
-  final GlobalKey<AppExpansionTileState> catOrdenEntregaKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catEstatusKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catMachineKey = new GlobalKey();
   final GlobalKey<AppExpansionTileState> catDesignKey = new GlobalKey();
+  final GlobalKey<AppExpansionTileState> catTurnoKey = new GlobalKey();
 
   final currentUser = RxVariables.loginResponse.data!;
+  final operador = RxVariables.loginResponse.data!.user;
+  final cliente = RxVariables.loginResponse.data!.catCustomer!;
+
+  late Future futureRecursos;
+
+  List<List<dynamic>> listFields = [];
+  // List<dynamic> listaLeida = [];
+  List<Tinta> listaLeida = [];
+
+  final regexp = RegExp(r'^[0-9]+\.?([0-9]+)?$');
 
   @override
   void initState() {
-    futureOrdenEntrega = ordenEntregaProvider.getOrdenesDeEntrega();
-    futureMachines = machinesProvider.getAllMachines();
-    futureDesigns = designsProvider.getAllDesigns();
-    catEstatus.estatus = 'Nuevo';
-    catEstatus.idCatEstatus = 1;
+    futureFields = ordenEntregaProvider.getFields();
+    futureRecursos = ordenEntregaProvider.getFieldsRegistros();
+    clienteCtrl.text = cliente.customerName ?? 'Cliente';
+    operadorCtrl.text = '${operador!.name} ${operador!.lastName}';
+    lineaCtrl.text = '0';
+    // lineaCtrl.text = '${params.campoLinea}';
+    // (catSystemParams.campoLinea == null)
+    //     ? lineaCtrl.text = 'No aplica'
+    //     : lineaCtrl.text = '${catSystemParams.campoLinea}';
+    catStatus.idCatEstatusOt = 1;
+    turnoCtrl.text = 'No requiere turno';
     estatusCtrl.text = 'Nuevo';
-    // futureTaras = tarasProvider.getAllTaras();
     super.initState();
   }
 
+  // final SystemParamsOE params = RxVariables.gvListRecursosFields.systemParams!;
+
   @override
   Widget build(BuildContext context) {
+    final pesoTotalService = Provider.of<CalcularPeso>(context);
+    // final guardarDatosService = Provider.of<GuardarDatos>(context);
+    final datosProvider = Provider.of<GuardarDatos>(context);
+
     final bool displayMobileLayout = MediaQuery.of(context).size.width < 1000;
 
     if (currentUser.catProfile!.profileId != 2 &&
@@ -84,8 +110,11 @@ class _OrdenesEntregaAdicionesIndexState
 
       return LoginPage();
     } else {
+      // pesoTotalCtrl.text = RxVariables.pesoTotal.toString();
+      pesoTotalCtrl.text = '${pesoTotalService.pesoCalculado}';
       return AppScaffold(
         pageTitle: 'Orden de fabricación / Ordenes de entrega / Adiciones',
+        backButton: true,
         body: SingleChildScrollView(
           child: Container(
             color: Color(0xffF5F6F5),
@@ -107,7 +136,7 @@ class _OrdenesEntregaAdicionesIndexState
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             Text(
-                              'Listado de Ordenes de Entrega',
+                              'Nueva Orden de Entrega - Solo Adiciones',
                               style: TextStyle(
                                   color: Color(0xff313945),
                                   fontSize: 13.00,
@@ -119,55 +148,44 @@ class _OrdenesEntregaAdicionesIndexState
                                 ? ListView(
                                     shrinkWrap: true,
                                     children: [
-                                      CustomButton(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .2,
-                                        title: "Crear Orden de entrega",
-                                        isLoading: false,
-                                        onPressed: () async {
-                                          Navigator.pushNamed(
-                                              context, RouteNames.oeCreate);
-                                        },
-                                      ),
-                                      SizedBox(height: 15),
                                       CustomInput(
                                           controller: ordenFabicacionCtrl,
                                           hint: "* Orden de Fabricación"),
                                       SizedBox(height: 15),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            '* Fecha de Creación',
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
-                                          ),
-                                          SizedBox(width: 10),
-                                          Flexible(
-                                            child: selectDateTime(
-                                                fechaCreacionCtrl),
-                                          ),
-                                        ],
-                                      ),
                                       SizedBox(height: 15),
                                       CustomInput(
+                                          enabled: false,
                                           controller: operadorCtrl,
-                                          hint: "* Operador Responsable"),
+                                          hint: "Operador Responsable"),
                                       SizedBox(height: 15),
                                       CustomInput(
-                                          controller: clienteCtrl,
-                                          hint: "* Cliente"),
-                                      SizedBox(height: 15),
-                                      listStatus(),
+                                          enabled: false,
+                                          controller: estatusCtrl,
+                                          hint: "Estatus"),
+                                      // listStatus(),
                                       SizedBox(height: 15),
                                       listMachines(),
                                       SizedBox(height: 15),
+                                      // (params.campoLinea == null)
+                                      //     ? CustomInput(
+                                      //         enabled: false,
+                                      //         controller: lineaCtrl,
+                                      //         hint: 'Linea',
+                                      //       )
+                                      //     :
                                       CustomInput(
-                                          controller: lineaCtrl, hint: 'Linea'),
+                                        controller: lineaCtrl,
+                                        hint: 'Linea',
+                                      ),
                                       SizedBox(height: 15),
+                                      // (params.requiereTurno == null)
+                                      //     ?
                                       CustomInput(
-                                          controller: turnoCtrl, hint: 'Turno'),
+                                        enabled: false,
+                                        controller: turnoCtrl,
+                                        hint: 'Turno',
+                                      ),
+                                      // : listTurnos(),
                                       SizedBox(height: 15),
                                       CustomInput(
                                           keyboardType:
@@ -175,42 +193,118 @@ class _OrdenesEntregaAdicionesIndexState
                                                   decimal: true),
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                              RegExp(r'^\d*\.?\d{0,2}'),
-                                            ),
+                                                regexp),
                                           ],
                                           // FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
                                           enabled: false,
                                           controller: pesoTotalCtrl,
                                           hint: "Peso Total"),
+                                      SizedBox(height: 15),
                                       CustomInput(
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
                                           controller: cantidadProgramadaCtrl,
-                                          hint: '* Candidad programada'),
+                                          hint: "* Cantidad Programada"),
                                       SizedBox(height: 15),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            '* Fecha de Cierre',
-                                            style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 13),
-                                          ),
-                                          SizedBox(width: 10),
-                                          Flexible(
-                                            child:
-                                                selectDateTime(fechaCierreCtrl),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 15),
+                                      // Row(
+                                      //   children: [
+                                      //     Text(
+                                      //       '* Fecha de Cierre',
+                                      //       style: TextStyle(
+                                      //           color: Colors.black54,
+                                      //           fontSize: 13),
+                                      //     ),
+                                      //     SizedBox(width: 10),
+                                      //     Flexible(
+                                      //         child: selectDateTime(
+                                      //             fechaCierreCtrl)),
+                                      //   ],
+                                      // ),
+                                      // SizedBox(height: 15),
                                       listDesigns(),
                                       SizedBox(height: 15),
+                                      // CustomButton(
+                                      //   width:
+                                      //       MediaQuery.of(context).size.width *
+                                      //           .2,
+                                      //   title: 'Guardar',
+                                      //   isLoading: false,
+                                      //   onPressed: () {
+                                      //     // print(listFields);
+                                      //   },
+                                      // ),
+                                      // SizedBox(height: 15),
                                       CustomButton(
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 .2,
                                         title: 'Crear',
                                         isLoading: false,
-                                        onPressed: () async {},
+                                        onPressed: () async {
+                                          listaLeida =
+                                              datosProvider.listaDeTintas;
+                                          if (ordenFabicacionCtrl.text.isEmpty ||
+                                              catStatus.idCatEstatusOt ==
+                                                  null ||
+                                              catMachines.idCatMaquina ==
+                                                  null ||
+                                              pesoTotalCtrl.text.isEmpty ||
+                                              cantidadProgramadaCtrl
+                                                  .text.isEmpty ||
+                                              catDesigns.idCatDiseno == null) {
+                                            dialogs.showInfoDialog(
+                                                context,
+                                                "¡Atención!",
+                                                "Favor de validar los campos marcados con asterisco (*)");
+                                          } else {
+                                            await ordenEntregaProvider
+                                                .createOrdenEntrega(
+                                                    // int linea y turno
+                                                    ordenFabicacionCtrl.text
+                                                        .trim(),
+                                                    catMachines.idCatMaquina!,
+                                                    catDesigns.idCatDiseno!,
+                                                    int.parse(
+                                                        cantidadProgramadaCtrl
+                                                            .text
+                                                            .trim()),
+                                                    double.parse(pesoTotalCtrl
+                                                        .text
+                                                        .trim()),
+                                                    catTurno.idCatTurno ?? null,
+                                                    1,
+                                                    listaLeida)
+                                                .then((value) {
+                                              if (value == null) {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.pop(context);
+                                                dialogs.showInfoDialog(
+                                                    context,
+                                                    "¡Error!",
+                                                    "Ocurrió un error al crear la orden de entrega : ${RxVariables.errorMessage}");
+                                              } else {
+                                                final typeAlert =
+                                                    (value["result"])
+                                                        ? "¡Éxito!"
+                                                        : "¡Error!";
+                                                final message =
+                                                    value["message"];
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                                Navigator.pop(context);
+                                                dialogs.showInfoDialog(context,
+                                                    typeAlert, message);
+                                                //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                              }
+                                            });
+                                          }
+                                        },
                                       ),
                                       SizedBox(height: 30),
                                       isLoading
@@ -226,7 +320,6 @@ class _OrdenesEntregaAdicionesIndexState
                                               ),
                                             )
                                           : TableOrdenEntregaAdiciones(),
-                                      // TableTaraList()
                                     ],
                                   )
                                 : Container(
@@ -238,153 +331,236 @@ class _OrdenesEntregaAdicionesIndexState
                                           Row(
                                             children: [
                                               Flexible(
-                                                child: CustomButton(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      .2,
-                                                  title:
-                                                      "Crear Orden de Entrega",
-                                                  isLoading: false,
-                                                  onPressed: () async {
-                                                    Navigator.pushNamed(context,
-                                                        RouteNames.oeCreate);
-                                                  },
+                                                child: CustomInput(
+                                                  controller:
+                                                      ordenFabicacionCtrl,
+                                                  hint:
+                                                      '* Orden de fabricación',
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 20.0),
-                                          Row(
-                                            children: [
-                                              Flexible(
-                                                  child: CustomInput(
-                                                controller: ordenFabicacionCtrl,
-                                                hint: '* Orden de fabricación',
-                                              )),
-                                              SizedBox(width: 15),
-                                              Flexible(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '* Fecha de Creación',
-                                                      style: TextStyle(
-                                                          color: Colors.black54,
-                                                          fontSize: 13),
-                                                    ),
-                                                    SizedBox(width: 10),
-                                                    Flexible(
-                                                      child: selectDateTime(
-                                                          fechaCreacionCtrl),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(width: 15),
-                                              SizedBox(width: 15),
-                                              Flexible(
-                                                  child: CustomInput(
-                                                controller: operadorCtrl,
-                                                hint: '* Operador Responsable',
-                                              )),
                                             ],
                                           ),
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
-                                              Flexible(
-                                                child: CustomInput(
-                                                  controller: clienteCtrl,
-                                                  hint: '* Cliente',
-                                                ),
-                                              ),
-                                              SizedBox(width: 15),
                                               Flexible(
                                                 child: CustomInput(
                                                   enabled: false,
-                                                  controller: estatusCtrl,
-                                                  hint: 'Estatus',
+                                                  controller: operadorCtrl,
+                                                  hint: 'Operador Responsable',
                                                 ),
                                               ),
+                                              SizedBox(width: 15),
+                                              Flexible(
+                                                child: CustomInput(
+                                                    enabled: false,
+                                                    controller: estatusCtrl,
+                                                    hint: "Estatus"),
+                                              ),
+                                              // Flexible(child: listStatus()),
                                               SizedBox(width: 15),
                                               Flexible(child: listMachines()),
                                               SizedBox(width: 15),
-                                              Flexible(
-                                                child: CustomInput(
-                                                  controller: lineaCtrl,
-                                                  hint: 'Linea',
-                                                ),
-                                              ),
                                             ],
                                           ),
                                           SizedBox(height: 10),
                                           Row(
                                             children: [
                                               Flexible(
+                                                  // child: (params.campoLinea ==
+                                                  //         null)
+                                                  //     ?
+                                                  child: CustomInput(
+                                                enabled: false,
+                                                controller: lineaCtrl,
+                                                hint: 'Linea',
+                                              )
+                                                  // : CustomInput(
+                                                  //     controller: lineaCtrl,
+                                                  //     hint: 'Linea',
+                                                  //   ),
+                                                  ),
+                                              SizedBox(width: 15),
+                                              Flexible(
+                                                // child: (params.requiereTurno ==
+                                                //         0)
+                                                //     ?
                                                 child: CustomInput(
+                                                  enabled: false,
                                                   controller: turnoCtrl,
                                                   hint: 'Turno',
                                                 ),
+                                                // : listTurnos(),
                                               ),
                                               SizedBox(width: 15),
                                               Flexible(
                                                 child: CustomInput(
-                                                    keyboardType: TextInputType
-                                                        .numberWithOptions(
-                                                            decimal: true),
-                                                    inputFormatters: [
-                                                      FilteringTextInputFormatter
-                                                          .allow(RegExp(
-                                                              r'^\d*\.?\d{0,2}')),
-                                                    ],
-                                                    // FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
-                                                    enabled: false,
-                                                    controller: pesoTotalCtrl,
-                                                    hint: "Peso Total"),
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter
+                                                        .allow(regexp),
+                                                  ],
+
+                                                  // FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                                                  enabled: false,
+                                                  controller: pesoTotalCtrl,
+                                                  hint: 'Peso Total',
+                                                ),
                                               ),
                                               SizedBox(width: 15),
-                                              Flexible(child: listDesigns()),
-                                            ],
-                                          ),
-                                          SizedBox(height: 10),
-                                          Row(
-                                            children: [
                                               Flexible(
                                                 child: CustomInput(
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter
+                                                        .digitsOnly,
+                                                  ],
                                                   controller:
                                                       cantidadProgramadaCtrl,
-                                                  hint: '* Cantidad programada',
+                                                  hint: '* Cantidad Programada',
                                                 ),
                                               ),
-                                              SizedBox(width: 10),
-                                              Flexible(
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '* Fecha de Cierre',
-                                                      style: TextStyle(
-                                                          color: Colors.black54,
-                                                          fontSize: 13),
-                                                    ),
-                                                    SizedBox(width: 10),
-                                                    Flexible(
-                                                      child: selectDateTime(
-                                                          fechaCierreCtrl),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                              SizedBox(width: 15),
                                             ],
                                           ),
-                                          SizedBox(height: 10),
-                                          CustomButton(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .2,
-                                            title: 'Crear',
-                                            isLoading: false,
-                                            onPressed: () async {},
+                                          SizedBox(height: 15),
+                                          Row(
+                                            children: [
+                                              Flexible(child: listDesigns()),
+                                              SizedBox(width: 15),
+                                              // Flexible(
+                                              //   child: Row(
+                                              //     children: [
+                                              //       Text(
+                                              //         '* Fecha de Cierre',
+                                              //         style: TextStyle(
+                                              //             color: Colors.black54,
+                                              //             fontSize: 13),
+                                              //       ),
+                                              //       SizedBox(width: 10),
+                                              //       Flexible(
+                                              //         child: selectDateTime(
+                                              //             fechaCierreCtrl),
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // ),
+                                              // SizedBox(width: 15),
+                                            ],
+                                          ),
+                                          SizedBox(height: 15),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              // CustomButton(
+                                              //   width: MediaQuery.of(context)
+                                              //           .size
+                                              //           .width *
+                                              //       .2,
+                                              //   title: 'Guardar',
+                                              //   isLoading: false,
+                                              //   onPressed: () {
+                                              //     // print(params.campoLinea);
+                                              //     // print(listFields);
+                                              //     listFields.forEach((element) {
+                                              //       // print('Lista numero x');
+                                              //     });
+                                              //   },
+                                              // ),
+                                              // SizedBox(width: 10),
+                                              CustomButton(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .2,
+                                                title: 'Crear',
+                                                isLoading: false,
+                                                onPressed: () async {
+                                                  // Aquí se realiza la creación de la OE,
+                                                  // Primero se lee la lista de tintas desde datosProvider, llamando el
+                                                  // getter listaDeTintas
+                                                  listaLeida = datosProvider
+                                                      .listaDeTintas;
+                                                  // Aquí se realiza la validación para comprobar que los datos no sean
+                                                  // nulos
+                                                  if (ordenFabicacionCtrl
+                                                          .text.isEmpty ||
+                                                      catStatus
+                                                              .idCatEstatusOt ==
+                                                          null ||
+                                                      catMachines
+                                                              .idCatMaquina ==
+                                                          null ||
+                                                      pesoTotalCtrl
+                                                          .text.isEmpty ||
+                                                      cantidadProgramadaCtrl
+                                                          .text.isEmpty ||
+                                                      catDesigns.idCatDiseno ==
+                                                          null) {
+                                                    dialogs.showInfoDialog(
+                                                        context,
+                                                        "¡Atención!",
+                                                        "Favor de validar los campos marcados con asterisco (*)");
+                                                  } else {
+                                                    // Aquí se mandan los datos posicionalmente para realizar la creación en el provider
+                                                    // el dato de lista ya contiene la lista de tintas previamente cargada
+                                                    await ordenEntregaProvider
+                                                        .createOrdenEntrega(
+                                                            // int linea y turno
+                                                            ordenFabicacionCtrl
+                                                                .text
+                                                                .trim(),
+                                                            catMachines
+                                                                .idCatMaquina!,
+                                                            catDesigns
+                                                                .idCatDiseno!,
+                                                            int.parse(
+                                                                cantidadProgramadaCtrl
+                                                                    .text
+                                                                    .trim()),
+                                                            double.parse(
+                                                                pesoTotalCtrl
+                                                                    .text
+                                                                    .trim()),
+                                                            catTurno.idCatTurno ??
+                                                                null,
+                                                            1,
+                                                            listaLeida)
+                                                        .then((value) {
+                                                      if (value == null) {
+                                                        setState(() {
+                                                          isLoading = false;
+                                                        });
+                                                        Navigator.pop(context);
+                                                        dialogs.showInfoDialog(
+                                                            context,
+                                                            "¡Error!",
+                                                            "Ocurrió un error al crear la orden de entrega : ${RxVariables.errorMessage}");
+                                                      } else {
+                                                        final typeAlert =
+                                                            (value["result"])
+                                                                ? "¡Éxito!"
+                                                                : "¡Error!";
+                                                        final message =
+                                                            value["message"];
+                                                        setState(() {
+                                                          isLoading = false;
+                                                        });
+                                                        Navigator.pop(context);
+                                                        dialogs.showInfoDialog(
+                                                            context,
+                                                            typeAlert,
+                                                            message);
+                                                        //Navigator.pushReplacementNamed(context, RouteNames.clienteIndex);
+                                                      }
+                                                    });
+                                                  }
+                                                },
+                                              ),
+                                            ],
                                           ),
                                           SizedBox(height: 30),
                                           isLoading
@@ -452,35 +628,36 @@ class _OrdenesEntregaAdicionesIndexState
     );
   }
 
-  Widget listStatus() {
+  Widget listMachines() {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: catEstatusKey,
+        key: catMachineKey,
         initiallyExpanded: false,
         title: Text(
-          catEstatus.estatus ?? "Estatus",
+          catMachines.nombreMaquina ?? '* Maquina',
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureMachines,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.dataFromUsers.listStatus!.length,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.machinesList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catEstatus =
-                                RxVariables.dataFromUsers.listStatus![index];
-                            catEstatusKey.currentState!.collapse();
+                            catMachines = RxVariables
+                                .gvListCatalogsFields.machinesList[index];
+                            catMachineKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -491,8 +668,8 @@ class _OrdenesEntregaAdicionesIndexState
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.dataFromUsers.listStatus![index]
-                                        .estatus!,
+                                    RxVariables.gvListCatalogsFields
+                                        .machinesList[index].nombreMaquina!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),
@@ -518,35 +695,36 @@ class _OrdenesEntregaAdicionesIndexState
     );
   }
 
-  Widget listMachines() {
+  Widget listTurnos() {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4), color: Colors.grey[100]),
       child: AppExpansionTile(
-        key: catMachineKey,
+        key: catTurnoKey,
         initiallyExpanded: false,
         title: Text(
-          catMachines.nombreMaquina ?? '* Maquina',
+          catTurno.turno ?? '* Turno',
           style: TextStyle(color: Colors.black54, fontSize: 13),
         ),
         children: [
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureMachines,
+              future: futureRecursos,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.gvListMachines.machinesList.length,
+                    itemCount:
+                        RxVariables.gvListRecursosFields.shiftsList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catMachines =
-                                RxVariables.gvListMachines.machinesList[index];
-                            catMachineKey.currentState!.collapse();
+                            catTurno = RxVariables
+                                .gvListRecursosFields.shiftsList[index];
+                            catTurnoKey.currentState!.collapse();
                           });
                         },
                         child: Container(
@@ -557,8 +735,8 @@ class _OrdenesEntregaAdicionesIndexState
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.gvListMachines
-                                        .machinesList[index].nombreMaquina!,
+                                    RxVariables.gvListRecursosFields
+                                        .shiftsList[index].turno!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),
@@ -599,20 +777,36 @@ class _OrdenesEntregaAdicionesIndexState
           Container(
             //height: MediaQuery.of(context).size.height*.2,
             child: FutureBuilder(
-              future: futureDesigns,
+              future: futureFields,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
                     //physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: RxVariables.listDesign.designsList.length,
+                    itemCount:
+                        RxVariables.gvListCatalogsFields.designsList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            catDesigns =
-                                RxVariables.listDesign.designsList[index];
+                            catDesigns = RxVariables
+                                .gvListCatalogsFields.designsList[index];
+                            futureTintas = ordenEntregaProvider
+                                .getTintas(catDesigns.idCatDiseno!);
                             catDesignKey.currentState!.collapse();
+
+                            // final list =
+                            //     RxVariables.gvListCatalogsFields.designsList.;
+                            // print(list);
+
+                            // listFields = RxVariables.listInksOEModel.inksList;
+                            // print(listFields);
+                            futureTintas.asStream().forEach((element) {
+                              // listFields.add(element['inksList']);
+                              listFields.add(element['inksList']);
+                              // print(element['inksList']);
+                              print(listFields);
+                            });
                           });
                         },
                         child: Container(
@@ -623,8 +817,8 @@ class _OrdenesEntregaAdicionesIndexState
                               Padding(
                                 padding: EdgeInsets.all(12),
                                 child: Text(
-                                    RxVariables.listDesign.designsList[index]
-                                        .nombreDiseno!,
+                                    RxVariables.gvListCatalogsFields
+                                        .designsList[index].nombreDiseno!,
                                     style: TextStyle(
                                         color: Colors.black54, fontSize: 13)),
                               ),

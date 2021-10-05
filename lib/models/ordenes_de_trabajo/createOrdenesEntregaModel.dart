@@ -85,7 +85,7 @@ class Tinta {
   bool? mideViscosidad;
   bool? utilizaFiltro;
   int? porcentajeVariacion;
-  int? pesoIndividualGp;
+  double? pesoIndividualGp;
   int? idCatLecturaGp;
   int? idCatRazon;
   String? aditivoTinta;

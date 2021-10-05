@@ -47,9 +47,9 @@ class OrdenesDeTrabajoDialog {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, RouteNames.oeIndex);
-                            // Navigator.pop(context);
+                            // Navigator.pushReplacementNamed(
+                            //     context, RouteNames.oeIndex);
+                            Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
                               elevation: 2,

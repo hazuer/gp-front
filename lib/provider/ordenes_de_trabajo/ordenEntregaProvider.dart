@@ -243,7 +243,7 @@ class OrdenEntregaProvider {
         'id_cat_maquina': idMaquina,
         'id_cat_diseno': idDesign,
         'cantidad_programado': cantidadProgramada,
-        'peso_total': pesoTotal,
+        'peso_entrega_total': pesoTotal,
         'id_cat_turno': turno,
         'linea': linea,
         // 'fecha_cierre': fechaCierre,
